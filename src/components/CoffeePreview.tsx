@@ -30,7 +30,7 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
       style={{ fontFamily: 'var(--font-sans)' }}
     >
       <div className="flex items-center justify-between border-b border-navy/15 pb-4">
-        <p className="text-[12px] font-bold tracking-[0.3em] text-navy">KOI COFFEE</p>
+        <p className="text-[12px] font-bold tracking-[0.3em] text-navy">KOINO COFFEE</p>
         <span className="h-1.5 w-1.5 rounded-full bg-accent" />
       </div>
 

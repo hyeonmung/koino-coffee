@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import DotScale from '../../components/DotScale'
+import FlavorNotes from '../../components/FlavorNotes'
 import KOIStarField from '../../components/decorative/KOIStarField'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -158,7 +159,7 @@ export default function HomePage() {
             {showCharacter && (
               <div className={`mx-auto max-w-[1240px] px-6 py-10 ${showCoffees ? 'border-t border-navy/10' : ''}`}>
                 <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">
-                  KOI CUP CHARACTER · 당신의 취향은 어떤 성격인가요?
+                  KOINO CUP CHARACTER · 당신의 취향은 어떤 성격인가요?
                 </p>
                 <div className="mt-4 grid grid-cols-2 gap-px overflow-x-auto sm:grid-cols-5 sm:gap-0 sm:divide-x sm:divide-navy/10">
                   {CUP_CHARACTERS.map((key, i) => {
@@ -191,7 +192,7 @@ export default function HomePage() {
               {/* Left 7 cols — Coffee Chart, dense */}
               {showChart && chartExample && (
                 <div className="border-b border-navy/10 px-6 py-12 lg:col-span-7 lg:border-b-0 lg:border-r lg:py-14 lg:pr-10">
-                  <h2 className="font-serif text-[22px] font-bold text-navy">한 장으로 이해하는 한 커피.</h2>
+                  <h2 className="font-serif text-[22px] font-bold text-navy">원두를 한눈에</h2>
                   <p className="mt-2 max-w-[420px] text-[13px] text-navy/55">
                     향미, 가공, 로스팅, 센서리, 추출 정보를 한 화면에서 확인해보세요.
                   </p>
@@ -209,9 +210,7 @@ export default function HomePage() {
                         <span className="mt-2 inline-block border border-navy bg-navy px-2.5 py-1 text-[10px] font-bold tracking-wide text-warm-white">
                           {CHARACTER_INFO[chartExample.character].label}
                         </span>
-                        {chartExample.notes.length > 0 && (
-                          <p className="mt-2 text-[11px] text-navy/50">{chartExample.notes.slice(0, 3).join(' · ')}</p>
-                        )}
+                        <FlavorNotes notes={chartExample.notes} limit={3} className="mt-2 block text-[11px] text-navy/50" />
                       </div>
                       <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-1">
                         {SENSORY_FIELDS.slice(0, 4).map((field) => (
@@ -255,11 +254,7 @@ export default function HomePage() {
                     }`}
                   >
                     <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">취향 찾기</p>
-                    <h2 className="mt-2 font-serif text-[22px] font-bold leading-tight text-navy">
-                      어떤 커피가
-                      <br />
-                      나에게 맞을까요?
-                    </h2>
+                    <h2 className="mt-2 font-serif text-[22px] font-bold leading-tight text-navy">나에게 맞는 한 잔</h2>
                     <p className="mt-3 max-w-[320px] text-[13px] leading-relaxed text-navy/55">
                       산미, 향, 질감에 대한 몇 가지 질문으로 나에게 가까운 커피를 찾아보세요.
                     </p>
@@ -272,7 +267,7 @@ export default function HomePage() {
                 {dictionaryTerm && (
                   <div className="px-6 py-12 lg:py-14 lg:pl-10">
                     <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">커피 사전</p>
-                    <h2 className="mt-2 font-serif text-[20px] font-bold text-navy">커피가 어렵다면.</h2>
+                    <h2 className="mt-2 font-serif text-[20px] font-bold text-navy">어려운 용어, 쉽게</h2>
                     <p className="mt-3 max-w-[320px] text-[13px] leading-relaxed text-navy/55">
                       {dictionaryTerm.termKo ?? dictionaryTerm.term}는 무엇을 뜻하는지, 익숙한 예와 함께 설명합니다.
                     </p>
@@ -352,7 +347,7 @@ export default function HomePage() {
                         ) : (
                           <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-3">
                             <KOIStarField />
-                            <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
+                            <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
                           </div>
                         )}
                         <p className="mt-2 text-[9px] font-semibold tracking-[0.15em] text-navy/40">
@@ -375,7 +370,7 @@ export default function HomePage() {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-[1fr_auto] sm:items-center">
                 {showAbout && (
                   <div className="max-w-[440px]">
-                    <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI COFFEE</p>
+                    <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINO COFFEE</p>
                     <p className="mt-2 text-[14px] leading-relaxed text-warm-white/75">{settings.aboutIntro}</p>
                     <Link to="/about" className="mt-3 inline-block text-[12px] font-semibold text-warm-white/80 hover:text-warm-white">
                       코이노커피 이야기 →

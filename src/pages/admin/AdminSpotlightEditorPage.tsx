@@ -264,7 +264,7 @@ export default function AdminSpotlightEditorPage() {
               />
             </label>
             <p className="mt-3 text-[11px] text-navy/45">
-              사진 URL이 비어 있으면 KOI 브랜드 플레이스홀더(남색 배경 + 별)가 자동으로 표시됩니다.
+              사진 URL이 비어 있으면 KOINO 브랜드 플레이스홀더(남색 배경 + 별)가 자동으로 표시됩니다.
             </p>
           </section>
 

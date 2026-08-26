@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { CHARACTER_INFO } from '../constants/characters'
 import type { Coffee } from '../data/schema'
 import CoffeeVisual from './CoffeeVisual'
+import FlavorNotes from './FlavorNotes'
 
 interface CoffeeCardProps {
   coffee: Coffee
@@ -42,9 +43,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
 
       <div className="mt-2 flex items-center gap-2">
         <span className="text-[9px] font-bold tracking-[0.15em] text-navy">{character.label}</span>
-        {coffee.notes.length > 0 && (
-          <span className="truncate text-[11px] text-navy/50">· {coffee.notes.slice(0, 3).join(' · ')}</span>
-        )}
+        <FlavorNotes notes={coffee.notes} limit={3} leading className="truncate text-[11px] text-navy/50" />
       </div>
 
       <p className="mt-2 border-t border-navy/10 pt-2 text-[10px] font-semibold tracking-[0.1em] text-navy/0 transition-colors group-hover:text-navy/45">

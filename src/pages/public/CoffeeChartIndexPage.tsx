@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import DotScale from '../../components/DotScale'
+import FlavorNotes from '../../components/FlavorNotes'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import RadarChart from '../../components/RadarChart'
@@ -22,7 +23,7 @@ export default function CoffeeChartIndexPage() {
       <PublicHeader />
 
       <main className="mx-auto max-w-[1240px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI COFFEE CHART</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINO COFFEE CHART</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">원두 차트</h1>
         <p className="mt-2 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
           현재 코이노커피에서 만나볼 수 있는 원두의 핵심 정보를 한눈에 비교해보세요. 원두를 눌러
@@ -77,7 +78,9 @@ export default function CoffeeChartIndexPage() {
                           {CHARACTER_INFO[c.character].label}
                         </span>
                       </td>
-                      <td className="max-w-[180px] truncate px-4 py-3 text-navy/60">{c.notes.slice(0, 2).join(' · ')}</td>
+                      <td className="max-w-[180px] px-4 py-3 text-navy/60">
+                        <FlavorNotes notes={c.notes} limit={2} className="block truncate" />
+                      </td>
                       <td className="px-4 py-3">
                         <DotScale value={c.sensory.acidity} />
                       </td>

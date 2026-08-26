@@ -8,7 +8,7 @@ export const SEED_BREW_GUIDES: BrewGuide[] = [
     slug: 'v60',
     publishStatus: 'published',
     equipment: 'V60',
-    title: 'V60로 내리는 KOI 원두',
+    title: 'V60로 내리는 KOINO 원두',
     coffeeDose: '20g',
     water: '320g',
     ratio: '1 : 16',

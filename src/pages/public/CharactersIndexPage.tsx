@@ -11,7 +11,7 @@ export default function CharactersIndexPage() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="KOI CUP CHARACTER" description="코이노커피의 5가지 CUP CHARACTER를 소개합니다." />
+      <SEO title="KOINO CUP CHARACTER" description="코이노커피의 5가지 CUP CHARACTER를 소개합니다." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[1000px] px-6 py-10">

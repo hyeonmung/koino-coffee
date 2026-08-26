@@ -8,12 +8,12 @@ export const SPOTLIGHT_TYPE_LABEL: Record<SpotlightContentType, string> = {
   FEATURED_COFFEE: 'NOW SERVING',
   NOTICE: '공지',
   EVENT: 'EVENT',
-  STORY: 'KOI STORY',
+  STORY: 'KOINO STORY',
   VIDEO: '영상',
   BREW: '브루 가이드',
   EDUCATION: '교육',
   BUSINESS: '납품 · 교육',
-  CUSTOM: 'KOI COFFEE',
+  CUSTOM: 'KOINO COFFEE',
 }
 
 export interface ResolvedSpotlight {

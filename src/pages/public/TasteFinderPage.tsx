@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
+import FlavorNotes from '../../components/FlavorNotes'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
@@ -177,7 +178,7 @@ export default function TasteFinderPage() {
             <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">YOUR COFFEE</p>
             <h1 className="mt-1 text-center font-serif text-[26px] font-bold text-navy">추천 커피</h1>
             <p className="mx-auto mt-2 max-w-[420px] text-center text-[11px] text-navy/45">
-              Match %는 과학적 정확도가 아니라 KOI 프로파일을 기준으로 계산한 취향 유사도입니다.
+              Match %는 과학적 정확도가 아니라 KOINO 프로파일을 기준으로 계산한 취향 유사도입니다.
             </p>
 
             {results.length === 0 ? (
@@ -199,7 +200,7 @@ export default function TasteFinderPage() {
                         <Link to={`/coffees/${match.coffee.slug}`} className="font-serif text-[17px] font-bold text-navy hover:underline">
                           {match.coffee.coffeeName}
                         </Link>
-                        <p className="mt-1 text-[12px] text-navy/55">{match.coffee.notes.join(' · ')}</p>
+                        <FlavorNotes notes={match.coffee.notes} className="mt-1 block text-[12px] text-navy/55" />
                         <ul className="mt-2 space-y-1">
                           {match.reasons.map((r) => (
                             <li key={r} className="text-[12px] text-navy/60">

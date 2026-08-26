@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import FlavorNotes from '../../components/FlavorNotes'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import RadarOverlayChart, { COMPARE_COLORS } from '../../components/RadarOverlayChart'
@@ -100,7 +101,10 @@ export default function ComparePage() {
                   <CompareRow label="Country" cells={selected.map((c) => c.country || '-')} />
                   <CompareRow label="Process" cells={selected.map((c) => c.process || '-')} />
                   <CompareRow label="Variety" cells={selected.map((c) => c.variety || '-')} />
-                  <CompareRow label="Flavor Notes" cells={selected.map((c) => c.notes.join(' · ') || '-')} />
+                  <CompareRow
+                    label="Flavor Notes"
+                    cells={selected.map((c) => (c.notes.length > 0 ? <FlavorNotes notes={c.notes} /> : '-'))}
+                  />
                   {SENSORY_FIELDS.map((field) => (
                     <CompareRow
                       key={field.key}
@@ -132,7 +136,7 @@ export default function ComparePage() {
   )
 }
 
-function CompareRow({ label, cells }: { label: string; cells: string[] }) {
+function CompareRow({ label, cells }: { label: string; cells: React.ReactNode[] }) {
   return (
     <tr className="border-b border-navy/10">
       <th className="w-[120px] py-2 pr-3 text-left text-[10px] font-semibold tracking-wide text-navy/45">{label}</th>

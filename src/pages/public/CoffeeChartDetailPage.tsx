@@ -8,9 +8,12 @@ import RadarChart from '../../components/RadarChart'
 import RoastDirection from '../../components/RoastDirection'
 import SEO from '../../components/SEO'
 import { CHARACTER_INFO } from '../../constants/characters'
+import { FLAVOR_FAMILY_COLOR } from '../../constants/flavorColors'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { getBrewGuideById } from '../../data/repositories/brewGuideRepository'
 import { getCoffeeBySlug } from '../../data/repositories/coffeeRepository'
+import { findDescriptorByNote } from '../../data/flavorMatch'
+import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { slugifyFilename } from '../../utils/download'
 import { SOCIAL_SIZE_PRESETS, exportNodeAsSizedPng } from '../../utils/pngExport'
 
@@ -33,6 +36,7 @@ export default function CoffeeChartDetailPage() {
   }
 
   const character = CHARACTER_INFO[coffee.character]
+  const descriptors = getFlavorDescriptors()
   const guide = coffee.brewGuideIds[0] ? getBrewGuideById(coffee.brewGuideIds[0]) : undefined
   const hasAdvanced = coffee.roastData && Object.values(coffee.roastData).some(Boolean)
   const shareUrl = `${window.location.origin}${window.location.pathname}#/coffee-chart/${coffee.slug}`
@@ -65,7 +69,7 @@ export default function CoffeeChartDetailPage() {
 
         <div ref={cardRef} className="mt-4 border border-navy/15 bg-white p-8">
           {/* HEADER */}
-          <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">KOI COFFEE CHART</p>
+          <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">KOINO COFFEE CHART</p>
           <p className="mt-3 text-[12px] font-semibold tracking-[0.15em] text-navy/50">
             {coffee.country?.toUpperCase()}
           </p>
@@ -88,11 +92,19 @@ export default function CoffeeChartDetailPage() {
             <div className="mt-6 border-t border-navy/10 pt-5">
               <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">FLAVOR NOTES</p>
               <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                {coffee.notes.map((note) => (
-                  <span key={note} className="font-serif text-[17px] font-semibold text-navy">
-                    {note}
-                  </span>
-                ))}
+                {coffee.notes.map((note) => {
+                  const familyId = findDescriptorByNote(note, descriptors)?.familyId
+                  const color = familyId ? FLAVOR_FAMILY_COLOR[familyId] : undefined
+                  return (
+                    <span
+                      key={note}
+                      className="font-serif text-[17px] font-semibold text-navy"
+                      style={color ? { color } : undefined}
+                    >
+                      {note}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           )}

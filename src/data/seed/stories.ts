@@ -7,15 +7,15 @@ export const SEED_STORIES: Story[] = [
     id: 'story-koi-sensory-map',
     slug: 'koi-sensory-map-이야기',
     publishStatus: 'published',
-    title: 'KOI SENSORY MAP을 만든 이유',
+    title: 'KOINO SENSORY MAP을 만든 이유',
     excerpt: '커피를 어렵게 설명하지 않고, 취향을 발견하게 돕는 지도를 만들고 싶었습니다.',
     body: `커피를 처음 접하는 손님에게 "이 원두는 SCA 87점, 애시드 톤이 밝고..." 라고 설명하면 대부분 다음 문장을 놓칩니다.
 
-KOI SENSORY MAP은 반대로 접근합니다. Character 하나로 첫인상을 전달하고, Flavor Notes로 구체적인 향을 보여주고, 마지막에 Sensory Profile로 수치를 확인하는 순서입니다.
+KOINO SENSORY MAP은 반대로 접근합니다. Character 하나로 첫인상을 전달하고, Flavor Notes로 구체적인 향을 보여주고, 마지막에 Sensory Profile로 수치를 확인하는 순서입니다.
 
 산미가 높다고 더 좋은 커피가 아닙니다. 접근성이 높다고 더 좋은 커피도 아닙니다. 각 원두의 개성과 손님의 취향을 연결하는 것, 그것이 이 시스템의 전부입니다.`,
     category: 'KOI',
-    tags: ['KOI', '브랜드'],
+    tags: ['KOINO', '브랜드'],
     publishedDate: '2026-01-05',
     createdAt: now,
     updatedAt: now,

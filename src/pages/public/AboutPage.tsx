@@ -14,7 +14,7 @@ export default function AboutPage() {
 
       <main>
         <section className="border-b border-navy/15 bg-white px-6 py-16 text-center">
-          <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOI COFFEE</p>
+          <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOINO COFFEE</p>
           <h1 className="mt-2 font-serif text-[28px] font-bold text-navy">코이노커피</h1>
           <p className="mx-auto mt-4 max-w-[520px] text-[14px] leading-relaxed text-navy/65">
             {settings.aboutIntro}

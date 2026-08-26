@@ -62,7 +62,7 @@ export default function StoriesIndexPage() {
                 ) : (
                   <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
                     <KOIStarField />
-                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
+                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
                   </div>
                 )}
                 <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>

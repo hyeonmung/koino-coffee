@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import CoffeeVisual from '../../components/CoffeeVisual'
+import FlavorNotes from '../../components/FlavorNotes'
 import InfoTooltip from '../../components/InfoTooltip'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -9,6 +10,7 @@ import QRCodeBlock from '../../components/QRCodeBlock'
 import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
 import { CHARACTER_INFO } from '../../constants/characters'
+import { FLAVOR_FAMILY_COLOR } from '../../constants/flavorColors'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getCoffeeBySlug, getPublishedCoffees } from '../../data/repositories/coffeeRepository'
@@ -112,7 +114,7 @@ export default function CoffeeDetailPage() {
             </span>
           )}
         </div>
-        {coffee.notes.length > 0 && <p className="mt-3 text-[14px] text-navy/75">{coffee.notes.join(' · ')}</p>}
+        <FlavorNotes notes={coffee.notes} className="mt-3 block text-[14px] text-navy/75" />
 
         <div className="mt-6 flex flex-wrap gap-2">
           {coffee.purchaseUrl && (
@@ -164,7 +166,7 @@ export default function CoffeeDetailPage() {
 
         {/* SECTION 3 — SENSORY MAP */}
         <section className="mt-14 border-t border-navy/15 pt-10">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI SENSORY MAP</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINO SENSORY MAP</p>
           <h2 className="mt-1 font-serif text-[22px] font-bold text-navy">Sensory Profile</h2>
           <div className="mt-6">
             <RadarChart ref={chartRef} sensory={coffee.sensory} size={280} />
@@ -204,7 +206,12 @@ export default function CoffeeDetailPage() {
                   <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">
                     {group.family.name.toUpperCase()}
                   </p>
-                  <p className="mt-1 text-[13px] text-navy">{group.notes.join(' · ')}</p>
+                  <p
+                    className="mt-1 text-[13px] font-medium text-navy"
+                    style={FLAVOR_FAMILY_COLOR[group.family.id] ? { color: FLAVOR_FAMILY_COLOR[group.family.id] } : undefined}
+                  >
+                    {group.notes.join(' · ')}
+                  </p>
                 </div>
               ))}
             </div>

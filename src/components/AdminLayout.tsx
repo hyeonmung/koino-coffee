@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <div>
             <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노커피</p>
             <Link to="/admin" className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">
-              KOI COFFEE — 관리자
+              KOINO COFFEE — 관리자
             </Link>
           </div>
           <Link

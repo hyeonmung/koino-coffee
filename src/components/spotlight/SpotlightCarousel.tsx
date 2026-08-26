@@ -92,7 +92,7 @@ export default function SpotlightCarousel({ slides }: SpotlightCarouselProps) {
       }}
       role="region"
       aria-roledescription="carousel"
-      aria-label="KOI 스포트라이트"
+      aria-label="KOINO 스포트라이트"
       tabIndex={0}
     >
       {resolved.map(({ slide, content: c }, i) => (

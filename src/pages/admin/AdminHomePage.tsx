@@ -10,12 +10,12 @@ const inputClass =
 const SECTIONS: { key: HomeSectionKey; label: string }[] = [
   { key: 'featuredCoffee', label: '02 · 지금 만날 수 있는 커피' },
   { key: 'tasteFinder', label: '03 · 나에게 맞는 커피 찾기' },
-  { key: 'cupCharacter', label: '04 · KOI CUP CHARACTER' },
-  { key: 'sensoryMap', label: '05 · KOI SENSORY MAP' },
+  { key: 'cupCharacter', label: '04 · KOINO CUP CHARACTER' },
+  { key: 'sensoryMap', label: '05 · KOINO SENSORY MAP' },
   { key: 'coffeeChart', label: '06 · 원두 차트 미리보기' },
   { key: 'brewGuide', label: '07 · Brew Better' },
   { key: 'stories', label: '08 · 커피 이야기' },
-  { key: 'about', label: '09 · KOI COFFEE 소개' },
+  { key: 'about', label: '09 · KOINO COFFEE 소개' },
   { key: 'business', label: '10 · 납품 · 교육 CTA' },
 ]
 

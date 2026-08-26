@@ -42,7 +42,7 @@ export default function CoffeeVisual({
     <div className={`koi-night-sky relative ${aspect} w-full overflow-hidden ${className}`}>
       <KOIStarField />
       <div className="relative flex h-full flex-col justify-between p-4">
-        <p className="text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
+        <p className="text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
         {showIdentity && (
           <div>
             <p className="font-serif text-[15px] font-bold leading-tight text-warm-white/90">{coffee.coffeeName}</p>

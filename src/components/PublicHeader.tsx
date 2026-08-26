@@ -38,13 +38,13 @@ export default function PublicHeader() {
           </p>
         </Link>
 
-        <nav className="hidden items-center gap-8 xl:flex">
+        <nav className="hidden items-center gap-9 xl:flex">
           {NAV_LINKS.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `relative whitespace-nowrap text-[15px] font-semibold leading-none tracking-tight transition-colors after:absolute after:-bottom-[9px] after:left-0 after:h-[2px] after:bg-accent after:transition-all ${
+                `relative whitespace-nowrap text-[17px] font-semibold leading-none tracking-tight transition-colors after:absolute after:-bottom-[10px] after:left-0 after:h-[2px] after:bg-accent after:transition-all ${
                   isActive ? 'text-navy after:w-full' : 'text-navy/70 after:w-0 hover:text-navy hover:after:w-full'
                 }`
               }

@@ -8,12 +8,12 @@ import { CUP_CHARACTERS } from '../../types'
 export default function AboutSensoryMapPage() {
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="KOI SENSORY MAP 알아보기" description="KOI SENSORY MAP이 원두를 설명하는 방식을 소개합니다." />
+      <SEO title="KOINO SENSORY MAP 알아보기" description="KOINO SENSORY MAP이 원두를 설명하는 방식을 소개합니다." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[860px] px-6 py-10">
         <p className="text-[11px] font-semibold tracking-[0.25em] text-accent">HOW TO READ</p>
-        <h1 className="mt-2 font-serif text-[28px] font-bold leading-tight text-navy">KOI SENSORY MAP 읽는 법</h1>
+        <h1 className="mt-2 font-serif text-[28px] font-bold leading-tight text-navy">KOINO SENSORY MAP 읽는 법</h1>
         <p className="mt-3 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
           코이노커피는 원두마다 CUP CHARACTER와 6가지 관능(Sensory) 점수를 매겨 육각형 레이더 차트로
           표시합니다. 산미가 높다고 더 좋은 커피가 아니며, 접근성이 높다고 더 좋은 커피도 아닙니다.
