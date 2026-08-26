@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { getSiteSettings } from '../data/repositories/siteSettingsRepository'
+import KOIStarField from './decorative/KOIStarField'
 
 const NAV_LINKS = [
   { to: '/coffees', label: 'COFFEES' },
@@ -10,6 +11,8 @@ const NAV_LINKS = [
   { to: '/brew-guide', label: 'BREW GUIDE' },
   { to: '/stories', label: 'STORIES' },
 ]
+
+const MOBILE_LINKS = [...NAV_LINKS, { to: '/compare', label: 'COMPARE' }, { to: '/wholesale', label: 'WHOLESALE' }]
 
 export default function PublicHeader() {
   const settings = getSiteSettings()
@@ -51,7 +54,7 @@ export default function PublicHeader() {
           type="button"
           onClick={() => setOpen((v) => !v)}
           className="flex h-9 w-9 shrink-0 items-center justify-center border border-navy/25 text-navy lg:hidden"
-          aria-label="메뉴 열기"
+          aria-label={open ? '메뉴 닫기' : '메뉴 열기'}
           aria-expanded={open}
         >
           {open ? '✕' : '☰'}
@@ -59,22 +62,26 @@ export default function PublicHeader() {
       </div>
 
       {open && (
-        <nav className="border-t border-navy/15 bg-white px-6 py-4 lg:hidden">
-          <div className="flex flex-col gap-3">
-            {[...NAV_LINKS, { to: '/compare', label: 'COMPARE' }, { to: '/wholesale', label: 'WHOLESALE' }].map(
-              (link) => (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    `text-[13px] font-semibold tracking-[0.08em] ${isActive ? 'text-navy' : 'text-navy/60'}`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              ),
-            )}
+        <nav
+          aria-label="모바일 메뉴"
+          className="koi-night-sky fixed inset-x-0 top-[65px] bottom-0 z-30 overflow-y-auto lg:hidden"
+        >
+          <KOIStarField />
+          <div className="relative flex flex-col gap-1 px-8 py-10">
+            {MOBILE_LINKS.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `border-b border-warm-white/10 py-4 text-[16px] font-semibold tracking-[0.06em] ${
+                    isActive ? 'text-accent' : 'text-warm-white/85'
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
           </div>
         </nav>
       )}

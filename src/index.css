@@ -55,3 +55,37 @@ input[type='number'] {
     background: white;
   }
 }
+
+/* KOI night-sky accent — applied selectively to a few Navy sections (Footer,
+   mobile menu overlay, one homepage CTA band). Kept as pure CSS + a small
+   reusable <KOIStarField> SVG component so the effect stays consistent and
+   never turns into a "space theme": one whisper-soft gradient, a sparse set
+   of tiny gold star points, motion optional and barely perceptible. */
+.koi-night-sky {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-navy);
+  background-image:
+    radial-gradient(ellipse 60% 45% at 18% 0%, rgba(255, 255, 255, 0.04), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 88% 100%, rgba(255, 255, 255, 0.03), transparent 65%);
+}
+
+@keyframes koi-star-twinkle {
+  0%,
+  100% {
+    opacity: var(--koi-star-opacity, 0.5);
+  }
+  50% {
+    opacity: calc(var(--koi-star-opacity, 0.5) * 0.35);
+  }
+}
+
+.koi-star {
+  animation: koi-star-twinkle 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .koi-star {
+    animation: none;
+  }
+}

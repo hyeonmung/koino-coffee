@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
+import KOIStarField from '../../components/decorative/KOIStarField'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
@@ -205,24 +206,27 @@ export default function HomePage() {
         )}
 
         {/* CTA */}
-        <section className="mx-auto max-w-[1240px] px-6 py-16">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {settings.purchaseUrl && (
-              <a
-                href={settings.purchaseUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="border border-navy/15 p-6 text-center hover:border-navy"
-              >
-                <p className="font-serif text-[15px] font-bold text-navy">원두 구매</p>
-              </a>
-            )}
-            <Link to="/wholesale" className="border border-navy/15 p-6 text-center hover:border-navy">
-              <p className="font-serif text-[15px] font-bold text-navy">납품 문의</p>
-            </Link>
-            <Link to="/brew-guide" className="border border-navy/15 p-6 text-center hover:border-navy">
-              <p className="font-serif text-[15px] font-bold text-navy">커피 교육</p>
-            </Link>
+        <section className="koi-night-sky relative overflow-hidden py-16">
+          <KOIStarField />
+          <div className="relative mx-auto max-w-[1240px] px-6">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {settings.purchaseUrl && (
+                <a
+                  href={settings.purchaseUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="border border-warm-white/15 p-6 text-center hover:border-accent/60"
+                >
+                  <p className="font-serif text-[15px] font-bold text-warm-white">원두 구매</p>
+                </a>
+              )}
+              <Link to="/wholesale" className="border border-warm-white/15 p-6 text-center hover:border-accent/60">
+                <p className="font-serif text-[15px] font-bold text-warm-white">납품 문의</p>
+              </Link>
+              <Link to="/brew-guide" className="border border-warm-white/15 p-6 text-center hover:border-accent/60">
+                <p className="font-serif text-[15px] font-bold text-warm-white">커피 교육</p>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
