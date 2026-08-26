@@ -1,3 +1,4 @@
+import { COFFEE_CARD_ASPECT_CLASS, FOCAL_POINT_POSITION, type ImageFocalPoint } from '../constants/media'
 import type { Coffee } from '../data/schema'
 import KOIStarField from './decorative/KOIStarField'
 
@@ -6,8 +7,10 @@ interface CoffeeVisualProps {
   className?: string
   /** Full identity (name/country/year) for standalone contexts. Off in list cards, where a caption already shows this — avoids showing the same text twice. */
   showIdentity?: boolean
-  /** Tailwind aspect-ratio class. Defaults to a portrait card ratio; pass a wider one for page heroes. */
+  /** Tailwind aspect-ratio class. Defaults to the shared Coffee Card ratio (17:11); pass a wider one for page heroes. */
   aspect?: string
+  /** Which part of the photo stays visible when the frame crops it. Ignored by the no-photo placeholder. */
+  focalPoint?: ImageFocalPoint
 }
 
 /**
@@ -15,12 +18,18 @@ interface CoffeeVisualProps {
  * KOI-branded typographic placeholder (Navy + tiny stars) instead of an empty box or a
  * stock photo. Never fabricates a photo.
  */
-export default function CoffeeVisual({ coffee, className = '', showIdentity = false, aspect = 'aspect-[4/5]' }: CoffeeVisualProps) {
+export default function CoffeeVisual({
+  coffee,
+  className = '',
+  showIdentity = false,
+  aspect = COFFEE_CARD_ASPECT_CLASS,
+  focalPoint = 'center',
+}: CoffeeVisualProps) {
   if (coffee.heroImage) {
     return (
       <div
-        className={`${aspect} w-full bg-navy/5 bg-cover bg-center ${className}`}
-        style={{ backgroundImage: `url(${coffee.heroImage})` }}
+        className={`${aspect} w-full bg-navy/5 bg-cover ${className}`}
+        style={{ backgroundImage: `url(${coffee.heroImage})`, backgroundPosition: FOCAL_POINT_POSITION[focalPoint] }}
         role="img"
         aria-label={coffee.coffeeName}
       />

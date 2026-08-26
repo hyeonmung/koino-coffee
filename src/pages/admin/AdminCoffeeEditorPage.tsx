@@ -10,6 +10,8 @@ import { getCoffeeById, slugExists, upsertCoffee } from '../../data/repositories
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getAllStories } from '../../data/repositories/storyRepository'
 import type { Availability, Coffee, PublishStatus, RoastType } from '../../data/schema'
+import CoffeeVisual from '../../components/CoffeeVisual'
+import { COFFEE_CARD_ASPECT_RATIO, COFFEE_CARD_RATIO_LABEL, FOCAL_POINT_LABEL, type ImageFocalPoint } from '../../constants/media'
 import { slugifyFilename } from '../../utils/download'
 import { exportNodeAsPng } from '../../utils/pngExport'
 import { validateCoffeeDraft } from '../../utils/validation'
@@ -81,6 +83,7 @@ export default function AdminCoffeeEditorPage() {
   const [errors, setErrors] = useState<string[]>([])
   const [saved, setSaved] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
+  const [heroImageSize, setHeroImageSize] = useState<{ width: number; height: number } | null>(null)
 
   // /new and /:id render the same component without remounting, so a fresh "new"
   // screen opened right after editing another coffee would otherwise keep showing
@@ -120,6 +123,28 @@ export default function AdminCoffeeEditorPage() {
     })
     setSaved(false)
   }
+
+  // Measures the uploaded photo's real dimensions so the MEDIA tab can show a
+  // non-blocking ratio-mismatch warning — never used to reject the upload.
+  useEffect(() => {
+    const url = draft.heroImage
+    if (!url) {
+      setHeroImageSize(null)
+      return
+    }
+    let cancelled = false
+    const img = new Image()
+    img.onload = () => {
+      if (!cancelled) setHeroImageSize({ width: img.naturalWidth, height: img.naturalHeight })
+    }
+    img.onerror = () => {
+      if (!cancelled) setHeroImageSize(null)
+    }
+    img.src = url
+    return () => {
+      cancelled = true
+    }
+  }, [draft.heroImage])
 
   const handleSave = () => {
     const validation = validateCoffeeDraft({
@@ -514,7 +539,7 @@ export default function AdminCoffeeEditorPage() {
             )}
 
             {tab === '10 MEDIA' && (
-              <div className="space-y-3">
+              <div className="space-y-5">
                 {field(
                   'Hero Image URL',
                   <input
@@ -524,6 +549,51 @@ export default function AdminCoffeeEditorPage() {
                     placeholder="https://..."
                   />,
                 )}
+                <div className="space-y-1 text-[11px] leading-relaxed text-navy/45">
+                  <p>권장 비율: 850 × 550 (17:11) — 원두 카드는 항상 이 비율로 잘려서 표시됩니다.</p>
+                  <p>권장 최소 해상도: 1700 × 1100px</p>
+                  <p>고화질 권장: 2550 × 1650px 이상</p>
+                </div>
+
+                {heroImageSize && Math.abs(heroImageSize.width / heroImageSize.height - COFFEE_CARD_ASPECT_RATIO) > 0.05 && (
+                  <p className="border border-accent/40 bg-accent/10 px-3 py-2 text-[11px] text-navy/70">
+                    권장 비율과 다릅니다 ({heroImageSize.width} × {heroImageSize.height}). 카드에서는 일부 영역이 잘릴 수 있습니다. 아래
+                    미리보기와 사진 위치 설정으로 확인하세요.
+                  </p>
+                )}
+
+                <div>
+                  <span className="mb-1.5 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">사진 위치</span>
+                  <p className="mb-2 text-[11px] text-navy/40">
+                    사진이 카드 비율({COFFEE_CARD_RATIO_LABEL})보다 크거나 작을 때, 어느 부분을 중심으로 잘라 보여줄지 정합니다.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {(Object.keys(FOCAL_POINT_LABEL) as ImageFocalPoint[]).map((fp) => (
+                      <button
+                        key={fp}
+                        type="button"
+                        onClick={() => patch({ imageFocalPoint: fp })}
+                        className={`border px-3 py-1.5 text-[11px] font-medium transition-colors ${
+                          (draft.imageFocalPoint ?? 'center') === fp
+                            ? 'border-navy bg-navy text-warm-white'
+                            : 'border-navy/25 text-navy/60 hover:border-navy/50'
+                        }`}
+                      >
+                        {FOCAL_POINT_LABEL[fp]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <span className="mb-1.5 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">
+                    카드 미리보기 ({COFFEE_CARD_RATIO_LABEL})
+                  </span>
+                  <div className="w-[240px] overflow-hidden border border-navy/15">
+                    <CoffeeVisual coffee={draft} focalPoint={draft.imageFocalPoint} />
+                  </div>
+                </div>
+
                 {field(
                   'Purchase URL',
                   <input

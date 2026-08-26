@@ -1,4 +1,5 @@
 import type { CoffeeProfile, CupCharacter } from '../types'
+import type { ImageFocalPoint } from '../constants/media'
 
 export type PublishStatus = 'draft' | 'published' | 'archived'
 export type Availability = 'available' | 'limited' | 'archive'
@@ -63,6 +64,7 @@ export interface Coffee extends CoffeeProfile {
 
   purchaseUrl?: string
   heroImage?: string
+  imageFocalPoint?: ImageFocalPoint
 
   chartVisible?: boolean
 

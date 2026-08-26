@@ -19,8 +19,8 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
   return (
     <Link to={`/coffees/${coffee.slug}`} className="group block">
       <div className="overflow-hidden">
-        <div className="transition-transform duration-500 group-hover:scale-[1.03]">
-          <CoffeeVisual coffee={coffee} />
+        <div className="transition-transform duration-500 group-hover:scale-[1.02]">
+          <CoffeeVisual coffee={coffee} focalPoint={coffee.imageFocalPoint} />
         </div>
       </div>
 
