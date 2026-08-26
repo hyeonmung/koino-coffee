@@ -232,6 +232,54 @@ export interface Inquiry {
   createdAt: string
 }
 
+export type SpotlightContentType =
+  | 'FEATURED_COFFEE'
+  | 'NOTICE'
+  | 'EVENT'
+  | 'STORY'
+  | 'VIDEO'
+  | 'BREW'
+  | 'EDUCATION'
+  | 'BUSINESS'
+  | 'CUSTOM'
+
+export type SpotlightOverlayStrength = 'low' | 'medium' | 'high'
+
+/**
+ * One slide of the Home Hero's "KOI SPOTLIGHT" carousel. FEATURED_COFFEE/STORY/BREW
+ * slides link to an existing Coffee/Story/BrewGuide (linkedId) and derive their
+ * title/image/URL from that record at render time, so the admin never re-types data
+ * that already exists elsewhere. Other content types (NOTICE/EVENT/VIDEO/EDUCATION/
+ * BUSINESS/CUSTOM) are authored directly on the slide.
+ */
+export interface SpotlightSlide {
+  id: string
+  contentType: SpotlightContentType
+  order: number
+  published: boolean
+
+  linkedId?: string // Coffee/Story/BrewGuide id, for the three linked content types
+
+  label?: string // category eyebrow override, e.g. "EVENT" — falls back to a per-type default
+  title: string
+  description?: string
+  ctaText?: string
+  ctaUrl?: string
+
+  desktopImage?: string
+  mobileImage?: string
+  videoUrl?: string
+  videoPoster?: string
+  altText?: string
+  overlayStrength: SpotlightOverlayStrength
+
+  startDate?: string // ISO date (YYYY-MM-DD), inclusive
+  endDate?: string // ISO date (YYYY-MM-DD), inclusive
+
+  createdAt: string
+  updatedAt: string
+}
+
 export type DictionaryCategory = 'FLAVOR' | 'SENSORY' | 'PROCESS' | 'VARIETY' | 'GENERAL'
 
 export interface DictionaryTerm {

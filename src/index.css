@@ -89,3 +89,13 @@ input[type='number'] {
     animation: none;
   }
 }
+
+/* KOI Spotlight autoplay progress line — thin, restarts per slide via a React `key` change. */
+@keyframes koi-spotlight-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

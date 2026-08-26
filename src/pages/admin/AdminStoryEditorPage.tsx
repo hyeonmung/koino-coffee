@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
 import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
@@ -36,6 +36,18 @@ export default function AdminStoryEditorPage() {
   const [slugTouched, setSlugTouched] = useState(!isNew)
   const [tagsInput, setTagsInput] = useState(() => draft.tags.join(', '))
   const [error, setError] = useState<string | null>(null)
+
+  // /new and /:id render the same component without remounting, so a fresh "new"
+  // screen opened right after editing another story would otherwise keep showing
+  // that story's data. Reset explicitly whenever the route's id changes.
+  useEffect(() => {
+    const next = isNew ? emptyStory() : (getStoryById(id!) ?? emptyStory())
+    setDraft(next)
+    setSlugTouched(!isNew)
+    setTagsInput(next.tags.join(', '))
+    setError(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
 
   const patch = (p: Partial<Story>) => {
     setDraft((prev) => {

@@ -82,6 +82,19 @@ export default function AdminCoffeeEditorPage() {
   const [saved, setSaved] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
 
+  // /new and /:id render the same component without remounting, so a fresh "new"
+  // screen opened right after editing another coffee would otherwise keep showing
+  // that coffee's data. Reset explicitly whenever the route's id changes.
+  useEffect(() => {
+    setDraft(isNew ? emptyCoffee() : (getCoffeeById(id!) ?? emptyCoffee()))
+    setTab('01 BASIC')
+    setSlugTouched(!isNew)
+    setErrors([])
+    setSaved(false)
+    setBusy(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
+
   const cardRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<HTMLDivElement>(null)
 

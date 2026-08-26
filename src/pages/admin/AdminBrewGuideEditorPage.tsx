@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
 import { brewGuideSlugExists, getBrewGuideById, upsertBrewGuide } from '../../data/repositories/brewGuideRepository'
@@ -35,6 +35,16 @@ export default function AdminBrewGuideEditorPage() {
   const [draft, setDraft] = useState<BrewGuide>(() => (isNew ? emptyGuide() : getBrewGuideById(id!) ?? emptyGuide()))
   const [slugTouched, setSlugTouched] = useState(!isNew)
   const [error, setError] = useState<string | null>(null)
+
+  // /new and /:id render the same component without remounting, so a fresh "new"
+  // screen opened right after editing another guide would otherwise keep showing
+  // that guide's data. Reset explicitly whenever the route's id changes.
+  useEffect(() => {
+    setDraft(isNew ? emptyGuide() : (getBrewGuideById(id!) ?? emptyGuide()))
+    setSlugTouched(!isNew)
+    setError(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
 
   const patch = (p: Partial<BrewGuide>) => {
     setDraft((prev) => {

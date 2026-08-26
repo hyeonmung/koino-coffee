@@ -13,6 +13,8 @@ import AdminFlavorsPage from './pages/admin/AdminFlavorsPage'
 import AdminHomePage from './pages/admin/AdminHomePage'
 import AdminInquiriesPage from './pages/admin/AdminInquiriesPage'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage'
+import AdminSpotlightEditorPage from './pages/admin/AdminSpotlightEditorPage'
+import AdminSpotlightPage from './pages/admin/AdminSpotlightPage'
 import AdminStoriesPage from './pages/admin/AdminStoriesPage'
 import AdminStoryEditorPage from './pages/admin/AdminStoryEditorPage'
 import AboutPage from './pages/public/AboutPage'
@@ -84,6 +86,30 @@ export default function App() {
           element={
             <AdminGate>
               <AdminHomePage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/spotlight"
+          element={
+            <AdminGate>
+              <AdminSpotlightPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/spotlight/new"
+          element={
+            <AdminGate>
+              <AdminSpotlightEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/spotlight/:id"
+          element={
+            <AdminGate>
+              <AdminSpotlightEditorPage />
             </AdminGate>
           }
         />

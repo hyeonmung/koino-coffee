@@ -30,22 +30,22 @@ export default function PublicHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy/15 bg-white">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
-        <Link to="/" className="min-w-0">
-          <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
-          <p className="mt-0.5 truncate font-serif text-[19px] font-bold tracking-tight text-navy">
+      <div className="mx-auto flex max-w-[1320px] items-center justify-between gap-6 px-6 py-5">
+        <Link to="/" className="min-w-0 shrink-0">
+          <p className="text-[9px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
+          <p className="mt-0.5 truncate font-serif text-[21px] font-bold tracking-tight text-navy">
             {settings.logoText}
           </p>
         </Link>
 
-        <nav className="hidden items-center gap-4 xl:flex">
+        <nav className="hidden items-center gap-8 xl:flex">
           {NAV_LINKS.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `text-[11px] font-semibold tracking-[0.05em] whitespace-nowrap transition-colors ${
-                  isActive ? 'text-navy' : 'text-navy/50 hover:text-navy'
+                `relative whitespace-nowrap text-[15px] font-semibold leading-none tracking-tight transition-colors after:absolute after:-bottom-[9px] after:left-0 after:h-[2px] after:bg-accent after:transition-all ${
+                  isActive ? 'text-navy after:w-full' : 'text-navy/70 after:w-0 hover:text-navy hover:after:w-full'
                 }`
               }
             >
@@ -54,8 +54,8 @@ export default function PublicHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <div className="relative hidden sm:block">
+        <div className="flex shrink-0 items-center gap-4">
+          <div className="relative hidden items-center sm:flex">
             {searchOpen ? (
               <input
                 autoFocus
@@ -64,14 +64,14 @@ export default function PublicHeader() {
                 onKeyDown={(e) => e.key === 'Enter' && submitSearch()}
                 onBlur={() => !query && setSearchOpen(false)}
                 placeholder="원두, 산지, 향미 검색"
-                className="w-52 border border-navy/25 bg-white px-3 py-1.5 text-[12px] text-navy outline-none placeholder:text-navy/35 focus:border-navy"
+                className="w-48 border-b border-navy/30 bg-transparent py-1 text-[13px] text-navy outline-none placeholder:text-navy/35 focus:border-navy"
               />
             ) : (
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
                 aria-label="검색"
-                className="flex h-8 w-8 items-center justify-center border border-navy/25 text-navy/60 hover:border-navy hover:text-navy"
+                className="flex h-8 w-8 items-center justify-center text-[17px] text-navy/60 hover:text-navy"
               >
                 ⌕
               </button>
@@ -104,7 +104,7 @@ export default function PublicHeader() {
       {open && (
         <nav
           aria-label="모바일 메뉴"
-          className="koi-night-sky fixed inset-x-0 top-[65px] bottom-0 z-30 overflow-y-auto xl:hidden"
+          className="koi-night-sky fixed inset-x-0 top-[88px] bottom-0 z-30 overflow-y-auto xl:hidden"
         >
           <KOIStarField />
           <div className="relative flex flex-col gap-1 px-8 py-10">

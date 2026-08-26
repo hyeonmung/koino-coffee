@@ -6,6 +6,7 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
+import SpotlightCarousel from '../../components/spotlight/SpotlightCarousel'
 import { CHARACTER_INFO } from '../../constants/characters'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
@@ -14,9 +15,10 @@ import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getAllDictionaryTerms } from '../../data/repositories/dictionaryRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
+import { getPublishedSpotlightSlides } from '../../data/repositories/spotlightRepository'
 import { getPublishedStories } from '../../data/repositories/storyRepository'
 import { CUP_CHARACTERS } from '../../types'
-import type { HomeSectionKey } from '../../data/schema'
+import type { HomeSectionKey, SpotlightSlide } from '../../data/schema'
 
 export default function HomePage() {
   const settings = getSiteSettings()
@@ -25,7 +27,6 @@ export default function HomePage() {
   const coffees = getPublishedCoffees().filter((c) => c.availability !== 'archive')
   const featured = coffees.filter((c) => c.featured).slice(0, 4)
   const currentCoffees = (featured.length > 0 ? featured : coffees).slice(0, 4)
-  const heroCoffee = currentCoffees[0]
   const chartExample = currentCoffees[0]
   const brewGuides = getPublishedBrewGuides().slice(0, 2)
   const stories = getPublishedStories().slice(0, 2)
@@ -39,6 +40,30 @@ export default function HomePage() {
     getFlavorDescriptors().find((d) => d.example)
 
   const showCoffees = isVisible('featuredCoffee')
+
+  // Empty-state fallback chain (spec): published Spotlight slides → one synthesized
+  // Featured Coffee slide (only if the coffee section itself is enabled) → nothing
+  // (Hero keeps its plain photo/placeholder background).
+  const publishedSpotlight = getPublishedSpotlightSlides()
+  const spotlightSlides: SpotlightSlide[] =
+    publishedSpotlight.length > 0
+      ? publishedSpotlight
+      : showCoffees && currentCoffees[0]
+        ? [
+            {
+              id: 'fallback-featured-coffee',
+              contentType: 'FEATURED_COFFEE',
+              order: 0,
+              published: true,
+              linkedId: currentCoffees[0].id,
+              title: '',
+              overlayStrength: 'medium',
+              createdAt: '',
+              updatedAt: '',
+            },
+          ]
+        : []
+
   const showCharacter = isVisible('cupCharacter')
   const showChart = isVisible('coffeeChart') && Boolean(chartExample)
   const showTasteFinder = isVisible('tasteFinder')
@@ -84,40 +109,21 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Right ~58% — photography + Now Serving teaser */}
-            <div className="relative lg:col-span-7">
-              {settings.heroImage ? (
+            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show */}
+            <div className="relative h-[320px] w-full sm:h-[420px] lg:col-span-7 lg:h-full lg:min-h-[560px]">
+              {spotlightSlides.length > 0 ? (
+                <SpotlightCarousel slides={spotlightSlides} />
+              ) : settings.heroImage ? (
                 <div
-                  className="h-[320px] w-full bg-navy/5 bg-cover bg-center sm:h-[420px] lg:h-full lg:min-h-[560px]"
+                  className="h-full w-full bg-navy/5 bg-cover bg-center"
                   style={{ backgroundImage: `url(${settings.heroImage})` }}
                   role="img"
                   aria-label={settings.brandName}
                 />
               ) : (
-                <div className="koi-night-sky relative h-[320px] w-full overflow-hidden sm:h-[420px] lg:h-full lg:min-h-[560px]">
+                <div className="koi-night-sky relative h-full w-full overflow-hidden">
                   <KOIStarField />
                 </div>
-              )}
-
-              {showCoffees && heroCoffee && (
-                <Link
-                  to={`/coffees/${heroCoffee.slug}`}
-                  className="group absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-navy/85 via-navy/40 to-transparent px-6 py-6 text-warm-white sm:flex-row sm:items-end sm:justify-between sm:gap-4 sm:px-8 sm:py-7"
-                >
-                  <div className="min-w-0">
-                    <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">NOW SERVING</p>
-                    <p className="mt-1 font-serif text-[19px] font-bold leading-snug sm:truncate sm:text-[22px]">
-                      {heroCoffee.coffeeName}
-                    </p>
-                    <p className="mt-1 text-[11px] text-warm-white/70">
-                      <span className="font-bold">{CHARACTER_INFO[heroCoffee.character].label}</span>
-                      {heroCoffee.notes.length > 0 && <> · {heroCoffee.notes.slice(0, 3).join(' · ')}</>}
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-[11px] font-semibold tracking-[0.1em] text-warm-white/70 group-hover:text-warm-white">
-                    View Coffee →
-                  </span>
-                </Link>
               )}
             </div>
           </div>

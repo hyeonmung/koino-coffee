@@ -4,6 +4,7 @@ import { Link, NavLink } from 'react-router-dom'
 const NAV_ITEMS = [
   { to: '/admin', label: '대시보드', end: true },
   { to: '/admin/home', label: '홈 관리' },
+  { to: '/admin/spotlight', label: '메인 스포트라이트' },
   { to: '/admin/coffees', label: '원두 관리' },
   { to: '/admin/characters', label: '캐릭터 관리' },
   { to: '/admin/flavors', label: '향미 관리' },
