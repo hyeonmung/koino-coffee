@@ -1,209 +1,332 @@
-# KOINO SENSORY MAP
+# KOI SENSORY MAP
 
-코이노커피 원두 프로파일 관리 및 육각형 레이더 차트 생성 웹앱입니다.
+코이노커피가 취급하는 커피를 손님이 직접 탐색하고 취향을 발견할 수 있는 **공개형 Coffee Knowledge &
+Discovery Platform**입니다. 손님용 사이트(취향 찾기, 원두 탐색, 비교, 사전, 브루 가이드, 저널,
+납품 문의)와 바리스타가 개발자 없이 직접 운영하는 관리자 CMS로 구성되어 있습니다.
 
-바리스타가 원두 정보와 6가지 관능(Sensory) 점수를 입력하면 실시간으로 육각형 레이더 차트가 그려지고,
-원두카드·SNS·온라인몰에 사용할 수 있도록 고해상도 PNG로 저장할 수 있습니다. 손님들은 산지(국가)별로
-분류된 갤러리 화면에서 매장이 취급하는 원두의 프로파일을 둘러볼 수 있습니다. 모든 데이터는 브라우저에
-저장되며 인터넷 연결 없이도 동작합니다.
+현재는 브라우저 **LocalStorage**를 데이터베이스처럼 사용하는 순수 프런트엔드 앱입니다. 서버가
+없어도 인터넷 연결 없이 완전히 동작하며, 나중에 Supabase(Postgres) 같은 실제 백엔드로 손쉽게
+전환할 수 있도록 데이터 접근 코드를 리포지토리 패턴으로 분리해두었습니다 (자세한 내용은
+[데이터베이스로의 전환](#데이터베이스로의-전환-supabase) 참고).
 
 ## 목차
 
-- [설치 방법](#설치-방법)
-- [실행 방법](#실행-방법)
-- [Build 방법](#build-방법)
-- [화면 구성](#화면-구성)
-- [손님용 갤러리 사용 방법](#손님용-갤러리-사용-방법)
-- [관리자 비밀번호](#관리자-비밀번호)
-- [관리자(바리스타) 페이지 사용 방법](#관리자바리스타-페이지-사용-방법)
-- [데이터 저장 방식](#데이터-저장-방식)
-- [PNG 저장 방법](#png-저장-방법)
-- [데이터 백업 방법](#데이터-백업-방법)
+- [빠른 시작](#빠른-시작)
+- [전체 구현 기능](#전체-구현-기능)
+- [URL 구조](#url-구조)
+- [데이터 구조](#데이터-구조)
+- [관리자 사용법](#관리자-사용법)
+- [손님용 사이트 사용법](#손님용-사이트-사용법)
+- [PNG / QR 내보내기](#png--qr-내보내기)
+- [데이터 백업 (기존 원두 관리 화면)](#데이터-백업-기존-원두-관리-화면)
+- [환경 변수](#환경-변수)
+- [배포 방법](#배포-방법)
+- [데이터베이스로의 전환 (Supabase)](#데이터베이스로의-전환-supabase)
 - [주요 폴더 구조](#주요-폴더-구조)
 - [기술 스택](#기술-스택)
-- [알려진 제한사항](#알려진-제한사항)
+- [테스트 결과](#테스트-결과)
+- [남아 있는 제한사항](#남아-있는-제한사항)
 
-## 설치 방법
+## 빠른 시작
 
-Node.js가 설치되어 있어야 합니다 (권장: Node 18 이상). 프로젝트 폴더에서 아래 명령어를 실행해
-필요한 패키지를 설치합니다.
-
-```bash
-npm install
-```
-
-## 실행 방법
-
-개발 서버를 실행하면 로컬에서 앱을 바로 사용해볼 수 있습니다.
+Node.js 18 이상이 필요합니다.
 
 ```bash
-npm run dev
+npm install       # 패키지 설치
+npm run dev       # 개발 서버 (http://localhost:5173)
+npm run build     # 프로덕션 빌드 (dist/ 생성)
+npm run preview   # 빌드 결과 로컬 미리보기
 ```
 
-터미널에 표시되는 주소(기본적으로 `http://localhost:5173`)를 브라우저에서 열면 됩니다.
-코드를 수정하면 화면이 자동으로 갱신됩니다.
+## 전체 구현 기능
 
-## Build 방법
+### 손님용 (Public)
 
-매장 PC 등에 배포할 정적 파일을 만들려면 아래 명령어를 실행합니다.
+- **홈** — Hero, 현재 소개 중인 원두(Featured), Character 찾기, 취향 찾기 CTA, 3단계 설명, Brew
+  Guide/저널 미리보기, 하단 CTA. 문구는 관리자 사이트 설정에서 수정 가능.
+- **Coffee Explorer** (`/coffees`) — 이름·산지·향미 검색 + Character/Origin/Process/Roast
+  Type/Flavor Family/Availability 다중 필터. 실제 데이터를 필터링합니다(더미 UI 아님).
+- **Coffee Detail** (`/coffees/:slug`) — Hero, CUP CHARACTER(+ "Why this Character?"), KOI
+  SENSORY MAP(육각형 레이더 + 수치 + 툴팁 + 품질 순위 아님 안내), Flavor Notes(Family별 그룹핑),
+  Origin, Process(값이 없으면 자동 숨김), Roast, 연결된 Brew Guide, Recommended
+  For + 데이터 기반 Similar Coffees, 연결된 Story, QR 코드(PNG/SVG 다운로드), 공유 버튼(Web Share
+  API 또는 링크 복사), Profile Updated/version 메타 정보.
+- **Cup Character** (`/characters`, `/characters/:key`) — 5개 Character 소개 + 상세 페이지(평균
+  Sensory 경향 레이더, 해당 Character 원두 목록).
+- **Compare** (`/compare`) — 최대 3개 원두를 검색해 추가하면 레이더 오버레이 차트 + 항목별 비교
+  표 생성.
+- **Find Your Coffee — Taste Finder** (`/discover`) — 5문항(인상/산미/바디/향미 계열/새로움
+  선호) 응답을 실제 원두 데이터와 매칭해 Match %·추천 이유와 함께 상위 3종 추천. 채점 로직은
+  `src/data/tasteFinder.ts`의 `TASTE_FINDER_WEIGHTS`에서 가중치를 조정할 수 있습니다.
+- **Sensory Dictionary** (`/dictionary`) — Flavor Descriptor + 별도 용어(Body, Washed,
+  Anaerobic, SL28, Geisha 등)를 카테고리별로 검색.
+- **Brew Guide** (`/brew-guide`, `/brew-guide/:slug`) — 장비별 레시피, Pour Timeline, Tips,
+  연결된 추천 원두.
+- **Stories / Journal** (`/stories`, `/stories/:slug`) — 카테고리별 에디토리얼 콘텐츠.
+- **Wholesale** (`/wholesale`) — 실제로 저장되는 납품 문의 폼(관리자 "납품 문의" 메뉴에서 확인).
+- **About Sensory Map** (`/about-sensory-map`) — Character/Sensory 읽는 법 안내.
+- **404 페이지** — 잘못된 주소 접근 시 안내 + 홈 이동 버튼.
+
+### 관리자 (Admin, `/admin/*`, 비밀번호 보호)
+
+- **대시보드** — 전체/공개/초안 원두 수, 새 문의 수, 빠른 등록 링크, 데모 원두 8종 추가 버튼.
+- **원두 관리** — 검색/Character/상태 필터, 상태(Draft/Published/Archived) 인라인 변경, Featured
+  토글, 복제, 삭제(오탐 방지용 2단계 확인), 공개 페이지 미리보기 링크.
+- **원두 편집기** — 01 BASIC ~ 12 PUBLISH 12개 탭(기본정보/Character/Flavor/Sensory/산지/
+  프로세스/로스팅/Brew 연결/Story 연결·추천문구/미디어/SEO/공개설정) + 오른쪽 실시간 Live
+  Preview(실제 공개 카드와 동일) + 그 자리에서 Radar/Full Card PNG 저장.
+- **Character 관리** — 5개 고정 Character의 설명/대표 향미/소개 문구/이미지/정렬 순서 수정
+  (삭제는 실수 방지를 위해 지원하지 않음).
+- **Flavor Library** — Family별 Flavor Descriptor 추가/삭제. 여기서 추가한 향미는 원두 편집기
+  Flavor 입력 시 자동완성으로 제안됩니다.
+- **Brew Guide 관리** — 목록 + 레시피/Pour Step 편집기.
+- **Stories 관리** — 목록 + 본문(빈 줄 = 문단, `## ` = 소제목) 편집기, Draft/Published 상태.
+- **납품 문의** — 손님이 제출한 Wholesale 문의 확인, 상태 변경(새 문의/확인함/보관), 삭제.
+- **사이트 설정** — 브랜드명, Hero 문구/CTA, 연락처, SNS 링크, SEO 기본값을 코드 수정 없이 변경.
+
+## URL 구조
+
+```
+공개
+/                              홈
+/coffees                       Coffee Explorer
+/coffees/:slug                 원두 상세
+/characters                    Character 목록
+/characters/:key               Character 상세 (clear|vivid|juicy|calm|elegant)
+/discover                      Taste Finder
+/compare                       원두 비교
+/dictionary                    Sensory Dictionary
+/brew-guide                    Brew Guide 목록
+/brew-guide/:slug              Brew Guide 상세
+/stories                       Journal 목록
+/stories/:slug                 Story 상세
+/wholesale                     납품 문의
+/about-sensory-map             평가 기준 안내
+
+관리자 (비밀번호 필요)
+/admin                         대시보드
+/admin/coffees                 원두 목록
+/admin/coffees/new             새 원두
+/admin/coffees/:id             원두 편집
+/admin/characters              Character 관리
+/admin/flavors                 Flavor Library
+/admin/brew-guides             Brew Guide 목록
+/admin/brew-guides/new|:id     Brew Guide 편집
+/admin/stories                 Stories 목록
+/admin/stories/new|:id         Story 편집
+/admin/settings                사이트 설정
+/admin/inquiries                납품 문의함
+```
+
+라우팅은 `HashRouter`를 사용합니다(URL이 `/#/coffees/kenya...` 형태). 별도 서버 설정 없이 정적
+파일을 그대로 열거나 아무 정적 호스팅에 올려도 새로고침·직접 링크 접근이 항상 정상 동작하도록 하기
+위한 선택입니다.
+
+## 데이터 구조
+
+`src/data/schema.ts`에 모든 엔티티 타입이 정의되어 있고, `src/data/schema.sql`에는 향후 Supabase로
+옮길 때 그대로 사용할 수 있는 Postgres 스키마가 정리되어 있습니다. 현재는 아래 엔티티가 각각
+독립된 LocalStorage 키에 저장됩니다.
+
+| 엔티티 | 설명 |
+| --- | --- |
+| `Coffee` | 원두 프로파일. 기존 CoffeeProfile 필드(이름/산지/향미/Sensory) + slug, 공개상태, featured, 산지 세부정보, 프로세스, 로스팅, 연결된 Brew Guide/Story, 구매 URL, SEO 등 |
+| `Character` | CLEAR/VIVID/JUICY/CALM/ELEGANT 5종 고정, 설명·소개문구·이미지·정렬만 수정 가능 |
+| `FlavorFamily` / `FlavorDescriptor` | 향미 계열과 향미 용어 라이브러리 |
+| `BrewGuide` | 장비별 추출 레시피 |
+| `Story` | 저널 콘텐츠 |
+| `SiteSettings` | 사이트 전역 설정 (싱글턴) |
+| `Inquiry` | 납품 문의 제출 내역 |
+| `DictionaryTerm` | Flavor 외 일반 용어 (Sensory/Process/Variety/General) |
+
+기존에 사용하던 단일 원두 목록(`koi-coffee-profiles` 키)이 브라우저에 남아 있다면, 앱이 처음
+로드될 때 자동으로 새 `Coffee` 스키마로 마이그레이션되어 `koi-sensory-map-coffees` 키에
+저장됩니다. **기존 키는 삭제되지 않고 그대로 남아 있으므로 데이터 손실이 없습니다.**
+
+## 관리자 사용법
+
+1. 아무 페이지에서 하단 "관리자" 링크(또는 `/admin`)로 이동 → 비밀번호 입력(기본값 `8001`, 변경
+   방법은 아래 참고) → 대시보드 진입.
+2. **원두 등록**: 대시보드 또는 "원두 관리 → + 새 원두 등록" → 12개 탭을 순서대로 채우고(필수는
+   Coffee Name, Country, Character, Sensory 4개 값) 오른쪽 Live Preview로 확인 → 우측 상단
+   "저장". 저장 전에는 자동으로 slug가 이름에서 생성되며, 직접 수정도 가능합니다(URL에 사용되므로
+   영문/숫자/하이픈 권장).
+3. **공개하기(Publish)**: "12 PUBLISH" 탭 또는 목록의 상태 드롭다운에서 `공개`로 바꿔야 손님
+   사이트에 노출됩니다. `초안`은 관리자만 볼 수 있고, `보관`은 손님 사이트의 "Past Coffees"
+   필터에서만 조회됩니다(판매 종료 원두 자산 보존용, 삭제 아님).
+4. **Featured 지정**: 목록의 별 아이콘 또는 편집기 12번 탭에서 체크하면 홈 화면 "현재 소개 중인
+   커피"에 노출됩니다.
+5. **Character 관리법**: `/admin/characters`에서 5개 고정 Character의 설명·대표 향미·소개
+   문구·이미지·정렬 순서만 수정합니다(추가/삭제 불가).
+6. **Flavor 관리법**: `/admin/flavors`에서 Family를 고르고 향미 이름(영문/한글)을 추가하면, 원두
+   편집기의 Flavor Notes 입력 시 자동완성 목록에 나타납니다. 목록에 없는 향미도 자유 입력으로
+   추가할 수 있습니다("Create New" 별도 버튼 없이 바로 입력·저장됨).
+7. **이미지 관리법**: 현재는 중앙 Media Library 대신 각 원두/Story/사이트 설정에서 이미지
+   **URL**을 직접 입력하는 방식입니다(외부 이미지 호스팅 또는 CDN URL 필요). 로컬 파일 업로드와
+   압축을 지원하는 진짜 미디어 라이브러리는 Supabase Storage 연결 이후 지원 예정입니다.
+8. **Publish 방법 요약**: Draft로 편집 → Live Preview로 확인 → 상태를 Published로 변경 → 저장.
+   즉시 공개 사이트에 반영됩니다(빌드/배포 불필요, 같은 브라우저 기준).
+9. **QR 생성법**: 원두 상세 공개 페이지 하단 "SCAN & SHARE"에서 PNG/SVG 다운로드. 관리자
+   편집기에서 별도 QR 생성 버튼은 두지 않았으며, 공개 페이지의 QR을 그대로 사용하면 됩니다(같은
+   `#/coffees/:slug` URL을 인코딩).
+10. **Profile Export 방법**: 원두 편집기 12번 탭 또는 공개 상세 페이지에서 "레이더 차트 PNG"(투명
+    배경, 3배 해상도) / "카드 전체 PNG"(흰 배경, 3배 해상도) 저장. 인스타그램 정방형 등 사이즈
+    프리셋은 아직 지원하지 않고 카드 원본 비율로 저장됩니다(제한사항 참고).
+
+### 관리자 비밀번호
+
+기본 비밀번호는 `8001`입니다. 한 번 입력하면 같은 브라우저 탭에서는 다시 묻지 않고(세션 저장),
+새 탭이나 브라우저를 완전히 종료하면 다시 입력해야 합니다.
+
+> ⚠️ 백엔드가 없는 구조상 비밀번호가 프런트엔드 코드에 그대로 포함되어 있어 개발자 도구로 열어보면
+> 확인할 수 있습니다. 손님이 실수로 관리 화면에 들어가는 것을 막는 용도이며, 진짜 보안이 필요한
+> 정보(결제 등)에는 사용하지 마세요. 비밀번호를 바꾸려면 `src/constants/auth.ts`의
+> `ADMIN_PASSWORD` 값을 수정한 뒤 다시 빌드/배포하면 됩니다.
+
+## 손님용 사이트 사용법
+
+메뉴는 상단 COFFEES / CHARACTERS / DISCOVER / DICTIONARY / BREW GUIDE / STORIES / COMPARE로
+어디서나 접근할 수 있습니다(모바일에서는 ☰ 버튼).
+
+- **원두 찾기**: COFFEES에서 필터·검색으로 직접 찾거나, DISCOVER의 5문항 취향 찾기로 추천받습니다.
+- **비교하기**: 원두 상세 페이지의 "비슷한 커피 찾기" 또는 상단 COMPARE에서 최대 3개까지 골라
+  레이더를 겹쳐볼 수 있습니다.
+- **용어가 궁금할 때**: DICTIONARY에서 검색하거나, 원두 상세의 각 Sensory 점수 옆 ⓘ 아이콘을
+  누르면 해당 항목의 1~5점 기준이 바로 나옵니다.
+- **집에서 내리기**: 원두 상세에 연결된 Brew Guide 카드를 누르면 레시피로 이동합니다.
+
+## PNG / QR 내보내기
+
+- **Radar Chart PNG** — 육각형 레이더 차트만 **투명 배경**으로 저장됩니다. 다른 원두카드
+  템플릿 위에 바로 얹어 쓸 수 있습니다.
+- **Full Card PNG** — 이름/Character/Flavor/레이더/점수/산지 정보가 포함된 카드 전체를 **흰
+  배경**으로 저장합니다.
+- 둘 다 3배 해상도(pixelRatio 3)로 저장되어 인쇄물에도 사용할 수 있습니다.
+- **QR PNG/SVG** — 원두 상세 페이지 URL을 인코딩한 QR을 즉시 생성해 다운로드합니다(원두카드나
+  패키지 인쇄용).
+
+## 데이터 백업 (기존 원두 관리 화면)
+
+`src/utils/csv.ts` / `src/utils/download.ts`에 구축된 기존 백업 유틸은 그대로 남아 있어 필요 시
+재사용할 수 있지만, 새 관리자 CMS 화면에는 아직 Export/Import 버튼을 연결하지 않았습니다(남아
+있는 제한사항 참고). 지금은 브라우저 개발자 도구 콘솔에서 `localStorage`를 직접 확인하거나, 추후
+Import/Export UI를 다시 연결해 사용할 수 있습니다.
+
+## 환경 변수
+
+현재 버전은 **환경 변수가 필요하지 않습니다**(LocalStorage만 사용). Supabase 연결 시
+`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` 등을 `.env`에 추가하는 구조를 권장합니다(아래
+참고).
+
+## 배포 방법
+
+정적 SPA이므로 빌드 후 `dist/` 폴더를 아무 정적 호스팅(Netlify, Vercel, Cloudflare Pages, S3,
+사내 서버 등)에 올리면 됩니다. `HashRouter`를 사용하므로 별도의 SPA fallback(rewrite) 설정 없이도
+새로고침·직접 링크 접근이 정상 동작합니다.
 
 ```bash
 npm run build
+# dist/ 폴더를 정적 호스팅에 업로드
 ```
 
-`dist` 폴더에 결과물이 생성됩니다. `npm run preview` 명령으로 빌드 결과를 로컬에서 미리 확인할 수
-있습니다.
+## 데이터베이스로의 전환 (Supabase)
 
-## 화면 구성
-
-앱은 두 영역으로 나뉩니다.
-
-- **손님용 갤러리** (`/` , `/gallery/...`) — 산지(국가)별로 분류된 원두를 손님이 둘러볼 수 있는
-  화면입니다. 편집 기능은 없고 조회와 PNG 저장만 가능합니다.
-- **평가 기준 안내** (`/guide`) — CUP CHARACTER 5종과 Sensory 6개 항목의 1~5점 기준을 손님도 볼 수
-  있도록 정리한 화면입니다. 갤러리 상단 "평가 기준 안내" 링크로 이동합니다.
-- **관리자(바리스타) 페이지** (`/admin`) — 원두를 입력·수정·삭제하고 데이터를 백업하는 화면입니다.
-  기존 STEP 1~7 입력 흐름 그대로이며, 비밀번호를 입력해야 들어갈 수 있습니다.
-
-각 화면 상단에서 "갤러리 보기" / "관리자" 링크로 두 화면을 오갈 수 있습니다.
-
-## 손님용 갤러리 사용 방법
-
-1. 첫 화면(**산지별 원두 컬렉션**)에는 실제로 원두가 1개 이상 등록된 국가만 카드로 표시됩니다.
-   에티오피아, 케냐, 콜롬비아, 파푸아뉴기니, 과테말라, 파나마, 브라질 순으로 우선 정렬되고, 그 외
-   국가는 알파벳순으로 뒤에 표시됩니다. 데모용 샘플 원두("ETHIOPIA SAMPLE")는 갤러리에 노출되지
-   않습니다.
-2. 국가 카드를 클릭하면 해당 산지의 원두 카드 목록(이름, Character, 미니 레이더 차트, Flavor
-   Notes)이 표시됩니다.
-3. 원두 카드를 클릭하면 원두카드 형태의 상세 화면으로 이동하며, 여기서도 **레이더 차트 PNG** /
-   **카드 전체 PNG** 저장이 가능합니다.
-4. 새 원두를 국가에 입력하면(관리자 페이지에서) 해당 국가가 존재하지 않았다면 갤러리에 새 카테고리로
-   자동으로 나타납니다. 국가명은 대소문자를 구분하지 않고 같은 국가로 묶입니다(예: "kenya"와
-   "Kenya"는 같은 카테고리).
-5. 원두 카드나 상세 화면의 점수 옆 ⓘ 아이콘에 마우스를 올리면 해당 항목의 1~5점 기준을 바로 확인할
-   수 있고, 상단 **평가 기준 안내** 페이지에서는 CUP CHARACTER 5종과 6개 관능 항목 전체 기준을 한
-   화면에서 볼 수 있습니다.
-
-## 관리자 비밀번호
-
-`/admin` 페이지는 손님이 실수로 들어가지 않도록 비밀번호로 보호되어 있습니다. 기본 비밀번호는
-`8001`입니다. 한 번 입력하면 같은 브라우저 탭에서는 다시 묻지 않고(세션 저장), 탭을 새로 열거나
-브라우저를 완전히 종료하면 다시 입력해야 합니다.
-
-> ⚠️ 이 비밀번호는 프런트엔드 코드에 그대로 포함되어 있어(백엔드가 없는 구조상) 개발자 도구로 코드를
-> 열어보면 확인할 수 있습니다. 손님이 실수로 관리 화면에 들어가는 것을 막는 용도이며, 진짜 보안이
-> 필요한 민감한 정보(결제 정보 등)를 다루는 용도로는 사용하지 마세요. 비밀번호를 바꾸려면
-> `src/constants/auth.ts`의 `ADMIN_PASSWORD` 값을 수정한 뒤 다시 빌드하면 됩니다.
-
-## 관리자(바리스타) 페이지 사용 방법
-
-`/admin` 화면 왼쪽 STEP 1~4 순서대로 정보를 입력하면 오른쪽 Live Preview에 실시간으로 원두카드가
-그려집니다.
-
-1. **STEP 1 원두 정보** — Coffee Name(필수), Country, Region, Producer/Farm, Variety, Process,
-   Altitude, Roast Level을 입력합니다. Country는 갤러리 카테고리 분류 기준이 되므로 일관되게
-   입력하는 것이 좋습니다(예: "Kenya"로 통일).
-2. **STEP 2 CUP CHARACTER** — CLEAR / VIVID / JUICY / CALM / ELEGANT 중 하나를 선택합니다. 선택한
-   Character의 대표 향미와 설명이 아래에 표시됩니다.
-3. **STEP 3 Flavor Notes** — 입력 후 Enter로 태그를 추가합니다(최대 6개). 태그의 × 버튼으로 삭제할
-   수 있습니다.
-4. **STEP 4 Sensory Profile** — ACIDITY, SWEETNESS, BODY, FINISH, FLAVOR, ACCESSIBILITY 6개 항목을
-   각각 1~5점으로 선택합니다. 항목명 옆 ⓘ 아이콘에 마우스를 올리면 점수별 평가 기준을 확인할 수
-   있습니다. 점수를 바꾸면 오른쪽 육각형 레이더 차트가 즉시 갱신됩니다.
-5. 입력이 끝나면 **원두 저장 / 변경사항 저장** 버튼을 눌러 저장합니다.
-6. 화면 하단 **저장된 원두** 목록에서 검색, Character별 필터, 정렬(이름순/최근 수정순), 불러오기(클릭),
-   복제, 삭제를 할 수 있습니다. 삭제 버튼을 누르면 같은 자리에 "정말 삭제" 확인 버튼이 나타나며,
-   4초 안에 다시 누르지 않으면 자동으로 취소됩니다.
-7. 상단 **+ 새 원두** 버튼을 누르면 새 원두를 처음부터 입력할 수 있습니다.
-
-## 데이터 저장 방식
-
-모든 원두 데이터는 서버 없이 브라우저의 **LocalStorage**에 저장됩니다. 새로고침하거나 브라우저를
-껐다 켜도 데이터가 유지됩니다. 단, LocalStorage는 브라우저·기기별로 분리되어 있으므로 다른 PC나
-다른 브라우저에서는 데이터를 백업(Export)해서 옮겨야 합니다.
-
-앱을 처음 실행하면 데모용 샘플 원두("ETHIOPIA SAMPLE")가 하나 자동으로 추가됩니다. 목록에
-`SAMPLE` 표시가 붙어 있으며, 필요 없으면 삭제해도 됩니다.
-
-## PNG 저장 방법
-
-관리자 페이지의 Export 영역과 갤러리 상세 페이지에서 두 가지 방식으로 PNG를 저장할 수 있습니다.
-모두 3배 해상도로 저장되어 인쇄나 미리캔버스·포토샵 작업에 사용해도 화질이 깨지지 않습니다.
-
-- **Radar Chart PNG** — 육각형 레이더 차트만 **투명 배경** PNG로 저장합니다. 다른 원두카드
-  템플릿이나 디자인 위에 바로 얹어 쓸 수 있습니다. (`coffee-name-radar.png`)
-- **Full Card PNG** — 원두 이름, Character, Flavor Notes, 레이더 차트, 점수, 원산지 정보가 모두
-  포함된 카드 전체를 흰 배경 PNG로 저장합니다. (`coffee-name-profile.png`)
-
-파일 이름은 원두 이름을 기준으로 자동 생성됩니다.
-
-## 데이터 백업 방법
-
-Export 영역의 DATA BACKUP 버튼으로 전체 원두 데이터를 파일로 내보내거나 불러올 수 있습니다.
-
-- **Export JSON** — 저장된 모든 원두를 JSON 파일로 내려받습니다. 다른 PC로 옮기거나 백업할 때
-  사용합니다.
-- **Import JSON** — JSON 파일을 선택하면 데이터를 가져옵니다. 같은 id를 가진 원두는 덮어쓰고,
-  새로운 원두는 목록에 추가됩니다.
-- **Export CSV** — 엑셀 등에서 열어볼 수 있는 CSV 파일로 내려받습니다.
-- **Import CSV** — 아래 컬럼 순서를 지킨 CSV 파일을 불러와 원두를 일괄 추가할 수 있습니다.
-
-```
-Coffee Name, Country, Region, Producer, Variety, Process, Altitude, Roast Level, Character,
-Note 1, Note 2, Note 3, Note 4, Note 5, Note 6, Acidity, Sweetness, Body, Finish, Flavor, Accessibility
-```
-
-Character는 CLEAR / VIVID / JUICY / CALM / ELEGANT 중 하나여야 하며, 점수는 1~5 범위를 벗어나면
-자동으로 가까운 값으로 보정됩니다.
+1. [supabase.com](https://supabase.com)에서 무료 프로젝트를 생성하고 Project URL과 anon key를
+   확인합니다.
+2. `src/data/schema.sql`을 Supabase SQL Editor에서 실행해 테이블을 생성합니다.
+3. `@supabase/supabase-js`를 설치하고 `src/data/repositories/*.ts`의 각 함수(예:
+   `getPublishedCoffees`, `upsertCoffee`)를 동일한 시그니처로 Supabase 쿼리를 사용하도록
+   다시 구현합니다. 페이지·컴포넌트는 리포지토리 함수만 호출하므로 이 부분만 교체하면 나머지
+   코드는 그대로 동작합니다.
+4. Storage 버킷을 만들면 현재 URL 입력 방식인 이미지 필드를 실제 업로드 방식으로 확장할 수
+   있습니다.
+5. Supabase Auth를 연결하면 현재의 단순 비밀번호 게이트(`AdminGate`)를 진짜 로그인으로 교체할 수
+   있습니다.
 
 ## 주요 폴더 구조
 
 ```
 src/
-  pages/               라우트 단위 화면
-    GalleryHomePage.tsx     손님용 갤러리 홈 (산지 카테고리 그리드)
-    GalleryCountryPage.tsx  산지별 원두 카드 목록
-    GalleryDetailPage.tsx   원두 상세(전체 카드) + PNG export
-    GuidePage.tsx            손님용 평가 기준 안내 페이지
-    AdminPage.tsx            바리스타 관리 페이지 (입력/저장/백업)
-  components/          화면을 구성하는 React 컴포넌트
-    CoffeeForm.tsx           원두 기본 정보 입력
-    CharacterSelector.tsx    CUP CHARACTER 선택
-    FlavorNoteInput.tsx      Flavor Notes 태그 입력
-    SensorySlider.tsx        관능 점수 1개 입력(버튼형 슬라이더)
-    SensoryProfileInput.tsx  6개 관능 점수 묶음
-    RadarChart.tsx           육각형 레이더 차트 (Chart.js, showLabels로 미니/전체 모드 전환)
-    CoffeePreview.tsx        원두카드 레이아웃 (PNG export 대상, 관리자·갤러리 상세 공용)
-    CoffeeGalleryCard.tsx    갤러리 목록용 축소 원두 카드
-    GalleryHeader.tsx        갤러리 공용 헤더(브랜드 로고 + 뒤로가기 + 안내/관리자 링크)
-    AdminGate.tsx            관리자 비밀번호 입력 화면
-    CoffeeList.tsx           저장된 원두 목록/검색/필터/삭제 (관리자 전용)
-    ExportControls.tsx       PNG/JSON/CSV export·import 버튼 (관리자 전용)
-    InfoTooltip.tsx          관능 평가 기준 안내 아이콘 (관리자·갤러리 공용)
-  constants/           Cup Character, Sensory 평가 기준, 국가 메타데이터, 관리자 비밀번호, 샘플 데이터
-  utils/               storage(LocalStorage), csv, download, pngExport, countryGrouping, validation
-  types.ts             CoffeeProfile, SensoryProfile 등 타입 정의
-  App.tsx              라우터(HashRouter) 정의
+  data/                 데이터 레이어 (LocalStorage, 추후 Supabase로 교체 지점)
+    schema.ts               모든 엔티티 타입 정의
+    schema.sql               향후 Supabase Postgres 스키마 (문서용)
+    localCollection.ts       공통 LocalStorage CRUD 헬퍼
+    migrate.ts               레거시 원두 데이터 마이그레이션
+    flavorMatch.ts            향미 → Family 매칭 유틸
+    similarCoffees.ts         "비슷한 원두" 추천 로직
+    tasteFinder.ts            Taste Finder 채점 로직 + 가중치
+    seed/                     초기 시드 데이터 (샘플 원두 8종, Character, Flavor, Brew Guide, Story 등)
+    repositories/             엔티티별 CRUD 함수 (coffeeRepository, characterRepository, ...)
+  pages/
+    public/                  손님용 페이지 (Home, CoffeeExplorer, CoffeeDetail, Characters, Compare, ...)
+    admin/                   관리자 페이지 (Dashboard, CoffeeList, CoffeeEditor, Characters, Flavors, ...)
+  components/               공용 React 컴포넌트
+    PublicHeader / PublicFooter    손님용 사이트 상단/하단
+    AdminLayout / AdminGate         관리자 레이아웃 / 비밀번호 게이트
+    CoffeeCard / CoffeePreview      원두 카드(목록용) / 원두 카드(상세·PNG export용)
+    RadarChart / RadarOverlayChart  레이더 차트(단일) / 비교용 오버레이 차트
+    QRCodeBlock                     QR PNG/SVG 생성·다운로드
+    SEO                             페이지별 <title>/description/OG 태그 (react-helmet-async)
+    InfoTooltip / StoryBody / ...   기타 공용 UI
+  constants/                 Cup Character, Sensory 평가 기준, 국가 메타데이터, 관리자 비밀번호
+  utils/                     storage, csv, download, pngExport, validation
+  types.ts                   CoffeeProfile(레거시 기반), SensoryProfile 등 기본 타입
+  App.tsx                    라우터(HashRouter) 정의
 ```
-
-라우팅은 `HashRouter`를 사용합니다(URL이 `/#/gallery/kenya` 형태). 별도 서버 설정 없이 정적 파일을
-그대로 열거나 간단한 정적 호스팅에 올려도 새로고침·직접 링크 접근이 항상 정상 동작하도록 하기
-위함입니다.
 
 ## 기술 스택
 
-- React 19 + TypeScript + Vite
-- React Router (HashRouter) — 갤러리/관리자 화면 라우팅
-- Chart.js / react-chartjs-2 (레이더 차트)
-- Tailwind CSS 4 (스타일링)
-- html-to-image (PNG export)
-- LocalStorage (데이터 저장, 백엔드 없음)
+- React 19 + TypeScript + Vite (Vite + React Router 유지, Next.js로 마이그레이션하지 않음 —
+  이유는 아래 제한사항 참고)
+- React Router 7 (`HashRouter`) — 손님/관리자 라우팅
+- Chart.js / react-chartjs-2 — 레이더 차트, 비교용 오버레이 차트
+- `qrcode` — QR PNG/SVG 생성
+- `react-helmet-async` — 페이지별 SEO 메타 태그
+- Tailwind CSS 4 — 스타일링 (Deep Navy / Star Yellow / Warm White 브랜드 시스템)
+- `html-to-image` — PNG export
+- LocalStorage — 데이터 저장 (Supabase로 교체 가능한 리포지토리 구조)
 
-## 알려진 제한사항
+## 테스트 결과
 
-- 데이터는 브라우저 하나에만 저장되므로, 여러 대의 매장 PC에서 함께 쓰려면 JSON Export/Import로
-  수동 동기화가 필요합니다.
-- CSV Import 시 컬럼 순서가 다르면 정상적으로 인식되지 않습니다.
-- 갤러리 산지 카테고리는 원두의 Country 입력값을 기준으로 자동 분류됩니다. 같은 국가라도 표기가
-  다르면(예: "Kenya"와 "케냐") 다른 카테고리로 분리되므로, Country는 가급적 통일된 표기로
-  입력하는 것이 좋습니다.
+- `npm run build` (`tsc -b && vite build`) — 통과. 빌드 산출물 약 590KB(gzip 186KB)이며, 코드
+  분할을 하지 않아 "chunk 500KB 초과" 경고가 표시되지만 빌드 자체는 실패하지 않습니다.
+- Chrome 브라우저로 아래 전체 플로우를 직접 실행해 확인했습니다.
+  - 홈 → Coffee Explorer(검색/필터) → 원두 상세(모든 섹션, PNG export, QR) → Characters →
+    Character 상세 → Compare(레이더 오버레이) → Discover(5문항 → 실제 매칭 결과) → Dictionary
+    → Brew Guide 목록/상세 → Stories 목록/상세 → Wholesale(폼 제출 → 관리자 문의함에 반영 확인)
+  - 관리자 로그인(정답/오답 모두 확인) → 대시보드 → 데모 원두 8종 추가 → 원두 목록 → 기존 Kenya
+    원두 수정(산지 정보 추가, Featured 지정) → 저장 → 공개 사이트에서 즉시 반영 확인(상세 페이지
+    필드, 홈 Featured 노출)
+  - 레거시 원두 2건(사용자가 실제로 입력한 Kenya 원두 + 기존 Ethiopia 샘플)이 새 스키마로
+    자동 마이그레이션되어 데이터 손실 없이 유지되는 것을 확인
+  - 404 페이지, 빈 상태(비교 전, 검색 결과 없음 등) 정상 동작 확인
+  - 콘솔 에러 없음
+- 자동화 E2E(Playwright)나 Lighthouse 점수는 이번 세션에서 실행하지 않았습니다 (제한사항 참고).
+
+## 남아 있는 제한사항
+
+- **백엔드 없음**: 모든 데이터가 LocalStorage에만 저장되어 브라우저/기기 간 공유가 안 됩니다.
+  여러 매장 PC나 여러 관리자가 동시에 쓰려면 Supabase 연결이 필요합니다([전환 가이드](#데이터베이스로의-전환-supabase)
+  참고).
+- **이미지 업로드 미지원**: 현재는 이미지 URL 입력만 가능하고, 로컬 파일 업로드·자동 압축·중앙
+  Media Library는 지원하지 않습니다.
+- **데이터 Import/Export UI 미연결**: 기존 JSON/CSV export·import 유틸은 코드에 남아 있지만 새
+  관리자 화면에는 버튼이 연결되어 있지 않습니다.
+- **SEO는 클라이언트 사이드**: Vite SPA이므로 `react-helmet-async`로 `<title>`/메타 태그를
+  갱신하지만, JavaScript를 실행하지 않는 크롤러에는 index.html의 기본 태그만 보입니다. 완전한
+  서버 렌더링·동적 OG 이미지 생성이 필요하면 Next.js 마이그레이션이 필요합니다(이번 작업 범위
+  밖으로 사용자와 확인 후 제외).
+- **`sitemap.xml`/`robots.txt` 미생성**: 정적 라우트만으로 구성된 sitemap을 만들 수는 있지만,
+  원두별 동적 slug까지 포함하려면 빌드 시점에 데이터를 읽을 백엔드가 필요해 이번 범위에서는
+  제외했습니다.
+- **자동화 테스트 없음**: TypeScript 컴파일 + 프로덕션 빌드 + 수동 브라우저 워크스루로 검증했으며,
+  Playwright E2E나 Lighthouse 자동 측정은 이 환경에 설치되어 있지 않아 실행하지 않았습니다.
+- **PNG Export 사이즈 프리셋 없음**: 인스타그램 정사각형/스토리/A6 등 사이즈 선택은 아직
+  지원하지 않고, 카드 원본 비율로만 저장됩니다.
+- **Character는 5종 고정**: 관리자가 새 Character를 추가/삭제할 수 없습니다(타입 시스템에
+  하드코딩됨). 의도된 설계이며, 필요 시 `types.ts`의 `CupCharacter` 유니온 타입 확장이
+  필요합니다.
+- **Taste Finder 가중치는 코드 레벨**: 관리자 UI에서 가중치를 조정하는 화면은 아직 없고,
+  `src/data/tasteFinder.ts`의 상수를 직접 수정해야 합니다.
+- **번들 코드 분할 없음**: 빌드 결과가 하나의 JS 청크(약 590KB)로 묶여 있습니다. 실제 운영 전
+  `React.lazy` 등으로 라우트별 코드 분할을 적용하면 초기 로딩 속도를 개선할 수 있습니다.
