@@ -22,8 +22,8 @@ export default function AdminInquiriesPage() {
 
   return (
     <AdminLayout>
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">WHOLESALE</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">납품 문의</h1>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">INQUIRIES</p>
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">문의 관리</h1>
 
       <div className="mt-6 space-y-3">
         {inquiries.map((inquiry) => (
@@ -38,6 +38,11 @@ export default function AdminInquiriesPage() {
                   {inquiry.businessType && ` · ${inquiry.businessType}`}
                   {inquiry.region && ` · ${inquiry.region}`}
                 </p>
+                {inquiry.interestArea && (
+                  <p className="mt-1 inline-block border border-accent/40 bg-accent/10 px-1.5 py-0.5 text-[10px] font-semibold text-navy/70">
+                    {inquiry.interestArea}
+                  </p>
+                )}
               </div>
               <select
                 value={inquiry.status}

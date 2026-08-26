@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -15,8 +16,15 @@ export default function CoffeeExplorerPage() {
   const allCoffees = useMemo(() => getPublishedCoffees(), [])
   const descriptors = useMemo(() => getFlavorDescriptors(), [])
   const families = useMemo(() => getFlavorFamilies(), [])
+  const [searchParams] = useSearchParams()
 
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
+
+  useEffect(() => {
+    const q = searchParams.get('q')
+    if (q) setQuery(q)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
   const [character, setCharacter] = useState<FilterValue<CupCharacter>>('ALL')
   const [country, setCountry] = useState<FilterValue<string>>('ALL')
   const [process, setProcess] = useState<FilterValue<string>>('ALL')
