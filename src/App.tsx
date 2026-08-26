@@ -1,28 +1,177 @@
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminGate from './components/AdminGate'
-import AdminPage from './pages/AdminPage'
-import GalleryCountryPage from './pages/GalleryCountryPage'
-import GalleryDetailPage from './pages/GalleryDetailPage'
-import GalleryHomePage from './pages/GalleryHomePage'
-import GuidePage from './pages/GuidePage'
+import AdminBrewGuideEditorPage from './pages/admin/AdminBrewGuideEditorPage'
+import AdminBrewGuidesPage from './pages/admin/AdminBrewGuidesPage'
+import AdminCharactersPage from './pages/admin/AdminCharactersPage'
+import AdminCoffeeEditorPage from './pages/admin/AdminCoffeeEditorPage'
+import AdminCoffeeListPage from './pages/admin/AdminCoffeeListPage'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import AdminFlavorsPage from './pages/admin/AdminFlavorsPage'
+import AdminInquiriesPage from './pages/admin/AdminInquiriesPage'
+import AdminSettingsPage from './pages/admin/AdminSettingsPage'
+import AdminStoriesPage from './pages/admin/AdminStoriesPage'
+import AdminStoryEditorPage from './pages/admin/AdminStoryEditorPage'
+import AboutSensoryMapPage from './pages/public/AboutSensoryMapPage'
+import BrewGuideDetailPage from './pages/public/BrewGuideDetailPage'
+import BrewGuideIndexPage from './pages/public/BrewGuideIndexPage'
+import CharacterDetailPage from './pages/public/CharacterDetailPage'
+import CharactersIndexPage from './pages/public/CharactersIndexPage'
+import CoffeeDetailPage from './pages/public/CoffeeDetailPage'
+import CoffeeExplorerPage from './pages/public/CoffeeExplorerPage'
+import ComparePage from './pages/public/ComparePage'
+import DictionaryPage from './pages/public/DictionaryPage'
+import HomePage from './pages/public/HomePage'
+import NotFoundPage from './pages/public/NotFoundPage'
+import StoriesIndexPage from './pages/public/StoriesIndexPage'
+import StoryDetailPage from './pages/public/StoryDetailPage'
+import TasteFinderPage from './pages/public/TasteFinderPage'
+import WholesalePage from './pages/public/WholesalePage'
+
+function GalleryRedirect() {
+  return <Navigate to="/coffees" replace />
+}
 
 export default function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<GalleryHomePage />} />
-        <Route path="/gallery/:countrySlug" element={<GalleryCountryPage />} />
-        <Route path="/gallery/:countrySlug/:id" element={<GalleryDetailPage />} />
-        <Route path="/guide" element={<GuidePage />} />
+        {/* Public */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/coffees" element={<CoffeeExplorerPage />} />
+        <Route path="/coffees/:slug" element={<CoffeeDetailPage />} />
+        <Route path="/characters" element={<CharactersIndexPage />} />
+        <Route path="/characters/:key" element={<CharacterDetailPage />} />
+        <Route path="/discover" element={<TasteFinderPage />} />
+        <Route path="/compare" element={<ComparePage />} />
+        <Route path="/dictionary" element={<DictionaryPage />} />
+        <Route path="/brew-guide" element={<BrewGuideIndexPage />} />
+        <Route path="/brew-guide/:slug" element={<BrewGuideDetailPage />} />
+        <Route path="/stories" element={<StoriesIndexPage />} />
+        <Route path="/stories/:slug" element={<StoryDetailPage />} />
+        <Route path="/wholesale" element={<WholesalePage />} />
+        <Route path="/about-sensory-map" element={<AboutSensoryMapPage />} />
+
+        {/* Legacy redirects (previous gallery-by-country structure) */}
+        <Route path="/gallery" element={<GalleryRedirect />} />
+        <Route path="/gallery/:countrySlug" element={<GalleryRedirect />} />
+        <Route path="/gallery/:countrySlug/:id" element={<GalleryRedirect />} />
+        <Route path="/guide" element={<Navigate to="/about-sensory-map" replace />} />
+
+        {/* Admin */}
         <Route
           path="/admin"
           element={
             <AdminGate>
-              <AdminPage />
+              <AdminDashboardPage />
             </AdminGate>
           }
         />
-        <Route path="*" element={<GalleryHomePage />} />
+        <Route
+          path="/admin/coffees"
+          element={
+            <AdminGate>
+              <AdminCoffeeListPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/coffees/new"
+          element={
+            <AdminGate>
+              <AdminCoffeeEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/coffees/:id"
+          element={
+            <AdminGate>
+              <AdminCoffeeEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/characters"
+          element={
+            <AdminGate>
+              <AdminCharactersPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/flavors"
+          element={
+            <AdminGate>
+              <AdminFlavorsPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/brew-guides"
+          element={
+            <AdminGate>
+              <AdminBrewGuidesPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/brew-guides/new"
+          element={
+            <AdminGate>
+              <AdminBrewGuideEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/brew-guides/:id"
+          element={
+            <AdminGate>
+              <AdminBrewGuideEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/stories"
+          element={
+            <AdminGate>
+              <AdminStoriesPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/stories/new"
+          element={
+            <AdminGate>
+              <AdminStoryEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/stories/:id"
+          element={
+            <AdminGate>
+              <AdminStoryEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <AdminGate>
+              <AdminSettingsPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/inquiries"
+          element={
+            <AdminGate>
+              <AdminInquiriesPage />
+            </AdminGate>
+          }
+        />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </HashRouter>
   )
