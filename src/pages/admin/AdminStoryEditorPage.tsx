@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getStoryById, storySlugExists, upsertStory } from '../../data/repositories/storyRepository'
 import type { PublishStatus, Story, StoryCategory } from '../../data/schema'
 import { slugifyFilename } from '../../utils/download'
@@ -46,7 +47,7 @@ export default function AdminStoryEditorPage() {
 
   const handleSave = () => {
     if (!draft.title.trim() || !draft.slug.trim() || !draft.body.trim()) {
-      setError('Title, Slug, 본문은 필수입니다.')
+      setError('제목, Slug, 본문은 필수입니다.')
       return
     }
     if (storySlugExists(draft.slug.trim(), draft.id)) {
@@ -67,17 +68,17 @@ export default function AdminStoryEditorPage() {
   return (
     <AdminLayout>
       <Link to="/admin/stories" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
-        ← Stories 목록
+        ← 이야기 목록
       </Link>
       <h1 className="mt-1 font-serif text-[22px] font-bold text-navy">{isNew ? '새 스토리' : draft.title}</h1>
 
       {error && <p className="mt-3 border border-red-300 bg-red-50 px-3 py-2 text-[12px] text-red-600">{error}</p>}
 
       <div className="mt-6 max-w-[680px] space-y-4">
-        <Field label="Title">
+        <Field label="제목 (Title)">
           <input value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
         </Field>
-        <Field label="Slug">
+        <Field label="Slug (URL)">
           <input
             value={draft.slug}
             onChange={(e) => {
@@ -88,40 +89,40 @@ export default function AdminStoryEditorPage() {
           />
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Category">
+          <Field label="카테고리">
             <select value={draft.category} onChange={(e) => patch({ category: e.target.value as StoryCategory })} className={inputClass}>
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>
-                  {c}
+                  {STORY_CATEGORY_LABEL[c]}
                 </option>
               ))}
             </select>
           </Field>
-          <Field label="Published Date">
+          <Field label="발행일">
             <input type="date" value={draft.publishedDate} onChange={(e) => patch({ publishedDate: e.target.value })} className={inputClass} />
           </Field>
         </div>
-        <Field label="Excerpt">
+        <Field label="요약 (Excerpt)">
           <input value={draft.excerpt} onChange={(e) => patch({ excerpt: e.target.value })} className={inputClass} />
         </Field>
         <Field label="Tags (쉼표로 구분)">
           <input value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} className={inputClass} placeholder="산지, 교육" />
         </Field>
-        <Field label="Cover Image URL">
+        <Field label="커버 이미지 URL">
           <input value={draft.coverImage ?? ''} onChange={(e) => patch({ coverImage: e.target.value })} className={inputClass} />
         </Field>
         <Field label="본문 (빈 줄로 문단 구분, ## 로 소제목)">
           <textarea value={draft.body} onChange={(e) => patch({ body: e.target.value })} className={`${inputClass} min-h-[220px]`} />
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="SEO Title">
+          <Field label="SEO 제목">
             <input value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />
           </Field>
           <Field label="상태">
             <select value={draft.publishStatus} onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })} className={inputClass}>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="archived">Archived</option>
+              <option value="draft">초안</option>
+              <option value="published">공개</option>
+              <option value="archived">보관</option>
             </select>
           </Field>
         </div>

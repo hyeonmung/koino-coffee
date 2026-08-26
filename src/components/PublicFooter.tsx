@@ -58,6 +58,7 @@ export default function PublicFooter() {
             <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">문의처</p>
             <div className="mt-2 flex flex-col gap-1.5 text-[12px] text-warm-white/65">
               {settings.address && <p>{settings.address}</p>}
+              {settings.businessHours && <p>{settings.businessHours}</p>}
               {settings.phone && <p>{settings.phone}</p>}
               {settings.instagramUrl && (
                 <a href={settings.instagramUrl} target="_blank" rel="noreferrer" className="hover:text-warm-white">
@@ -74,7 +75,12 @@ export default function PublicFooter() {
         </div>
 
         <div className="mt-10 flex flex-col gap-2 border-t border-warm-white/10 pt-5 text-[10px] text-warm-white/35 sm:flex-row sm:items-center sm:justify-between">
-          <p>{settings.footerNote}</p>
+          <div className="space-y-1">
+            <p>{settings.footerNote}</p>
+            {settings.businessRegistrationInfo && (
+              <p className="whitespace-pre-line text-warm-white/25">{settings.businessRegistrationInfo}</p>
+            )}
+          </div>
           <Link to="/admin" className="hover:text-warm-white/60">
             관리자
           </Link>

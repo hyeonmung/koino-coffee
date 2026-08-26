@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import { checkCompleteness } from '../../data/completeness'
 import { addDemoCoffees, getAllCoffees } from '../../data/repositories/coffeeRepository'
 import { getAllStories } from '../../data/repositories/storyRepository'
 import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
@@ -11,10 +12,13 @@ export default function AdminDashboardPage() {
   const coffees = getAllCoffees()
   const published = coffees.filter((c) => c.publishStatus === 'published').length
   const draft = coffees.filter((c) => c.publishStatus === 'draft').length
+  const archived = coffees.filter((c) => c.publishStatus === 'archived').length
+  const incomplete = coffees.filter((c) => checkCompleteness(c).percent < 70).length
   const stories = getAllStories()
   const brewGuides = getAllBrewGuides()
   const inquiries = getAllInquiries()
   const newInquiries = inquiries.filter((i) => i.status === 'new').length
+  const recentlyEdited = [...coffees].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 5)
 
   const handleAddDemo = () => {
     addDemoCoffees()
@@ -26,12 +30,32 @@ export default function AdminDashboardPage() {
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DASHBOARD</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">운영 현황</h1>
 
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <StatCard label="전체 원두" value={coffees.length} to="/admin/coffees" />
         <StatCard label="공개 중" value={published} to="/admin/coffees" />
         <StatCard label="초안" value={draft} to="/admin/coffees" />
+        <StatCard label="지난 원두" value={archived} to="/admin/coffees" />
+        <StatCard label="정보 보완 필요" value={incomplete} to="/admin/coffees" highlight={incomplete > 0} />
         <StatCard label="새 문의" value={newInquiries} to="/admin/inquiries" highlight={newInquiries > 0} />
       </div>
+
+      {recentlyEdited.length > 0 && (
+        <div className="mt-8">
+          <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">최근 수정</p>
+          <div className="mt-2 divide-y divide-navy/10 border border-navy/15 bg-white">
+            {recentlyEdited.map((c) => (
+              <Link
+                key={c.id}
+                to={`/admin/coffees/${c.id}`}
+                className="flex items-center justify-between px-4 py-2.5 text-[12px] hover:bg-warm-white"
+              >
+                <span className="font-semibold text-navy">{c.coffeeName}</span>
+                <span className="text-navy/40">{new Date(c.updatedAt).toLocaleDateString('ko-KR')}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <QuickLink to="/admin/coffees/new" label="+ 새 원두 등록" />

@@ -71,7 +71,7 @@ export default function AdminBrewGuideEditorPage() {
   return (
     <AdminLayout>
       <Link to="/admin/brew-guides" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
-        ← Brew Guide 목록
+        ← 브루 가이드 목록
       </Link>
       <h1 className="mt-1 font-serif text-[22px] font-bold text-navy">{isNew ? '새 브루 가이드' : draft.title}</h1>
 
@@ -90,7 +90,7 @@ export default function AdminBrewGuideEditorPage() {
         <Field label="제목">
           <input value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
         </Field>
-        <Field label="Slug">
+        <Field label="Slug (URL)">
           <input
             value={draft.slug}
             onChange={(e) => {
@@ -102,28 +102,28 @@ export default function AdminBrewGuideEditorPage() {
         </Field>
 
         <div className="grid grid-cols-3 gap-3">
-          <Field label="Coffee Dose">
+          <Field label="원두량 (Coffee Dose)">
             <input value={draft.coffeeDose} onChange={(e) => patch({ coffeeDose: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Water">
+          <Field label="물 (Water)">
             <input value={draft.water} onChange={(e) => patch({ water: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Ratio">
+          <Field label="비율 (Ratio)">
             <input value={draft.ratio} onChange={(e) => patch({ ratio: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Temperature">
+          <Field label="물 온도 (Temperature)">
             <input value={draft.temperature} onChange={(e) => patch({ temperature: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Grind">
+          <Field label="분쇄도 (Grind)">
             <input value={draft.grind} onChange={(e) => patch({ grind: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Total Time">
+          <Field label="총 추출 시간 (Total Time)">
             <input value={draft.totalTime} onChange={(e) => patch({ totalTime: e.target.value })} className={inputClass} />
           </Field>
         </div>
 
         <div>
-          <span className="mb-2 block text-[10px] font-semibold text-navy/60">Pour Steps</span>
+          <span className="mb-2 block text-[10px] font-semibold text-navy/60">추출 순서 (Pour Steps)</span>
           <div className="space-y-2">
             {draft.pourSteps.map((step, i) => (
               <div key={i} className="flex gap-2">
@@ -156,10 +156,10 @@ export default function AdminBrewGuideEditorPage() {
           </button>
         </div>
 
-        <Field label="Tips">
+        <Field label="이렇게 추출해보세요 (Tips)">
           <textarea value={draft.tips ?? ''} onChange={(e) => patch({ tips: e.target.value })} className={`${inputClass} min-h-[70px]`} />
         </Field>
-        <Field label="Common Problems">
+        <Field label="이런 맛이 난다면 (Common Problems)">
           <textarea
             value={draft.commonProblems ?? ''}
             onChange={(e) => patch({ commonProblems: e.target.value })}
@@ -172,9 +172,9 @@ export default function AdminBrewGuideEditorPage() {
             onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })}
             className={inputClass}
           >
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-            <option value="archived">Archived</option>
+            <option value="draft">초안</option>
+            <option value="published">공개</option>
+            <option value="archived">보관</option>
           </select>
         </Field>
 

@@ -72,7 +72,7 @@ export default function TasteFinderPage() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="Find Your Coffee" description="몇 가지 질문으로 나에게 맞는 커피를 찾아보세요." />
+      <SEO title="취향 찾기" description="몇 가지 질문으로 나에게 맞는 커피를 찾아보세요." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[640px] px-6 py-14">

@@ -9,7 +9,7 @@ export default function BrewGuideIndexPage() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="Brew Guide" description="장비별 KOI 원두 추출 레시피." />
+      <SEO title="브루 가이드" description="장비별 KOI 원두 추출 레시피." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[1000px] px-6 py-10">

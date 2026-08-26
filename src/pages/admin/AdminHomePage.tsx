@@ -66,7 +66,7 @@ export default function AdminHomePage() {
         <section className="border border-navy/15 bg-white p-6">
           <h2 className="mb-4 font-serif text-[15px] font-bold text-navy">01 · Hero</h2>
           <div className="space-y-3">
-            <Field label="Hero Title">
+            <Field label="Hero 제목">
               <input value={settings.heroTitle} onChange={(e) => patch({ heroTitle: e.target.value })} className={inputClass} />
             </Field>
             <Field label="Hero Subtitle (줄바꿈 가능)">

@@ -8,7 +8,7 @@ import { CUP_CHARACTERS } from '../../types'
 export default function AboutSensoryMapPage() {
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="About KOI SENSORY MAP" description="KOI SENSORY MAP이 원두를 설명하는 방식을 소개합니다." />
+      <SEO title="KOI SENSORY MAP 알아보기" description="KOI SENSORY MAP이 원두를 설명하는 방식을 소개합니다." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[860px] px-6 py-10">

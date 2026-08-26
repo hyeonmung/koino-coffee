@@ -54,6 +54,14 @@ export default function AdminSettingsPage() {
             <Field label="주소">
               <input value={settings.address ?? ''} onChange={(e) => patch({ address: e.target.value })} className={inputClass} />
             </Field>
+            <Field label="운영시간">
+              <input
+                value={settings.businessHours ?? ''}
+                onChange={(e) => patch({ businessHours: e.target.value })}
+                className={inputClass}
+                placeholder="매일 10:00 - 20:00"
+              />
+            </Field>
             <Field label="Instagram URL">
               <input value={settings.instagramUrl ?? ''} onChange={(e) => patch({ instagramUrl: e.target.value })} className={inputClass} />
             </Field>
@@ -67,6 +75,14 @@ export default function AdminSettingsPage() {
               <input value={settings.businessUrl ?? ''} onChange={(e) => patch({ businessUrl: e.target.value })} className={inputClass} />
             </Field>
           </div>
+          <Field label="사업자 정보 (상호 · 대표자 · 사업자등록번호 등)">
+            <textarea
+              value={settings.businessRegistrationInfo ?? ''}
+              onChange={(e) => patch({ businessRegistrationInfo: e.target.value })}
+              className={`${inputClass} min-h-[60px]`}
+              placeholder="상호: 코이노커피 | 대표: OOO | 사업자등록번호: 000-00-00000"
+            />
+          </Field>
           <Field label="Footer 저작권 문구">
             <input value={settings.footerNote ?? ''} onChange={(e) => patch({ footerNote: e.target.value })} className={inputClass} />
           </Field>

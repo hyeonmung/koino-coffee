@@ -32,7 +32,7 @@ export default function ComparePage() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="Compare Coffee" description="최대 3개의 원두를 나란히 비교해보세요." />
+      <SEO title="원두 비교" description="최대 3개의 원두를 나란히 비교해보세요." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[1000px] px-6 py-10">

@@ -28,7 +28,7 @@ export default function AdminCharactersPage() {
   return (
     <AdminLayout>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">CHARACTER</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">Character 관리</h1>
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">캐릭터 관리</h1>
       <p className="mt-2 text-[12px] text-navy/50">
         5가지 Character는 고정되어 있으며 삭제할 수 없습니다. 설명, 대표 향미, 소개 문구, 이미지, 정렬
         순서만 수정할 수 있습니다.

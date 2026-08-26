@@ -191,6 +191,8 @@ export interface SiteSettings {
   heroCtaSecondaryUrl: string
   phone?: string
   address?: string
+  businessHours?: string
+  businessRegistrationInfo?: string
   instagramUrl?: string
   naverUrl?: string
   purchaseUrl?: string

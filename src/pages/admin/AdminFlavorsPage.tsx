@@ -43,14 +43,14 @@ export default function AdminFlavorsPage() {
   return (
     <AdminLayout>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">FLAVOR LIBRARY</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">Flavor Library</h1>
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">향미 관리</h1>
       <p className="mt-2 text-[12px] text-navy/50">
         여기서 추가한 향미는 원두 등록 화면의 Flavor Notes 입력 시 자동완성으로 제안됩니다.
       </p>
 
       <div className="mt-6 flex flex-wrap items-end gap-2 border border-navy/15 bg-white p-4">
         <label className="block">
-          <span className="mb-1 block text-[10px] font-semibold text-navy/60">Name</span>
+          <span className="mb-1 block text-[10px] font-semibold text-navy/60">영문명</span>
           <input value={newName} onChange={(e) => setNewName(e.target.value)} className={inputClass} placeholder="Blackberry" />
         </label>
         <label className="block">
@@ -58,7 +58,7 @@ export default function AdminFlavorsPage() {
           <input value={newNameKo} onChange={(e) => setNewNameKo(e.target.value)} className={inputClass} placeholder="블랙베리" />
         </label>
         <label className="block">
-          <span className="mb-1 block text-[10px] font-semibold text-navy/60">Family</span>
+          <span className="mb-1 block text-[10px] font-semibold text-navy/60">향미 계열 (Family)</span>
           <select value={newFamilyId} onChange={(e) => setNewFamilyId(e.target.value)} className={inputClass}>
             {families.map((f) => (
               <option key={f.id} value={f.id}>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { deleteStory, getAllStories } from '../../data/repositories/storyRepository'
 import type { Story } from '../../data/schema'
 
@@ -19,7 +20,7 @@ export default function AdminStoriesPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORIES</p>
-          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">Stories 관리</h1>
+          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">이야기 관리</h1>
         </div>
         <Link to="/admin/stories/new" className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light">
           + 새 스토리
@@ -32,7 +33,7 @@ export default function AdminStoriesPage() {
             <div>
               <p className="text-[13px] font-semibold text-navy">{story.title}</p>
               <p className="text-[11px] text-navy/45">
-                {story.category} · {story.publishStatus === 'published' ? '공개' : '초안'}
+                {STORY_CATEGORY_LABEL[story.category]} · {story.publishStatus === 'published' ? '공개' : '초안'}
               </p>
             </div>
             <div className="flex gap-1.5">

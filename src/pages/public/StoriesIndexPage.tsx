@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
+import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getPublishedStories } from '../../data/repositories/storyRepository'
 import type { StoryCategory } from '../../data/schema'
 
@@ -16,11 +17,11 @@ export default function StoriesIndexPage() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="Journal" description="산지, 원두, 커피 교육에 관한 코이노커피의 이야기." />
+      <SEO title="이야기" description="산지, 원두, 커피 교육에 관한 코이노커피의 이야기." />
       <PublicHeader />
 
       <main className="mx-auto max-w-[1000px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">JOURNAL</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORIES</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">이야기</h1>
 
         <div className="mt-6 flex flex-wrap gap-1.5">
@@ -33,7 +34,7 @@ export default function StoriesIndexPage() {
                 category === c ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/55 hover:border-navy/50'
               }`}
             >
-              {c}
+              {c === 'ALL' ? '전체' : STORY_CATEGORY_LABEL[c]}
             </button>
           ))}
         </div>
@@ -46,7 +47,7 @@ export default function StoriesIndexPage() {
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {filtered.map((story) => (
               <Link key={story.id} to={`/stories/${story.slug}`} className="border border-navy/15 bg-white p-6 hover:border-navy">
-                <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/45">{story.category}</p>
+                <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>
                 <p className="mt-1 font-serif text-[18px] font-bold text-navy">{story.title}</p>
                 <p className="mt-2 text-[12px] text-navy/55">{story.excerpt}</p>
                 <p className="mt-3 text-[10px] text-navy/35">
