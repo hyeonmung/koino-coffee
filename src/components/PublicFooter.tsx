@@ -9,22 +9,38 @@ export default function PublicFooter() {
     <footer className="koi-night-sky mt-20 overflow-hidden">
       <KOIStarField />
       <div className="relative mx-auto max-w-[1240px] px-6 py-12">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-4">
           <div>
             <p className="font-serif text-[16px] font-bold text-warm-white">{settings.logoText}</p>
-            <p className="mt-2 text-[12px] leading-relaxed text-warm-white/50">{settings.heroSubtitle}</p>
+            <p className="mt-2 whitespace-pre-line text-[12px] leading-relaxed text-warm-white/50">
+              {settings.heroSubtitle}
+            </p>
           </div>
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">EXPLORE</p>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">바로가기</p>
             <div className="mt-2 flex flex-col gap-1.5">
               <Link to="/coffees" className="text-[12px] text-warm-white/65 hover:text-warm-white">
-                전체 커피 보기
+                전체 원두 보기
+              </Link>
+              <Link to="/coffee-chart" className="text-[12px] text-warm-white/65 hover:text-warm-white">
+                원두 차트
               </Link>
               <Link to="/discover" className="text-[12px] text-warm-white/65 hover:text-warm-white">
                 취향에 맞는 커피 찾기
               </Link>
-              <Link to="/wholesale" className="text-[12px] text-warm-white/65 hover:text-warm-white">
-                납품 · 도매 문의
+              <Link to="/compare" className="text-[12px] text-warm-white/65 hover:text-warm-white">
+                원두 비교하기
+              </Link>
+            </div>
+          </div>
+          <div>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">코이노커피</p>
+            <div className="mt-2 flex flex-col gap-1.5">
+              <Link to="/about" className="text-[12px] text-warm-white/65 hover:text-warm-white">
+                코이노커피 소개
+              </Link>
+              <Link to={settings.businessUrl || '/business'} className="text-[12px] text-warm-white/65 hover:text-warm-white">
+                납품 · 교육 문의
               </Link>
               {settings.purchaseUrl && (
                 <a
@@ -39,7 +55,7 @@ export default function PublicFooter() {
             </div>
           </div>
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">CONTACT</p>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">문의처</p>
             <div className="mt-2 flex flex-col gap-1.5 text-[12px] text-warm-white/65">
               {settings.address && <p>{settings.address}</p>}
               {settings.phone && <p>{settings.phone}</p>}

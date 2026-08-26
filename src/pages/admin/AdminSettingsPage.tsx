@@ -38,46 +38,20 @@ export default function AdminSettingsPage() {
 
       <div className="mt-8 max-w-[680px] space-y-8">
         <SettingsSection title="브랜드">
-          <Field label="Brand Name">
+          <Field label="브랜드명 (작은 표기, 예: 코이노커피)">
             <input value={settings.brandName} onChange={(e) => patch({ brandName: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Logo Text">
+          <Field label="로고 표기 (예: KOI COFFEE)">
             <input value={settings.logoText} onChange={(e) => patch({ logoText: e.target.value })} className={inputClass} />
           </Field>
         </SettingsSection>
 
-        <SettingsSection title="홈페이지 Hero">
-          <Field label="Hero Title">
-            <input value={settings.heroTitle} onChange={(e) => patch({ heroTitle: e.target.value })} className={inputClass} />
-          </Field>
-          <Field label="Hero Subtitle">
-            <input value={settings.heroSubtitle} onChange={(e) => patch({ heroSubtitle: e.target.value })} className={inputClass} />
-          </Field>
-          <Field label="Hero Image URL">
-            <input value={settings.heroImage ?? ''} onChange={(e) => patch({ heroImage: e.target.value })} className={inputClass} />
-          </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Primary CTA Label">
-              <input value={settings.heroCtaPrimaryLabel} onChange={(e) => patch({ heroCtaPrimaryLabel: e.target.value })} className={inputClass} />
-            </Field>
-            <Field label="Primary CTA URL">
-              <input value={settings.heroCtaPrimaryUrl} onChange={(e) => patch({ heroCtaPrimaryUrl: e.target.value })} className={inputClass} />
-            </Field>
-            <Field label="Secondary CTA Label">
-              <input value={settings.heroCtaSecondaryLabel} onChange={(e) => patch({ heroCtaSecondaryLabel: e.target.value })} className={inputClass} />
-            </Field>
-            <Field label="Secondary CTA URL">
-              <input value={settings.heroCtaSecondaryUrl} onChange={(e) => patch({ heroCtaSecondaryUrl: e.target.value })} className={inputClass} />
-            </Field>
-          </div>
-        </SettingsSection>
-
         <SettingsSection title="연락처 · 링크">
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Phone">
+            <Field label="전화번호">
               <input value={settings.phone ?? ''} onChange={(e) => patch({ phone: e.target.value })} className={inputClass} />
             </Field>
-            <Field label="Address">
+            <Field label="주소">
               <input value={settings.address ?? ''} onChange={(e) => patch({ address: e.target.value })} className={inputClass} />
             </Field>
             <Field label="Instagram URL">
@@ -86,33 +60,49 @@ export default function AdminSettingsPage() {
             <Field label="Naver URL">
               <input value={settings.naverUrl ?? ''} onChange={(e) => patch({ naverUrl: e.target.value })} className={inputClass} />
             </Field>
-            <Field label="Purchase URL">
+            <Field label="온라인 구매 URL">
               <input value={settings.purchaseUrl ?? ''} onChange={(e) => patch({ purchaseUrl: e.target.value })} className={inputClass} />
             </Field>
-            <Field label="Wholesale URL">
-              <input value={settings.wholesaleUrl ?? ''} onChange={(e) => patch({ wholesaleUrl: e.target.value })} className={inputClass} />
+            <Field label="납품 · 교육 페이지 URL">
+              <input value={settings.businessUrl ?? ''} onChange={(e) => patch({ businessUrl: e.target.value })} className={inputClass} />
             </Field>
           </div>
-          <Field label="Footer Note">
+          <Field label="Footer 저작권 문구">
             <input value={settings.footerNote ?? ''} onChange={(e) => patch({ footerNote: e.target.value })} className={inputClass} />
           </Field>
         </SettingsSection>
 
         <SettingsSection title="SEO 기본값">
-          <Field label="Default SEO Title">
+          <Field label="기본 SEO 제목">
             <input value={settings.seoDefaultTitle} onChange={(e) => patch({ seoDefaultTitle: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="Default SEO Description">
+          <Field label="기본 SEO 설명">
             <textarea
               value={settings.seoDefaultDescription}
               onChange={(e) => patch({ seoDefaultDescription: e.target.value })}
               className={`${inputClass} min-h-[70px]`}
             />
           </Field>
-          <Field label="OG Image URL">
+          <Field label="OG 이미지 URL">
             <input value={settings.ogImage ?? ''} onChange={(e) => patch({ ogImage: e.target.value })} className={inputClass} />
           </Field>
         </SettingsSection>
+
+        <p className="text-[11px] text-navy/40">
+          홈페이지 Hero 문구는{' '}
+          <a href="#/admin/home" className="underline">
+            홈 관리
+          </a>
+          에서, 코이노커피 소개는{' '}
+          <a href="#/admin/about" className="underline">
+            코이노커피
+          </a>{' '}
+          메뉴에서, 납품·교육 서비스 소개는{' '}
+          <a href="#/admin/business" className="underline">
+            납품 · 교육
+          </a>{' '}
+          메뉴에서 관리합니다.
+        </p>
       </div>
     </AdminLayout>
   )

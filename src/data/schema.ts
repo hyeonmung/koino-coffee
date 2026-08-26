@@ -10,12 +10,28 @@ export type RoastType = 'Filter' | 'Espresso' | 'Omni'
  * CoffeeForm/CoffeePreview/RadarChart/CoffeeList/ExportControls keep working
  * unmodified or with only additive changes.
  */
+export interface AdvancedRoastData {
+  batch?: string
+  chargeTemp?: string
+  turningPoint?: string
+  yellow?: string
+  firstCrack?: string
+  drop?: string
+  totalTime?: string
+  developmentTime?: string
+  developmentRatio?: string
+  dropTemp?: string
+  machine?: string
+}
+
 export interface Coffee extends CoffeeProfile {
   slug: string
   publishStatus: PublishStatus
   featured: boolean
   sortOrder: number
   availability: Availability
+
+  koreanName?: string
 
   subregion?: string
   farmOrStation?: string
@@ -34,6 +50,11 @@ export interface Coffee extends CoffeeProfile {
   roastType?: RoastType
   roastDirection?: string
   recommendedRest?: string
+  roaster?: string
+  roastData?: AdvancedRoastData
+
+  roasterComment?: string
+  baristaComment?: string
 
   brewGuideIds: string[]
 
@@ -42,6 +63,8 @@ export interface Coffee extends CoffeeProfile {
 
   purchaseUrl?: string
   heroImage?: string
+
+  chartVisible?: boolean
 
   seoTitle?: string
   seoDescription?: string
@@ -74,6 +97,7 @@ export interface FlavorDescriptor {
   nameKo?: string
   familyId: string
   description?: string
+  example?: string
   aliases: string[]
 }
 
@@ -132,6 +156,29 @@ export interface Story {
   updatedAt: string
 }
 
+export interface StorySection {
+  heading: string
+  body: string
+  image?: string
+}
+
+export interface BusinessSection {
+  key: string
+  title: string
+  body: string
+}
+
+export type HomeSectionKey =
+  | 'featuredCoffee'
+  | 'tasteFinder'
+  | 'cupCharacter'
+  | 'sensoryMap'
+  | 'coffeeChart'
+  | 'brewGuide'
+  | 'stories'
+  | 'about'
+  | 'business'
+
 export interface SiteSettings {
   brandName: string
   logoText: string
@@ -147,13 +194,21 @@ export interface SiteSettings {
   instagramUrl?: string
   naverUrl?: string
   purchaseUrl?: string
-  wholesaleUrl?: string
+  businessUrl?: string
   footerNote?: string
   seoDefaultTitle: string
   seoDefaultDescription: string
   ogImage?: string
   homepageFeaturedCoffeeIds: string[]
   homepageStoryIds: string[]
+  homeSectionVisibility: Partial<Record<HomeSectionKey, boolean>>
+
+  aboutIntro: string
+  aboutSections: StorySection[]
+
+  businessIntro: string
+  businessSections: BusinessSection[]
+
   updatedAt: string
 }
 
@@ -167,6 +222,7 @@ export interface Inquiry {
   email: string
   businessType: string
   region: string
+  interestArea?: string
   expectedVolume?: string
   message: string
   consent: boolean

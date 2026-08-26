@@ -99,6 +99,7 @@ export default function CoffeeDetailPage() {
         <h1 className="mt-1 font-serif text-[30px] font-bold leading-tight text-navy sm:text-[38px]">
           {coffee.coffeeName}
         </h1>
+        {coffee.koreanName && <p className="mt-0.5 text-[14px] text-navy/45">{coffee.koreanName}</p>}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span className="border border-navy bg-navy px-3 py-1 text-[11px] font-bold tracking-[0.15em] text-warm-white">
             {character.label}
@@ -128,6 +129,14 @@ export default function CoffeeDetailPage() {
           >
             비슷한 커피 찾기
           </Link>
+          {coffee.chartVisible !== false && (
+            <Link
+              to={`/coffee-chart/${coffee.slug}`}
+              className="border border-navy/25 px-5 py-2.5 text-[12px] font-semibold tracking-wide text-navy hover:border-navy"
+            >
+              원두 차트로 한눈에 보기
+            </Link>
+          )}
           <button
             type="button"
             onClick={handleShare}

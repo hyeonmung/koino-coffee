@@ -35,6 +35,7 @@ export default function CoffeeCard({ coffee }: CoffeeCardProps) {
       </div>
 
       <h3 className="mt-1.5 font-serif text-[17px] font-bold leading-snug text-navy">{coffee.coffeeName}</h3>
+      {coffee.koreanName && <p className="text-[11px] text-navy/40">{coffee.koreanName}</p>}
 
       <span className="mt-2 inline-block border border-navy bg-navy px-2 py-0.5 text-[9px] font-bold tracking-[0.15em] text-warm-white">
         {character.label}

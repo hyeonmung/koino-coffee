@@ -3,6 +3,7 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
 import { addInquiry } from '../../data/repositories/inquiryRepository'
+import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
 import type { Inquiry } from '../../data/schema'
 
 const inputClass =
@@ -15,12 +16,14 @@ const EMPTY_FORM = {
   email: '',
   businessType: '',
   region: '',
+  interestArea: '',
   expectedVolume: '',
   message: '',
   consent: false,
 }
 
-export default function WholesalePage() {
+export default function BusinessPage() {
+  const settings = getSiteSettings()
   const [form, setForm] = useState(EMPTY_FORM)
   const [error, setError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
@@ -51,19 +54,27 @@ export default function WholesalePage() {
 
   return (
     <div className="min-h-screen bg-warm-white">
-      <SEO title="Wholesale" description="코이노커피 원두 납품, 메뉴 컨설팅, 바리스타 교육 문의." />
+      <SEO title="납품 · 교육" description={settings.businessIntro} />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[680px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">WHOLESALE</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">납품 · 도매 문의</h1>
-        <p className="mt-3 text-[13px] leading-relaxed text-navy/60">
-          코이노커피는 카페·레스토랑을 위한 원두 납품, 원두 상담, 메뉴 컨설팅, 바리스타 교육, 장비 관련
-          지원을 제공합니다. 아래 양식을 작성해주시면 담당자가 확인 후 연락드립니다.
-        </p>
+      <main className="mx-auto max-w-[720px] px-6 py-10">
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BUSINESS</p>
+        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">납품 · 교육</h1>
+        <p className="mt-3 text-[13px] leading-relaxed text-navy/60">{settings.businessIntro}</p>
+
+        {settings.businessSections.length > 0 && (
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {settings.businessSections.map((section) => (
+              <div key={section.key} className="border border-navy/15 bg-white p-5">
+                <p className="font-serif text-[15px] font-bold text-navy">{section.title}</p>
+                <p className="mt-2 text-[12px] leading-relaxed text-navy/60">{section.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {submitted ? (
-          <div className="mt-8 border border-navy/15 bg-white px-6 py-12 text-center">
+          <div className="mt-10 border border-navy/15 bg-white px-6 py-12 text-center">
             <p className="font-serif text-[18px] font-bold text-navy">문의가 접수되었습니다.</p>
             <p className="mt-2 text-[13px] text-navy/55">빠른 시일 내에 담당자가 연락드리겠습니다.</p>
             <button
@@ -75,8 +86,26 @@ export default function WholesalePage() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4 border border-navy/15 bg-white p-6">
+          <form onSubmit={handleSubmit} className="mt-10 space-y-4 border border-navy/15 bg-white p-6">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">문의하기</p>
             {error && <p className="border border-red-300 bg-red-50 px-3 py-2 text-[12px] text-red-600">{error}</p>}
+
+            {settings.businessSections.length > 0 && (
+              <FormField label="관심 분야">
+                <select
+                  value={form.interestArea}
+                  onChange={(e) => patch({ interestArea: e.target.value })}
+                  className={inputClass}
+                >
+                  <option value="">선택 안함</option>
+                  {settings.businessSections.map((section) => (
+                    <option key={section.key} value={section.title}>
+                      {section.title}
+                    </option>
+                  ))}
+                </select>
+              </FormField>
+            )}
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField label="업체명 *">

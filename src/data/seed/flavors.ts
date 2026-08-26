@@ -15,8 +15,24 @@ export const SEED_FLAVOR_FAMILIES: FlavorFamily[] = [
 ]
 
 export const SEED_FLAVOR_DESCRIPTORS: FlavorDescriptor[] = [
-  { id: 'flavor-jasmine', name: 'Jasmine', nameKo: '자스민', familyId: 'family-floral', aliases: [] },
-  { id: 'flavor-bergamot', name: 'Bergamot', nameKo: '베르가못', familyId: 'family-floral', aliases: [] },
+  {
+    id: 'flavor-jasmine',
+    name: 'Jasmine',
+    nameKo: '자스민',
+    familyId: 'family-floral',
+    description: '희고 섬세한 꽃에서 느껴지는 은은하고 화사한 향입니다.',
+    example: '자스민 티를 우렸을 때 나는 향을 떠올리면 이해하기 쉽습니다.',
+    aliases: [],
+  },
+  {
+    id: 'flavor-bergamot',
+    name: 'Bergamot',
+    nameKo: '베르가못',
+    familyId: 'family-floral',
+    description: '시트러스 계열의 향긋하고 화사한 향입니다.',
+    example: '얼그레이 티에서 느낄 수 있는 향을 떠올리면 이해하기 쉽습니다.',
+    aliases: [],
+  },
   { id: 'flavor-rose', name: 'Rose', nameKo: '장미', familyId: 'family-floral', aliases: [] },
   { id: 'flavor-orange-blossom', name: 'Orange Blossom', nameKo: '오렌지 블라섬', familyId: 'family-floral', aliases: [] },
   { id: 'flavor-lemon', name: 'Lemon', nameKo: '레몬', familyId: 'family-citrus', aliases: [] },

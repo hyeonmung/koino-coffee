@@ -213,6 +213,15 @@ export default function AdminCoffeeEditorPage() {
                   <input value={draft.coffeeName} onChange={(e) => patch({ coffeeName: e.target.value })} className={inputClass} />,
                 )}
                 {field(
+                  '한글명 (선택)',
+                  <input
+                    value={draft.koreanName ?? ''}
+                    onChange={(e) => patch({ koreanName: e.target.value })}
+                    className={inputClass}
+                    placeholder="에티오피아 벤티 넨카"
+                  />,
+                )}
+                {field(
                   'Slug (URL)',
                   <input
                     value={draft.slug}
@@ -348,41 +357,95 @@ export default function AdminCoffeeEditorPage() {
             )}
 
             {tab === '07 ROAST' && (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-5">
+                <div className="grid grid-cols-2 gap-3">
+                  {field(
+                    'Roast Type',
+                    <select
+                      value={draft.roastType ?? ''}
+                      onChange={(e) => patch({ roastType: (e.target.value || undefined) as RoastType | undefined })}
+                      className={inputClass}
+                    >
+                      <option value="">선택 안함</option>
+                      <option value="Filter">Filter</option>
+                      <option value="Espresso">Espresso</option>
+                      <option value="Omni">Omni</option>
+                    </select>,
+                  )}
+                  {field(
+                    'Roast Level (Light / Medium Light / Medium / Medium Dark / Dark)',
+                    <input value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
+                  )}
+                  {field(
+                    'Roast Direction',
+                    <input
+                      value={draft.roastDirection ?? ''}
+                      onChange={(e) => patch({ roastDirection: e.target.value })}
+                      className={inputClass}
+                    />,
+                  )}
+                  {field(
+                    '추천 디개싱 (Recommended Rest)',
+                    <input
+                      value={draft.recommendedRest ?? ''}
+                      onChange={(e) => patch({ recommendedRest: e.target.value })}
+                      className={inputClass}
+                      placeholder="7–21 Days"
+                    />,
+                  )}
+                  {field(
+                    '로스터 (Roaster)',
+                    <input value={draft.roaster ?? ''} onChange={(e) => patch({ roaster: e.target.value })} className={inputClass} />,
+                  )}
+                </div>
+
                 {field(
-                  'Roast Type',
-                  <select
-                    value={draft.roastType ?? ''}
-                    onChange={(e) => patch({ roastType: (e.target.value || undefined) as RoastType | undefined })}
-                    className={inputClass}
-                  >
-                    <option value="">선택 안함</option>
-                    <option value="Filter">Filter</option>
-                    <option value="Espresso">Espresso</option>
-                    <option value="Omni">Omni</option>
-                  </select>,
-                )}
-                {field(
-                  'Roast Level',
-                  <input value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
-                )}
-                {field(
-                  'Roast Direction',
-                  <input
-                    value={draft.roastDirection ?? ''}
-                    onChange={(e) => patch({ roastDirection: e.target.value })}
-                    className={inputClass}
+                  '로스터의 생각 (Roaster’s Comment)',
+                  <textarea
+                    value={draft.roasterComment ?? ''}
+                    onChange={(e) => patch({ roasterComment: e.target.value })}
+                    className={textareaClass}
                   />,
                 )}
                 {field(
-                  'Recommended Rest',
-                  <input
-                    value={draft.recommendedRest ?? ''}
-                    onChange={(e) => patch({ recommendedRest: e.target.value })}
-                    className={inputClass}
-                    placeholder="7–21 Days"
+                  '바리스타의 생각 (Barista’s Comment, 선택)',
+                  <textarea
+                    value={draft.baristaComment ?? ''}
+                    onChange={(e) => patch({ baristaComment: e.target.value })}
+                    className={textareaClass}
                   />,
                 )}
+
+                <div>
+                  <p className="mb-2 text-[10px] font-semibold tracking-[0.1em] text-navy/60">
+                    Advanced Roast Data (선택 — 입력한 항목만 공개 화면에 표시됩니다)
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {(
+                      [
+                        ['batch', 'Batch'],
+                        ['chargeTemp', 'Charge Temp'],
+                        ['turningPoint', 'Turning Point'],
+                        ['yellow', 'Yellow'],
+                        ['firstCrack', 'First Crack'],
+                        ['drop', 'Drop'],
+                        ['totalTime', 'Total Time'],
+                        ['developmentTime', 'Development Time'],
+                        ['developmentRatio', 'Development Ratio'],
+                        ['dropTemp', 'Drop Temp'],
+                        ['machine', 'Machine'],
+                      ] as const
+                    ).map(([key, label]) => (
+                      <input
+                        key={key}
+                        value={draft.roastData?.[key] ?? ''}
+                        onChange={(e) => patch({ roastData: { ...draft.roastData, [key]: e.target.value } })}
+                        className={inputClass}
+                        placeholder={label}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -498,6 +561,14 @@ export default function AdminCoffeeEditorPage() {
                   <input type="checkbox" checked={draft.featured} onChange={(e) => patch({ featured: e.target.checked })} />
                   홈페이지 Featured 노출
                 </label>
+                <label className="flex items-center gap-2 text-[12px] text-navy">
+                  <input
+                    type="checkbox"
+                    checked={draft.chartVisible !== false}
+                    onChange={(e) => patch({ chartVisible: e.target.checked })}
+                  />
+                  원두 차트(/coffee-chart)에 노출
+                </label>
                 {field(
                   'Sort Order',
                   <input
@@ -506,6 +577,17 @@ export default function AdminCoffeeEditorPage() {
                     onChange={(e) => patch({ sortOrder: Number(e.target.value) || 0 })}
                     className={inputClass}
                   />,
+                )}
+
+                {!isNew && draft.slug && (
+                  <a
+                    href={`#/coffee-chart/${draft.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block border border-navy/25 px-3 py-2 text-[11px] font-semibold text-navy hover:border-navy"
+                  >
+                    원두 차트 미리보기 ↗
+                  </a>
                 )}
 
                 <div className="border-t border-navy/15 pt-4">
