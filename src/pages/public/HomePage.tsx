@@ -11,6 +11,8 @@ import { SENSORY_FIELDS } from '../../constants/sensory'
 import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
+import { getAllDictionaryTerms } from '../../data/repositories/dictionaryRepository'
+import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
 import { getPublishedStories } from '../../data/repositories/storyRepository'
 import { CUP_CHARACTERS } from '../../types'
@@ -21,11 +23,29 @@ export default function HomePage() {
   const isVisible = (key: HomeSectionKey) => settings.homeSectionVisibility[key] !== false
 
   const coffees = getPublishedCoffees().filter((c) => c.availability !== 'archive')
-  const featured = coffees.filter((c) => c.featured).slice(0, 5)
-  const currentCoffees = (featured.length > 0 ? featured : coffees).slice(0, 5)
+  const featured = coffees.filter((c) => c.featured).slice(0, 4)
+  const currentCoffees = (featured.length > 0 ? featured : coffees).slice(0, 4)
+  const heroCoffee = currentCoffees[0]
   const chartExample = currentCoffees[0]
-  const brewGuides = getPublishedBrewGuides().slice(0, 3)
-  const stories = getPublishedStories().slice(0, 3)
+  const brewGuides = getPublishedBrewGuides().slice(0, 2)
+  const stories = getPublishedStories().slice(0, 2)
+
+  // Real, already-authored dictionary copy — never invented for this preview block.
+  const dictionaryTerm =
+    getAllDictionaryTerms().find((t) => t.id === 'term-body') ??
+    getAllDictionaryTerms().find((t) => t.example)
+  const dictionaryFlavor =
+    getFlavorDescriptors().find((d) => d.id === 'flavor-bergamot') ??
+    getFlavorDescriptors().find((d) => d.example)
+
+  const showCoffees = isVisible('featuredCoffee')
+  const showCharacter = isVisible('cupCharacter')
+  const showChart = isVisible('coffeeChart') && Boolean(chartExample)
+  const showTasteFinder = isVisible('tasteFinder')
+  const showBrew = isVisible('brewGuide') && brewGuides.length > 0
+  const showStories = isVisible('stories') && stories.length > 0
+  const showAbout = isVisible('about')
+  const showBusiness = isVisible('business')
 
   return (
     <div className="min-h-screen bg-warm-white">
@@ -33,48 +53,19 @@ export default function HomePage() {
       <PublicHeader />
 
       <main>
-        {/* 01 HERO — the brand itself, not the sensory service */}
-        {settings.heroImage ? (
-          <section
-            className="relative flex min-h-[560px] items-end bg-navy bg-cover bg-center sm:min-h-[640px]"
-            style={{ backgroundImage: `url(${settings.heroImage})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/25 to-transparent" />
-            <div className="relative mx-auto w-full max-w-[1240px] px-6 py-14 sm:py-20">
+        {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
+        <section className="border-b border-navy/15">
+          <div className="mx-auto grid max-w-[1320px] grid-cols-1 lg:grid-cols-12">
+            {/* Left ~42% — brand copy */}
+            <div className="flex flex-col justify-center px-6 py-14 lg:col-span-5 lg:py-0 lg:pr-10">
               <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
-              <h1 className="mt-4 max-w-[640px] font-serif text-[36px] font-bold leading-tight text-warm-white sm:text-[52px]">
+              <h1 className="mt-4 font-serif text-[38px] font-bold leading-[1.15] text-navy sm:text-[46px]">
                 {settings.heroTitle}
               </h1>
-              <p className="mt-4 max-w-[440px] whitespace-pre-line text-[15px] leading-relaxed text-warm-white/75">
+              <p className="mt-4 max-w-[400px] whitespace-pre-line text-[14px] leading-relaxed text-navy/60">
                 {settings.heroSubtitle}
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-3">
-                <Link
-                  to={settings.heroCtaPrimaryUrl}
-                  className="border border-warm-white bg-warm-white px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:bg-accent hover:border-accent"
-                >
-                  {settings.heroCtaPrimaryLabel}
-                </Link>
-                <Link
-                  to={settings.heroCtaSecondaryUrl}
-                  className="border border-warm-white/50 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:border-warm-white"
-                >
-                  {settings.heroCtaSecondaryLabel}
-                </Link>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section className="border-b border-navy/15 bg-white">
-            <div className="mx-auto max-w-[1240px] px-6 py-24 text-center">
-              <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
-              <h1 className="mx-auto mt-4 max-w-[720px] font-serif text-[40px] font-bold leading-tight text-navy sm:text-[52px]">
-                {settings.heroTitle}
-              </h1>
-              <p className="mx-auto mt-4 max-w-[440px] whitespace-pre-line text-[15px] leading-relaxed text-navy/60">
-                {settings.heroSubtitle}
-              </p>
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   to={settings.heroCtaPrimaryUrl}
                   className="border border-navy bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
@@ -88,282 +79,329 @@ export default function HomePage() {
                   {settings.heroCtaSecondaryLabel}
                 </Link>
               </div>
-            </div>
-          </section>
-        )}
-
-        {/* 02 지금 만날 수 있는 커피 */}
-        {isVisible('featuredCoffee') && (
-          <section className="mx-auto max-w-[1240px] px-6 py-16">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">NOW SERVING</p>
-                <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">지금 만날 수 있는 커피</h2>
-              </div>
-              <Link to="/coffees" className="hidden text-[12px] font-semibold text-navy/50 hover:text-navy sm:block">
-                전체 원두 보기 →
-              </Link>
-            </div>
-
-            {currentCoffees.length === 0 ? (
-              <p className="mt-8 border border-navy/15 bg-white px-6 py-12 text-center text-[13px] text-navy/45">
-                현재 소개 중인 원두가 없습니다.
+              <p className="mt-10 text-[10px] font-semibold tracking-[0.2em] text-navy/35">
+                HAND DRIP · ROASTING · EDUCATION
               </p>
-            ) : (
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {currentCoffees.map((coffee, i) => (
-                  <div key={coffee.id} className={i === 0 ? 'sm:col-span-2 lg:col-span-2 lg:row-span-2' : ''}>
-                    <CoffeeCard coffee={coffee} />
+            </div>
+
+            {/* Right ~58% — photography + Now Serving teaser */}
+            <div className="relative lg:col-span-7">
+              {settings.heroImage ? (
+                <div
+                  className="h-[320px] w-full bg-navy/5 bg-cover bg-center sm:h-[420px] lg:h-full lg:min-h-[560px]"
+                  style={{ backgroundImage: `url(${settings.heroImage})` }}
+                  role="img"
+                  aria-label={settings.brandName}
+                />
+              ) : (
+                <div className="koi-night-sky relative h-[320px] w-full overflow-hidden sm:h-[420px] lg:h-full lg:min-h-[560px]">
+                  <KOIStarField />
+                </div>
+              )}
+
+              {showCoffees && heroCoffee && (
+                <Link
+                  to={`/coffees/${heroCoffee.slug}`}
+                  className="group absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-navy/85 via-navy/40 to-transparent px-6 py-6 text-warm-white sm:flex-row sm:items-end sm:justify-between sm:gap-4 sm:px-8 sm:py-7"
+                >
+                  <div className="min-w-0">
+                    <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">NOW SERVING</p>
+                    <p className="mt-1 font-serif text-[19px] font-bold leading-snug sm:truncate sm:text-[22px]">
+                      {heroCoffee.coffeeName}
+                    </p>
+                    <p className="mt-1 text-[11px] text-warm-white/70">
+                      <span className="font-bold">{CHARACTER_INFO[heroCoffee.character].label}</span>
+                      {heroCoffee.notes.length > 0 && <> · {heroCoffee.notes.slice(0, 3).join(' · ')}</>}
+                    </p>
                   </div>
-                ))}
+                  <span className="shrink-0 text-[11px] font-semibold tracking-[0.1em] text-warm-white/70 group-hover:text-warm-white">
+                    View Coffee →
+                  </span>
+                </Link>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* SCREEN 2 — Current Coffees + Cup Character */}
+        {(showCoffees || showCharacter) && (
+          <section className="border-b border-navy/15">
+            {showCoffees && (
+              <div className="mx-auto max-w-[1240px] px-6 py-12">
+                <div className="flex items-end justify-between">
+                  <h2 className="font-serif text-[22px] font-bold text-navy">지금 만날 수 있는 커피</h2>
+                  <Link to="/coffees" className="text-[12px] font-semibold text-navy/50 hover:text-navy">
+                    전체 원두 보기 →
+                  </Link>
+                </div>
+
+                {currentCoffees.length === 0 ? (
+                  <p className="mt-6 border border-navy/15 bg-white px-6 py-10 text-center text-[13px] text-navy/45">
+                    현재 소개 중인 원두가 없습니다.
+                  </p>
+                ) : (
+                  <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
+                    {currentCoffees.map((coffee) => (
+                      <CoffeeCard key={coffee.id} coffee={coffee} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {showCharacter && (
+              <div className={`mx-auto max-w-[1240px] px-6 py-10 ${showCoffees ? 'border-t border-navy/10' : ''}`}>
+                <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">
+                  KOI CUP CHARACTER · 당신의 취향은 어떤 성격인가요?
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-px overflow-x-auto sm:grid-cols-5 sm:gap-0 sm:divide-x sm:divide-navy/10">
+                  {CUP_CHARACTERS.map((key, i) => {
+                    const info = CHARACTER_INFO[key]
+                    return (
+                      <Link
+                        key={key}
+                        to={`/characters/${key.toLowerCase()}`}
+                        className="group flex flex-col gap-1.5 py-4 pr-3 sm:px-4"
+                      >
+                        <span className="font-serif text-[10px] text-navy/30">0{i + 1}</span>
+                        <span className="font-serif text-[16px] font-bold text-navy transition-colors group-hover:text-accent">
+                          {info.label}
+                        </span>
+                        <span className="text-[11px] leading-snug text-navy/50">{info.description}</span>
+                        <span className="text-[10px] text-navy/30">{info.flavors.split(' · ').slice(0, 2).join(' · ')}</span>
+                      </Link>
+                    )
+                  })}
+                </div>
               </div>
             )}
           </section>
         )}
 
-        {/* 03 나에게 맞는 커피 찾기 */}
-        {isVisible('tasteFinder') && (
-          <section className="border-y border-navy/15 bg-white px-6 py-16 text-center">
-            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">TASTE FINDER</p>
-            <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">나에게 맞는 커피 찾기</h2>
-            <p className="mx-auto mt-2 max-w-[420px] text-[13px] leading-relaxed text-navy/55">
-              산미, 향, 질감에 대한 몇 가지 질문으로
-              <br className="hidden sm:block" /> 나에게 가까운 커피를 찾아보세요.
-            </p>
-            <Link
-              to="/discover"
-              className="mt-6 inline-block border border-navy bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
-            >
-              취향 찾기
-            </Link>
-          </section>
-        )}
+        {/* SCREEN 3 — KOI Expertise: Coffee Chart / Taste Finder / Dictionary */}
+        {(showChart || showTasteFinder) && (
+          <section className="border-b border-navy/15 bg-white">
+            <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
+              {/* Left 7 cols — Coffee Chart, dense */}
+              {showChart && chartExample && (
+                <div className="border-b border-navy/10 px-6 py-12 lg:col-span-7 lg:border-b-0 lg:border-r lg:py-14 lg:pr-10">
+                  <h2 className="font-serif text-[22px] font-bold text-navy">한 장으로 이해하는 한 커피.</h2>
+                  <p className="mt-2 max-w-[420px] text-[13px] text-navy/55">
+                    향미, 가공, 로스팅, 센서리, 추출 정보를 한 화면에서 확인해보세요.
+                  </p>
 
-        {/* 04 KOI CUP CHARACTER — editorial list, not equal-weight cards */}
-        {isVisible('cupCharacter') && (
-          <section className="mx-auto max-w-[900px] px-6 py-16">
-            <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">KOI CUP CHARACTER</p>
-            <h2 className="mt-1 text-center font-serif text-[24px] font-bold text-navy">
-              당신의 취향은 어떤 성격인가요?
-            </h2>
-
-            <div className="mt-10 divide-y divide-navy/10 border-y border-navy/10">
-              {CUP_CHARACTERS.map((key) => {
-                const info = CHARACTER_INFO[key]
-                return (
                   <Link
-                    key={key}
-                    to={`/characters/${key.toLowerCase()}`}
-                    className="group flex items-center justify-between gap-4 py-5 transition-colors hover:bg-white"
+                    to={`/coffee-chart/${chartExample.slug}`}
+                    className="mt-6 grid grid-cols-1 gap-6 border border-navy/15 p-6 hover:border-navy sm:grid-cols-[1fr_auto]"
                   >
-                    <span className="font-serif text-[22px] font-bold tracking-tight text-navy/25 transition-colors group-hover:text-navy sm:text-[30px]">
-                      {info.label}
-                    </span>
-                    <span className="max-w-[260px] text-right text-[12px] leading-relaxed text-navy/45 transition-colors group-hover:text-navy/70">
-                      {info.description}
-                    </span>
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* 05 KOI SENSORY MAP intro */}
-        {isVisible('sensoryMap') && (
-          <section className="border-y border-navy/15 bg-white py-16">
-            <div className="mx-auto max-w-[1240px] px-6 text-center">
-              <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI SENSORY MAP</p>
-              <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">
-                한 잔을 조금 더 쉽게 이해하는 방법.
-              </h2>
-              <p className="mx-auto mt-3 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
-                코이노커피는 커피의 특징을 산미, 단맛, 바디, 여운, 플레이버, 접근성 등의 정보로 정리해
-                고객이 자신의 취향과 원두의 차이를 쉽게 이해할 수 있도록 돕습니다.
-              </p>
-
-              <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
-                {[
-                  { n: '01', title: 'Character', desc: '커피의 전체적인 인상' },
-                  { n: '02', title: 'Flavor Notes', desc: '컵에서 느껴지는 구체적인 향미' },
-                  { n: '03', title: 'Sensory Profile', desc: '산미·단맛·바디·여운 등을 시각화' },
-                ].map((step) => (
-                  <div key={step.n}>
-                    <p className="font-serif text-[26px] font-bold text-accent">{step.n}</p>
-                    <p className="mt-2 text-[14px] font-bold text-navy">{step.title}</p>
-                    <p className="mt-1 text-[12px] text-navy/55">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8">
-                <Link to="/about-sensory-map" className="text-[12px] font-semibold text-navy/60 hover:text-navy">
-                  센서리 맵 알아보기 →
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* 06 원두 차트 preview */}
-        {isVisible('coffeeChart') && chartExample && (
-          <section className="mx-auto max-w-[1240px] px-6 py-16">
-            <div className="text-center">
-              <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI COFFEE CHART</p>
-              <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">원두 차트</h2>
-              <p className="mx-auto mt-2 max-w-[440px] text-[13px] text-navy/55">
-                원두 하나의 핵심 정보를 한 화면에서 빠르게 확인할 수 있습니다.
-              </p>
-            </div>
-
-            <div className="mx-auto mt-8 max-w-[560px] border border-navy/15 bg-white p-7">
-              <p className="text-[11px] font-semibold tracking-[0.15em] text-navy/45">
-                {chartExample.country?.toUpperCase()}
-              </p>
-              <p className="mt-1 font-serif text-[20px] font-bold text-navy">{chartExample.coffeeName}</p>
-              <span className="mt-2 inline-block border border-navy bg-navy px-2.5 py-1 text-[10px] font-bold tracking-wide text-warm-white">
-                {CHARACTER_INFO[chartExample.character].label}
-              </span>
-              <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row">
-                <RadarChart sensory={chartExample.sensory} size={150} />
-                <div className="flex-1 space-y-1.5">
-                  {SENSORY_FIELDS.slice(0, 4).map((field) => (
-                    <div key={field.key} className="flex items-center justify-between">
-                      <span className="text-[10px] text-navy/50">{field.labelKo}</span>
-                      <DotScale value={chartExample.sensory[field.key]} />
+                    <div className="flex flex-col justify-between">
+                      <div>
+                        <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/45">
+                          {chartExample.country?.toUpperCase()}
+                        </p>
+                        <p className="mt-1 font-serif text-[19px] font-bold text-navy">{chartExample.coffeeName}</p>
+                        <span className="mt-2 inline-block border border-navy bg-navy px-2.5 py-1 text-[10px] font-bold tracking-wide text-warm-white">
+                          {CHARACTER_INFO[chartExample.character].label}
+                        </span>
+                        {chartExample.notes.length > 0 && (
+                          <p className="mt-2 text-[11px] text-navy/50">{chartExample.notes.slice(0, 3).join(' · ')}</p>
+                        )}
+                      </div>
+                      <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-1">
+                        {SENSORY_FIELDS.slice(0, 4).map((field) => (
+                          <div key={field.key} className="flex items-center justify-between gap-3">
+                            <span className="text-[10px] text-navy/50">{field.labelKo}</span>
+                            <DotScale value={chartExample.sensory[field.key]} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+                    <RadarChart sensory={chartExample.sensory} size={150} showLabels={false} />
+                  </Link>
 
-            <div className="mt-8 text-center">
-              <Link
-                to="/coffee-chart"
-                className="border border-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:bg-navy hover:text-warm-white"
-              >
-                전체 원두 차트 보기
-              </Link>
-            </div>
-          </section>
-        )}
+                  {isVisible('sensoryMap') && (
+                    <div className="mt-6 grid grid-cols-1 gap-2 border-t border-navy/10 pt-5 text-[11px] sm:grid-cols-3 sm:gap-4">
+                      <p className="text-navy/50">
+                        <span className="font-bold text-navy">CHARACTER</span> · 커피의 전체적인 인상
+                      </p>
+                      <p className="text-navy/50">
+                        <span className="font-bold text-navy">FLAVOR</span> · 구체적인 향미
+                      </p>
+                      <p className="text-navy/50">
+                        <span className="font-bold text-navy">SENSORY</span> · 산미·단맛·바디 시각화
+                      </p>
+                    </div>
+                  )}
 
-        {/* 07 Brew Better */}
-        {isVisible('brewGuide') && brewGuides.length > 0 && (
-          <section className="border-y border-navy/15 bg-white py-16">
-            <div className="mx-auto max-w-[1240px] px-6">
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BREW BETTER</p>
-                  <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">집에서 더 맛있게</h2>
+                  <Link to="/coffee-chart" className="mt-6 inline-block text-[12px] font-semibold text-navy/60 hover:text-navy">
+                    전체 원두 차트 보기 →
+                  </Link>
                 </div>
-                <Link to="/brew-guide" className="hidden text-[12px] font-semibold text-navy/50 hover:text-navy sm:block">
-                  전체 보기 →
-                </Link>
-              </div>
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {brewGuides.map((guide) => (
+              )}
+
+              {/* Right 5 cols — Taste Finder (top) + Dictionary (bottom) */}
+              <div className="lg:col-span-5">
+                {showTasteFinder && (
                   <Link
-                    key={guide.id}
-                    to={`/brew-guide/${guide.slug}`}
-                    className="border border-navy/15 p-5 hover:border-navy"
+                    to="/discover"
+                    className={`group block px-6 py-12 hover:bg-warm-white/60 lg:py-14 lg:pl-10 ${
+                      dictionaryTerm ? 'border-b border-navy/10' : ''
+                    }`}
                   >
-                    <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/45">{guide.equipment}</p>
-                    <p className="mt-1 font-serif text-[16px] font-bold text-navy">{guide.title}</p>
-                    <p className="mt-2 text-[11px] text-navy/50">
-                      {guide.coffeeDose} · {guide.ratio} · {guide.totalTime}
+                    <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">취향 찾기</p>
+                    <h2 className="mt-2 font-serif text-[22px] font-bold leading-tight text-navy">
+                      어떤 커피가
+                      <br />
+                      나에게 맞을까요?
+                    </h2>
+                    <p className="mt-3 max-w-[320px] text-[13px] leading-relaxed text-navy/55">
+                      산미, 향, 질감에 대한 몇 가지 질문으로 나에게 가까운 커피를 찾아보세요.
                     </p>
+                    <span className="mt-4 inline-block text-[12px] font-semibold text-navy/70 group-hover:text-navy">
+                      내 취향 찾기 →
+                    </span>
                   </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* 08 커피 이야기 */}
-        {isVisible('stories') && stories.length > 0 && (
-          <section className="py-16">
-            <div className="mx-auto max-w-[1240px] px-6">
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORIES</p>
-                  <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">커피 이야기</h2>
-                </div>
-                <Link to="/stories" className="hidden text-[12px] font-semibold text-navy/50 hover:text-navy sm:block">
-                  전체 보기 →
-                </Link>
-              </div>
-              <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3">
-                {stories.map((story) => (
-                  <Link key={story.id} to={`/stories/${story.slug}`} className="group block">
-                    {story.coverImage ? (
-                      <div className="aspect-[3/2] w-full overflow-hidden">
-                        <div
-                          className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
-                          style={{ backgroundImage: `url(${story.coverImage})` }}
-                          role="img"
-                          aria-label={story.title}
-                        />
-                      </div>
-                    ) : (
-                      <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-3">
-                        <KOIStarField />
-                        <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
-                      </div>
-                    )}
-                    <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">
-                      {STORY_CATEGORY_LABEL[story.category]}
-                    </p>
-                    <p className="mt-1 font-serif text-[16px] font-bold text-navy">{story.title}</p>
-                    <p className="mt-2 line-clamp-2 text-[12px] text-navy/55">{story.excerpt}</p>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* 09 KOI COFFEE — brand teaser */}
-        {isVisible('about') && (
-          <section className="border-t border-navy/15 bg-white px-6 py-16 text-center">
-            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI COFFEE</p>
-            <h2 className="mt-1 font-serif text-[24px] font-bold text-navy">코이노커피</h2>
-            <p className="mx-auto mt-3 max-w-[480px] text-[13px] leading-relaxed text-navy/60">
-              {settings.aboutIntro}
-            </p>
-            <Link to="/about" className="mt-5 inline-block text-[12px] font-semibold text-navy/60 hover:text-navy">
-              코이노커피 이야기 읽기 →
-            </Link>
-          </section>
-        )}
-
-        {/* 10 BUSINESS CTA */}
-        {isVisible('business') && (
-          <section className="koi-night-sky relative overflow-hidden py-16">
-            <KOIStarField />
-            <div className="relative mx-auto max-w-[1240px] px-6">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {settings.purchaseUrl && (
-                  <a
-                    href={settings.purchaseUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="border border-warm-white/15 p-6 text-center hover:border-accent/60"
-                  >
-                    <p className="font-serif text-[15px] font-bold text-warm-white">원두 구매</p>
-                  </a>
                 )}
-                <Link
-                  to={settings.businessUrl || '/business'}
-                  className="border border-warm-white/15 p-6 text-center hover:border-accent/60"
-                >
-                  <p className="font-serif text-[15px] font-bold text-warm-white">납품 문의</p>
-                </Link>
-                <Link
-                  to={settings.businessUrl || '/business'}
-                  className="border border-warm-white/15 p-6 text-center hover:border-accent/60"
-                >
-                  <p className="font-serif text-[15px] font-bold text-warm-white">커피 교육</p>
-                </Link>
+
+                {dictionaryTerm && (
+                  <div className="px-6 py-12 lg:py-14 lg:pl-10">
+                    <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">커피 사전</p>
+                    <h2 className="mt-2 font-serif text-[20px] font-bold text-navy">커피가 어렵다면.</h2>
+                    <p className="mt-3 max-w-[320px] text-[13px] leading-relaxed text-navy/55">
+                      {dictionaryTerm.termKo ?? dictionaryTerm.term}는 무엇을 뜻하는지, 익숙한 예와 함께 설명합니다.
+                    </p>
+                    <div className="mt-4 space-y-2 border-l-2 border-accent/50 pl-3">
+                      <p className="text-[12px] text-navy/70">
+                        <span className="font-bold text-navy">{dictionaryTerm.termKo ?? dictionaryTerm.term}</span> → {dictionaryTerm.example}
+                      </p>
+                      {dictionaryFlavor && (
+                        <p className="text-[12px] text-navy/70">
+                          <span className="font-bold text-navy">{dictionaryFlavor.nameKo}</span> → {dictionaryFlavor.example}
+                        </p>
+                      )}
+                    </div>
+                    <Link to="/dictionary" className="mt-4 inline-block text-[12px] font-semibold text-navy/60 hover:text-navy">
+                      커피 사전 →
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* SCREEN 4 — Brew + Stories, then Brand/Business (flows straight into Footer) */}
+        {(showBrew || showStories) && (
+          <section className="mx-auto max-w-[1240px] px-6 py-12">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+              {showBrew && (
+                <div>
+                  <div className="flex items-end justify-between">
+                    <h2 className="font-serif text-[18px] font-bold text-navy">집에서 더 맛있게</h2>
+                    <Link to="/brew-guide" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
+                      전체 보기 →
+                    </Link>
+                  </div>
+                  <div className="mt-4 divide-y divide-navy/10 border-y border-navy/10">
+                    {brewGuides.map((guide) => (
+                      <Link
+                        key={guide.id}
+                        to={`/brew-guide/${guide.slug}`}
+                        className="group flex items-center justify-between gap-4 py-4 hover:bg-white"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-semibold tracking-[0.1em] text-navy/40">{guide.equipment}</p>
+                          <p className="mt-0.5 truncate font-serif text-[15px] font-bold text-navy">{guide.title}</p>
+                          <p className="mt-0.5 text-[11px] text-navy/45">
+                            {guide.coffeeDose} · {guide.ratio} · {guide.totalTime}
+                          </p>
+                        </div>
+                        <span className="shrink-0 text-[11px] font-semibold text-navy/40 group-hover:text-navy">읽기 →</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {showStories && (
+                <div>
+                  <div className="flex items-end justify-between">
+                    <h2 className="font-serif text-[18px] font-bold text-navy">커피 이야기</h2>
+                    <Link to="/stories" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
+                      전체 보기 →
+                    </Link>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    {stories.map((story) => (
+                      <Link key={story.id} to={`/stories/${story.slug}`} className="group block">
+                        {story.coverImage ? (
+                          <div className="aspect-[3/2] w-full overflow-hidden">
+                            <div
+                              className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
+                              style={{ backgroundImage: `url(${story.coverImage})` }}
+                              role="img"
+                              aria-label={story.title}
+                            />
+                          </div>
+                        ) : (
+                          <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-3">
+                            <KOIStarField />
+                            <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
+                          </div>
+                        )}
+                        <p className="mt-2 text-[9px] font-semibold tracking-[0.15em] text-navy/40">
+                          {STORY_CATEGORY_LABEL[story.category]}
+                        </p>
+                        <p className="mt-0.5 font-serif text-[13px] font-bold leading-snug text-navy">{story.title}</p>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {(showAbout || showBusiness) && (
+          <section className="koi-night-sky relative overflow-hidden">
+            <KOIStarField />
+            <div className="relative mx-auto max-w-[1240px] px-6 py-14">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-[1fr_auto] sm:items-center">
+                {showAbout && (
+                  <div className="max-w-[440px]">
+                    <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOI COFFEE</p>
+                    <p className="mt-2 text-[14px] leading-relaxed text-warm-white/75">{settings.aboutIntro}</p>
+                    <Link to="/about" className="mt-3 inline-block text-[12px] font-semibold text-warm-white/80 hover:text-warm-white">
+                      코이노커피 이야기 →
+                    </Link>
+                  </div>
+                )}
+                {showBusiness && (
+                  <div className="flex flex-wrap gap-3 sm:flex-col sm:items-end">
+                    {settings.purchaseUrl && (
+                      <a
+                        href={settings.purchaseUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="border border-warm-white/20 px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:border-accent"
+                      >
+                        원두 구매 →
+                      </a>
+                    )}
+                    <Link
+                      to={settings.businessUrl || '/business'}
+                      className="border border-warm-white/20 px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:border-accent"
+                    >
+                      납품 문의 →
+                    </Link>
+                    <Link
+                      to={settings.businessUrl || '/business'}
+                      className="border border-warm-white/20 px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:border-accent"
+                    >
+                      커피 교육 →
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </section>

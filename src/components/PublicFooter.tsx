@@ -6,7 +6,7 @@ export default function PublicFooter() {
   const settings = getSiteSettings()
 
   return (
-    <footer className="koi-night-sky mt-20 overflow-hidden">
+    <footer className="koi-night-sky overflow-hidden">
       <KOIStarField />
       <div className="relative mx-auto max-w-[1240px] px-6 py-12">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-4">

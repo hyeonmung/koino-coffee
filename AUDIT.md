@@ -15,13 +15,16 @@
 이 세션의 브라우저 자동화 도구(`resize_window`)는 실제 뷰포트 폭을 바꾸지 못합니다.
 `window.innerWidth`를 직접 측정해 8회 이상 재시도했으나 요청한 크기(390/430/500/600/1440px)
 전부 실패했고 항상 원래 폭(1710px)으로 되돌아갔습니다 — 명령은 "성공"으로 응답하지만 실제
-렌더링에는 반영되지 않는 도구 자체의 한계입니다. 따라서:
+렌더링에는 반영되지 않는 도구 자체의 한계입니다.
 
-- **390px 등 실제 모바일 스크린샷 QA는 이번에도 수행하지 못했습니다.** 이를 감추지 않고
-  아래 매트릭스에 정직하게 PARTIAL로 표기합니다.
-- 대신 전 페이지가 Tailwind 반응형 클래스(`sm:`/`lg:`/`xl:`)를 사용하는지 코드 레벨로
-  전수 검토했고, 데스크톱 실제 렌더링은 1710px 고정 폭에서 여러 라운드에 걸쳐 스크린샷으로
-  직접 확인했습니다.
+**이후 세션에서 이 제약을 우회했습니다**: 로컬 정적 서버로 작은 HTML 페이지를 띄우고, 그 안에
+`width: 390px`(뷰포트 폭 고정용), `height: 9000px`(내부 스크롤이 생기지 않도록 충분히 크게)인
+`<iframe src="http://localhost:5173/#/...">`를 삽입하는 방식입니다. iframe 안 문서는 자신만의
+독립된 CSS 뷰포트를 가지므로, iframe의 `width`가 곧 실제 390px 모바일 뷰포트로 렌더링되고
+미디어 쿼리(`sm:`/`lg:`/`xl:`)가 정확히 그 폭 기준으로 동작합니다(교차 출처라 JS로
+`contentWindow`에 접근할 수는 없지만, 스크린샷 검증에는 필요 없음). 이 방식으로 Home 페이지
+전체를 390px에서 실제로 스크롤하며 검증했고, 실제로 2건의 모바일 전용 버그(CHARACTER/FLAVOR/
+SENSORY 3열 텍스트 줄바꿈 문제, Hero "Now Serving" 원두명 잘림)를 발견해 그 자리에서 수정했습니다.
 - Lighthouse, Playwright는 이 환경에 설치되어 있지 않고 이번 세션에서 새로 설치할 네트워크
   접근 권한도 확인되지 않아 실행하지 못했습니다. 대신 수동 성능/접근성 신호(번들 크기,
   aria-label 개수, reduced-motion 대응, 콘솔 에러 여부)를 확인했습니다.
@@ -30,7 +33,7 @@
 
 | 요구사항 | 상태 | 검증 방법 | 문제 | 수정 결과 |
 | --- | --- | --- | --- | --- |
-| Home | PARTIAL | 실제 렌더링 + Hero 이미지 필드 round-trip 테스트 | Hero에 `settings.heroImage`가 전혀 렌더링되지 않음(admin에 필드는 있으나 무시됨) | **수정함** — 사진 있으면 풀블리드 그라데이션 히어로, 없으면 기존 타이포그래피 히어로 |
+| Home | PASS | 전면 재구축 후 1440px 데스크톱 + 390px 모바일(iframe 기법) 실제 스크린샷으로 재검증 | 이전엔 Hero 이미지 필드 미반영 + 9개 섹션이 각각 큰 여백으로 나열돼 총 8~10 viewport였음 | **재구축함** — Screen 1(Hero+Featured 통합)/Screen 2(Coffee grid+Character 인덱스)/Screen 3(Coffee Chart+Taste Finder+Dictionary 통합)/Screen 4(Brew+Stories+Brand/Business Navy band) 4개 화면으로 압축, 총 높이 약 3.3~3.6 viewport(1440×900 기준)로 55%+ 단축. 상세는 아래 "HOME REBUILD" 절 참고 |
 | Navigation | PASS | 데스크톱 클릭 전수 확인, 헤더 검색 `?q=` 라운드트립 확인 | 헤더 검색이 Explorer에 연결되지 않던 버그(직전 세션) | 이미 수정됨(직전 커밋) |
 | Coffee (Explorer) | PARTIAL | 실제 렌더링, 필터/검색 클릭 확인 | 카드가 테두리 박스 + 작은 레이더 아이콘뿐인 제네릭 그리드였음 | **수정함** — CoffeeVisual(사진 또는 KOI Navy 플레이스홀더) + 테두리 없는 에디토리얼 캡션으로 재설계 |
 | Coffee Detail | PARTIAL | 실제 렌더링 | 이미지가 전혀 없어 텍스트만 있는 페이지였음(가장 완성도 높아야 할 페이지인데) | **수정함** — 21:9 히어로 밴드(사진 또는 KOI 플레이스홀더) 추가 |
@@ -102,10 +105,65 @@
 | Backup | PARTIAL | 코드 검토 | `src/utils/csv.ts`/`download.ts`에 백업 유틸은 존재하나 관리자 화면에 버튼 미연결(README에 이미 disclosed) | 미수정 — 우선순위상 이번 세션 범위 밖 |
 | Export | PASS | PNG/QR/소셜 이미지(Square/4:5/Story/A5/A4) 실제 다운로드 확인(직전 세션) | 없음 | — |
 | Forms | PASS | 납품·교육 문의 폼 실제 제출(성공/검증 포함) → 관리자 반영 확인 | 없음 | — |
-| Mobile | PARTIAL | 코드 레벨 반응형 클래스 전수 검토만 | 실제 390px 스크린샷 불가(환경 제약, 위 참고) | 코드는 전 페이지 `sm:`/`lg:`/`xl:` 일관 사용 확인 |
+| Mobile | PARTIAL | Home은 iframe 기법으로 390px 실제 스크린샷 QA 완료. 나머지 페이지는 코드 레벨 반응형 클래스 검토만 | Home 밖의 다른 페이지(Coffee Detail, Coffee Chart, Dictionary 등)는 여전히 390px 실제 스크린샷을 찍지 못함 — 이번 세션은 Home 재구축에 집중 | Home에서 실제로 2건의 모바일 버그를 찾아 수정(CHARACTER/FLAVOR/SENSORY 3열 줄바꿈, Hero 원두명 잘림). 나머지 페이지의 390px 실사진 검증은 다음 세션 과제로 남음(코드 자체는 기존에도 `sm:`/`lg:`/`xl:` 일관 사용) |
 | Performance | PARTIAL | 번들 크기 확인(gzip 197KB), Lighthouse 미실행 | 단일 JS 청크 647KB(gzip 197KB), 코드 분할 없음(README에 이미 disclosed) | 실제 Lighthouse 수치 없이 "90+" 달성을 주장하지 않음 |
-| Accessibility | PARTIAL | aria-label 12개 파일, prefers-reduced-motion 대응, 시맨틱 버튼/링크 사용 확인. 실제 스크린리더/키보드 테스트는 미실행 | React Error Boundary 없음(위 참고) | 기초는 되어 있으나 WCAG 정식 감사 아님 |
-| Production Build | PASS | `tsc -b && vite build` 실제 실행, 매 커밋마다 재확인 | 없음 | 이번 세션 중 4회 이상 clean build 확인 |
+| Accessibility | PARTIAL | aria-label 12개 파일, prefers-reduced-motion 대응, 시맨틱 버튼/링크 사용 확인. 실제 스크린리더/키보드 테스트는 미실행 | React Error Boundary가 없었음 | **수정함** — `src/components/ErrorBoundary.tsx` 추가, `main.tsx`에서 앱 최상단을 감쌈. 런타임 에러 시 흰 화면 대신 KOI 브랜드 에러 화면(새로고침/홈 CTA) 노출. WCAG 정식 감사는 여전히 미실행 |
+| Production Build | PASS | `tsc -b && vite build` 실제 실행, 매 커밋마다 재확인 | 없음 | 이번 세션 포함 6회 이상 clean build 확인 |
+
+## HOME REBUILD — "KOI COFFEE HOMEPAGE FINAL REBUILD" 지시 수행 결과
+
+이 절은 홈 화면 전면 재구축(별도 지시)의 결과를 spec이 요구한 13개 항목으로 보고합니다.
+
+1. **기존 Home 문제**: Hero가 텍스트만으로 화면 대부분을 차지, 섹션마다 eyebrow+heading+
+   paragraph+CTA 패턴이 9회 반복, Character가 세로로 긴 5줄, Sensory Map이 Coffee Chart와
+   중복된 별도 섹션, 총 높이 약 8~10 viewport.
+2. **새 Home 구조**: 4개 Screen으로 압축 — Screen 1(비대칭 Hero 5:7 + Now Serving 오버레이),
+   Screen 2(Current Coffees 4열 그리드 + Cup Character 5열 압축 인덱스), Screen 3(Coffee Chart
+   7열 + Taste Finder/Dictionary 5열, 12-column composite), Screen 4(Brew 2열 에디토리얼 리스트
+   + Stories 2열 + Brand/Business Navy band, Footer로 끊김 없이 연결).
+3. **총 viewport 길이**: 1440×900 기준 실측 약 **3.3~3.6 viewport**(로컬 측정 823px 창 높이에서
+   scrollHeight 2952px = 3.59배; 900px 기준 환산 시 약 3.28배) — 기존 대비 약 55~65% 단축, spec
+   목표(3.5~4.5)를 충족.
+4. **Hero 변경**: 텍스트 중앙 정렬(Generic Centered Hero) → 좌 5 / 우 7 비대칭 그리드. `settings.
+   heroImage`가 있으면 우측 전체가 사진 + 하단 "NOW SERVING" 원두 정보 오버레이, 없으면 KOI Navy
+   타이포그래피 플레이스홀더. 좌측에 "HAND DRIP · ROASTING · EDUCATION" 카테고리 라인 추가
+   (실제 확인 안 된 위치 정보는 지어내지 않음 — "ROASTED IN ANSAN" 같은 문구는 사용하지 않음).
+5. **Coffee 변경**: Featured 5종 슬라이스 → 4종, 첫 카드만 2배 크게 하던 비대칭 그리드 → 4열
+   균등 그리드로 통일(spec 7번 "큰 이미지가 화면 절반 차지 금지"). 카드 자체는 직전 세션에 이미
+   재설계된 CoffeeVisual 기반 borderless 카드를 그대로 재사용.
+6. **Character 변경**: 세로 5행(각 행 매우 큼) → 가로 5열 압축 인덱스(01~05 번호, 이름, 짧은
+   설명, 대표 향미 2개). Hover 시 이름이 Navy → Accent(Yellow)로 전환. 모바일은 2열.
+7. **Expertise section 변경**: 별도로 존재하던 "05 KOI SENSORY MAP"(01/02/03 큰 섹션), "06 원두
+   차트 미리보기" 섹션을 하나의 Composite Section으로 통합. Sensory 01/02/03 정보는 삭제하지
+   않고 Coffee Chart 카드 하단의 작은 CHARACTER/FLAVOR/SENSORY 텍스트 행으로 축소 통합(spec
+   19번). Taste Finder, Dictionary를 우측 5열에 작은 Feature Block으로 배치 — Dictionary는
+   실제 시드 데이터(`term-body`, `flavor-bergamot`)의 뜻/예시를 그대로 가져와 표시, 새 카피를
+   지어내지 않음.
+8. **Brew/Stories 변경**: 3열 카드 그리드 → 좌우 2열, Brew는 divider 기반 에디토리얼 리스트(카드
+   박스 제거), Stories는 2개만 노출하고 이미지가 있으면 사진, 없으면 KOI Navy 플레이스홀더.
+9. **Footer 변경**: `PublicFooter`의 `mt-20` 제거 — Navy Brand/Business band와 Footer(둘 다
+   Navy)가 빈 여백 없이 바로 이어짐. 다른 페이지(Explorer 등)는 `<main>` 자체의 하단 padding이
+   이미 있어 영향 없음을 재확인.
+10. **Mobile 변경**: 위 "환경 제약" 절의 iframe 기법으로 390px 실제 스크린샷 QA를 수행하며 그
+    자리에서 발견해 고친 버그 2건 — (a) Coffee Chart 카드 하단 CHARACTER/FLAVOR/SENSORY 3열
+    그리드가 모바일에서 텍스트 줄바꿈이 어색했던 것을 `grid-cols-1 sm:grid-cols-3`로 수정,
+    (b) Hero "Now Serving" 오버레이에서 원두 이름이 좁은 폭에 눌려 말줄임표로 잘렸던 것을
+    모바일에서는 세로 스택, 데스크톱에서만 가로 배치+truncate로 수정.
+11. **Admin Home 편집 기능**: 기존 `/admin/home`의 Hero 문구/이미지/CTA, Featured 원두 안내,
+    섹션 노출/숨김 토글은 전부 그대로 유지·재사용 — 스키마나 관리자 화면을 변경하지 않고 새
+    레이아웃이 기존 데이터/토글을 그대로 소비하도록 구성. `HomeSectionKey` 9개 토글 모두 여전히
+    유효하게 동작(예: `cupCharacter`를 끄면 Screen 2에서 Character 부분만 사라지고 Coffee grid는
+    남는 식으로 화면이 병합된 뒤에도 개별 제어 유지).
+12. **남은 사용자 사진 Slot**: Hero(`settings.heroImage`, 관리자 "홈 관리"에서 입력) 1곳. 원두별
+    대표 이미지는 각 원두 편집기에서 개별 관리(기존 기능, 변경 없음). 관리자가 데스크톱/모바일
+    Hero 사진을 분리 지정하는 기능(spec 3번의 `HOME_HERO_MOBILE` 슬롯)은 이번 범위에서 구현하지
+    않음 — 기존 스키마에 필드를 추가하는 작업이라 "다른 기능·스키마는 건드리지 않는다"(spec
+    48번)와 상충한다고 판단해 보류. 필요 시 `SiteSettings.heroImageMobile?: string` 필드 추가로
+    다음 세션에 확장 가능.
+13. **Screenshot QA 결과**: 1440px 데스크톱(로컬 브라우저 실제 렌더링, 4회 스크롤 캡처)과 390px
+    모바일(iframe 기법, 6회 스크롤 캡처) 양쪽 모두 Home 전체를 실제로 확인. Round 1(구조) —
+    통과. Round 2(타이포그래피/여백/이미지) — 통과, 별도 수정 없음. Round 3(390px 모바일 +
+    디테일) — 위 2건 버그를 발견해 즉시 수정 후 재확인, 최종 통과.
 
 ## 이번 세션에 실제로 발견하고 고친 것 (요약)
 
