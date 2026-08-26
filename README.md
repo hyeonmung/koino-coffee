@@ -267,6 +267,7 @@ src/
     RadarChart / RadarOverlayChart  레이더 차트(단일) / 비교용 오버레이 차트
     QRCodeBlock                     QR PNG/SVG 생성·다운로드
     SEO                             페이지별 <title>/description/OG 태그 (react-helmet-async)
+    decorative/KOIStarField         Navy 섹션에 선택적으로 쓰는 절제된 밤하늘 별 accent (아래 참고)
     InfoTooltip / StoryBody / ...   기타 공용 UI
   constants/                 Cup Character, Sensory 평가 기준, 국가 메타데이터, 관리자 비밀번호
   utils/                     storage, csv, download, pngExport, validation
@@ -285,6 +286,20 @@ src/
 - Tailwind CSS 4 — 스타일링 (Deep Navy / Star Yellow / Warm White 브랜드 시스템)
 - `html-to-image` — PNG export
 - LocalStorage — 데이터 저장 (Supabase로 교체 가능한 리포지토리 구조)
+
+## Night Sky 브랜드 액센트
+
+Navy 배경이 쓰이는 일부 섹션(Footer, 모바일 메뉴 오버레이, 홈 하단 CTA 밴드)에는 절제된 "밤하늘"
+분위기를 더했습니다. 우주 콘셉트가 아니라, 아주 옅은 방향성 그라데이션과 드문드문 배치된 아주
+작은 Star Yellow 점(일부는 4-point sparkle)만 사용합니다.
+
+- `src/index.css`의 `.koi-night-sky` 클래스 — Navy 배경 위에 거의 티 나지 않는 방향성 그라데이션.
+- `src/components/decorative/KOIStarField.tsx` — 손으로 배치한(랜덤 생성 아님) 14개의 별 점 SVG
+  레이어. 타이포그래피가 오는 중앙부는 비워두고, 대부분 아주 느리게(7초 주기) opacity가
+  미세하게 변하는 `koi-star` 애니메이션을 사용하며 `prefers-reduced-motion`을 존중합니다.
+- 다른 Navy 섹션에 추가로 적용하려면 해당 요소에 `koi-night-sky overflow-hidden relative` 클래스를
+  주고 `<KOIStarField />`를 내부 최상단에 넣은 뒤, 콘텐츠에는 `relative` 클래스를 더해 별 레이어
+  위로 올려주면 됩니다. 모든 Navy 영역에 반복 적용하지 않는 것이 의도된 디자인입니다.
 
 ## 테스트 결과
 
