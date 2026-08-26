@@ -21,13 +21,35 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <div className="mx-auto max-w-[720px] px-6 py-16">
-          {settings.aboutSections.map((section, i) => (
-            <section key={i} className={i > 0 ? 'mt-14 border-t border-navy/10 pt-14' : ''}>
-              <h2 className="font-serif text-[20px] font-bold text-navy">{section.heading}</h2>
-              <p className="mt-3 text-[14px] leading-relaxed text-navy/70">{section.body}</p>
-            </section>
-          ))}
+        <div className="mx-auto max-w-[960px] px-6 py-16">
+          {settings.aboutSections.map((section, i) =>
+            section.image ? (
+              <section
+                key={i}
+                className={`grid grid-cols-1 items-center gap-8 sm:grid-cols-2 sm:gap-14 ${
+                  i > 0 ? 'mt-16 border-t border-navy/10 pt-16' : ''
+                }`}
+              >
+                <div className={i % 2 === 1 ? 'sm:order-2' : ''}>
+                  <div
+                    className="aspect-[4/5] w-full bg-navy/5 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${section.image})` }}
+                    role="img"
+                    aria-label={section.heading}
+                  />
+                </div>
+                <div className={i % 2 === 1 ? 'sm:order-1' : ''}>
+                  <h2 className="font-serif text-[20px] font-bold text-navy">{section.heading}</h2>
+                  <p className="mt-3 text-[14px] leading-relaxed text-navy/70">{section.body}</p>
+                </div>
+              </section>
+            ) : (
+              <section key={i} className={`mx-auto max-w-[560px] ${i > 0 ? 'mt-16 border-t border-navy/10 pt-16' : ''}`}>
+                <h2 className="font-serif text-[20px] font-bold text-navy">{section.heading}</h2>
+                <p className="mt-3 text-[14px] leading-relaxed text-navy/70">{section.body}</p>
+              </section>
+            ),
+          )}
 
           <div className="mt-16 flex flex-wrap justify-center gap-3 border-t border-navy/10 pt-10">
             <Link

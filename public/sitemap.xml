@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Static top-level routes only. This SPA uses HashRouter (URLs like /#/coffees), and
+  per-coffee/dictionary/story detail pages are stored in the browser's LocalStorage, not
+  read at build time — so their slugs cannot be enumerated here without a real backend.
+  See README.md → "남아 있는 제한사항" for the full disclosure. Replace example.com with
+  the real production domain before going live (see LAUNCH_CHECKLIST.md).
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.com/#/</loc><priority>1.0</priority></url>
+  <url><loc>https://example.com/#/coffees</loc><priority>0.9</priority></url>
+  <url><loc>https://example.com/#/coffee-chart</loc><priority>0.9</priority></url>
+  <url><loc>https://example.com/#/discover</loc><priority>0.7</priority></url>
+  <url><loc>https://example.com/#/compare</loc><priority>0.5</priority></url>
+  <url><loc>https://example.com/#/characters</loc><priority>0.6</priority></url>
+  <url><loc>https://example.com/#/dictionary</loc><priority>0.6</priority></url>
+  <url><loc>https://example.com/#/brew-guide</loc><priority>0.6</priority></url>
+  <url><loc>https://example.com/#/stories</loc><priority>0.6</priority></url>
+  <url><loc>https://example.com/#/about</loc><priority>0.7</priority></url>
+  <url><loc>https://example.com/#/business</loc><priority>0.6</priority></url>
+  <url><loc>https://example.com/#/about-sensory-map</loc><priority>0.4</priority></url>
+</urlset>

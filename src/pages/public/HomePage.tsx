@@ -8,6 +8,7 @@ import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
 import { CHARACTER_INFO } from '../../constants/characters'
 import { SENSORY_FIELDS } from '../../constants/sensory'
+import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
@@ -33,31 +34,63 @@ export default function HomePage() {
 
       <main>
         {/* 01 HERO — the brand itself, not the sensory service */}
-        <section className="border-b border-navy/15 bg-white">
-          <div className="mx-auto max-w-[1240px] px-6 py-24 text-center">
-            <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
-            <h1 className="mx-auto mt-4 max-w-[720px] font-serif text-[40px] font-bold leading-tight text-navy sm:text-[52px]">
-              {settings.heroTitle}
-            </h1>
-            <p className="mx-auto mt-4 max-w-[440px] whitespace-pre-line text-[15px] leading-relaxed text-navy/60">
-              {settings.heroSubtitle}
-            </p>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                to={settings.heroCtaPrimaryUrl}
-                className="border border-navy bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
-              >
-                {settings.heroCtaPrimaryLabel}
-              </Link>
-              <Link
-                to={settings.heroCtaSecondaryUrl}
-                className="border border-navy/25 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:border-navy"
-              >
-                {settings.heroCtaSecondaryLabel}
-              </Link>
+        {settings.heroImage ? (
+          <section
+            className="relative flex min-h-[560px] items-end bg-navy bg-cover bg-center sm:min-h-[640px]"
+            style={{ backgroundImage: `url(${settings.heroImage})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/25 to-transparent" />
+            <div className="relative mx-auto w-full max-w-[1240px] px-6 py-14 sm:py-20">
+              <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
+              <h1 className="mt-4 max-w-[640px] font-serif text-[36px] font-bold leading-tight text-warm-white sm:text-[52px]">
+                {settings.heroTitle}
+              </h1>
+              <p className="mt-4 max-w-[440px] whitespace-pre-line text-[15px] leading-relaxed text-warm-white/75">
+                {settings.heroSubtitle}
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Link
+                  to={settings.heroCtaPrimaryUrl}
+                  className="border border-warm-white bg-warm-white px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:bg-accent hover:border-accent"
+                >
+                  {settings.heroCtaPrimaryLabel}
+                </Link>
+                <Link
+                  to={settings.heroCtaSecondaryUrl}
+                  className="border border-warm-white/50 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:border-warm-white"
+                >
+                  {settings.heroCtaSecondaryLabel}
+                </Link>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          <section className="border-b border-navy/15 bg-white">
+            <div className="mx-auto max-w-[1240px] px-6 py-24 text-center">
+              <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
+              <h1 className="mx-auto mt-4 max-w-[720px] font-serif text-[40px] font-bold leading-tight text-navy sm:text-[52px]">
+                {settings.heroTitle}
+              </h1>
+              <p className="mx-auto mt-4 max-w-[440px] whitespace-pre-line text-[15px] leading-relaxed text-navy/60">
+                {settings.heroSubtitle}
+              </p>
+              <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  to={settings.heroCtaPrimaryUrl}
+                  className="border border-navy bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
+                >
+                  {settings.heroCtaPrimaryLabel}
+                </Link>
+                <Link
+                  to={settings.heroCtaSecondaryUrl}
+                  className="border border-navy/25 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:border-navy"
+                >
+                  {settings.heroCtaSecondaryLabel}
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* 02 지금 만날 수 있는 커피 */}
         {isVisible('featuredCoffee') && (
@@ -259,14 +292,27 @@ export default function HomePage() {
                   전체 보기 →
                 </Link>
               </div>
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3">
                 {stories.map((story) => (
-                  <Link
-                    key={story.id}
-                    to={`/stories/${story.slug}`}
-                    className="border border-navy/15 bg-white p-5 hover:border-navy"
-                  >
-                    <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/45">{story.category}</p>
+                  <Link key={story.id} to={`/stories/${story.slug}`} className="group block">
+                    {story.coverImage ? (
+                      <div className="aspect-[3/2] w-full overflow-hidden">
+                        <div
+                          className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
+                          style={{ backgroundImage: `url(${story.coverImage})` }}
+                          role="img"
+                          aria-label={story.title}
+                        />
+                      </div>
+                    ) : (
+                      <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-3">
+                        <KOIStarField />
+                        <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
+                      </div>
+                    )}
+                    <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">
+                      {STORY_CATEGORY_LABEL[story.category]}
+                    </p>
                     <p className="mt-1 font-serif text-[16px] font-bold text-navy">{story.title}</p>
                     <p className="mt-2 line-clamp-2 text-[12px] text-navy/55">{story.excerpt}</p>
                   </Link>

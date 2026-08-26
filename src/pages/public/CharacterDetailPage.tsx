@@ -39,6 +39,15 @@ export default function CharacterDetailPage() {
       <SEO title={character.label} description={character.description} />
       <PublicHeader />
 
+      {character.image && (
+        <div
+          className="aspect-[21/9] w-full bg-navy/5 bg-cover bg-center"
+          style={{ backgroundImage: `url(${character.image})` }}
+          role="img"
+          aria-label={character.label}
+        />
+      )}
+
       <main className="mx-auto max-w-[1000px] px-6 py-10">
         <span className="inline-block border border-navy bg-navy px-4 py-2 text-[16px] font-bold tracking-[0.2em] text-warm-white">
           {character.label}

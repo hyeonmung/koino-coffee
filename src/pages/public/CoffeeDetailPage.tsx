@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
+import CoffeeVisual from '../../components/CoffeeVisual'
 import InfoTooltip from '../../components/InfoTooltip'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -95,6 +96,7 @@ export default function CoffeeDetailPage() {
 
       <main className="mx-auto max-w-[860px] px-6 py-10">
         {/* SECTION 1 — HERO */}
+        <CoffeeVisual coffee={coffee} aspect="aspect-[16/9]" showIdentity className="mb-8" />
         <p className="text-[11px] font-semibold tracking-[0.25em] text-navy/50">{coffee.country}</p>
         <h1 className="mt-1 font-serif text-[30px] font-bold leading-tight text-navy sm:text-[38px]">
           {coffee.coffeeName}

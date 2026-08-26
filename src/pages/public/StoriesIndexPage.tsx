@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import KOIStarField from '../../components/decorative/KOIStarField'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
@@ -44,10 +45,27 @@ export default function StoriesIndexPage() {
             해당 카테고리의 이야기가 없습니다.
           </p>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
             {filtered.map((story) => (
-              <Link key={story.id} to={`/stories/${story.slug}`} className="border border-navy/15 bg-white p-6 hover:border-navy">
-                <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>
+              <Link key={story.id} to={`/stories/${story.slug}`} className="group block">
+                {story.coverImage ? (
+                  <div
+                    className="aspect-[3/2] w-full overflow-hidden"
+                  >
+                    <div
+                      className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
+                      style={{ backgroundImage: `url(${story.coverImage})` }}
+                      role="img"
+                      aria-label={story.title}
+                    />
+                  </div>
+                ) : (
+                  <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
+                    <KOIStarField />
+                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOI COFFEE</p>
+                  </div>
+                )}
+                <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>
                 <p className="mt-1 font-serif text-[18px] font-bold text-navy">{story.title}</p>
                 <p className="mt-2 text-[12px] text-navy/55">{story.excerpt}</p>
                 <p className="mt-3 text-[10px] text-navy/35">

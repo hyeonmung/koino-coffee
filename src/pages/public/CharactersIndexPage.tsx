@@ -30,9 +30,19 @@ export default function CharactersIndexPage() {
                 to={`/characters/${character.key.toLowerCase()}`}
                 className="group grid grid-cols-1 gap-3 border border-navy/15 bg-white p-6 transition-colors hover:border-navy sm:grid-cols-[140px_minmax(0,1fr)_auto] sm:items-center"
               >
-                <span className="inline-block w-fit border border-navy bg-navy px-3 py-1.5 text-[12px] font-bold tracking-[0.15em] text-warm-white">
-                  {character.label}
-                </span>
+                <div className="flex items-center gap-3">
+                  {character.image && (
+                    <div
+                      className="h-12 w-12 shrink-0 bg-navy/5 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${character.image})` }}
+                      role="img"
+                      aria-label={character.label}
+                    />
+                  )}
+                  <span className="inline-block w-fit border border-navy bg-navy px-3 py-1.5 text-[12px] font-bold tracking-[0.15em] text-warm-white">
+                    {character.label}
+                  </span>
+                </div>
                 <div>
                   <p className="text-[13px] text-navy/70">{character.description}</p>
                   <p className="mt-1 text-[11px] text-navy/40">{character.flavors}</p>

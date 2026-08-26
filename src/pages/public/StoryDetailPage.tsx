@@ -18,6 +18,15 @@ export default function StoryDetailPage() {
       <SEO title={story.seoTitle || story.title} description={story.seoDescription || story.excerpt} image={story.coverImage} />
       <PublicHeader />
 
+      {story.coverImage && (
+        <div
+          className="aspect-[21/9] w-full bg-navy/5 bg-cover bg-center"
+          style={{ backgroundImage: `url(${story.coverImage})` }}
+          role="img"
+          aria-label={story.title}
+        />
+      )}
+
       <main className="mx-auto max-w-[680px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{STORY_CATEGORY_LABEL[story.category]}</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold leading-tight text-navy">{story.title}</h1>
