@@ -103,9 +103,6 @@ export default function HomePage() {
                   {settings.heroCtaSecondaryLabel}
                 </Link>
               </div>
-              <p className="mt-10 text-[10px] font-semibold tracking-[0.2em] text-navy/35">
-                HAND DRIP · ROASTING · EDUCATION
-              </p>
             </div>
 
             {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show */}

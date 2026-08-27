@@ -17,14 +17,12 @@ const NAV_LINKS = [
 export default function PublicHeader() {
   const settings = getSiteSettings()
   const [open, setOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
 
   const submitSearch = () => {
     if (!query.trim()) return
     navigate(`/coffees?q=${encodeURIComponent(query.trim())}`)
-    setSearchOpen(false)
     setQuery('')
   }
 
@@ -52,27 +50,22 @@ export default function PublicHeader() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-4">
-          <div className="relative hidden items-center sm:flex">
-            {searchOpen ? (
-              <input
-                autoFocus
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && submitSearch()}
-                onBlur={() => !query && setSearchOpen(false)}
-                placeholder="원두, 산지, 향미 검색"
-                className="w-48 border-b border-navy/30 bg-transparent py-1 text-[13px] text-navy outline-none placeholder:text-navy/35 focus:border-navy"
-              />
-            ) : (
-              <button
-                type="button"
-                onClick={() => setSearchOpen(true)}
-                aria-label="검색"
-                className="flex h-8 w-8 items-center justify-center text-[17px] text-navy/60 hover:text-navy"
-              >
-                ⌕
-              </button>
-            )}
+          <div className="hidden items-center gap-2 border border-navy/25 px-3 py-2 sm:flex">
+            <button
+              type="button"
+              onClick={submitSearch}
+              aria-label="검색"
+              className="flex h-6 w-6 shrink-0 items-center justify-center text-[22px] leading-none text-navy/60 hover:text-navy"
+            >
+              ⌕
+            </button>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && submitSearch()}
+              placeholder="원두, 산지, 향미 검색"
+              className="w-40 bg-transparent text-[13px] text-navy outline-none placeholder:text-navy/35 lg:w-56"
+            />
           </div>
 
           {settings.purchaseUrl && (
