@@ -226,7 +226,7 @@ export default function HomePage() {
                   </Link>
 
                   {isVisible('sensoryMap') && (
-                    <div className="mt-6 grid grid-cols-1 gap-2 border-t border-navy/10 pt-5 text-[11px] sm:grid-cols-3 sm:gap-4">
+                    <div className="mt-6 flex flex-col gap-2 border-t border-navy/10 pt-5 text-[11px] sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2">
                       <p className="text-navy/50">
                         <span className="font-bold text-navy">CHARACTER</span> · 커피의 전체적인 인상
                       </p>
