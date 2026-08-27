@@ -8,7 +8,7 @@ import type {
 } from '../data/schema'
 
 export const ABOUT_BLOCK_TYPE_LABEL: Record<AboutBlockType, string> = {
-  BRAND: '코이노커피 소개',
+  BRAND: '코이노니아 소개',
   PERSON: '대표 / 사람 소개',
   CAREER_LIST: '경력',
   IMAGE_TEXT: '사진 + 글',

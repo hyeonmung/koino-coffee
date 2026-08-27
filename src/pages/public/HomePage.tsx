@@ -353,7 +353,7 @@ export default function HomePage() {
                         ) : (
                           <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-3">
                             <KOIStarField />
-                            <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
+                            <p className="relative text-[8px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
                           </div>
                         )}
                         <p className="mt-2 text-[9px] font-semibold tracking-[0.15em] text-navy/40">
@@ -376,10 +376,10 @@ export default function HomePage() {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-[1fr_auto] sm:items-center">
                 {showAbout && (
                   <div className="max-w-[440px]">
-                    <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINO COFFEE</p>
+                    <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINONIA</p>
                     <p className="mt-2 text-[14px] leading-relaxed text-warm-white/75">{settings.aboutIntro}</p>
                     <Link to="/about" className="mt-3 inline-block text-[12px] font-semibold text-warm-white/80 hover:text-warm-white">
-                      코이노커피 이야기 →
+                      코이노니아 이야기 →
                     </Link>
                   </div>
                 )}

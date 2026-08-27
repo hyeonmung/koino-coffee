@@ -1,7 +1,7 @@
 import type { SiteSettings } from '../schema'
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
-  brandName: '코이노커피',
+  brandName: '코이노니아',
   logoText: 'KOINONIA',
   heroTitle: '한 잔, 새로운 목적지.',
   heroSubtitle: '좋은 원두와 다양한 향미를 통해\n커피의 새로운 경험을 제안합니다.',
@@ -13,20 +13,20 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   naverUrl: '',
   purchaseUrl: '',
   businessUrl: '/business',
-  footerNote: '© 코이노커피. 모든 원두 정보는 로스터가 직접 작성합니다.',
-  seoDefaultTitle: 'KOINO COFFEE — 코이노커피 공식 홈페이지',
+  footerNote: '© 코이노니아. 모든 원두 정보는 로스터가 직접 작성합니다.',
+  seoDefaultTitle: 'KOINONIA — 코이노니아 공식 홈페이지',
   seoDefaultDescription:
-    '코이노커피의 원두, 향미, 로스팅, 추출 이야기를 만나보세요. 좋은 커피를 발견하고 나에게 맞는 한 잔을 찾는 코이노커피 공식 사이트입니다.',
+    '코이노니아의 원두, 향미, 로스팅, 추출 이야기를 만나보세요. 좋은 커피를 발견하고 나에게 맞는 한 잔을 찾는 코이노니아 공식 사이트입니다.',
   homepageFeaturedCoffeeIds: [],
   homepageStoryIds: [],
   homeSectionVisibility: {},
 
   aboutIntro:
-    '코이노커피는 좋은 원두를 정직하게 로스팅하고, 그 맛을 가장 잘 표현하는 방법을 함께 고민하는 로스터리입니다.',
+    '코이노니아는 좋은 원두를 정직하게 로스팅하고, 그 맛을 가장 잘 표현하는 방법을 함께 고민하는 로스터리입니다.',
   aboutSections: [
     {
       heading: '우리가 커피를 하는 이유',
-      body: '커피 한 잔에는 산지의 계절과 사람의 손길, 그리고 로스터의 판단이 함께 담깁니다. 코이노커피는 그 과정을 손님에게 정직하게 전달하는 것을 가장 중요하게 생각합니다.',
+      body: '커피 한 잔에는 산지의 계절과 사람의 손길, 그리고 로스터의 판단이 함께 담깁니다. 코이노니아는 그 과정을 손님에게 정직하게 전달하는 것을 가장 중요하게 생각합니다.',
     },
     {
       heading: '로스팅',

@@ -15,7 +15,7 @@ const SECTIONS: { key: HomeSectionKey; label: string }[] = [
   { key: 'coffeeChart', label: '06 · 원두 차트 미리보기' },
   { key: 'brewGuide', label: '07 · Brew Better' },
   { key: 'stories', label: '08 · 커피 이야기' },
-  { key: 'about', label: '09 · KOINO COFFEE 소개' },
+  { key: 'about', label: '09 · KOINONIA 소개' },
   { key: 'business', label: '10 · 납품 · 교육 CTA' },
 ]
 

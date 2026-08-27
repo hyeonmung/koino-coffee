@@ -141,7 +141,7 @@ export default function CoffeeExplorerPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="원두" description="산지, 향미, 프로세스로 코이노커피 원두를 탐색하세요." />
+      <SEO title="원두" description="산지, 향미, 프로세스로 코이노니아 원두를 탐색하세요." />
       <PublicHeader />
 
       <main className="w-full min-w-0 flex-1 mx-auto max-w-[1240px] px-6 py-10">

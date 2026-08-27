@@ -18,7 +18,7 @@ export default function StoriesIndexPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="이야기" description="산지, 원두, 커피 교육에 관한 코이노커피의 이야기." />
+      <SEO title="이야기" description="산지, 원두, 커피 교육에 관한 코이노니아의 이야기." />
       <PublicHeader />
 
       <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">
@@ -62,7 +62,7 @@ export default function StoriesIndexPage() {
                 ) : (
                   <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
                     <KOIStarField />
-                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
+                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
                   </div>
                 )}
                 <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>

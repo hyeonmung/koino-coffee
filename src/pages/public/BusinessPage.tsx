@@ -16,13 +16,13 @@ export default function BusinessPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="납품 · 교육" description="코이노커피의 원두 납품과 교육 소식을 안내합니다." />
+      <SEO title="납품 · 교육" description="코이노니아의 원두 납품과 교육 소식을 안내합니다." />
       <PublicHeader />
 
       <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BUSINESS</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">납품 · 교육</h1>
-        <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">코이노커피의 원두 납품과 교육 소식을 안내합니다.</p>
+        <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">코이노니아의 원두 납품과 교육 소식을 안내합니다.</p>
 
         <div className="mt-6 flex flex-wrap gap-1.5">
           {(['ALL', ...BUSINESS_POST_CATEGORIES] as const).map((c) => (
@@ -59,7 +59,7 @@ export default function BusinessPage() {
                 ) : (
                   <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
                     <KOIStarField />
-                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
+                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
                   </div>
                 )}
                 <p className="mt-3 flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.15em] text-navy/45">

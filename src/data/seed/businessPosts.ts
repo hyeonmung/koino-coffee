@@ -14,8 +14,8 @@ export const SEED_BUSINESS_POSTS: BusinessPost[] = [
     publishStatus: 'published',
     title: '원두 납품 문의',
     category: 'WHOLESALE',
-    excerpt: '카페와 매장을 위한 코이노커피 원두 납품 안내입니다.',
-    body: `코이노커피는 카페, 레스토랑, 사무실 등 다양한 공간에 원두를 납품하고 있습니다.
+    excerpt: '카페와 매장을 위한 코이노니아 원두 납품 안내입니다.',
+    body: `코이노니아는 카페, 레스토랑, 사무실 등 다양한 공간에 원두를 납품하고 있습니다.
 
 ## 납품 안내
 

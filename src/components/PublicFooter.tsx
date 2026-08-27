@@ -35,7 +35,7 @@ export default function PublicFooter() {
             </div>
           </div>
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">코이노커피</p>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">코이노니아</p>
             <div className="mt-2 flex flex-col gap-1.5">
               <Link to="/about" className="text-[12px] text-warm-white/65 hover:text-warm-white">
                 About 코이노니아

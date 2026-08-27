@@ -38,14 +38,14 @@ export default function CoffeeChartIndexPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="원두 차트" description="코이노커피 원두의 핵심 정보를 한눈에 비교해보세요." />
+      <SEO title="원두 차트" description="코이노니아 원두의 핵심 정보를 한눈에 비교해보세요." />
       <PublicHeader />
 
       <main className="w-full min-w-0 flex-1 mx-auto max-w-[1240px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINO COFFEE CHART</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINONIA CHART</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">원두 차트</h1>
         <p className="mt-2 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
-          현재 코이노커피에서 만나볼 수 있는 원두의 핵심 정보를 한눈에 비교해보세요. 원두를 눌러
+          현재 코이노니아에서 만나볼 수 있는 원두의 핵심 정보를 한눈에 비교해보세요. 원두를 눌러
           자세한 원두 차트를 확인할 수 있습니다.
         </p>
 

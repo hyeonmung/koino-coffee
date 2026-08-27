@@ -46,7 +46,7 @@ export default function AdminSettingsPage() {
               로고 이미지 자체는 코드 수정이 필요합니다 — 개발자에게 새 파일을 전달해주세요.
             </p>
           </div>
-          <Field label="브랜드명 (작은 표기, 예: 코이노커피)">
+          <Field label="브랜드명 (작은 표기, 예: 코이노니아)">
             <input value={settings.brandName} onChange={(e) => patch({ brandName: e.target.value })} className={inputClass} />
           </Field>
           <Field label="로고 표기 (예: KOINONIA)">
@@ -88,7 +88,7 @@ export default function AdminSettingsPage() {
               value={settings.businessRegistrationInfo ?? ''}
               onChange={(e) => patch({ businessRegistrationInfo: e.target.value })}
               className={`${inputClass} min-h-[60px]`}
-              placeholder="상호: 코이노커피 | 대표: OOO | 사업자등록번호: 000-00-00000"
+              placeholder="상호: 코이노니아 | 대표: OOO | 사업자등록번호: 000-00-00000"
             />
           </Field>
           <Field label="Footer 저작권 문구">
@@ -117,9 +117,9 @@ export default function AdminSettingsPage() {
           <a href="#/admin/home" className="underline">
             홈 관리
           </a>
-          에서, 코이노커피 소개는{' '}
+          에서, 코이노니아 소개는{' '}
           <a href="#/admin/about" className="underline">
-            코이노커피
+            코이노니아
           </a>{' '}
           메뉴에서, 납품·교육 서비스 소개는{' '}
           <a href="#/admin/business" className="underline">

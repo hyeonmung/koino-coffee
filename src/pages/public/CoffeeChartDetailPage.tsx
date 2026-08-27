@@ -68,7 +68,7 @@ export default function CoffeeChartDetailPage() {
 
         <div ref={cardRef} className="mt-4 border border-navy/15 bg-white p-8">
           {/* HEADER */}
-          <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">KOINO COFFEE CHART</p>
+          <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">KOINONIA CHART</p>
           <p className="mt-3 text-[12px] font-semibold tracking-[0.15em] text-navy/50">
             {coffee.country?.toUpperCase()}
           </p>

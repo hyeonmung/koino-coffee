@@ -154,7 +154,7 @@ export default function AdminAboutEditorPage() {
   return (
     <AdminLayout>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">ABOUT</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">코이노커피 소개 페이지 편집</h1>
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">코이노니아 소개 페이지 편집</h1>
       <p className="mt-2 max-w-[640px] text-[12px] text-navy/50">
         블록을 추가·삭제·순서 변경하며 자유롭게 페이지를 구성하세요. 왼쪽의 ⠿ 손잡이를 드래그해 순서를 바로 바꿀 수
         있고, 사진, 텍스트, 비율, 배경은 실시간 미리보기를 보면서 직접 조정할 수 있습니다. 단 폰트·자유 색상·절대

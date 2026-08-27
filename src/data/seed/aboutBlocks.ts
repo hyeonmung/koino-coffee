@@ -30,8 +30,8 @@ export const SEED_ABOUT_BLOCKS: AboutBlock[] = [
     textAlign: 'CENTER',
     background: 'WHITE',
     textWidth: 'NORMAL',
-    title: '코이노커피',
-    body: '코이노커피는 좋은 원두를 정직하게 로스팅하고, 그 맛을 가장 잘 표현하는 방법을 함께 고민하는 로스터리입니다.',
+    title: '코이노니아',
+    body: '코이노니아는 좋은 원두를 정직하게 로스팅하고, 그 맛을 가장 잘 표현하는 방법을 함께 고민하는 로스터리입니다.',
   }),
   base({
     id: 'about-section-why',
@@ -39,7 +39,7 @@ export const SEED_ABOUT_BLOCKS: AboutBlock[] = [
     order: 1,
     textAlign: 'CENTER',
     title: '우리가 커피를 하는 이유',
-    body: '커피 한 잔에는 산지의 계절과 사람의 손길, 그리고 로스터의 판단이 함께 담깁니다. 코이노커피는 그 과정을 손님에게 정직하게 전달하는 것을 가장 중요하게 생각합니다.',
+    body: '커피 한 잔에는 산지의 계절과 사람의 손길, 그리고 로스터의 판단이 함께 담깁니다. 코이노니아는 그 과정을 손님에게 정직하게 전달하는 것을 가장 중요하게 생각합니다.',
   }),
   base({
     id: 'about-section-roasting',
@@ -77,7 +77,7 @@ export const SEED_ABOUT_BLOCKS: AboutBlock[] = [
 
 export const DEFAULT_ABOUT_PAGE_SETTINGS: AboutPageSettings = {
   hero: {
-    title: '코이노커피',
+    title: '코이노니아',
     subtitle: '좋은 원두를 정직하게, 그 맛을 쉽게.',
     overlay: 'medium',
     textPositionDesktop: 'CENTER',

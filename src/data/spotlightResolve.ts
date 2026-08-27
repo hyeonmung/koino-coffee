@@ -13,7 +13,7 @@ export const SPOTLIGHT_TYPE_LABEL: Record<SpotlightContentType, string> = {
   BREW: '브루 가이드',
   EDUCATION: '교육',
   BUSINESS: '납품 · 교육',
-  CUSTOM: 'KOINO COFFEE',
+  CUSTOM: 'KOINONIA',
 }
 
 export interface ResolvedSpotlight {

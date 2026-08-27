@@ -12,7 +12,7 @@ export default function CharactersIndexPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="KOINO CUP CHARACTER" description="코이노커피의 5가지 CUP CHARACTER를 소개합니다." />
+      <SEO title="KOINO CUP CHARACTER" description="코이노니아의 5가지 CUP CHARACTER를 소개합니다." />
       <PublicHeader />
 
       <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">

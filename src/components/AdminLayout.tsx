@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { to: '/admin/dictionary', label: '커피 사전' },
   { to: '/admin/brew-guides', label: '브루 가이드' },
   { to: '/admin/stories', label: '이야기' },
-  { to: '/admin/about', label: '코이노커피' },
+  { to: '/admin/about', label: '코이노니아' },
   { to: '/admin/business', label: '납품 · 교육' },
   { to: '/admin/inquiries', label: '문의 관리' },
   { to: '/admin/settings', label: '사이트 설정' },
@@ -25,8 +25,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <Link to="/admin" className="flex items-center gap-2">
             <img src="/brand/koi-logo.png" alt="" className="h-8 w-8 shrink-0" />
             <span>
-              <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노커피</p>
-              <p className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">KOINO COFFEE — 관리자</p>
+              <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노니아</p>
+              <p className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">KOINONIA — 관리자</p>
             </span>
           </Link>
           <Link
