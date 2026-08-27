@@ -2,6 +2,7 @@ import { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
 import AboutBlockRenderer from '../../components/about/AboutBlockRenderer'
 import {
+  ABOUT_BACKGROUND_CLASS,
   ABOUT_BACKGROUND_LABEL,
   ABOUT_BLOCK_TYPE_LABEL,
   ABOUT_CAREER_CATEGORIES,
@@ -90,6 +91,7 @@ export default function AdminAboutEditorPage() {
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
   const [hero, setHero] = useState<AboutHeroSettings>(() => getAboutPageSettings().hero)
   const [heroSaved, setHeroSaved] = useState(false)
+  const [dragId, setDragId] = useState<string | null>(null)
 
   const refresh = () => setBlocks(getAllAboutBlocks())
 
@@ -99,6 +101,19 @@ export default function AdminAboutEditorPage() {
     if (!target) return
     upsertAboutBlock({ ...block, order: target.order })
     upsertAboutBlock({ ...target, order: block.order })
+    refresh()
+  }
+
+  /** Drag-and-drop reorder — drop a block onto another row's position, everything between shifts accordingly. */
+  const reorderTo = (fromId: string, toIndex: number) => {
+    const fromIndex = blocks.findIndex((b) => b.id === fromId)
+    if (fromIndex === -1 || fromIndex === toIndex) return
+    const next = [...blocks]
+    const [moved] = next.splice(fromIndex, 1)
+    next.splice(toIndex, 0, moved)
+    next.forEach((b, i) => {
+      if (b.order !== i) upsertAboutBlock({ ...b, order: i })
+    })
     refresh()
   }
 
@@ -141,8 +156,9 @@ export default function AdminAboutEditorPage() {
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">ABOUT</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">코이노커피 소개 페이지 편집</h1>
       <p className="mt-2 max-w-[640px] text-[12px] text-navy/50">
-        블록을 추가·삭제·순서 변경하며 자유롭게 페이지를 구성하세요. 사진, 텍스트, 순서, 좌우 위치, 비율, 배경은 직접
-        조정할 수 있지만 폰트·색상·절대 위치 지정은 KOI 디자인 시스템 보호를 위해 제공하지 않습니다.
+        블록을 추가·삭제·순서 변경하며 자유롭게 페이지를 구성하세요. 왼쪽의 ⠿ 손잡이를 드래그해 순서를 바로 바꿀 수
+        있고, 사진, 텍스트, 비율, 배경은 실시간 미리보기를 보면서 직접 조정할 수 있습니다. 단 폰트·자유 색상·절대
+        위치 지정은 KOI 디자인 시스템 보호를 위해 제공하지 않습니다.
       </p>
 
       {/* HERO */}
@@ -194,8 +210,23 @@ export default function AdminAboutEditorPage() {
       {/* BLOCK LIST */}
       <div className="mt-8 space-y-2">
         {blocks.map((block, idx) => (
-          <div key={block.id} className="border border-navy/15 bg-white">
+          <div
+            key={block.id}
+            draggable
+            onDragStart={() => setDragId(block.id)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault()
+              if (dragId) reorderTo(dragId, idx)
+              setDragId(null)
+            }}
+            onDragEnd={() => setDragId(null)}
+            className={`border border-navy/15 bg-white transition-opacity ${dragId === block.id ? 'opacity-30' : ''}`}
+          >
             <div className="flex items-center gap-3 px-4 py-3">
+              <span className="shrink-0 cursor-grab select-none text-[15px] leading-none text-navy/30 hover:text-navy/60 active:cursor-grabbing" title="드래그하여 순서 변경">
+                ⠿
+              </span>
               <div className="flex shrink-0 flex-col gap-0.5">
                 <button type="button" onClick={() => move(block, -1)} disabled={idx === 0} className="text-[10px] text-navy/40 hover:text-navy disabled:opacity-20">▲</button>
                 <button type="button" onClick={() => move(block, 1)} disabled={idx === blocks.length - 1} className="text-[10px] text-navy/40 hover:text-navy disabled:opacity-20">▼</button>
@@ -289,6 +320,25 @@ function PillGroup<T extends string>({ options, value, onChange }: { options: { 
           className={`border px-2.5 py-1.5 text-[11px] font-semibold ${value === opt.value ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/60 hover:border-navy/50'}`}
         >
           {opt.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+/** Visual background swatches (actual KOI theme colors) instead of a text pill — the one place a "seeing it" picker fits without opening up a free color picker. */
+function BackgroundSwatchGroup({ value, onChange }: { value: AboutBackgroundTheme; onChange: (v: AboutBackgroundTheme) => void }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {BACKGROUNDS.map((b) => (
+        <button
+          key={b}
+          type="button"
+          onClick={() => onChange(b)}
+          className={`flex flex-col items-center gap-1 border p-1.5 ${value === b ? 'border-navy' : 'border-transparent hover:border-navy/20'}`}
+        >
+          <span className={`block h-9 w-14 border border-navy/10 ${ABOUT_BACKGROUND_CLASS[b]}`} />
+          <span className="text-[9px] font-semibold text-navy/60">{ABOUT_BACKGROUND_LABEL[b]}</span>
         </button>
       ))}
     </div>
@@ -507,13 +557,17 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           <PillGroup options={LAYOUTS.map((l) => ({ value: l, label: ABOUT_LAYOUT_LABEL[l] }))} value={draft.layout} onChange={(v) => patch({ layout: v })} />
 
           {draft.layout === 'CUSTOM' && (
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <LabeledField label="사진 너비 (12 중)">
-                <select value={draft.customImageCols ?? 6} onChange={(e) => patch({ customImageCols: Number(e.target.value) })} className={inputClass}>
-                  {[4, 5, 6, 7, 8].map((n) => (
-                    <option key={n} value={n}>사진 {n} / 텍스트 {12 - n}</option>
-                  ))}
-                </select>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <LabeledField label={`사진 : 텍스트 비율 — 사진 ${draft.customImageCols ?? 6} / 텍스트 ${12 - (draft.customImageCols ?? 6)}`}>
+                <input
+                  type="range"
+                  min={4}
+                  max={8}
+                  step={1}
+                  value={draft.customImageCols ?? 6}
+                  onChange={(e) => patch({ customImageCols: Number(e.target.value) })}
+                  className="w-full accent-navy"
+                />
               </LabeledField>
               <LabeledField label="사진 위치">
                 <PillGroup
@@ -552,7 +606,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
 
           <div className="mt-3">
             <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">배경</span>
-            <PillGroup options={BACKGROUNDS.map((b) => ({ value: b, label: ABOUT_BACKGROUND_LABEL[b] }))} value={draft.background} onChange={(v) => patch({ background: v })} />
+            <BackgroundSwatchGroup value={draft.background} onChange={(v) => patch({ background: v })} />
           </div>
 
           <div className="mt-3">
