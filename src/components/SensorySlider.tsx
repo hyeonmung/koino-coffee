@@ -15,9 +15,9 @@ export default function SensorySlider({ field, value, onChange }: SensorySliderP
     <div className="py-2">
       <div className="mb-1.5 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <span className="text-[11px] font-semibold tracking-wide text-navy">{field.label}</span>
-          <span className="text-[10px] text-navy/45">{field.labelKo}</span>
-          <InfoTooltip title={field.label} criteria={field.criteria} />
+          <span className="text-[11px] font-semibold tracking-wide text-navy">{field.labelKo}</span>
+          <span className="text-[10px] text-navy/45">{field.label}</span>
+          <InfoTooltip title={field.labelKo} criteria={field.criteria} />
         </div>
         <span className="min-w-[1.5rem] text-right font-serif text-[15px] font-semibold text-navy">
           {value}
@@ -29,7 +29,7 @@ export default function SensorySlider({ field, value, onChange }: SensorySliderP
             key={score}
             type="button"
             onClick={() => onChange(score)}
-            aria-label={`${field.label} ${score}점`}
+            aria-label={`${field.labelKo} ${score}점`}
             aria-pressed={value === score}
             className={`h-6 flex-1 border text-[10px] transition-colors ${
               score <= value

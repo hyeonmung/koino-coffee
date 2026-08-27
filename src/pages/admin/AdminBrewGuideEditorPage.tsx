@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import { getAllBrewCategories } from '../../data/repositories/brewCategoryRepository'
 import { brewGuideSlugExists, getBrewGuideById, upsertBrewGuide } from '../../data/repositories/brewGuideRepository'
 import type { BrewGuide, BrewPourStep, PublishStatus } from '../../data/schema'
 import { slugifyFilename } from '../../utils/download'
@@ -32,6 +33,7 @@ export default function AdminBrewGuideEditorPage() {
   const { id } = useParams()
   const isNew = !id || id === 'new'
   const navigate = useNavigate()
+  const categories = getAllBrewCategories()
   const [draft, setDraft] = useState<BrewGuide>(() => (isNew ? emptyGuide() : getBrewGuideById(id!) ?? emptyGuide()))
   const [slugTouched, setSlugTouched] = useState(!isNew)
   const [error, setError] = useState<string | null>(null)
@@ -88,7 +90,24 @@ export default function AdminBrewGuideEditorPage() {
       {error && <p className="mt-3 border border-red-300 bg-red-50 px-3 py-2 text-[12px] text-red-600">{error}</p>}
 
       <div className="mt-6 max-w-[560px] space-y-4">
-        <Field label="장비">
+        <Field label="카테고리">
+          <select
+            value={draft.categoryId ?? ''}
+            onChange={(e) => patch({ categoryId: e.target.value || undefined })}
+            className={inputClass}
+          >
+            <option value="">선택 안 함</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <Link to="/admin/brew-guides/categories" className="mt-1 inline-block text-[11px] text-navy/40 hover:text-navy">
+            카테고리 관리 →
+          </Link>
+        </Field>
+        <Field label="장비 (Equipment)">
           <select value={draft.equipment} onChange={(e) => patch({ equipment: e.target.value })} className={inputClass}>
             {['V60', 'Origami', 'Kalita', 'Aeropress', 'Espresso', 'French Press', 'Cold Brew'].map((eq) => (
               <option key={eq} value={eq}>

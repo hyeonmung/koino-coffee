@@ -52,7 +52,7 @@ export default function CoffeeChartDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO
         title={`${coffee.coffeeName} 원두 차트`}
         description={`${coffee.country} · ${character.label} · ${coffee.notes.join(', ')}`}
@@ -60,7 +60,7 @@ export default function CoffeeChartDetailPage() {
       />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[720px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[720px] px-6 py-10">
         <Link to="/coffee-chart" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
           ← 원두 차트 목록
         </Link>
@@ -136,20 +136,20 @@ export default function CoffeeChartDetailPage() {
             {hasAdvanced && (
               <details className="mt-3">
                 <summary className="cursor-pointer text-[11px] font-semibold text-navy/50 hover:text-navy">
-                  Advanced Roast Data
+                  상세 로스팅 데이터 · Advanced Roast Data
                 </summary>
                 <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  <SPEC label="BATCH" value={coffee.roastData?.batch} />
-                  <SPEC label="CHARGE TEMP" value={coffee.roastData?.chargeTemp} />
-                  <SPEC label="TURNING POINT" value={coffee.roastData?.turningPoint} />
-                  <SPEC label="YELLOW" value={coffee.roastData?.yellow} />
-                  <SPEC label="FIRST CRACK" value={coffee.roastData?.firstCrack} />
-                  <SPEC label="DROP" value={coffee.roastData?.drop} />
-                  <SPEC label="TOTAL TIME" value={coffee.roastData?.totalTime} />
-                  <SPEC label="DEV. TIME" value={coffee.roastData?.developmentTime} />
-                  <SPEC label="DEV. RATIO" value={coffee.roastData?.developmentRatio} />
-                  <SPEC label="DROP TEMP" value={coffee.roastData?.dropTemp} />
-                  <SPEC label="MACHINE" value={coffee.roastData?.machine} />
+                  <SPEC label="배치 · BATCH" value={coffee.roastData?.batch} />
+                  <SPEC label="투입 온도 · CHARGE TEMP" value={coffee.roastData?.chargeTemp} />
+                  <SPEC label="터닝포인트" value={coffee.roastData?.turningPoint} />
+                  <SPEC label="옐로우 포인트" value={coffee.roastData?.yellow} />
+                  <SPEC label="1차 크랙 · FIRST CRACK" value={coffee.roastData?.firstCrack} />
+                  <SPEC label="배출 · DROP" value={coffee.roastData?.drop} />
+                  <SPEC label="총 시간 · TOTAL TIME" value={coffee.roastData?.totalTime} />
+                  <SPEC label="개발 시간 · DEV. TIME" value={coffee.roastData?.developmentTime} />
+                  <SPEC label="개발 비율 · DEV. RATIO" value={coffee.roastData?.developmentRatio} />
+                  <SPEC label="배출 온도 · DROP TEMP" value={coffee.roastData?.dropTemp} />
+                  <SPEC label="로스터기 · MACHINE" value={coffee.roastData?.machine} />
                 </div>
               </details>
             )}
@@ -184,10 +184,10 @@ export default function CoffeeChartDetailPage() {
                 이 커피를 위한 추천 레시피 · {guide.equipment}
               </p>
               <div className="mt-2 grid grid-cols-4 gap-2">
-                <SPEC label="Coffee" value={guide.coffeeDose} />
-                <SPEC label="Water" value={guide.water} />
-                <SPEC label="Temp" value={guide.temperature} />
-                <SPEC label="Grind" value={guide.grind} />
+                <SPEC label="원두" value={guide.coffeeDose} />
+                <SPEC label="물" value={guide.water} />
+                <SPEC label="온도" value={guide.temperature} />
+                <SPEC label="분쇄도" value={guide.grind} />
               </div>
               {guide.pourSteps.length > 0 && (
                 <div className="mt-3 space-y-1">

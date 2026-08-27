@@ -6,153 +6,70 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
-import { getFlavorDescriptors, getFlavorFamilies } from '../../data/repositories/flavorRepository'
-import { EMPTY_ANSWERS, matchCoffees, type TasteFinderAnswers } from '../../data/tasteFinder'
-import type { CupCharacter, SensoryScore } from '../../types'
-
-const FEELING_OPTIONS: { label: string; value: CupCharacter }[] = [
-  { label: '상큼하고 깔끔하게', value: 'CLEAR' },
-  { label: '과일처럼 풍부하게', value: 'JUICY' },
-  { label: '향긋하고 화사하게', value: 'ELEGANT' },
-  { label: '고소하고 편안하게', value: 'CALM' },
-  { label: '개성 있고 강렬하게', value: 'VIVID' },
-]
-
-const ACIDITY_OPTIONS: { label: string; value: SensoryScore | null }[] = [
-  { label: '거의 없는 편', value: 1 },
-  { label: '적당한 편', value: 3 },
-  { label: '선명한 편', value: 5 },
-  { label: '상관없음', value: null },
-]
-
-const BODY_OPTIONS: { label: string; value: SensoryScore }[] = [
-  { label: '차처럼 가볍게', value: 2 },
-  { label: '균형 있게', value: 3 },
-  { label: '묵직하게', value: 4 },
-]
-
-const NOVELTY_OPTIONS: { label: string; value: SensoryScore }[] = [
-  { label: '익숙한 커피가 좋아요', value: 5 },
-  { label: '조금 새로운 것도 좋아요', value: 3 },
-  { label: '독특할수록 좋아요', value: 1 },
-]
+import { addVector, emptyVector, matchCoffeesFromVector, pickQuestionSet } from '../../data/tasteFinder'
+import { TOPIC_LABEL, type PreferenceVector, type TasteFinderQuestion } from '../../data/tasteFinderQuestions'
 
 const TOTAL_STEPS = 5
 
 export default function TasteFinderPage() {
-  const coffees = useMemo(() => getPublishedCoffees(), [])
-  const descriptors = useMemo(() => getFlavorDescriptors(), [])
-  const families = useMemo(() => getFlavorFamilies(), [])
+  // Only Published, currently-recommendable coffees — Archive/Draft never appear as a match.
+  const coffees = useMemo(() => getPublishedCoffees().filter((c) => c.availability !== 'archive'), [])
 
+  const [questions, setQuestions] = useState<TasteFinderQuestion[]>(() => pickQuestionSet())
   const [step, setStep] = useState(0)
-  const [answers, setAnswers] = useState<TasteFinderAnswers>(EMPTY_ANSWERS)
+  const [answerVectors, setAnswerVectors] = useState<(PreferenceVector | null)[]>(() => questions.map(() => null))
   const [showResults, setShowResults] = useState(false)
 
-  const results = useMemo(
-    () => (showResults ? matchCoffees(answers, coffees, descriptors, 3) : []),
-    [showResults, answers, coffees, descriptors],
-  )
+  const results = useMemo(() => {
+    if (!showResults) return []
+    const total = answerVectors.reduce<PreferenceVector>((acc, v) => (v ? addVector(acc, v) : acc), emptyVector())
+    return matchCoffeesFromVector(total, coffees, 3)
+  }, [showResults, answerVectors, coffees])
+
+  const current = questions[step]
+  const canAdvance = answerVectors[step] !== null
+
+  const selectAnswer = (vector: PreferenceVector) => {
+    setAnswerVectors((prev) => prev.map((v, i) => (i === step ? vector : v)))
+  }
 
   const next = () => (step < TOTAL_STEPS - 1 ? setStep((s) => s + 1) : setShowResults(true))
   const back = () => setStep((s) => Math.max(0, s - 1))
 
   const restart = () => {
-    setAnswers(EMPTY_ANSWERS)
+    const nextQuestions = pickQuestionSet()
+    setQuestions(nextQuestions)
+    setAnswerVectors(nextQuestions.map(() => null))
     setStep(0)
     setShowResults(false)
   }
 
-  const toggleFamily = (id: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      flavorFamilyIds: prev.flavorFamilyIds.includes(id)
-        ? prev.flavorFamilyIds.filter((f) => f !== id)
-        : [...prev.flavorFamilyIds, id],
-    }))
-  }
-
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO title="취향 찾기" description="몇 가지 질문으로 나에게 맞는 커피를 찾아보세요." />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[640px] px-6 py-14">
+      <main className="flex-1 mx-auto max-w-[640px] px-6 py-14">
         {!showResults ? (
           <>
             <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">FIND YOUR COFFEE</p>
             <h1 className="mt-1 text-center font-serif text-[26px] font-bold text-navy">좋아하는 맛에서 시작해보세요.</h1>
             <p className="mt-6 text-center text-[11px] font-semibold text-navy/40">
-              {step + 1} / {TOTAL_STEPS}
+              {step + 1} / {TOTAL_STEPS} · {TOPIC_LABEL[current.topic]}
             </p>
 
             <div className="mt-4 border border-navy/15 bg-white p-8">
-              {step === 0 && (
-                <QuestionBlock title="어떤 느낌의 커피가 좋나요?">
-                  {FEELING_OPTIONS.map((opt) => (
-                    <OptionButton
-                      key={opt.value}
-                      selected={answers.feeling === opt.value}
-                      onClick={() => setAnswers((prev) => ({ ...prev, feeling: opt.value }))}
-                    >
-                      {opt.label}
-                    </OptionButton>
-                  ))}
-                </QuestionBlock>
-              )}
-              {step === 1 && (
-                <QuestionBlock title="산미는?">
-                  {ACIDITY_OPTIONS.map((opt) => (
-                    <OptionButton
-                      key={opt.label}
-                      selected={answers.acidityTarget === opt.value}
-                      onClick={() => setAnswers((prev) => ({ ...prev, acidityTarget: opt.value }))}
-                    >
-                      {opt.label}
-                    </OptionButton>
-                  ))}
-                </QuestionBlock>
-              )}
-              {step === 2 && (
-                <QuestionBlock title="질감은?">
-                  {BODY_OPTIONS.map((opt) => (
-                    <OptionButton
-                      key={opt.label}
-                      selected={answers.bodyTarget === opt.value}
-                      onClick={() => setAnswers((prev) => ({ ...prev, bodyTarget: opt.value }))}
-                    >
-                      {opt.label}
-                    </OptionButton>
-                  ))}
-                </QuestionBlock>
-              )}
-              {step === 3 && (
-                <QuestionBlock title="좋아하는 향은? (복수 선택 가능)">
-                  {families
-                    .filter((f) => f.id !== 'family-other')
-                    .map((family) => (
-                      <OptionButton
-                        key={family.id}
-                        selected={answers.flavorFamilyIds.includes(family.id)}
-                        onClick={() => toggleFamily(family.id)}
-                      >
-                        {family.nameKo ?? family.name}
-                      </OptionButton>
-                    ))}
-                </QuestionBlock>
-              )}
-              {step === 4 && (
-                <QuestionBlock title="새로운 향미에 대한 선호는?">
-                  {NOVELTY_OPTIONS.map((opt) => (
-                    <OptionButton
-                      key={opt.label}
-                      selected={answers.noveltyTarget === opt.value}
-                      onClick={() => setAnswers((prev) => ({ ...prev, noveltyTarget: opt.value }))}
-                    >
-                      {opt.label}
-                    </OptionButton>
-                  ))}
-                </QuestionBlock>
-              )}
+              <QuestionBlock title={current.question} helperText={current.helperText}>
+                {current.options.map((opt) => (
+                  <OptionButton
+                    key={opt.label}
+                    selected={answerVectors[step] === opt.vector}
+                    onClick={() => selectAnswer(opt.vector)}
+                  >
+                    {opt.label}
+                  </OptionButton>
+                ))}
+              </QuestionBlock>
             </div>
 
             <div className="mt-6 flex justify-between">
@@ -167,7 +84,8 @@ export default function TasteFinderPage() {
               <button
                 type="button"
                 onClick={next}
-                className="border border-navy bg-navy px-6 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
+                disabled={!canAdvance}
+                className="border border-navy bg-navy px-6 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light disabled:opacity-30"
               >
                 {step === TOTAL_STEPS - 1 ? '결과 보기' : '다음'}
               </button>
@@ -234,10 +152,11 @@ export default function TasteFinderPage() {
   )
 }
 
-function QuestionBlock({ title, children }: { title: string; children: React.ReactNode }) {
+function QuestionBlock({ title, helperText, children }: { title: string; helperText?: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="font-serif text-[18px] font-bold text-navy">{title}</h2>
+      <h2 className="font-serif text-[18px] font-bold leading-snug text-navy">{title}</h2>
+      {helperText && <p className="mt-2 text-[12px] leading-relaxed text-navy/50">{helperText}</p>}
       <div className="mt-5 flex flex-col gap-2">{children}</div>
     </div>
   )

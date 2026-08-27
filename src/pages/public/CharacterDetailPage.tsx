@@ -36,7 +36,7 @@ export default function CharacterDetailPage() {
   if (!character) return <Navigate to="/characters" replace />
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO title={character.label} description={character.description} />
       <PublicHeader />
 
@@ -49,7 +49,7 @@ export default function CharacterDetailPage() {
         />
       )}
 
-      <main className="mx-auto max-w-[1000px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <span className="inline-block border border-navy bg-navy px-4 py-2 text-[16px] font-bold tracking-[0.2em] text-warm-white">
           {character.label}
         </span>

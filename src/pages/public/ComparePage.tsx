@@ -32,11 +32,11 @@ export default function ComparePage() {
   const removeCoffee = (id: string) => setSelectedIds((prev) => prev.filter((x) => x !== id))
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO title="원두 비교" description="최대 3개의 원두를 나란히 비교해보세요." />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[1000px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COMPARE</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">원두 비교하기</h1>
         <p className="mt-2 text-[13px] text-navy/55">최대 {MAX_COMPARE}개의 원두를 선택해 비교할 수 있습니다.</p>
@@ -97,12 +97,12 @@ export default function ComparePage() {
             <div className="mt-8 overflow-x-auto">
               <table className="w-full min-w-[480px] border-collapse text-[12px]">
                 <tbody>
-                  <CompareRow label="Character" cells={selected.map((c) => CHARACTER_INFO[c.character].label)} />
-                  <CompareRow label="Country" cells={selected.map((c) => c.country || '-')} />
-                  <CompareRow label="Process" cells={selected.map((c) => c.process || '-')} />
-                  <CompareRow label="Variety" cells={selected.map((c) => c.variety || '-')} />
+                  <CompareRow label="컵 캐릭터" cells={selected.map((c) => CHARACTER_INFO[c.character].label)} />
+                  <CompareRow label="산지" cells={selected.map((c) => c.country || '-')} />
+                  <CompareRow label="가공 방식" cells={selected.map((c) => c.process || '-')} />
+                  <CompareRow label="품종" cells={selected.map((c) => c.variety || '-')} />
                   <CompareRow
-                    label="Flavor Notes"
+                    label="플레이버 노트"
                     cells={selected.map((c) =>
                       c.notes.length > 0 ? <FlavorNotes notes={c.notes} character={c.character} /> : '-',
                     )}
@@ -110,7 +110,7 @@ export default function ComparePage() {
                   {SENSORY_FIELDS.map((field) => (
                     <CompareRow
                       key={field.key}
-                      label={field.label}
+                      label={field.labelKo}
                       cells={selected.map((c) => String(c.sensory[field.key]))}
                     />
                   ))}

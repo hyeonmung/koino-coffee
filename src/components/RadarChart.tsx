@@ -30,7 +30,7 @@ interface RadarChartProps {
 const RadarChart = forwardRef<HTMLDivElement, RadarChartProps>(
   ({ sensory, size = 320, showLabels = true, accentColor, accentSoft }, ref) => {
     const data: ChartData<'radar'> = {
-      labels: SENSORY_FIELDS.map((f) => f.label),
+      labels: SENSORY_FIELDS.map((f) => f.labelKo),
       datasets: [
         {
           data: SENSORY_FIELDS.map((f) => sensory[f.key]),

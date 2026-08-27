@@ -66,8 +66,8 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
         {SENSORY_FIELDS.map((field) => (
           <div key={field.key} className="flex items-center justify-between">
             <span className="flex items-center gap-1 text-[10px] font-semibold tracking-wide text-navy/60">
-              {field.label}
-              <InfoTooltip title={field.label} criteria={field.criteria} />
+              {field.labelKo}
+              <InfoTooltip title={field.labelKo} criteria={field.criteria} />
             </span>
             <span className="font-serif text-[13px] font-semibold text-navy">{coffee.sensory[field.key]}</span>
           </div>
@@ -75,12 +75,12 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-navy/15 pt-4">
-        <MetaItem label="REGION" value={coffee.region} />
-        <MetaItem label="VARIETY" value={coffee.variety} />
-        <MetaItem label="PROCESS" value={coffee.process} />
-        <MetaItem label="ALTITUDE" value={coffee.altitude} />
-        <MetaItem label="PRODUCER / FARM" value={coffee.producer} />
-        <MetaItem label="ROAST LEVEL" value={coffee.roastLevel} />
+        <MetaItem label="지역 · REGION" value={coffee.region} />
+        <MetaItem label="품종 · VARIETY" value={coffee.variety} />
+        <MetaItem label="가공 방식 · PROCESS" value={coffee.process} />
+        <MetaItem label="고도 · ALTITUDE" value={coffee.altitude} />
+        <MetaItem label="생산자 · PRODUCER" value={coffee.producer} />
+        <MetaItem label="로스팅 · ROAST LEVEL" value={coffee.roastLevel} />
       </div>
     </div>
   )

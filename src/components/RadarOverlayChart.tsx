@@ -31,7 +31,7 @@ interface RadarOverlayChartProps {
 
 export default function RadarOverlayChart({ series, size = 320 }: RadarOverlayChartProps) {
   const data: ChartData<'radar'> = {
-    labels: SENSORY_FIELDS.map((f) => f.label),
+    labels: SENSORY_FIELDS.map((f) => f.labelKo),
     datasets: series.map((s) => ({
       label: s.label,
       data: SENSORY_FIELDS.map((f) => s.sensory[f.key]),

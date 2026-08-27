@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { CHARACTER_INFO } from '../constants/characters'
 import { CHARACTER_STYLE } from '../constants/characterStyle'
 import type { Coffee } from '../data/schema'
+import { formatCoffeeNumber } from '../utils/coffeeNumber'
 import CoffeeVisual from './CoffeeVisual'
 import FlavorNotes from './FlavorNotes'
 import MiniSensoryRadar from './MiniSensoryRadar'
@@ -31,7 +32,9 @@ export default function CoffeeCard({ coffee, showRadar = false }: CoffeeCardProp
       </div>
 
       <div className="mt-3 flex items-center justify-between">
-        <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/45">{coffee.country || 'ORIGIN'}</p>
+        {formatCoffeeNumber(coffee.coffeeNumber) && (
+          <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">{formatCoffeeNumber(coffee.coffeeNumber)}</p>
+        )}
         {coffee.availability !== 'available' && (
           <span
             className={`text-[9px] font-semibold tracking-[0.1em] ${

@@ -7,6 +7,7 @@ import { checkCompleteness } from '../../data/completeness'
 import type { Coffee, PublishStatus } from '../../data/schema'
 import { deleteCoffee, getAllCoffees, upsertCoffee } from '../../data/repositories/coffeeRepository'
 import { CUP_CHARACTERS, type CupCharacter } from '../../types'
+import { formatCoffeeNumber } from '../../utils/coffeeNumber'
 
 const STATUS_LABEL: Record<PublishStatus, string> = { draft: '초안', published: '공개', archived: '보관' }
 
@@ -127,8 +128,9 @@ export default function AdminCoffeeListPage() {
         <table className="w-full min-w-[880px] border-collapse text-[12px]">
           <thead>
             <tr className="border-b border-navy/15 bg-warm-white text-left text-[10px] font-semibold tracking-wide text-navy/45">
+              <th className="px-3 py-2">번호</th>
               <th className="px-3 py-2">이름</th>
-              <th className="px-3 py-2">Character</th>
+              <th className="px-3 py-2">컵 캐릭터</th>
               <th className="px-3 py-2">산지</th>
               <th className="px-3 py-2">상태</th>
               <th className="px-3 py-2">Featured</th>
@@ -141,6 +143,9 @@ export default function AdminCoffeeListPage() {
               const suggestion = recommendCharacter(coffee.notes, coffee.sensory)
               return (
               <tr key={coffee.id} className="border-b border-navy/10">
+                <td className="px-3 py-2.5 text-navy/60">
+                  {formatCoffeeNumber(coffee.coffeeNumber) ?? <span className="text-navy/30">번호 미지정</span>}
+                </td>
                 <td className="px-3 py-2.5">
                   <p className="font-semibold text-navy">{coffee.coffeeName}</p>
                   {coffee.isSample && <span className="text-[10px] text-accent">SAMPLE</span>}
@@ -259,7 +264,7 @@ export default function AdminCoffeeListPage() {
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-3 py-10 text-center text-navy/40">
+                <td colSpan={8} className="px-3 py-10 text-center text-navy/40">
                   조건에 맞는 원두가 없습니다.
                 </td>
               </tr>

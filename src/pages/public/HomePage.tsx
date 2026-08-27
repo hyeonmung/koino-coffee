@@ -75,11 +75,11 @@ export default function HomePage() {
   const showBusiness = isVisible('business')
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO />
       <PublicHeader />
 
-      <main>
+      <main className="flex-1">
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
           <div className="mx-auto grid max-w-[1320px] grid-cols-1 lg:grid-cols-12">

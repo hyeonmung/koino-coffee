@@ -72,11 +72,11 @@ export default function DictionaryDetailPage() {
   )
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO title={`${entry.term} — 커피 사전`} description={entry.short} />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[640px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[640px] px-6 py-10">
         <Link to="/dictionary" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
           ← 커피 사전
         </Link>

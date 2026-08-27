@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import { getAllBrewCategories } from '../../data/repositories/brewCategoryRepository'
 import { deleteBrewGuide, getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
 import type { BrewGuide } from '../../data/schema'
 
 export default function AdminBrewGuidesPage() {
   const [guides, setGuides] = useState<BrewGuide[]>(() => getAllBrewGuides())
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
+  const categories = getAllBrewCategories()
+  const categoryLabel = (id?: string) => categories.find((c) => c.id === id)?.label
 
   const remove = (id: string) => {
     deleteBrewGuide(id)
@@ -21,12 +24,20 @@ export default function AdminBrewGuidesPage() {
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BREW GUIDE</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">브루 가이드 관리</h1>
         </div>
-        <Link
-          to="/admin/brew-guides/new"
-          className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
-        >
-          + 새 브루 가이드
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            to="/admin/brew-guides/categories"
+            className="border border-navy/25 px-4 py-2.5 text-[12px] font-semibold text-navy/70 hover:border-navy hover:text-navy"
+          >
+            카테고리 관리
+          </Link>
+          <Link
+            to="/admin/brew-guides/new"
+            className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+          >
+            + 새 브루 가이드
+          </Link>
+        </div>
       </div>
 
       <div className="mt-6 space-y-2">
@@ -36,7 +47,10 @@ export default function AdminBrewGuidesPage() {
               <p className="text-[13px] font-semibold text-navy">
                 {guide.equipment} · {guide.title}
               </p>
-              <p className="text-[11px] text-navy/45">{guide.publishStatus === 'published' ? '공개' : '초안'}</p>
+              <p className="text-[11px] text-navy/45">
+                {guide.publishStatus === 'published' ? '공개' : '초안'}
+                {categoryLabel(guide.categoryId) && ` · ${categoryLabel(guide.categoryId)}`}
+              </p>
             </div>
             <div className="flex gap-1.5">
               <Link to={`/admin/brew-guides/${guide.id}`} className="border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-navy hover:text-navy">

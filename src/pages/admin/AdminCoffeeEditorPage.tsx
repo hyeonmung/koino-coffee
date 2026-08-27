@@ -8,12 +8,13 @@ import FlavorNoteInput from '../../components/FlavorNoteInput'
 import SensoryProfileInput from '../../components/SensoryProfileInput'
 import { recommendCharacter } from '../../data/characterRecommend'
 import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
-import { getCoffeeById, slugExists, upsertCoffee } from '../../data/repositories/coffeeRepository'
+import { getAllCoffees, getCoffeeById, slugExists, upsertCoffee } from '../../data/repositories/coffeeRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getAllStories } from '../../data/repositories/storyRepository'
 import type { Availability, Coffee, PublishStatus, RoastType } from '../../data/schema'
 import CoffeeVisual from '../../components/CoffeeVisual'
 import { COFFEE_CARD_ASPECT_RATIO, COFFEE_CARD_RATIO_LABEL, FOCAL_POINT_LABEL, type ImageFocalPoint } from '../../constants/media'
+import { formatCoffeeNumber } from '../../utils/coffeeNumber'
 import { slugifyFilename } from '../../utils/download'
 import { exportNodeAsPng } from '../../utils/pngExport'
 import { validateCoffeeDraft } from '../../utils/validation'
@@ -169,6 +170,14 @@ export default function AdminCoffeeEditorPage() {
     if (draft.slug.trim() && slugExists(draft.slug.trim(), draft.id)) {
       problems.push('이미 사용 중인 slug입니다. 다른 값을 입력해주세요.')
     }
+    if (draft.coffeeNumber !== undefined) {
+      const dup = getAllCoffees().find((c) => c.id !== draft.id && c.coffeeNumber === draft.coffeeNumber)
+      if (dup) {
+        problems.push(
+          `#${String(draft.coffeeNumber).padStart(3, '0')}은(는) 이미 "${dup.coffeeName}"에서 사용 중입니다. 다른 번호를 입력해주세요.`,
+        )
+      }
+    }
     if (problems.length > 0) {
       setErrors(problems)
       return
@@ -253,6 +262,23 @@ export default function AdminCoffeeEditorPage() {
                 {field(
                   'Coffee Name *',
                   <input value={draft.coffeeName} onChange={(e) => patch({ coffeeName: e.target.value })} className={inputClass} />,
+                )}
+                {field(
+                  '원두 번호 (KOI Coffee Archive Number)',
+                  <div>
+                    <input
+                      type="number"
+                      min={1}
+                      value={draft.coffeeNumber ?? ''}
+                      onChange={(e) => patch({ coffeeNumber: e.target.value === '' ? undefined : Number(e.target.value) })}
+                      className={inputClass}
+                      placeholder="번호 미지정"
+                    />
+                    <p className="mt-1 text-[11px] text-navy/40">
+                      손님 화면에는 {formatCoffeeNumber(draft.coffeeNumber) ?? '#···'}으로 표시됩니다. 다른 원두와 중복될 수
+                      없습니다. 비워두면 손님 화면에 번호가 표시되지 않습니다.
+                    </p>
+                  </div>,
                 )}
                 {field(
                   '한글명 (선택)',

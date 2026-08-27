@@ -1,9 +1,11 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminGate from './components/AdminGate'
-import AdminAboutPage from './pages/admin/AdminAboutPage'
+import AdminAboutEditorPage from './pages/admin/AdminAboutEditorPage'
+import AdminBrewCategoriesPage from './pages/admin/AdminBrewCategoriesPage'
 import AdminBrewGuideEditorPage from './pages/admin/AdminBrewGuideEditorPage'
 import AdminBrewGuidesPage from './pages/admin/AdminBrewGuidesPage'
-import AdminBusinessPage from './pages/admin/AdminBusinessPage'
+import AdminBusinessPostEditorPage from './pages/admin/AdminBusinessPostEditorPage'
+import AdminBusinessPostsPage from './pages/admin/AdminBusinessPostsPage'
 import AdminCharactersPage from './pages/admin/AdminCharactersPage'
 import AdminCoffeeEditorPage from './pages/admin/AdminCoffeeEditorPage'
 import AdminCoffeeListPage from './pages/admin/AdminCoffeeListPage'
@@ -22,6 +24,7 @@ import AboutSensoryMapPage from './pages/public/AboutSensoryMapPage'
 import BrewGuideDetailPage from './pages/public/BrewGuideDetailPage'
 import BrewGuideIndexPage from './pages/public/BrewGuideIndexPage'
 import BusinessPage from './pages/public/BusinessPage'
+import BusinessPostDetailPage from './pages/public/BusinessPostDetailPage'
 import CharacterDetailPage from './pages/public/CharacterDetailPage'
 import CharactersIndexPage from './pages/public/CharactersIndexPage'
 import CoffeeChartDetailPage from './pages/public/CoffeeChartDetailPage'
@@ -63,6 +66,7 @@ export default function App() {
         <Route path="/stories/:slug" element={<StoryDetailPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/business" element={<BusinessPage />} />
+        <Route path="/business/:slug" element={<BusinessPostDetailPage />} />
         <Route path="/about-sensory-map" element={<AboutSensoryMapPage />} />
 
         {/* Legacy redirects */}
@@ -170,6 +174,14 @@ export default function App() {
           }
         />
         <Route
+          path="/admin/brew-guides/categories"
+          element={
+            <AdminGate>
+              <AdminBrewCategoriesPage />
+            </AdminGate>
+          }
+        />
+        <Route
           path="/admin/brew-guides/new"
           element={
             <AdminGate>
@@ -213,7 +225,7 @@ export default function App() {
           path="/admin/about"
           element={
             <AdminGate>
-              <AdminAboutPage />
+              <AdminAboutEditorPage />
             </AdminGate>
           }
         />
@@ -221,7 +233,23 @@ export default function App() {
           path="/admin/business"
           element={
             <AdminGate>
-              <AdminBusinessPage />
+              <AdminBusinessPostsPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/business/new"
+          element={
+            <AdminGate>
+              <AdminBusinessPostEditorPage />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="/admin/business/:id"
+          element={
+            <AdminGate>
+              <AdminBusinessPostEditorPage />
             </AdminGate>
           }
         />

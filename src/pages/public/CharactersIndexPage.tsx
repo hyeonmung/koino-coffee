@@ -11,11 +11,11 @@ export default function CharactersIndexPage() {
   const coffees = getPublishedCoffees()
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO title="KOINO CUP CHARACTER" description="코이노커피의 5가지 CUP CHARACTER를 소개합니다." />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[1000px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">CUP CHARACTER</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">커피의 5가지 성격</h1>
         <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">

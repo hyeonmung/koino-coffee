@@ -1,175 +1,81 @@
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import KOIStarField from '../../components/decorative/KOIStarField'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
-import { addInquiry } from '../../data/repositories/inquiryRepository'
-import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
-import type { Inquiry } from '../../data/schema'
-
-const inputClass =
-  'w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none placeholder:text-navy/35 focus:border-navy'
-
-const EMPTY_FORM = {
-  companyName: '',
-  contactName: '',
-  phone: '',
-  email: '',
-  businessType: '',
-  region: '',
-  interestArea: '',
-  expectedVolume: '',
-  message: '',
-  consent: false,
-}
+import { BUSINESS_POST_CATEGORIES, BUSINESS_POST_CATEGORY_LABEL } from '../../constants/businessPostCategories'
+import { getPublishedBusinessPosts } from '../../data/repositories/businessPostRepository'
+import type { BusinessPostCategory } from '../../data/schema'
 
 export default function BusinessPage() {
-  const settings = getSiteSettings()
-  const [form, setForm] = useState(EMPTY_FORM)
-  const [error, setError] = useState<string | null>(null)
-  const [submitted, setSubmitted] = useState(false)
+  const posts = getPublishedBusinessPosts()
+  const [category, setCategory] = useState<'ALL' | BusinessPostCategory>('ALL')
 
-  const patch = (p: Partial<typeof form>) => setForm((prev) => ({ ...prev, ...p }))
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    if (!form.companyName.trim() || !form.contactName.trim() || !form.phone.trim() || !form.email.trim()) {
-      setError('업체명, 담당자, 전화번호, 이메일은 필수 입력 항목입니다.')
-      return
-    }
-    if (!form.consent) {
-      setError('개인정보 수집 및 이용에 동의해주세요.')
-      return
-    }
-    setError(null)
-    const inquiry: Inquiry = {
-      id: crypto.randomUUID(),
-      ...form,
-      status: 'new',
-      createdAt: new Date().toISOString(),
-    }
-    addInquiry(inquiry)
-    setSubmitted(true)
-    setForm(EMPTY_FORM)
-  }
+  const filtered = posts.filter((p) => category === 'ALL' || p.category === category)
 
   return (
-    <div className="min-h-screen bg-warm-white">
-      <SEO title="납품 · 교육" description={settings.businessIntro} />
+    <div className="flex min-h-screen flex-col bg-warm-white">
+      <SEO title="납품 · 교육" description="코이노커피의 원두 납품과 교육 소식을 안내합니다." />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[720px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BUSINESS</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">납품 · 교육</h1>
-        <p className="mt-3 text-[13px] leading-relaxed text-navy/60">{settings.businessIntro}</p>
+        <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">코이노커피의 원두 납품과 교육 소식을 안내합니다.</p>
 
-        {settings.businessSections.length > 0 && (
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {settings.businessSections.map((section) => (
-              <div key={section.key} className="border border-navy/15 bg-white p-5">
-                <p className="font-serif text-[15px] font-bold text-navy">{section.title}</p>
-                <p className="mt-2 text-[12px] leading-relaxed text-navy/60">{section.body}</p>
-              </div>
+        <div className="mt-6 flex flex-wrap gap-1.5">
+          {(['ALL', ...BUSINESS_POST_CATEGORIES] as const).map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCategory(c)}
+              className={`border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${
+                category === c ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/55 hover:border-navy/50'
+              }`}
+            >
+              {c === 'ALL' ? '전체' : BUSINESS_POST_CATEGORY_LABEL[c]}
+            </button>
+          ))}
+        </div>
+
+        {filtered.length === 0 ? (
+          <p className="mt-10 border border-navy/15 bg-white px-6 py-16 text-center text-[13px] text-navy/45">
+            해당 카테고리의 게시물이 없습니다.
+          </p>
+        ) : (
+          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
+            {filtered.map((post) => (
+              <Link key={post.id} to={`/business/${post.slug}`} className="group block">
+                {post.coverImage ? (
+                  <div className="aspect-[3/2] w-full overflow-hidden">
+                    <div
+                      className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
+                      style={{ backgroundImage: `url(${post.coverImage})` }}
+                      role="img"
+                      aria-label={post.title}
+                    />
+                  </div>
+                ) : (
+                  <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
+                    <KOIStarField />
+                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINO COFFEE</p>
+                  </div>
+                )}
+                <p className="mt-3 flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.15em] text-navy/45">
+                  {post.isSystemPinned && <span className="text-accent">PIN ·</span>}
+                  {BUSINESS_POST_CATEGORY_LABEL[post.category]}
+                </p>
+                <p className="mt-1 font-serif text-[18px] font-bold text-navy">{post.title}</p>
+                <p className="mt-2 text-[12px] text-navy/55">{post.excerpt}</p>
+                <p className="mt-3 text-[10px] text-navy/35">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
+              </Link>
             ))}
           </div>
-        )}
-
-        {submitted ? (
-          <div className="mt-10 border border-navy/15 bg-white px-6 py-12 text-center">
-            <p className="font-serif text-[18px] font-bold text-navy">문의가 접수되었습니다.</p>
-            <p className="mt-2 text-[13px] text-navy/55">빠른 시일 내에 담당자가 연락드리겠습니다.</p>
-            <button
-              type="button"
-              onClick={() => setSubmitted(false)}
-              className="mt-5 border border-navy px-4 py-2 text-[12px] font-semibold text-navy hover:bg-navy hover:text-warm-white"
-            >
-              새 문의 작성
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="mt-10 space-y-4 border border-navy/15 bg-white p-6">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">문의하기</p>
-            {error && <p className="border border-red-300 bg-red-50 px-3 py-2 text-[12px] text-red-600">{error}</p>}
-
-            {settings.businessSections.length > 0 && (
-              <FormField label="관심 분야">
-                <select
-                  value={form.interestArea}
-                  onChange={(e) => patch({ interestArea: e.target.value })}
-                  className={inputClass}
-                >
-                  <option value="">선택 안함</option>
-                  {settings.businessSections.map((section) => (
-                    <option key={section.key} value={section.title}>
-                      {section.title}
-                    </option>
-                  ))}
-                </select>
-              </FormField>
-            )}
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField label="업체명 *">
-                <input value={form.companyName} onChange={(e) => patch({ companyName: e.target.value })} className={inputClass} />
-              </FormField>
-              <FormField label="담당자 *">
-                <input value={form.contactName} onChange={(e) => patch({ contactName: e.target.value })} className={inputClass} />
-              </FormField>
-              <FormField label="전화번호 *">
-                <input value={form.phone} onChange={(e) => patch({ phone: e.target.value })} className={inputClass} />
-              </FormField>
-              <FormField label="이메일 *">
-                <input type="email" value={form.email} onChange={(e) => patch({ email: e.target.value })} className={inputClass} />
-              </FormField>
-              <FormField label="업종">
-                <input value={form.businessType} onChange={(e) => patch({ businessType: e.target.value })} className={inputClass} placeholder="카페, 레스토랑 등" />
-              </FormField>
-              <FormField label="지역">
-                <input value={form.region} onChange={(e) => patch({ region: e.target.value })} className={inputClass} />
-              </FormField>
-            </div>
-
-            <FormField label="예상 사용량">
-              <input
-                value={form.expectedVolume}
-                onChange={(e) => patch({ expectedVolume: e.target.value })}
-                className={inputClass}
-                placeholder="예: 월 20kg"
-              />
-            </FormField>
-
-            <FormField label="문의 내용">
-              <textarea
-                value={form.message}
-                onChange={(e) => patch({ message: e.target.value })}
-                className={`${inputClass} min-h-[100px]`}
-              />
-            </FormField>
-
-            <label className="flex items-start gap-2 text-[12px] text-navy/70">
-              <input type="checkbox" checked={form.consent} onChange={(e) => patch({ consent: e.target.checked })} className="mt-0.5" />
-              문의 처리를 위한 개인정보 수집 및 이용에 동의합니다. *
-            </label>
-
-            <button
-              type="submit"
-              className="w-full border border-navy bg-navy py-3 text-[13px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
-            >
-              문의 제출
-            </button>
-          </form>
         )}
       </main>
 
       <PublicFooter />
     </div>
-  )
-}
-
-function FormField({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">{label}</span>
-      {children}
-    </label>
   )
 }

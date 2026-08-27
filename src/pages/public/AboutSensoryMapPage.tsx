@@ -7,11 +7,11 @@ import { CUP_CHARACTERS } from '../../types'
 
 export default function AboutSensoryMapPage() {
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-warm-white">
       <SEO title="KOINO SENSORY MAP 알아보기" description="KOINO SENSORY MAP이 원두를 설명하는 방식을 소개합니다." />
       <PublicHeader />
 
-      <main className="mx-auto max-w-[860px] px-6 py-10">
+      <main className="flex-1 mx-auto max-w-[860px] px-6 py-10">
         <p className="text-[11px] font-semibold tracking-[0.25em] text-accent">HOW TO READ</p>
         <h1 className="mt-2 font-serif text-[28px] font-bold leading-tight text-navy">KOINO SENSORY MAP 읽는 법</h1>
         <p className="mt-3 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
@@ -64,8 +64,8 @@ export default function AboutSensoryMapPage() {
             {SENSORY_FIELDS.map((field) => (
               <div key={field.key} className="border border-navy/15 bg-white p-5">
                 <div className="flex items-baseline gap-2">
-                  <h3 className="text-[13px] font-bold tracking-wide text-navy">{field.label}</h3>
-                  <span className="text-[11px] text-navy/45">{field.labelKo}</span>
+                  <h3 className="text-[13px] font-bold tracking-wide text-navy">{field.labelKo}</h3>
+                  <span className="text-[11px] text-navy/45">{field.label}</span>
                 </div>
                 <ol className="mt-3 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
                   {field.criteria.map((text, i) => (

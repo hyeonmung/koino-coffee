@@ -32,6 +32,9 @@ export interface Coffee extends CoffeeProfile {
   sortOrder: number
   availability: Availability
 
+  /** KOI Coffee Archive Number — admin-assigned, unique, never auto-generated. Displayed as e.g. #001. */
+  coffeeNumber?: number
+
   koreanName?: string
 
   subregion?: string
@@ -119,10 +122,21 @@ export interface BrewPourStep {
   time: string
 }
 
+/** A professional Brew Guide category (핸드드립, 에스프레소, 트러블슈팅, ...) — separate from Equipment tags. Admin-managed. */
+export interface BrewCategory {
+  id: string
+  slug: string
+  label: string
+  labelEn: string
+  order: number
+  visible: boolean
+}
+
 export interface BrewGuide {
   id: string
   slug: string
   publishStatus: PublishStatus
+  categoryId?: string
   equipment: BrewEquipment
   title: string
   coffeeDose: string
@@ -170,6 +184,37 @@ export interface BusinessSection {
   body: string
 }
 
+export type BusinessPostCategory = 'WHOLESALE' | 'EDUCATION' | 'CLASS' | 'NOTICE' | 'PARTNERSHIP'
+
+export interface BusinessLink {
+  label: string
+  url: string
+}
+
+/**
+ * 납품 · 교육 content post — replaces the old inquiry-landing form. One post per announcement
+ * (wholesale info, a class, a notice, ...). Exactly one post (the seeded wholesale-inquiry
+ * post) is ever `isSystemPinned` — always sorted first, and its deletion is blocked in the
+ * repository layer.
+ */
+export interface BusinessPost {
+  id: string
+  slug: string
+  publishStatus: PublishStatus
+  title: string
+  category: BusinessPostCategory
+  coverImage?: string
+  excerpt: string
+  body: string
+  publishedDate: string
+  relatedLinks: BusinessLink[]
+  isSystemPinned?: boolean
+  seoTitle?: string
+  seoDescription?: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type HomeSectionKey =
   | 'featuredCoffee'
   | 'tasteFinder'
@@ -213,6 +258,117 @@ export interface SiteSettings {
   businessIntro: string
   businessSections: BusinessSection[]
 
+  updatedAt: string
+}
+
+// ── About Editorial Block CMS ────────────────────────────────────────────────
+// Content & composition are admin-editable; typography/color/positioning stay
+// preset-driven (12-column grid, no free pixel placement) to protect the brand.
+
+export type AboutBlockType =
+  | 'BRAND'
+  | 'PERSON'
+  | 'CAREER_LIST'
+  | 'IMAGE_TEXT'
+  | 'IMAGE_FULL'
+  | 'GALLERY'
+  | 'QUOTE'
+  | 'PHILOSOPHY'
+  | 'FREE_TEXT'
+  | 'CTA'
+
+export type AboutLayoutPreset =
+  | 'PHOTO_LEFT_TEXT_RIGHT'
+  | 'TEXT_LEFT_PHOTO_RIGHT'
+  | 'PHOTO_LARGE'
+  | 'TEXT_LARGE'
+  | 'PHOTO_FULL'
+  | 'TEXT_FULL'
+  | 'CUSTOM'
+
+export type AboutBackgroundTheme = 'PAPER' | 'WHITE' | 'NIGHT' | 'SOFT'
+export type AboutSpacing = 'TIGHT' | 'NORMAL' | 'WIDE'
+export type AboutTextWidth = 'NARROW' | 'NORMAL' | 'WIDE'
+export type AboutVerticalAlign = 'TOP' | 'CENTER' | 'BOTTOM'
+export type AboutTextAlign = 'LEFT' | 'CENTER' | 'RIGHT'
+export type AboutImageRatio = '4:5' | '3:4' | '1:1' | '3:2' | '16:9' | 'ORIGINAL'
+export type AboutMobileOrder = 'IMAGE_FIRST' | 'TEXT_FIRST'
+export type AboutCareerCategory = '자격' | '대회' | '심사' | '교육' | '경력' | '수상' | '활동' | '기타'
+
+export interface AboutCareerItem {
+  id: string
+  year: string
+  organization: string
+  detail: string
+  category: AboutCareerCategory
+  visible: boolean
+  featured: boolean
+  order: number
+}
+
+/**
+ * One Editorial Block of the About page. Fields are additive per `type` (a BRAND block
+ * only reads title/subtitle/body/image/quote/ctaLabel/ctaUrl; a PERSON block additionally
+ * reads the person* fields; a GALLERY block reads galleryImages, etc.) — one flat shape
+ * keeps the CRUD/reorder/duplicate logic in the admin editor simple.
+ */
+export interface AboutBlock {
+  id: string
+  type: AboutBlockType
+  visible: boolean
+  order: number
+
+  layout: AboutLayoutPreset
+  customImageCols?: number // 4-8, CUSTOM layout only
+  customImageSide?: 'LEFT' | 'RIGHT' // CUSTOM layout only
+  verticalAlign: AboutVerticalAlign
+  textAlign: AboutTextAlign
+  background: AboutBackgroundTheme
+  spacing: AboutSpacing
+  textWidth: AboutTextWidth
+  mobileOrder: AboutMobileOrder
+
+  title?: string
+  subtitle?: string
+  body?: string
+  quote?: string
+  caption?: string
+  ctaLabel?: string
+  ctaUrl?: string
+
+  image?: string
+  imageAlt?: string
+  imageRatio?: AboutImageRatio
+  imageFocalPoint?: ImageFocalPoint
+
+  galleryImages?: { url: string; caption?: string }[]
+  galleryColumns?: 2 | 3
+
+  // PERSON-type only
+  personName?: string
+  personEnglishName?: string
+  personRole?: string
+  personEnglishRole?: string
+  careers?: AboutCareerItem[]
+
+  createdAt: string
+  updatedAt: string
+}
+
+export interface AboutHeroSettings {
+  title: string
+  subtitle?: string
+  imageDesktop?: string
+  imageMobile?: string
+  overlay: 'low' | 'medium' | 'high'
+  textPositionDesktop: 'LEFT' | 'CENTER' | 'RIGHT'
+  textPositionMobile: 'LEFT' | 'CENTER'
+}
+
+export interface AboutPageSettings {
+  hero: AboutHeroSettings
+  seoTitle?: string
+  seoDescription?: string
   updatedAt: string
 }
 
