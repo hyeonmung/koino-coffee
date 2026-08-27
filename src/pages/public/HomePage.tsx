@@ -71,8 +71,6 @@ export default function HomePage() {
   const showTasteFinder = isVisible('tasteFinder')
   const showBrew = isVisible('brewGuide') && brewGuides.length > 0
   const showStories = isVisible('stories') && stories.length > 0
-  const showAbout = isVisible('about')
-  const showBusiness = isVisible('business')
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
@@ -369,50 +367,6 @@ export default function HomePage() {
           </section>
         )}
 
-        {(showAbout || showBusiness) && (
-          <section className="koi-night-sky relative overflow-hidden">
-            <KOIStarField />
-            <div className="relative mx-auto max-w-[1240px] px-6 py-14">
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-[1fr_auto] sm:items-center">
-                {showAbout && (
-                  <div className="max-w-[440px]">
-                    <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINONIA</p>
-                    <p className="mt-2 text-[14px] leading-relaxed text-warm-white/75">{settings.aboutIntro}</p>
-                    <Link to="/about" className="mt-3 inline-block text-[12px] font-semibold text-warm-white/80 hover:text-warm-white">
-                      코이노니아 이야기 →
-                    </Link>
-                  </div>
-                )}
-                {showBusiness && (
-                  <div className="flex flex-wrap gap-3 sm:flex-col sm:items-end">
-                    {settings.purchaseUrl && (
-                      <a
-                        href={settings.purchaseUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="border border-warm-white/20 px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:border-accent"
-                      >
-                        원두 구매 →
-                      </a>
-                    )}
-                    <Link
-                      to={settings.businessUrl || '/business'}
-                      className="border border-warm-white/20 px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:border-accent"
-                    >
-                      납품 문의 →
-                    </Link>
-                    <Link
-                      to={settings.businessUrl || '/business'}
-                      className="border border-warm-white/20 px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:border-accent"
-                    >
-                      커피 교육 →
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
-        )}
       </main>
 
       <PublicFooter />
