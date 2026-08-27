@@ -161,7 +161,7 @@ export interface BrewGuide {
   updatedAt: string
 }
 
-export type StoryCategory = 'ORIGIN' | 'COFFEE' | 'ROASTING' | 'BREWING' | 'SENSORY' | 'KOI' | 'EDUCATION'
+export type StoryCategory = 'NEWS' | 'ORIGIN' | 'COFFEE' | 'ROASTING' | 'BREWING' | 'SENSORY' | 'KOI' | 'EDUCATION'
 
 export interface Story {
   id: string

@@ -8,7 +8,7 @@ import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getPublishedStories } from '../../data/repositories/storyRepository'
 import type { StoryCategory } from '../../data/schema'
 
-const CATEGORIES: StoryCategory[] = ['ORIGIN', 'COFFEE', 'ROASTING', 'BREWING', 'SENSORY', 'KOI', 'EDUCATION']
+const CATEGORIES: StoryCategory[] = ['NEWS', 'ORIGIN', 'COFFEE', 'ROASTING', 'BREWING', 'SENSORY', 'KOI', 'EDUCATION']
 
 export default function StoriesIndexPage() {
   const stories = getPublishedStories()
@@ -18,12 +18,12 @@ export default function StoriesIndexPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="이야기" description="산지, 원두, 커피 교육에 관한 코이노니아의 이야기." />
+      <SEO title="뉴스&이야기" description="공지, 소식, 산지, 원두, 커피 교육에 관한 코이노니아의 뉴스와 이야기." />
       <PublicHeader />
 
       <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORIES</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">이야기</h1>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">NEWS & STORIES</p>
+        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">뉴스&이야기</h1>
 
         <div className="mt-6 flex flex-wrap gap-1.5">
           {(['ALL', ...CATEGORIES] as const).map((c) => (

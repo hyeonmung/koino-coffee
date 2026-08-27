@@ -9,7 +9,7 @@ import { slugifyFilename } from '../../utils/download'
 const inputClass =
   'w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy'
 
-const CATEGORIES: StoryCategory[] = ['ORIGIN', 'COFFEE', 'ROASTING', 'BREWING', 'SENSORY', 'KOI', 'EDUCATION']
+const CATEGORIES: StoryCategory[] = ['NEWS', 'ORIGIN', 'COFFEE', 'ROASTING', 'BREWING', 'SENSORY', 'KOI', 'EDUCATION']
 
 function emptyStory(): Story {
   const now = new Date().toISOString()
