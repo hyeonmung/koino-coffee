@@ -98,12 +98,12 @@ export default function HomePage() {
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
           <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
-            {/* Left ~42% — brand poster */}
-            <div className="flex items-center justify-center px-6 py-14 lg:col-span-5 lg:py-10 lg:pr-10">
+            {/* Left ~42% — brand poster, box-matched to the right banner's height (h-[320px]/sm:h-[420px]/lg:h-full+min-h-[560px]) */}
+            <div className="flex h-[320px] w-full items-center justify-center bg-white sm:h-[420px] lg:col-span-5 lg:h-full lg:min-h-[560px]">
               <img
                 src="/home/hero-poster.jpg"
                 alt="KOINONIA ROASTERS — A Cup, A New Destination"
-                className="h-auto w-full max-w-[420px] object-contain"
+                className="h-full w-full object-contain"
               />
             </div>
 
