@@ -44,7 +44,6 @@ export default function AdminGate({ children }: { children: ReactNode }) {
 
         <input
           type="password"
-          inputMode="numeric"
           autoFocus
           value={input}
           onChange={(e) => {
@@ -54,7 +53,7 @@ export default function AdminGate({ children }: { children: ReactNode }) {
           className={`mt-5 w-full border bg-white px-3 py-2.5 text-center text-[15px] tracking-[0.3em] text-navy outline-none focus:border-navy ${
             error ? 'border-red-400' : 'border-navy/25'
           }`}
-          placeholder="••••"
+          placeholder="••••••••"
         />
         {error && <p className="mt-2 text-[11px] text-red-500">비밀번호가 올바르지 않습니다.</p>}
 
