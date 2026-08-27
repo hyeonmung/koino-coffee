@@ -211,12 +211,7 @@ export default function HomePage() {
                         <span className="mt-2 inline-block border border-navy bg-navy px-2.5 py-1 text-[10px] font-bold tracking-wide text-warm-white">
                           {CHARACTER_INFO[chartExample.character].label}
                         </span>
-                        <FlavorNotes
-                          notes={chartExample.notes}
-                          character={chartExample.character}
-                          limit={3}
-                          className="mt-2 block text-[11px] text-navy/50"
-                        />
+                        <FlavorNotes notes={chartExample.notes} limit={3} className="mt-2 block text-[11px] text-navy/50" />
                       </div>
                       <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-1">
                         {SENSORY_FIELDS.slice(0, 4).map((field) => (

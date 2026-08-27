@@ -53,7 +53,7 @@ export default function CoffeeCard({ coffee, showRadar = false }: CoffeeCardProp
         <span className="text-[9px] font-bold tracking-[0.15em]" style={{ color: accent }}>
           {character.label}
         </span>
-        <FlavorNotes notes={coffee.notes} character={coffee.character} limit={3} leading className="truncate text-[11px] text-navy/50" />
+        <FlavorNotes notes={coffee.notes} limit={3} leading className="truncate text-[11px] text-navy/50" />
       </div>
 
       {showRadar && (

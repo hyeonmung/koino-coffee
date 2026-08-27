@@ -14,9 +14,7 @@ import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getCoffeeBySlug, getPublishedCoffees } from '../../data/repositories/coffeeRepository'
-import { getFlavorDescriptors, getFlavorFamilies } from '../../data/repositories/flavorRepository'
 import { getStoryById } from '../../data/repositories/storyRepository'
-import { groupNotesByFamily } from '../../data/flavorMatch'
 import { getSimilarCoffees } from '../../data/similarCoffees'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
 import { formatCoffeeNumber } from '../../utils/coffeeNumber'
@@ -56,8 +54,6 @@ export default function CoffeeDetailPage() {
   const { slug = '' } = useParams()
   const coffee = useMemo(() => getCoffeeBySlug(slug), [slug])
   const allCoffees = useMemo(() => getPublishedCoffees(), [])
-  const descriptors = useMemo(() => getFlavorDescriptors(), [])
-  const families = useMemo(() => getFlavorFamilies(), [])
   const brewGuides = useMemo(() => getPublishedBrewGuides(), [])
   const settings = useMemo(() => getSiteSettings(), [])
   const [busy, setBusy] = useState<string | null>(null)
@@ -72,7 +68,6 @@ export default function CoffeeDetailPage() {
   const character = CHARACTER_INFO[coffee.character]
   const characterAccent = CHARACTER_STYLE[coffee.character].accent
   const characterAccentSoft = CHARACTER_STYLE[coffee.character].accentSoft
-  const flavorGroups = groupNotesByFamily(coffee.notes, descriptors, families)
   const linkedGuides = brewGuides.filter((g) => coffee.brewGuideIds.includes(g.id))
   const recipe = linkedGuides[0]
   const linkedStory = coffee.storyId ? getStoryById(coffee.storyId) : undefined
@@ -155,7 +150,7 @@ export default function CoffeeDetailPage() {
               </span>
             )}
           </div>
-          <FlavorNotes notes={coffee.notes} character={coffee.character} className="mt-3 block text-[15px] font-medium text-navy/80" />
+          <FlavorNotes notes={coffee.notes} className="mt-3 block text-[15px] font-medium text-navy/80" />
           {coffee.characterReason && (
             <p className="mt-3 max-w-[640px] text-[13px] leading-relaxed text-navy/55">{coffee.characterReason}</p>
           )}
@@ -205,21 +200,10 @@ export default function CoffeeDetailPage() {
           </div>
 
           {/* FLAVOR NOTES */}
-          {flavorGroups.length > 0 && (
+          {coffee.notes.length > 0 && (
             <section className="mt-10 border-t border-navy/15 pt-8">
               <h2 className="font-serif text-[18px] font-bold text-navy">플레이버 노트</h2>
-              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {flavorGroups.map((group) => (
-                  <div key={group.family.id}>
-                    <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">
-                      {group.family.nameKo ?? group.family.name}
-                    </p>
-                    <p className="mt-1 text-[14px] font-medium" style={{ color: characterAccent }}>
-                      {group.notes.join(' · ')}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <FlavorNotes notes={coffee.notes} className="mt-3 block text-[18px] font-medium leading-relaxed" />
             </section>
           )}
 

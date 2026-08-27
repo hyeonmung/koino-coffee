@@ -118,11 +118,7 @@ export default function TasteFinderPage() {
                         <Link to={`/coffees/${match.coffee.slug}`} className="font-serif text-[17px] font-bold text-navy hover:underline">
                           {match.coffee.coffeeName}
                         </Link>
-                        <FlavorNotes
-                          notes={match.coffee.notes}
-                          character={match.coffee.character}
-                          className="mt-1 block text-[12px] text-navy/55"
-                        />
+                        <FlavorNotes notes={match.coffee.notes} className="mt-1 block text-[12px] text-navy/55" />
                         <ul className="mt-2 space-y-1">
                           {match.reasons.map((r) => (
                             <li key={r} className="text-[12px] text-navy/60">

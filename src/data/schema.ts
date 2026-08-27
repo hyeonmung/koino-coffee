@@ -96,6 +96,12 @@ export interface FlavorFamily {
   order: number
 }
 
+/** A Flavor Descriptor's own visual identity — independent of Character. Two variants so text stays readable on both Warm White and Deep Navy backgrounds. */
+export interface FlavorColor {
+  onLight: string
+  onDark: string
+}
+
 export interface FlavorDescriptor {
   id: string
   name: string
@@ -104,6 +110,8 @@ export interface FlavorDescriptor {
   description?: string
   example?: string
   aliases: string[]
+  /** The note's own color, independent of any coffee's Character. Falls back to a neutral tone when unset. */
+  color?: FlavorColor
 }
 
 export type BrewEquipment =

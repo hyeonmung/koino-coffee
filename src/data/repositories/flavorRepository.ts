@@ -13,8 +13,32 @@ export function upsertFlavorFamily(family: FlavorFamily): FlavorFamily[] {
   return familyCollection.upsert(family)
 }
 
+/**
+ * Reads the flavor descriptor catalog, backfilling any browser data seeded before the Flavor
+ * Color System existed: existing descriptors missing a `color` get the seed's color (admin-edited
+ * name/description/etc. are left untouched), and any new descriptor added to the seed list that
+ * isn't in local storage yet is appended. Never overwrites an admin-assigned color.
+ */
 export function getFlavorDescriptors(): FlavorDescriptor[] {
-  return descriptorCollection.seedIfEmpty(SEED_FLAVOR_DESCRIPTORS)
+  const current = descriptorCollection.seedIfEmpty(SEED_FLAVOR_DESCRIPTORS)
+  const byId = new Map(current.map((d) => [d.id, d]))
+  let changed = false
+
+  for (const seed of SEED_FLAVOR_DESCRIPTORS) {
+    const existing = byId.get(seed.id)
+    if (!existing) {
+      byId.set(seed.id, seed)
+      changed = true
+    } else if (!existing.color && seed.color) {
+      byId.set(seed.id, { ...existing, color: seed.color })
+      changed = true
+    }
+  }
+
+  if (!changed) return current
+  const next = Array.from(byId.values())
+  descriptorCollection.saveAll(next)
+  return next
 }
 
 export function upsertFlavorDescriptor(descriptor: FlavorDescriptor): FlavorDescriptor[] {

@@ -104,7 +104,7 @@ export default function ComparePage() {
                   <CompareRow
                     label="플레이버 노트"
                     cells={selected.map((c) =>
-                      c.notes.length > 0 ? <FlavorNotes notes={c.notes} character={c.character} /> : '-',
+                      c.notes.length > 0 ? <FlavorNotes notes={c.notes} /> : '-',
                     )}
                   />
                   {SENSORY_FIELDS.map((field) => (

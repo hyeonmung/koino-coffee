@@ -133,7 +133,7 @@ export default function CoffeeChartIndexPage() {
                         </span>
                       </td>
                       <td className="max-w-[180px] px-4 py-3 text-navy/60">
-                        <FlavorNotes notes={c.notes} character={c.character} limit={2} className="block truncate" />
+                        <FlavorNotes notes={c.notes} limit={2} className="block truncate" />
                       </td>
                       <td className="px-4 py-3">
                         <DotScale value={c.sensory.acidity} />

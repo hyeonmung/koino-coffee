@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import DotScale from '../../components/DotScale'
+import FlavorNotes from '../../components/FlavorNotes'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import QRCodeBlock from '../../components/QRCodeBlock'
@@ -89,13 +90,7 @@ export default function CoffeeChartDetailPage() {
           {coffee.notes.length > 0 && (
             <div className="mt-6 border-t border-navy/10 pt-5">
               <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">FLAVOR NOTES</p>
-              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-                {coffee.notes.map((note) => (
-                  <span key={note} className="font-serif text-[17px] font-semibold" style={{ color: characterAccent }}>
-                    {note}
-                  </span>
-                ))}
-              </div>
+              <FlavorNotes notes={coffee.notes} className="mt-2 block font-serif text-[17px] font-semibold" />
             </div>
           )}
 
