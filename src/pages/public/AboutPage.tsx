@@ -31,7 +31,7 @@ export default function AboutPage() {
         >
           {!hero.imageDesktop && <KOIStarField />}
           {hero.imageDesktop && <div className={`absolute inset-0 ${OVERLAY_CLASS[hero.overlay]}`} />}
-          <div className={`relative mx-auto flex w-full max-w-[1280px] flex-col px-0 ${TEXT_POSITION_CLASS[hero.textPositionDesktop]}`}>
+          <div className={`relative mx-auto flex w-full max-w-[1240px] flex-col px-0 ${TEXT_POSITION_CLASS[hero.textPositionDesktop]}`}>
             <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOINO COFFEE</p>
             <h1 className="mt-2 font-serif text-[32px] font-bold text-warm-white sm:text-[40px]">{hero.title}</h1>
             {hero.subtitle && <p className="mx-0 mt-3 max-w-[520px] text-[14px] leading-relaxed text-warm-white/75">{hero.subtitle}</p>}

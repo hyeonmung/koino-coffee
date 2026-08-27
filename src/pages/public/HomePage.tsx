@@ -82,7 +82,7 @@ export default function HomePage() {
       <main className="flex-1">
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
-          <div className="mx-auto grid max-w-[1320px] grid-cols-1 lg:grid-cols-12">
+          <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
             {/* Left ~42% — brand copy */}
             <div className="flex flex-col justify-center px-6 py-14 lg:col-span-5 lg:py-0 lg:pr-10">
               <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>

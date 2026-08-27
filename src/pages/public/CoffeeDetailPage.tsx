@@ -38,16 +38,21 @@ const FieldRow = ({ label, value }: { label: string; value?: string }) => {
   )
 }
 
-/** 가공 방식 · PROCESS  ················  워시드 · Washed — thin-divider spec row, matches the Coffee Chart card. */
+/**
+ * 가공 방식 · PROCESS   워시드 · Washed — a spec row inside the shared SPEC_GRID_CLASS grid.
+ * Every row's Value column starts at the exact same X position: the parent grid's first
+ * (auto-width) column is sized once from the widest label across ALL rows, not per row.
+ */
+const SPEC_GRID_CLASS = 'grid grid-cols-[auto_1fr] items-baseline gap-x-6'
 const SpecRow = ({ labelKo, labelEn, value }: { labelKo: string; labelEn: string; value?: string }) => {
   if (!value) return null
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-navy/10 py-3">
-      <p className="shrink-0 text-[12px] font-semibold text-navy/50">
+    <>
+      <p className="border-b border-navy/10 py-3 text-[12px] font-semibold whitespace-nowrap text-navy/50">
         {labelKo} <span className="text-navy/30">· {labelEn}</span>
       </p>
-      <p className="text-right text-[13px] font-semibold text-navy">{value}</p>
-    </div>
+      <p className="border-b border-navy/10 py-3 text-left text-[13px] font-semibold text-navy">{value}</p>
+    </>
   )
 }
 
@@ -129,7 +134,7 @@ export default function CoffeeDetailPage() {
       <PublicHeader />
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[1280px] px-6 py-10">
+        <div className="mx-auto max-w-[1240px] px-6 py-10">
           {/* HERO */}
           <CoffeeVisual coffee={coffee} aspect="aspect-[3/1]" showIdentity className="mb-8" />
 
@@ -196,7 +201,7 @@ export default function CoffeeDetailPage() {
           </div>
 
           {/* SPEC ROWS */}
-          <div className="mt-8 border-t border-navy/15">
+          <div className={`mt-8 border-t border-navy/15 ${SPEC_GRID_CLASS}`}>
             <SpecRow labelKo="가공 방식" labelEn="PROCESS" value={coffee.process} />
             <SpecRow labelKo="로스팅" labelEn="ROAST" value={coffee.roastLevel} />
             <SpecRow labelKo="로스터" labelEn="ROASTER" value={coffee.roaster} />

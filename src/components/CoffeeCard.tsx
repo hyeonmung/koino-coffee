@@ -50,7 +50,8 @@ export default function CoffeeCard({ coffee, showRadar = false }: CoffeeCardProp
       <div className="mt-1 flex items-stretch gap-3">
         <FlavorSpectrumSpine notes={coffee.notes} limit={3} size="md" />
         <div className="min-w-0">
-          <h3 className="font-serif text-[17px] font-bold leading-snug text-navy">{coffee.coffeeName}</h3>
+          {/* min-h reserves 2 lines' worth of height so the Character/Flavor row below starts at the same point across a grid row, whether this card's name wraps to 1 or 2 lines. */}
+          <h3 className="min-h-12 font-serif text-[17px] font-bold leading-snug text-navy">{coffee.coffeeName}</h3>
           {coffee.koreanName && <p className="text-[11px] text-navy/40">{coffee.koreanName}</p>}
 
           <div className="mt-2 flex items-center gap-2">

@@ -26,6 +26,19 @@ body {
   color: var(--color-navy);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  /* Korean text wraps at word/phrase boundaries, never mid-syllable-block; overflow-wrap is the
+     safety fallback for a single unbreakable token (a long English coffee name, a URL) so it
+     doesn't force horizontal overflow instead. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  /* Balances heading line lengths where supported (graceful no-op elsewhere) — avoids a lone
+     word or a single trailing character stranded on its own last line. */
+  text-wrap: balance;
 }
 
 * {

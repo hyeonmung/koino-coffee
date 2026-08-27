@@ -235,7 +235,7 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
   return (
     <section className={`relative ${bgClass} ${textClass} ${spacingClass} overflow-hidden`}>
       {isNight && <KOIStarField />}
-      <div className="relative mx-auto max-w-[1280px] px-6">{content}</div>
+      <div className="relative mx-auto max-w-[1240px] px-6">{content}</div>
     </section>
   )
 }

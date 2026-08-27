@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-warm-white">
       <header className="border-b border-navy/15 bg-white">
-        <div className="mx-auto flex max-w-[1320px] items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-4">
           <Link to="/admin" className="flex items-center gap-2">
             <img src="/brand/koi-logo.png" alt="" className="h-8 w-8 shrink-0" />
             <span>
@@ -36,7 +36,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             사이트 보기
           </Link>
         </div>
-        <nav className="mx-auto flex max-w-[1320px] flex-wrap gap-1 px-6 pb-3">
+        <nav className="mx-auto flex max-w-[1240px] flex-wrap gap-1 px-6 pb-3">
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </nav>
       </header>
 
-      <main className="mx-auto max-w-[1320px] px-6 py-8">{children}</main>
+      <main className="mx-auto max-w-[1240px] px-6 py-8">{children}</main>
     </div>
   )
 }
