@@ -12,6 +12,14 @@ interface CoffeeCardProps {
   coffee: Coffee
   /** Shows the compact 6-axis Sensory Radar below the text block — used on the Home coffee grid. */
   showRadar?: boolean
+  /**
+   * Set true only when this card renders inside a grid that stays 2-narrow-columns on mobile
+   * (e.g. Home's "지금 만날 수 있는 커피" grid) — reserves 3 lines for the name instead of 2, since a
+   * long all-caps name can reach 3 lines at that card width. Grids that go full-width or wider on
+   * mobile (Explorer, Related, Character list, ...) should leave this off — reserving extra height
+   * there just leaves unused space under short names.
+   */
+  narrowMobileGrid?: boolean
 }
 
 const AVAILABILITY_LABEL: Record<Coffee['availability'], string> = {
@@ -20,7 +28,7 @@ const AVAILABILITY_LABEL: Record<Coffee['availability'], string> = {
   archive: 'Past Coffee',
 }
 
-export default function CoffeeCard({ coffee, showRadar = false }: CoffeeCardProps) {
+export default function CoffeeCard({ coffee, showRadar = false, narrowMobileGrid = false }: CoffeeCardProps) {
   const character = CHARACTER_INFO[coffee.character]
   const accent = CHARACTER_STYLE[coffee.character].accent
 
@@ -50,12 +58,18 @@ export default function CoffeeCard({ coffee, showRadar = false }: CoffeeCardProp
       <div className="mt-1 flex items-stretch gap-3">
         <FlavorSpectrumSpine notes={coffee.notes} limit={3} size="md" />
         <div className="min-w-0">
-          {/* min-h reserves 2 lines' worth of height so the Character/Flavor row below starts at the same point across a grid row, whether this card's name wraps to 1 or 2 lines. */}
-          <h3 className="min-h-12 font-serif text-[17px] font-bold leading-snug text-navy">{coffee.coffeeName}</h3>
+          {/* min-h reserves enough lines that the Character/Flavor row below starts at the same point across a grid row. */}
+          <h3
+            className={`font-serif text-[17px] font-bold leading-snug text-navy ${
+              narrowMobileGrid ? 'min-h-[70px] lg:min-h-12' : 'min-h-12'
+            }`}
+          >
+            {coffee.coffeeName}
+          </h3>
           {coffee.koreanName && <p className="text-[11px] text-navy/40">{coffee.koreanName}</p>}
 
-          <div className="mt-2 flex items-center gap-2">
-            <span className="text-[9px] font-bold tracking-[0.15em]" style={{ color: accent }}>
+          <div className="mt-2 flex min-w-0 items-center gap-2">
+            <span className="shrink-0 text-[9px] font-bold tracking-[0.15em]" style={{ color: accent }}>
               {character.label}
             </span>
             <FlavorNotes notes={coffee.notes} limit={3} leading className="truncate text-[11px] text-navy/50" />

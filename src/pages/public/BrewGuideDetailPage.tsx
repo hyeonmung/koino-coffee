@@ -21,7 +21,7 @@ export default function BrewGuideDetailPage() {
       <SEO title={guide.title} description={`${guide.equipment} 추출 레시피 — ${guide.coffeeDose}, ${guide.ratio}`} />
       <PublicHeader />
 
-      <main className="flex-1 mx-auto max-w-[720px] px-6 py-10">
+      <main className="w-full min-w-0 flex-1 mx-auto max-w-[720px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{guide.equipment}</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">{guide.title}</h1>
 

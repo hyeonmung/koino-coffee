@@ -21,7 +21,7 @@ export default function StoriesIndexPage() {
       <SEO title="이야기" description="산지, 원두, 커피 교육에 관한 코이노커피의 이야기." />
       <PublicHeader />
 
-      <main className="flex-1 mx-auto max-w-[1000px] px-6 py-10">
+      <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORIES</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">이야기</h1>
 

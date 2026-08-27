@@ -150,7 +150,7 @@ export default function HomePage() {
                 ) : (
                   <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
                     {currentCoffees.map((coffee) => (
-                      <CoffeeCard key={coffee.id} coffee={coffee} showRadar />
+                      <CoffeeCard key={coffee.id} coffee={coffee} showRadar narrowMobileGrid />
                     ))}
                   </div>
                 )}

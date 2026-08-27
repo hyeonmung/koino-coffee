@@ -49,7 +49,7 @@ export default function CharacterDetailPage() {
         />
       )}
 
-      <main className="flex-1 mx-auto max-w-[1000px] px-6 py-10">
+      <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <span className="inline-block border border-navy bg-navy px-4 py-2 text-[16px] font-bold tracking-[0.2em] text-warm-white">
           {character.label}
         </span>

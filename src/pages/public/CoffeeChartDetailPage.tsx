@@ -61,7 +61,7 @@ export default function CoffeeChartDetailPage() {
       />
       <PublicHeader />
 
-      <main className="flex-1 mx-auto max-w-[720px] px-6 py-10">
+      <main className="w-full min-w-0 flex-1 mx-auto max-w-[720px] px-6 py-10">
         <Link to="/coffee-chart" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
           ← 원두 차트 목록
         </Link>

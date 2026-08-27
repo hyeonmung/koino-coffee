@@ -49,7 +49,7 @@ export default function TasteFinderPage() {
       <SEO title="취향 찾기" description="몇 가지 질문으로 나에게 맞는 커피를 찾아보세요." />
       <PublicHeader />
 
-      <main className="flex-1 mx-auto max-w-[640px] px-6 py-14">
+      <main className="w-full min-w-0 flex-1 mx-auto max-w-[640px] px-6 py-14">
         {!showResults ? (
           <>
             <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">FIND YOUR COFFEE</p>

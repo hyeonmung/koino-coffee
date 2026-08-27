@@ -79,7 +79,7 @@ export default function DictionaryPage() {
       <SEO title="커피 사전" description="향미, 센서리, 가공, 품종 등 궁금한 커피 단어를 검색해보세요." />
       <PublicHeader />
 
-      <main className="flex-1 mx-auto max-w-[860px] px-6 py-10">
+      <main className="w-full min-w-0 flex-1 mx-auto max-w-[860px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DICTIONARY</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">커피 사전</h1>
 
