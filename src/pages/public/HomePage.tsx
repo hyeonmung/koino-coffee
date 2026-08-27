@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import DotScale from '../../components/DotScale'
@@ -13,7 +14,7 @@ import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
-import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
+import { getAllCoffees, getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getAllDictionaryTerms } from '../../data/repositories/dictionaryRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
@@ -29,9 +30,25 @@ export default function HomePage() {
   const coffees = getPublishedCoffees().filter((c) => c.availability !== 'archive')
   const featured = coffees.filter((c) => c.featured).slice(0, 4)
   const currentCoffees = (featured.length > 0 ? featured : coffees).slice(0, 4)
-  const chartExample = currentCoffees[0]
   const brewGuides = getPublishedBrewGuides().slice(0, 2)
   const stories = getPublishedStories().slice(0, 2)
+
+  // "원두를 한눈에" banner — every published, chart-visible, non-archive coffee, in sortOrder.
+  const chartCoffees = getAllCoffees()
+    .filter((c) => c.publishStatus === 'published' && c.chartVisible !== false && c.availability !== 'archive')
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+
+  const [chartIndex, setChartIndex] = useState(0)
+  const [chartHovering, setChartHovering] = useState(false)
+  useEffect(() => {
+    if (chartCoffees.length <= 1 || chartHovering) return
+    const id = setInterval(() => {
+      setChartIndex((i) => (i + 1) % chartCoffees.length)
+    }, 3000)
+    return () => clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chartCoffees.length, chartHovering])
+  const chartExample = chartCoffees[chartIndex % chartCoffees.length]
 
   // Real, already-authored dictionary copy — never invented for this preview block.
   const dictionaryTerm =
@@ -131,7 +148,7 @@ export default function HomePage() {
             {showCoffees && (
               <div className="mx-auto max-w-[1240px] px-6 py-12">
                 <div className="flex items-end justify-between">
-                  <h2 className="font-serif text-[22px] font-bold text-navy">지금 만날 수 있는 커피</h2>
+                  <h2 className="font-serif text-[22px] font-bold text-navy">코이노니아 원두 리스트</h2>
                   <Link to="/coffees" className="text-[12px] font-semibold text-navy/50 hover:text-navy">
                     전체 원두 보기 →
                   </Link>
@@ -192,6 +209,8 @@ export default function HomePage() {
 
                   <Link
                     to={`/coffee-chart/${chartExample.slug}`}
+                    onMouseEnter={() => setChartHovering(true)}
+                    onMouseLeave={() => setChartHovering(false)}
                     className="mt-6 grid grid-cols-1 gap-6 border border-navy/15 p-6 hover:border-navy sm:grid-cols-[1fr_auto]"
                   >
                     <div className="flex flex-col justify-between">
@@ -222,6 +241,22 @@ export default function HomePage() {
                       accentSoft={CHARACTER_STYLE[chartExample.character].accentSoft}
                     />
                   </Link>
+
+                  {chartCoffees.length > 1 && (
+                    <div className="mt-3 flex items-center gap-1.5">
+                      {chartCoffees.map((c, i) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => setChartIndex(i)}
+                          aria-label={`${c.coffeeName} 보기`}
+                          className={`h-1.5 rounded-full transition-all ${
+                            i === chartIndex % chartCoffees.length ? 'w-5 bg-navy' : 'w-1.5 bg-navy/20 hover:bg-navy/40'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
 
                   {isVisible('sensoryMap') && (
                     <div className="mt-6 flex flex-col gap-2 border-t border-navy/10 pt-5 text-[11px] sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2">
