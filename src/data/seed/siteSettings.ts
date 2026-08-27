@@ -2,7 +2,7 @@ import type { SiteSettings } from '../schema'
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   brandName: '코이노커피',
-  logoText: 'KOINO COFFEE',
+  logoText: 'KOINONIA',
   heroTitle: '한 잔, 새로운 목적지.',
   heroSubtitle: '좋은 원두와 다양한 향미를 통해\n커피의 새로운 경험을 제안합니다.',
   heroCtaPrimaryLabel: '원두 둘러보기',

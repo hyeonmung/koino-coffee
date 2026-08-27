@@ -38,7 +38,7 @@ export default function PublicFooter() {
             <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">코이노커피</p>
             <div className="mt-2 flex flex-col gap-1.5">
               <Link to="/about" className="text-[12px] text-warm-white/65 hover:text-warm-white">
-                코이노커피 소개
+                About 코이노니아
               </Link>
               <Link to={settings.businessUrl || '/business'} className="text-[12px] text-warm-white/65 hover:text-warm-white">
                 납품 · 교육 문의

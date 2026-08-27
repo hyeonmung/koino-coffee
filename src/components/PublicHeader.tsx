@@ -4,13 +4,13 @@ import { getSiteSettings } from '../data/repositories/siteSettingsRepository'
 import KOIStarField from './decorative/KOIStarField'
 
 const NAV_LINKS = [
+  { to: '/about', label: 'About 코이노니아' },
   { to: '/coffees', label: '원두' },
   { to: '/coffee-chart', label: '원두 차트' },
   { to: '/discover', label: '취향 찾기' },
   { to: '/brew-guide', label: '브루 가이드' },
   { to: '/dictionary', label: '커피 사전' },
   { to: '/stories', label: '이야기' },
-  { to: '/about', label: '코이노커피' },
   { to: '/business', label: '납품 · 교육' },
 ]
 
@@ -33,12 +33,7 @@ export default function PublicHeader() {
       <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-6 py-5">
         <Link to="/" className="flex min-w-0 shrink-0 items-center gap-2.5">
           <img src="/brand/koi-logo.png" alt="" className="h-10 w-10 shrink-0" />
-          <span className="min-w-0">
-            <p className="text-[9px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
-            <p className="mt-0.5 truncate font-serif text-[21px] font-bold tracking-tight text-navy">
-              {settings.logoText}
-            </p>
-          </span>
+          <p className="min-w-0 truncate font-serif text-[21px] font-bold tracking-tight text-navy">{settings.logoText}</p>
         </Link>
 
         <nav className="hidden items-center gap-9 xl:flex">

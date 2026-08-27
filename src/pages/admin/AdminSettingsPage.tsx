@@ -49,7 +49,7 @@ export default function AdminSettingsPage() {
           <Field label="브랜드명 (작은 표기, 예: 코이노커피)">
             <input value={settings.brandName} onChange={(e) => patch({ brandName: e.target.value })} className={inputClass} />
           </Field>
-          <Field label="로고 표기 (예: KOINO COFFEE)">
+          <Field label="로고 표기 (예: KOINONIA)">
             <input value={settings.logoText} onChange={(e) => patch({ logoText: e.target.value })} className={inputClass} />
           </Field>
         </SettingsSection>
