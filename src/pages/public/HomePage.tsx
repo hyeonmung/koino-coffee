@@ -85,8 +85,7 @@ export default function HomePage() {
           <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
             {/* Left ~42% — brand copy */}
             <div className="flex flex-col justify-center px-6 py-14 lg:col-span-5 lg:py-0 lg:pr-10">
-              <p className="text-[11px] font-semibold tracking-[0.35em] text-accent">{settings.brandName}</p>
-              <h1 className="mt-4 font-serif text-[38px] font-bold leading-[1.15] text-navy sm:text-[46px]">
+              <h1 className="font-serif text-[38px] font-bold leading-[1.15] text-navy sm:text-[46px]">
                 {settings.heroTitle}
               </h1>
               <p className="mt-4 max-w-[400px] whitespace-pre-line text-[14px] leading-relaxed text-navy/60">
