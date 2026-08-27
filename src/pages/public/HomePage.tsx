@@ -98,28 +98,13 @@ export default function HomePage() {
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
           <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
-            {/* Left ~42% — brand copy */}
-            <div className="flex flex-col justify-center px-6 py-14 lg:col-span-5 lg:py-0 lg:pr-10">
-              <h1 className="font-serif text-[38px] font-bold leading-[1.15] text-navy sm:text-[46px]">
-                {settings.heroTitle}
-              </h1>
-              <p className="mt-4 max-w-[400px] whitespace-pre-line text-[14px] leading-relaxed text-navy/60">
-                {settings.heroSubtitle}
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  to={settings.heroCtaPrimaryUrl}
-                  className="border border-navy bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
-                >
-                  {settings.heroCtaPrimaryLabel}
-                </Link>
-                <Link
-                  to={settings.heroCtaSecondaryUrl}
-                  className="border border-navy/25 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:border-navy"
-                >
-                  {settings.heroCtaSecondaryLabel}
-                </Link>
-              </div>
+            {/* Left ~42% — brand poster */}
+            <div className="flex items-center justify-center px-6 py-14 lg:col-span-5 lg:py-10 lg:pr-10">
+              <img
+                src="/home/hero-poster.jpg"
+                alt="KOINONIA ROASTERS — A Cup, A New Destination"
+                className="h-auto w-full max-w-[420px] object-contain"
+              />
             </div>
 
             {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show */}
