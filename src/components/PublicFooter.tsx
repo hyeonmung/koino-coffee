@@ -11,9 +11,7 @@ export default function PublicFooter() {
       <div className="relative mx-auto max-w-[1240px] px-6 py-12">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-4">
           <div>
-            <span className="inline-block rounded bg-warm-white px-3 py-2">
-              <img src="/brand/koinonia-wordmark.png" alt="KOINONIA Roasters" className="h-9 w-auto" />
-            </span>
+            <img src="/brand/koinonia-wordmark-gold.png" alt="KOINONIA Roasters" className="h-9 w-auto" />
             <p className="mt-3 whitespace-pre-line text-[12px] leading-relaxed text-warm-white/50">
               {settings.heroSubtitle}
             </p>
