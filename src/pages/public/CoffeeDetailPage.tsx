@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import CoffeeVisual from '../../components/CoffeeVisual'
 import FlavorNotes from '../../components/FlavorNotes'
+import FlavorSpectrumSpine from '../../components/FlavorSpectrumSpine'
 import InfoTooltip from '../../components/InfoTooltip'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -137,8 +138,13 @@ export default function CoffeeDetailPage() {
             {number && <span className="text-accent">{number}</span>}
             <span>{coffee.country}</span>
           </div>
-          <h1 className="mt-1 font-serif text-[32px] font-bold leading-tight text-navy sm:text-[42px]">{coffee.coffeeName}</h1>
-          {coffee.koreanName && <p className="mt-0.5 text-[15px] text-navy/45">{coffee.koreanName}</p>}
+          <div className="mt-1 flex items-stretch gap-4">
+            <FlavorSpectrumSpine notes={coffee.notes} size="lg" />
+            <div className="min-w-0">
+              <h1 className="font-serif text-[32px] font-bold leading-tight text-navy sm:text-[42px]">{coffee.coffeeName}</h1>
+              {coffee.koreanName && <p className="mt-0.5 text-[15px] text-navy/45">{coffee.koreanName}</p>}
+            </div>
+          </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="border border-navy bg-navy px-3 py-1 text-[11px] font-bold tracking-[0.15em] text-warm-white">

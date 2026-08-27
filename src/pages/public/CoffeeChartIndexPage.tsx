@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import DotScale from '../../components/DotScale'
 import FlavorNotes from '../../components/FlavorNotes'
+import FlavorSpectrumSpine from '../../components/FlavorSpectrumSpine'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import RadarChart from '../../components/RadarChart'
@@ -121,10 +122,15 @@ export default function CoffeeChartIndexPage() {
                         {formatCoffeeNumber(c.coffeeNumber) && (
                           <span className="mr-1.5 text-[10px] font-semibold text-navy/35">{formatCoffeeNumber(c.coffeeNumber)}</span>
                         )}
-                        <Link to={`/coffee-chart/${c.slug}`} className="font-semibold text-navy hover:underline">
-                          {c.coffeeName}
-                        </Link>
-                        {c.koreanName && <p className="text-[10px] text-navy/40">{c.koreanName}</p>}
+                        <div className="flex items-stretch gap-2">
+                          <FlavorSpectrumSpine notes={c.notes} limit={2} size="sm" />
+                          <div className="min-w-0">
+                            <Link to={`/coffee-chart/${c.slug}`} className="font-semibold text-navy hover:underline">
+                              {c.coffeeName}
+                            </Link>
+                            {c.koreanName && <p className="text-[10px] text-navy/40">{c.koreanName}</p>}
+                          </div>
+                        </div>
                       </td>
                       <td className="px-4 py-3 text-navy/60">{c.country}</td>
                       <td className="px-4 py-3">
@@ -180,10 +186,15 @@ export default function CoffeeChartIndexPage() {
                     {formatCoffeeNumber(c.coffeeNumber) && (
                       <p className="text-[10px] text-navy/40">{formatCoffeeNumber(c.coffeeNumber)}</p>
                     )}
-                    <p className="truncate font-serif text-[14px] font-bold text-navy">{c.coffeeName}</p>
-                    <span className="mt-1 inline-block border border-navy bg-navy px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-warm-white">
-                      {CHARACTER_INFO[c.character].label}
-                    </span>
+                    <div className="flex items-stretch gap-2">
+                      <FlavorSpectrumSpine notes={c.notes} limit={2} size="sm" />
+                      <div className="min-w-0">
+                        <p className="truncate font-serif text-[14px] font-bold text-navy">{c.coffeeName}</p>
+                        <span className="mt-1 inline-block border border-navy bg-navy px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-warm-white">
+                          {CHARACTER_INFO[c.character].label}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   <span className="text-navy/30">→</span>
                 </Link>

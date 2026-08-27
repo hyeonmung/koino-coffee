@@ -1,5 +1,6 @@
 import { useMemo, useState, type KeyboardEvent } from 'react'
 import { MAX_FLAVOR_NOTES } from '../utils/validation'
+import FlavorSpectrumSpine from './FlavorSpectrumSpine'
 
 interface FlavorNoteInputProps {
   notes: string[]
@@ -10,6 +11,7 @@ interface FlavorNoteInputProps {
 export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: FlavorNoteInputProps) {
   const [draft, setDraft] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [dragIndex, setDragIndex] = useState<number | null>(null)
 
   const addNote = (value: string) => {
     const trimmed = value.trim()
@@ -25,6 +27,15 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
 
   const removeNote = (index: number) => {
     onChange(notes.filter((_, i) => i !== index))
+  }
+
+  /** Cup Note order drives both the displayed text order and the Flavor Spectrum Spine's gradient order. */
+  const reorder = (from: number, to: number) => {
+    if (from === to) return
+    const next = [...notes]
+    const [moved] = next.splice(from, 1)
+    next.splice(to, 0, moved)
+    onChange(next)
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -52,8 +63,21 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
         {notes.map((note, i) => (
           <span
             key={`${note}-${i}`}
-            className="flex items-center gap-1 border border-navy/20 bg-warm-white px-2 py-1 text-[11px] text-navy"
+            draggable
+            onDragStart={() => setDragIndex(i)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault()
+              if (dragIndex !== null) reorder(dragIndex, i)
+              setDragIndex(null)
+            }}
+            onDragEnd={() => setDragIndex(null)}
+            title="드래그하여 순서 변경 — 첫 번째 순서가 대표 Cup Note이자 Spectrum Spine 맨 위 색이 됩니다"
+            className={`flex cursor-grab items-center gap-1 border border-navy/20 bg-warm-white px-2 py-1 text-[11px] text-navy transition-opacity active:cursor-grabbing ${
+              dragIndex === i ? 'opacity-30' : ''
+            }`}
           >
+            <span className="text-navy/25">⠿</span>
             {note}
             <button
               type="button"
@@ -80,8 +104,15 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
         />
       </div>
       <p className="mt-1 text-right text-[10px] text-navy/45">
-        {notes.length} / {MAX_FLAVOR_NOTES}
+        {notes.length} / {MAX_FLAVOR_NOTES} · 칩을 드래그하면 순서를 바꿀 수 있습니다
       </p>
+
+      {notes.length > 0 && (
+        <div className="mt-3 flex h-10 items-stretch gap-3 border-t border-navy/10 pt-3">
+          <span className="self-center text-[10px] font-semibold tracking-[0.1em] text-navy/40">SPECTRUM SPINE 미리보기</span>
+          <FlavorSpectrumSpine notes={notes} size="md" />
+        </div>
+      )}
 
       {showSuggestions && matchingSuggestions.length > 0 && (
         <div className="absolute z-10 mt-1 w-full border border-navy/15 bg-white shadow-md">
