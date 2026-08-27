@@ -22,12 +22,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-warm-white">
       <header className="border-b border-navy/15 bg-white">
         <div className="mx-auto flex max-w-[1320px] items-center justify-between px-6 py-4">
-          <div>
-            <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노커피</p>
-            <Link to="/admin" className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">
-              KOINO COFFEE — 관리자
-            </Link>
-          </div>
+          <Link to="/admin" className="flex items-center gap-2">
+            <img src="/brand/koi-logo.png" alt="" className="h-8 w-8 shrink-0" />
+            <span>
+              <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노커피</p>
+              <p className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">KOINO COFFEE — 관리자</p>
+            </span>
+          </Link>
           <Link
             to="/"
             className="border border-navy/25 px-3.5 py-2 text-[12px] font-semibold tracking-wide text-navy/70 hover:border-navy hover:text-navy"

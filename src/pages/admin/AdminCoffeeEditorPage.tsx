@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import CharacterRecommendationPanel from '../../components/admin/CharacterRecommendationPanel'
 import CharacterSelector from '../../components/CharacterSelector'
 import CoffeePreview from '../../components/CoffeePreview'
 import FlavorNoteInput from '../../components/FlavorNoteInput'
 import SensoryProfileInput from '../../components/SensoryProfileInput'
+import { recommendCharacter } from '../../data/characterRecommend'
 import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getCoffeeById, slugExists, upsertCoffee } from '../../data/repositories/coffeeRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
@@ -18,9 +20,9 @@ import { validateCoffeeDraft } from '../../utils/validation'
 
 const TABS = [
   '01 BASIC',
-  '02 CHARACTER',
-  '03 FLAVOR',
-  '04 SENSORY',
+  '02 FLAVOR',
+  '03 SENSORY',
+  '04 CHARACTER',
   '05 ORIGIN',
   '06 PROCESS',
   '07 ROAST',
@@ -112,6 +114,8 @@ export default function AdminCoffeeEditorPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
+
+  const recommendation = useMemo(() => recommendCharacter(draft.notes, draft.sensory), [draft.notes, draft.sensory])
 
   const patch = (p: Partial<Coffee>) => {
     setDraft((prev) => {
@@ -290,9 +294,22 @@ export default function AdminCoffeeEditorPage() {
               </>
             )}
 
-            {tab === '02 CHARACTER' && (
+            {tab === '02 FLAVOR' && (
+              <FlavorNoteInput notes={draft.notes} onChange={(notes) => patch({ notes })} suggestions={flavorSuggestions} />
+            )}
+
+            {tab === '03 SENSORY' && <SensoryProfileInput sensory={draft.sensory} onChange={(sensory) => patch({ sensory })} />}
+
+            {tab === '04 CHARACTER' && (
               <>
-                <CharacterSelector value={draft.character} onChange={(character) => patch({ character })} />
+                <CharacterRecommendationPanel
+                  recommendation={recommendation}
+                  current={draft.character}
+                  onApply={(character) => patch({ character })}
+                />
+                <div className="mt-5">
+                  <CharacterSelector value={draft.character} onChange={(character) => patch({ character })} />
+                </div>
                 {field(
                   'Why this Character? (선택)',
                   <textarea
@@ -304,12 +321,6 @@ export default function AdminCoffeeEditorPage() {
                 )}
               </>
             )}
-
-            {tab === '03 FLAVOR' && (
-              <FlavorNoteInput notes={draft.notes} onChange={(notes) => patch({ notes })} suggestions={flavorSuggestions} />
-            )}
-
-            {tab === '04 SENSORY' && <SensoryProfileInput sensory={draft.sensory} onChange={(sensory) => patch({ sensory })} />}
 
             {tab === '05 ORIGIN' && (
               <div className="grid grid-cols-2 gap-3">

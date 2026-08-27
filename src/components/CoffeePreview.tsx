@@ -1,5 +1,6 @@
 import { forwardRef, type Ref } from 'react'
 import { CHARACTER_INFO } from '../constants/characters'
+import { CHARACTER_STYLE } from '../constants/characterStyle'
 import { SENSORY_FIELDS } from '../constants/sensory'
 import type { CoffeeDraft } from '../types'
 import InfoTooltip from './InfoTooltip'
@@ -22,6 +23,7 @@ const MetaItem = ({ label, value }: { label: string; value: string }) => {
 
 const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, chartRef }, ref) => {
   const character = CHARACTER_INFO[coffee.character]
+  const { accent, accentSoft } = CHARACTER_STYLE[coffee.character]
 
   return (
     <div
@@ -51,11 +53,13 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
       </div>
 
       {coffee.notes.length > 0 && (
-        <p className="mt-3 text-[13px] leading-snug text-navy/80">{coffee.notes.join(' · ')}</p>
+        <p className="mt-3 text-[13px] font-medium leading-snug" style={{ color: accent }}>
+          {coffee.notes.join(' · ')}
+        </p>
       )}
 
       <div className="mt-6">
-        <RadarChart ref={chartRef} sensory={coffee.sensory} size={300} />
+        <RadarChart ref={chartRef} sensory={coffee.sensory} size={300} accentColor={accent} accentSoft={accentSoft} />
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-navy/15 pt-4">

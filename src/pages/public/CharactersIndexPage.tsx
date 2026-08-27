@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
+import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { getAllCharacters } from '../../data/repositories/characterRepository'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 
@@ -28,7 +29,8 @@ export default function CharactersIndexPage() {
               <Link
                 key={character.key}
                 to={`/characters/${character.key.toLowerCase()}`}
-                className="group grid grid-cols-1 gap-3 border border-navy/15 bg-white p-6 transition-colors hover:border-navy sm:grid-cols-[140px_minmax(0,1fr)_auto] sm:items-center"
+                className="group grid grid-cols-1 gap-3 border border-navy/15 border-l-[3px] bg-white p-6 transition-colors hover:border-navy sm:grid-cols-[140px_minmax(0,1fr)_auto] sm:items-center"
+                style={{ borderLeftColor: CHARACTER_STYLE[character.key].accent }}
               >
                 <div className="flex items-center gap-3">
                   {character.image && (

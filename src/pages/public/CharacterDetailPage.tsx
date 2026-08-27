@@ -4,6 +4,7 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
+import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { getCharacter } from '../../data/repositories/characterRepository'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import type { SensoryKey, SensoryProfile } from '../../types'
@@ -57,7 +58,12 @@ export default function CharacterDetailPage() {
 
         {tendency && (
           <div className="mt-10 flex flex-col items-center border-t border-navy/15 pt-8 sm:flex-row sm:gap-10">
-            <RadarChart sensory={tendency} size={220} />
+            <RadarChart
+              sensory={tendency}
+              size={220}
+              accentColor={CHARACTER_STYLE[upperKey as CupCharacter].accent}
+              accentSoft={CHARACTER_STYLE[upperKey as CupCharacter].accentSoft}
+            />
             <p className="mt-4 max-w-[320px] text-center text-[11px] text-navy/45 sm:mt-0 sm:text-left">
               {character.label} 원두 {coffees.length}종의 평균 Sensory Profile입니다. 실제 원두마다 세부 수치는
               다를 수 있습니다.

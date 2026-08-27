@@ -22,19 +22,22 @@ interface RadarChartProps {
   sensory: SensoryProfile
   size?: number
   showLabels?: boolean
+  /** Character accent (src/constants/characterStyle.ts) — tints the polygon line/points when given. Defaults to Navy/Yellow. */
+  accentColor?: string
+  accentSoft?: string
 }
 
 const RadarChart = forwardRef<HTMLDivElement, RadarChartProps>(
-  ({ sensory, size = 320, showLabels = true }, ref) => {
+  ({ sensory, size = 320, showLabels = true, accentColor, accentSoft }, ref) => {
     const data: ChartData<'radar'> = {
       labels: SENSORY_FIELDS.map((f) => f.label),
       datasets: [
         {
           data: SENSORY_FIELDS.map((f) => sensory[f.key]),
-          backgroundColor: 'rgba(20, 33, 61, 0.14)',
-          borderColor: NAVY,
+          backgroundColor: accentSoft ?? 'rgba(20, 33, 61, 0.14)',
+          borderColor: accentColor ?? NAVY,
           borderWidth: 2,
-          pointBackgroundColor: ACCENT,
+          pointBackgroundColor: accentColor ?? ACCENT,
           pointBorderColor: NAVY,
           pointBorderWidth: showLabels ? 1.5 : 1,
           pointRadius: showLabels ? 3.5 : 2.5,

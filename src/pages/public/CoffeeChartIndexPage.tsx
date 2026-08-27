@@ -7,6 +7,7 @@ import PublicHeader from '../../components/PublicHeader'
 import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
 import { CHARACTER_INFO } from '../../constants/characters'
+import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { getAllCoffees } from '../../data/repositories/coffeeRepository'
 
 export default function CoffeeChartIndexPage() {
@@ -79,7 +80,7 @@ export default function CoffeeChartIndexPage() {
                         </span>
                       </td>
                       <td className="max-w-[180px] px-4 py-3 text-navy/60">
-                        <FlavorNotes notes={c.notes} limit={2} className="block truncate" />
+                        <FlavorNotes notes={c.notes} character={c.character} limit={2} className="block truncate" />
                       </td>
                       <td className="px-4 py-3">
                         <DotScale value={c.sensory.acidity} />
@@ -115,7 +116,13 @@ export default function CoffeeChartIndexPage() {
                     c.availability === 'archive' ? 'opacity-50' : ''
                   }`}
                 >
-                  <RadarChart sensory={c.sensory} size={64} showLabels={false} />
+                  <RadarChart
+                    sensory={c.sensory}
+                    size={64}
+                    showLabels={false}
+                    accentColor={CHARACTER_STYLE[c.character].accent}
+                    accentSoft={CHARACTER_STYLE[c.character].accentSoft}
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="text-[10px] text-navy/45">{c.country}</p>
                     <p className="truncate font-serif text-[14px] font-bold text-navy">{c.coffeeName}</p>

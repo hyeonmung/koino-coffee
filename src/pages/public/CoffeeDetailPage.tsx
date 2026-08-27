@@ -10,7 +10,7 @@ import QRCodeBlock from '../../components/QRCodeBlock'
 import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
 import { CHARACTER_INFO } from '../../constants/characters'
-import { FLAVOR_FAMILY_COLOR } from '../../constants/flavorColors'
+import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getCoffeeBySlug, getPublishedCoffees } from '../../data/repositories/coffeeRepository'
@@ -56,6 +56,7 @@ export default function CoffeeDetailPage() {
   }
 
   const character = CHARACTER_INFO[coffee.character]
+  const characterAccent = CHARACTER_STYLE[coffee.character].accent
   const flavorGroups = groupNotesByFamily(coffee.notes, descriptors, families)
   const linkedGuides = brewGuides.filter((g) => coffee.brewGuideIds.includes(g.id))
   const linkedStory = coffee.storyId ? getStoryById(coffee.storyId) : undefined
@@ -114,7 +115,7 @@ export default function CoffeeDetailPage() {
             </span>
           )}
         </div>
-        <FlavorNotes notes={coffee.notes} className="mt-3 block text-[14px] text-navy/75" />
+        <FlavorNotes notes={coffee.notes} character={coffee.character} className="mt-3 block text-[14px] text-navy/75" />
 
         <div className="mt-6 flex flex-wrap gap-2">
           {coffee.purchaseUrl && (
@@ -153,7 +154,9 @@ export default function CoffeeDetailPage() {
         {/* SECTION 2 — CUP CHARACTER */}
         <section className="mt-14 border-t border-navy/15 pt-10">
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">CUP CHARACTER</p>
-          <h2 className="mt-1 font-serif text-[26px] font-bold text-navy">{character.label}</h2>
+          <h2 className="mt-1 font-serif text-[26px] font-bold" style={{ color: characterAccent }}>
+            {character.label}
+          </h2>
           <p className="mt-1 text-[13px] text-navy/60">{character.description}</p>
           <p className="mt-1 text-[12px] text-navy/45">{character.flavors}</p>
           {coffee.characterReason && (
@@ -169,7 +172,13 @@ export default function CoffeeDetailPage() {
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINO SENSORY MAP</p>
           <h2 className="mt-1 font-serif text-[22px] font-bold text-navy">Sensory Profile</h2>
           <div className="mt-6">
-            <RadarChart ref={chartRef} sensory={coffee.sensory} size={280} />
+            <RadarChart
+              ref={chartRef}
+              sensory={coffee.sensory}
+              size={280}
+              accentColor={characterAccent}
+              accentSoft={CHARACTER_STYLE[coffee.character].accentSoft}
+            />
           </div>
           <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-navy/15 pt-4 sm:grid-cols-3">
             {SENSORY_FIELDS.map((field) => (
@@ -206,10 +215,7 @@ export default function CoffeeDetailPage() {
                   <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">
                     {group.family.name.toUpperCase()}
                   </p>
-                  <p
-                    className="mt-1 text-[13px] font-medium text-navy"
-                    style={FLAVOR_FAMILY_COLOR[group.family.id] ? { color: FLAVOR_FAMILY_COLOR[group.family.id] } : undefined}
-                  >
+                  <p className="mt-1 text-[13px] font-medium" style={{ color: characterAccent }}>
                     {group.notes.join(' · ')}
                   </p>
                 </div>

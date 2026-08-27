@@ -38,6 +38,14 @@ export default function AdminSettingsPage() {
 
       <div className="mt-8 max-w-[680px] space-y-8">
         <SettingsSection title="브랜드">
+          <div className="flex items-center gap-3 border border-navy/15 bg-white p-3">
+            <img src="/brand/koi-logo.png" alt="KOI COFFEE 공식 로고" className="h-12 w-12" />
+            <p className="text-[11px] leading-relaxed text-navy/50">
+              현재 적용된 공식 로고입니다. Header · Footer · Favicon에 자동으로 사용됩니다.
+              <br />
+              로고 이미지 자체는 코드 수정이 필요합니다 — 개발자에게 새 파일을 전달해주세요.
+            </p>
+          </div>
           <Field label="브랜드명 (작은 표기, 예: 코이노커피)">
             <input value={settings.brandName} onChange={(e) => patch({ brandName: e.target.value })} className={inputClass} />
           </Field>

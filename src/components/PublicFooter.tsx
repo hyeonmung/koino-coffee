@@ -11,7 +11,8 @@ export default function PublicFooter() {
       <div className="relative mx-auto max-w-[1240px] px-6 py-12">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-4">
           <div>
-            <p className="font-serif text-[16px] font-bold text-warm-white">{settings.logoText}</p>
+            <img src="/brand/koi-logo.png" alt="" className="h-9 w-9" />
+            <p className="mt-2 font-serif text-[16px] font-bold text-warm-white">{settings.logoText}</p>
             <p className="mt-2 whitespace-pre-line text-[12px] leading-relaxed text-warm-white/50">
               {settings.heroSubtitle}
             </p>

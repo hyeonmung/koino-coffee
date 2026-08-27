@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
 import { CHARACTER_INFO } from '../../constants/characters'
+import { recommendCharacter } from '../../data/characterRecommend'
 import { checkCompleteness } from '../../data/completeness'
 import type { Coffee, PublishStatus } from '../../data/schema'
 import { deleteCoffee, getAllCoffees, upsertCoffee } from '../../data/repositories/coffeeRepository'
@@ -41,6 +42,15 @@ export default function AdminCoffeeListPage() {
 
   const toggleFeatured = (coffee: Coffee) => {
     upsertCoffee({ ...coffee, featured: !coffee.featured, updatedAt: new Date().toISOString() })
+    refresh()
+  }
+
+  const move = (coffee: Coffee, direction: -1 | 1) => {
+    const idx = filtered.findIndex((c) => c.id === coffee.id)
+    const target = filtered[idx + direction]
+    if (!target) return
+    upsertCoffee({ ...coffee, sortOrder: target.sortOrder, updatedAt: new Date().toISOString() })
+    upsertCoffee({ ...target, sortOrder: coffee.sortOrder, updatedAt: new Date().toISOString() })
     refresh()
   }
 
@@ -127,13 +137,22 @@ export default function AdminCoffeeListPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((coffee) => (
+            {filtered.map((coffee, idx) => {
+              const suggestion = recommendCharacter(coffee.notes, coffee.sensory)
+              return (
               <tr key={coffee.id} className="border-b border-navy/10">
                 <td className="px-3 py-2.5">
                   <p className="font-semibold text-navy">{coffee.coffeeName}</p>
                   {coffee.isSample && <span className="text-[10px] text-accent">SAMPLE</span>}
                 </td>
-                <td className="px-3 py-2.5 text-navy/70">{CHARACTER_INFO[coffee.character].label}</td>
+                <td className="px-3 py-2.5 text-navy/70">
+                  {CHARACTER_INFO[coffee.character].label}
+                  {suggestion && suggestion.character !== coffee.character && (
+                    <p className="mt-0.5 text-[10px] text-navy/35" title="Flavor Notes 기반 시스템 제안 — 참고용입니다.">
+                      제안: {suggestion.character}
+                    </p>
+                  )}
+                </td>
                 <td className="px-3 py-2.5 text-navy/70">{coffee.country}</td>
                 <td className="px-3 py-2.5">
                   <select
@@ -149,15 +168,35 @@ export default function AdminCoffeeListPage() {
                   </select>
                 </td>
                 <td className="px-3 py-2.5">
-                  <button
-                    type="button"
-                    onClick={() => toggleFeatured(coffee)}
-                    className={`border px-2 py-1 text-[10px] font-semibold ${
-                      coffee.featured ? 'border-accent bg-accent/20 text-navy' : 'border-navy/20 text-navy/40'
-                    }`}
-                  >
-                    {coffee.featured ? '★ Featured' : '☆'}
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => toggleFeatured(coffee)}
+                      className={`border px-2 py-1 text-[10px] font-semibold ${
+                        coffee.featured ? 'border-accent bg-accent/20 text-navy' : 'border-navy/20 text-navy/40'
+                      }`}
+                    >
+                      {coffee.featured ? '★ Featured' : '☆'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => move(coffee, -1)}
+                      disabled={idx === 0}
+                      title="위로 (홈 노출 순서)"
+                      className="border border-navy/20 px-1.5 py-1 text-[10px] text-navy/40 hover:border-navy hover:text-navy disabled:opacity-25"
+                    >
+                      ▲
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => move(coffee, 1)}
+                      disabled={idx === filtered.length - 1}
+                      title="아래로 (홈 노출 순서)"
+                      className="border border-navy/20 px-1.5 py-1 text-[10px] text-navy/40 hover:border-navy hover:text-navy disabled:opacity-25"
+                    >
+                      ▼
+                    </button>
+                  </div>
                 </td>
                 <td className="px-3 py-2.5" title={checkCompleteness(coffee).missing.slice(0, 3).join(', ')}>
                   <span className="text-navy/60">{checkCompleteness(coffee).percent}%</span>
@@ -216,7 +255,8 @@ export default function AdminCoffeeListPage() {
                   </div>
                 </td>
               </tr>
-            ))}
+              )
+            })}
             {filtered.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-3 py-10 text-center text-navy/40">

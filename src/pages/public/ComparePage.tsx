@@ -103,7 +103,9 @@ export default function ComparePage() {
                   <CompareRow label="Variety" cells={selected.map((c) => c.variety || '-')} />
                   <CompareRow
                     label="Flavor Notes"
-                    cells={selected.map((c) => (c.notes.length > 0 ? <FlavorNotes notes={c.notes} /> : '-'))}
+                    cells={selected.map((c) =>
+                      c.notes.length > 0 ? <FlavorNotes notes={c.notes} character={c.character} /> : '-',
+                    )}
                   />
                   {SENSORY_FIELDS.map((field) => (
                     <CompareRow
