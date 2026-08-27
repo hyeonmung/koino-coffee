@@ -7,7 +7,7 @@
   --color-warm-white: #faf8f4;
   --font-sans:
     'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-serif: 'Playfair Display', 'Noto Serif KR', 'Georgia', serif;
+  --font-serif: 'Playfair Display', 'Gowun Batang', 'Georgia', serif;
 
   /* Single source of truth for the Coffee Card image ratio (850×550 / 17:11).
      Generates the `aspect-coffee-card` utility — see src/constants/media.ts. */
