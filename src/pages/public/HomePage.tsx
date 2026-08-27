@@ -153,9 +153,7 @@ export default function HomePage() {
 
             {showCharacter && (
               <div className={`mx-auto max-w-[1240px] px-6 py-10 ${showCoffees ? 'border-t border-navy/10' : ''}`}>
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">
-                  KOINO CUP CHARACTER · 당신의 취향은 어떤 성격인가요?
-                </p>
+                <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">KOINONIA FLAVOR WORD</p>
                 <div className="mt-4 grid grid-cols-2 gap-px overflow-x-auto sm:grid-cols-5 sm:gap-0 sm:divide-x sm:divide-navy/10">
                   {CUP_CHARACTERS.map((key, i) => {
                     const info = CHARACTER_INFO[key]
