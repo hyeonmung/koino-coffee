@@ -1,34 +1,12 @@
-import { createLocalCollection } from '../localCollection'
-import { generateUniqueSlug, migrateLegacyCoffees } from '../migrate'
+import { toRow } from '../caseMap'
+import { generateUniqueSlug } from '../migrate'
 import type { Coffee } from '../schema'
 import { SEED_COFFEES } from '../seed/coffees'
-
-const STORAGE_KEY = 'koi-sensory-map-coffees'
-const INIT_FLAG_KEY = 'koi-sensory-map-coffees-initialized'
-
-const collection = createLocalCollection<Coffee>(STORAGE_KEY)
-
-function ensureInitialized(): void {
-  if (localStorage.getItem(INIT_FLAG_KEY)) return
-  localStorage.setItem(INIT_FLAG_KEY, '1')
-
-  const existing = collection.getAll()
-  if (existing.length > 0) return
-
-  const existingSlugs = new Set<string>()
-  const migrated = migrateLegacyCoffees(existingSlugs)
-  if (migrated.length > 0) {
-    collection.saveAll(migrated)
-    return
-  }
-
-  // Brand new install with no legacy data at all — seed the full demo library.
-  collection.saveAll(SEED_COFFEES.map((c) => ({ ...c })))
-}
+import { supabase } from '../supabaseClient'
+import { coffeeToRow, store } from '../store'
 
 export function getAllCoffees(): Coffee[] {
-  ensureInitialized()
-  return collection.getAll()
+  return store.coffees
 }
 
 export function getPublishedCoffees(): Coffee[] {
@@ -43,12 +21,22 @@ export function getCoffeeById(id: string): Coffee | undefined {
   return getAllCoffees().find((c) => c.id === id)
 }
 
-export function upsertCoffee(coffee: Coffee): Coffee[] {
-  return collection.upsert(coffee)
+export async function upsertCoffee(coffee: Coffee): Promise<Coffee[]> {
+  const { error } = await supabase.from('coffees').upsert(toRow(coffeeToRow(coffee)))
+  if (error) throw error
+
+  const index = store.coffees.findIndex((c) => c.id === coffee.id)
+  if (index === -1) store.coffees = [...store.coffees, coffee]
+  else store.coffees = store.coffees.map((c, i) => (i === index ? coffee : c))
+  return store.coffees
 }
 
-export function deleteCoffee(id: string): Coffee[] {
-  return collection.remove(id)
+export async function deleteCoffee(id: string): Promise<Coffee[]> {
+  const { error } = await supabase.from('coffees').delete().eq('id', id)
+  if (error) throw error
+
+  store.coffees = store.coffees.filter((c) => c.id !== id)
+  return store.coffees
 }
 
 export function slugExists(slug: string, excludeId?: string): boolean {
@@ -56,7 +44,7 @@ export function slugExists(slug: string, excludeId?: string): boolean {
 }
 
 /** Admin-triggered convenience action: pulls in the full 8-coffee demo set without touching real entries. */
-export function addDemoCoffees(): Coffee[] {
+export async function addDemoCoffees(): Promise<Coffee[]> {
   const all = getAllCoffees()
   const existingIds = new Set(all.map((c) => c.id))
   const existingSlugs = new Set(all.map((c) => c.slug))
@@ -72,7 +60,10 @@ export function addDemoCoffees(): Coffee[] {
   }
 
   if (toAdd.length === 0) return all
-  const next = [...all, ...toAdd]
-  collection.saveAll(next)
-  return next
+
+  const { error } = await supabase.from('coffees').insert(toAdd.map((c) => toRow(coffeeToRow(c))))
+  if (error) throw error
+
+  store.coffees = [...all, ...toAdd]
+  return store.coffees
 }

@@ -14,8 +14,8 @@ export default function AdminCharactersPage() {
     setCharacters((prev) => prev.map((c) => (c.key === key ? { ...c, ...p } : c)))
   }
 
-  const save = (character: Character) => {
-    updateCharacter(character.key, {
+  const save = async (character: Character) => {
+    await updateCharacter(character.key, {
       description: character.description,
       flavors: character.flavors,
       heroCopy: character.heroCopy,

@@ -90,7 +90,7 @@ export default function AdminSpotlightEditorPage() {
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (isLinked && !draft.linkedId) {
       setError('연결할 항목을 선택해주세요.')
       return
@@ -101,7 +101,7 @@ export default function AdminSpotlightEditorPage() {
     }
     setError(null)
     const next = { ...draft, updatedAt: new Date().toISOString() }
-    upsertSpotlightSlide(next)
+    await upsertSpotlightSlide(next)
     setDraft(next)
     if (isNew) navigate(`/admin/spotlight/${next.id}`, { replace: true })
   }

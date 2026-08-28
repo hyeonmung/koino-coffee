@@ -9,8 +9,8 @@ export default function AdminStoriesPage() {
   const [stories, setStories] = useState<Story[]>(() => getAllStories())
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
 
-  const remove = (id: string) => {
-    deleteStory(id)
+  const remove = async (id: string) => {
+    await deleteStory(id)
     setConfirmingId(null)
     setStories(getAllStories())
   }

@@ -21,7 +21,7 @@ export default function AdminBrewCategoriesPage() {
 
   const refresh = () => setCategories(getAllBrewCategories())
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!label.trim()) return
     const slug = slugifyFilename(labelEn.trim() || label.trim())
     if (brewCategorySlugExists(slug)) {
@@ -29,7 +29,7 @@ export default function AdminBrewCategoriesPage() {
       return
     }
     setError(null)
-    upsertBrewCategory({
+    await upsertBrewCategory({
       id: crypto.randomUUID(),
       slug,
       label: label.trim(),
@@ -42,27 +42,27 @@ export default function AdminBrewCategoriesPage() {
     refresh()
   }
 
-  const move = (category: BrewCategory, direction: -1 | 1) => {
+  const move = async (category: BrewCategory, direction: -1 | 1) => {
     const idx = categories.findIndex((c) => c.id === category.id)
     const target = categories[idx + direction]
     if (!target) return
-    upsertBrewCategory({ ...category, order: target.order })
-    upsertBrewCategory({ ...target, order: category.order })
+    await upsertBrewCategory({ ...category, order: target.order })
+    await upsertBrewCategory({ ...target, order: category.order })
     refresh()
   }
 
-  const toggleVisible = (category: BrewCategory) => {
-    upsertBrewCategory({ ...category, visible: !category.visible })
+  const toggleVisible = async (category: BrewCategory) => {
+    await upsertBrewCategory({ ...category, visible: !category.visible })
     refresh()
   }
 
-  const rename = (category: BrewCategory, patch: Partial<BrewCategory>) => {
-    upsertBrewCategory({ ...category, ...patch })
+  const rename = async (category: BrewCategory, patch: Partial<BrewCategory>) => {
+    await upsertBrewCategory({ ...category, ...patch })
     refresh()
   }
 
-  const handleDelete = (id: string) => {
-    deleteBrewCategory(id)
+  const handleDelete = async (id: string) => {
+    await deleteBrewCategory(id)
     setConfirmingId(null)
     refresh()
   }

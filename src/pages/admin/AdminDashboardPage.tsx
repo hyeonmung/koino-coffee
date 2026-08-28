@@ -6,9 +6,12 @@ import { addDemoCoffees, getAllCoffees } from '../../data/repositories/coffeeRep
 import { getAllStories } from '../../data/repositories/storyRepository'
 import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getAllInquiries } from '../../data/repositories/inquiryRepository'
+import { migrateLocalDataToSupabase, type MigrationReport } from '../../data/migrateToSupabase'
 
 export default function AdminDashboardPage() {
   const [, forceRerender] = useState(0)
+  const [migrating, setMigrating] = useState(false)
+  const [migrationReport, setMigrationReport] = useState<MigrationReport | null>(null)
   const coffees = getAllCoffees()
   const published = coffees.filter((c) => c.publishStatus === 'published').length
   const draft = coffees.filter((c) => c.publishStatus === 'draft').length
@@ -20,9 +23,21 @@ export default function AdminDashboardPage() {
   const newInquiries = inquiries.filter((i) => i.status === 'new').length
   const recentlyEdited = [...coffees].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 5)
 
-  const handleAddDemo = () => {
-    addDemoCoffees()
+  const handleAddDemo = async () => {
+    await addDemoCoffees()
     forceRerender((n) => n + 1)
+  }
+
+  const handleMigrate = async () => {
+    setMigrating(true)
+    setMigrationReport(null)
+    try {
+      const report = await migrateLocalDataToSupabase()
+      setMigrationReport(report)
+      forceRerender((n) => n + 1)
+    } finally {
+      setMigrating(false)
+    }
   }
 
   return (
@@ -63,7 +78,40 @@ export default function AdminDashboardPage() {
         <QuickLink to="/admin/brew-guides/new" label="+ 새 브루 가이드" />
       </div>
 
-      <div className="mt-10 border border-navy/15 bg-white p-6">
+      <div className="mt-10 border border-accent bg-accent/10 p-6">
+        <p className="text-[13px] font-semibold text-navy">이 브라우저의 데이터를 Supabase로 이전</p>
+        <p className="mt-1 max-w-[560px] text-[12px] text-navy/60">
+          지금까지 이 브라우저에만 저장되어 있던 원두 · 캐릭터 · 향미 · 브루 가이드 · 이야기 · About 페이지 · 사이트 설정 등을
+          Supabase로 옮겨서, 어떤 기기·브라우저로 접속해도 동일하게 보이도록 만듭니다. 여러 번 눌러도 안전합니다(같은 항목은
+          덮어쓸 뿐 중복 생성되지 않습니다).
+        </p>
+        <button
+          type="button"
+          onClick={handleMigrate}
+          disabled={migrating}
+          className="mt-3 border border-navy bg-navy px-4 py-2 text-[12px] font-semibold text-warm-white hover:bg-navy-light disabled:opacity-50"
+        >
+          {migrating ? '이전 중…' : '지금 이전하기'}
+        </button>
+        {migrationReport && (
+          <div className="mt-4 border-t border-navy/15 pt-3 text-[12px] text-navy/70">
+            {Object.entries(migrationReport.counts).map(([label, count]) => (
+              <p key={label}>
+                {label}: {count}건
+              </p>
+            ))}
+            {migrationReport.errors.length > 0 && (
+              <div className="mt-2 text-red-600">
+                {migrationReport.errors.map((e, i) => (
+                  <p key={i}>{e}</p>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 border border-navy/15 bg-white p-6">
         <p className="text-[13px] font-semibold text-navy">데모 데이터</p>
         <p className="mt-1 text-[12px] text-navy/55">
           5가지 Character를 모두 보여주는 8종의 샘플 원두를 추가합니다. 이미 등록된 원두는 건드리지 않습니다.

@@ -97,58 +97,58 @@ export default function AdminAboutEditorPage() {
 
   const refresh = () => setBlocks(getAllAboutBlocks())
 
-  const move = (block: AboutBlock, direction: -1 | 1) => {
+  const move = async (block: AboutBlock, direction: -1 | 1) => {
     const idx = blocks.findIndex((b) => b.id === block.id)
     const target = blocks[idx + direction]
     if (!target) return
-    upsertAboutBlock({ ...block, order: target.order })
-    upsertAboutBlock({ ...target, order: block.order })
+    await upsertAboutBlock({ ...block, order: target.order })
+    await upsertAboutBlock({ ...target, order: block.order })
     refresh()
   }
 
   /** Drag-and-drop reorder — drop a block onto another row's position, everything between shifts accordingly. */
-  const reorderTo = (fromId: string, toIndex: number) => {
+  const reorderTo = async (fromId: string, toIndex: number) => {
     const fromIndex = blocks.findIndex((b) => b.id === fromId)
     if (fromIndex === -1 || fromIndex === toIndex) return
     const next = [...blocks]
     const [moved] = next.splice(fromIndex, 1)
     next.splice(toIndex, 0, moved)
-    next.forEach((b, i) => {
-      if (b.order !== i) upsertAboutBlock({ ...b, order: i })
-    })
+    for (const [i, b] of next.entries()) {
+      if (b.order !== i) await upsertAboutBlock({ ...b, order: i })
+    }
     refresh()
   }
 
-  const toggleVisible = (block: AboutBlock) => {
-    upsertAboutBlock({ ...block, visible: !block.visible, updatedAt: new Date().toISOString() })
+  const toggleVisible = async (block: AboutBlock) => {
+    await upsertAboutBlock({ ...block, visible: !block.visible, updatedAt: new Date().toISOString() })
     refresh()
   }
 
-  const duplicate = (block: AboutBlock) => {
+  const duplicate = async (block: AboutBlock) => {
     const now = new Date().toISOString()
     const copy: AboutBlock = { ...block, id: crypto.randomUUID(), order: blocks.length, createdAt: now, updatedAt: now }
-    upsertAboutBlock(copy)
+    await upsertAboutBlock(copy)
     refresh()
     setExpandedId(copy.id)
   }
 
-  const remove = (id: string) => {
-    deleteAboutBlock(id)
+  const remove = async (id: string) => {
+    await deleteAboutBlock(id)
     setConfirmingId(null)
     if (expandedId === id) setExpandedId(null)
     refresh()
   }
 
-  const addBlock = (type: AboutBlockType) => {
+  const addBlock = async (type: AboutBlockType) => {
     const next = emptyBlock(type, blocks.length)
-    upsertAboutBlock(next)
+    await upsertAboutBlock(next)
     refresh()
     setExpandedId(next.id)
     setAddingType(null)
   }
 
-  const saveHero = () => {
-    updateAboutPageSettings({ hero })
+  const saveHero = async () => {
+    await updateAboutPageSettings({ hero })
     setHeroSaved(true)
     setTimeout(() => setHeroSaved(false), 2000)
   }
@@ -379,8 +379,8 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
     setSaved(false)
   }
 
-  const save = () => {
-    upsertAboutBlock({ ...draft, updatedAt: new Date().toISOString() })
+  const save = async () => {
+    await upsertAboutBlock({ ...draft, updatedAt: new Date().toISOString() })
     setSaved(true)
     onSaved()
     setTimeout(() => setSaved(false), 2000)

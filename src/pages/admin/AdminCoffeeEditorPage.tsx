@@ -152,7 +152,7 @@ export default function AdminCoffeeEditorPage() {
     }
   }, [draft.heroImage])
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const validation = validateCoffeeDraft({
       coffeeName: draft.coffeeName,
       country: draft.country,
@@ -185,7 +185,7 @@ export default function AdminCoffeeEditorPage() {
     }
     setErrors([])
     const next: Coffee = { ...draft, slug: draft.slug.trim(), updatedAt: now() }
-    upsertCoffee(next)
+    await upsertCoffee(next)
     setDraft(next)
     setSaved(true)
     if (isNew) navigate(`/admin/coffees/${next.id}`, { replace: true })

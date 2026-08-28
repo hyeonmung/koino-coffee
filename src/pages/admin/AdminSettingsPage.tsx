@@ -16,8 +16,8 @@ export default function AdminSettingsPage() {
     setSaved(false)
   }
 
-  const handleSave = () => {
-    updateSiteSettings(settings)
+  const handleSave = async () => {
+    await updateSiteSettings(settings)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }

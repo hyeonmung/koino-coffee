@@ -36,26 +36,26 @@ export default function AdminCoffeeListPage() {
     .filter((c) => !query.trim() || c.coffeeName.toLowerCase().includes(query.trim().toLowerCase()))
     .sort((a, b) => a.sortOrder - b.sortOrder)
 
-  const setPublishStatus = (coffee: Coffee, publishStatus: PublishStatus) => {
-    upsertCoffee({ ...coffee, publishStatus, updatedAt: new Date().toISOString() })
+  const setPublishStatus = async (coffee: Coffee, publishStatus: PublishStatus) => {
+    await upsertCoffee({ ...coffee, publishStatus, updatedAt: new Date().toISOString() })
     refresh()
   }
 
-  const toggleFeatured = (coffee: Coffee) => {
-    upsertCoffee({ ...coffee, featured: !coffee.featured, updatedAt: new Date().toISOString() })
+  const toggleFeatured = async (coffee: Coffee) => {
+    await upsertCoffee({ ...coffee, featured: !coffee.featured, updatedAt: new Date().toISOString() })
     refresh()
   }
 
-  const move = (coffee: Coffee, direction: -1 | 1) => {
+  const move = async (coffee: Coffee, direction: -1 | 1) => {
     const idx = filtered.findIndex((c) => c.id === coffee.id)
     const target = filtered[idx + direction]
     if (!target) return
-    upsertCoffee({ ...coffee, sortOrder: target.sortOrder, updatedAt: new Date().toISOString() })
-    upsertCoffee({ ...target, sortOrder: coffee.sortOrder, updatedAt: new Date().toISOString() })
+    await upsertCoffee({ ...coffee, sortOrder: target.sortOrder, updatedAt: new Date().toISOString() })
+    await upsertCoffee({ ...target, sortOrder: coffee.sortOrder, updatedAt: new Date().toISOString() })
     refresh()
   }
 
-  const duplicate = (coffee: Coffee) => {
+  const duplicate = async (coffee: Coffee) => {
     const now = new Date().toISOString()
     const copy: Coffee = {
       ...coffee,
@@ -68,12 +68,12 @@ export default function AdminCoffeeListPage() {
       createdAt: now,
       updatedAt: now,
     }
-    upsertCoffee(copy)
+    await upsertCoffee(copy)
     refresh()
   }
 
-  const remove = (id: string) => {
-    deleteCoffee(id)
+  const remove = async (id: string) => {
+    await deleteCoffee(id)
     setConfirmingId(null)
     refresh()
   }

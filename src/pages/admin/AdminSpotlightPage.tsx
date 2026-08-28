@@ -38,19 +38,19 @@ export default function AdminSpotlightPage() {
 
   const refresh = () => setSlides(getAllSpotlightSlides())
 
-  const togglePublished = (slide: SpotlightSlide) => {
-    upsertSpotlightSlide({ ...slide, published: !slide.published, updatedAt: new Date().toISOString() })
+  const togglePublished = async (slide: SpotlightSlide) => {
+    await upsertSpotlightSlide({ ...slide, published: !slide.published, updatedAt: new Date().toISOString() })
     refresh()
   }
 
-  const move = (id: string, direction: 'up' | 'down') => {
-    reorderSpotlightSlide(id, direction)
+  const move = async (id: string, direction: 'up' | 'down') => {
+    await reorderSpotlightSlide(id, direction)
     refresh()
   }
 
-  const duplicate = (slide: SpotlightSlide) => {
+  const duplicate = async (slide: SpotlightSlide) => {
     const now = new Date().toISOString()
-    upsertSpotlightSlide({
+    await upsertSpotlightSlide({
       ...slide,
       id: crypto.randomUUID(),
       title: slide.title ? `${slide.title} (복제)` : slide.title,
@@ -62,8 +62,8 @@ export default function AdminSpotlightPage() {
     refresh()
   }
 
-  const remove = (id: string) => {
-    deleteSpotlightSlide(id)
+  const remove = async (id: string) => {
+    await deleteSpotlightSlide(id)
     setConfirmingId(null)
     refresh()
   }

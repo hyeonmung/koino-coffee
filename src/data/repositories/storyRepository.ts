@@ -1,11 +1,10 @@
-import { createLocalCollection } from '../localCollection'
+import { toRow } from '../caseMap'
 import type { Story } from '../schema'
-import { SEED_STORIES } from '../seed/stories'
-
-const collection = createLocalCollection<Story>('koi-sensory-map-stories')
+import { supabase } from '../supabaseClient'
+import { store } from '../store'
 
 export function getAllStories(): Story[] {
-  return collection.seedIfEmpty(SEED_STORIES)
+  return store.stories
 }
 
 export function getPublishedStories(): Story[] {
@@ -22,12 +21,22 @@ export function getStoryById(id: string): Story | undefined {
   return getAllStories().find((s) => s.id === id)
 }
 
-export function upsertStory(story: Story): Story[] {
-  return collection.upsert(story)
+export async function upsertStory(story: Story): Promise<Story[]> {
+  const { error } = await supabase.from('stories').upsert(toRow(story))
+  if (error) throw error
+
+  const index = store.stories.findIndex((s) => s.id === story.id)
+  if (index === -1) store.stories = [...store.stories, story]
+  else store.stories = store.stories.map((s, i) => (i === index ? story : s))
+  return store.stories
 }
 
-export function deleteStory(id: string): Story[] {
-  return collection.remove(id)
+export async function deleteStory(id: string): Promise<Story[]> {
+  const { error } = await supabase.from('stories').delete().eq('id', id)
+  if (error) throw error
+
+  store.stories = store.stories.filter((s) => s.id !== id)
+  return store.stories
 }
 
 export function storySlugExists(slug: string, excludeId?: string): boolean {

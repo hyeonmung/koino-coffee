@@ -1,50 +1,40 @@
-import { createLocalCollection } from '../localCollection'
+import { toRow } from '../caseMap'
 import type { FlavorDescriptor, FlavorFamily } from '../schema'
-import { SEED_FLAVOR_DESCRIPTORS, SEED_FLAVOR_FAMILIES } from '../seed/flavors'
-
-const familyCollection = createLocalCollection<FlavorFamily>('koi-sensory-map-flavor-families')
-const descriptorCollection = createLocalCollection<FlavorDescriptor>('koi-sensory-map-flavor-descriptors')
+import { supabase } from '../supabaseClient'
+import { store } from '../store'
 
 export function getFlavorFamilies(): FlavorFamily[] {
-  return familyCollection.seedIfEmpty(SEED_FLAVOR_FAMILIES).slice().sort((a, b) => a.order - b.order)
+  return store.flavorFamilies.slice().sort((a, b) => a.order - b.order)
 }
 
-export function upsertFlavorFamily(family: FlavorFamily): FlavorFamily[] {
-  return familyCollection.upsert(family)
+export async function upsertFlavorFamily(family: FlavorFamily): Promise<FlavorFamily[]> {
+  const { error } = await supabase.from('flavor_families').upsert(toRow(family))
+  if (error) throw error
+
+  const index = store.flavorFamilies.findIndex((f) => f.id === family.id)
+  if (index === -1) store.flavorFamilies = [...store.flavorFamilies, family]
+  else store.flavorFamilies = store.flavorFamilies.map((f, i) => (i === index ? family : f))
+  return store.flavorFamilies
 }
 
-/**
- * Reads the flavor descriptor catalog, backfilling any browser data seeded before the Flavor
- * Color System existed: existing descriptors missing a `color` get the seed's color (admin-edited
- * name/description/etc. are left untouched), and any new descriptor added to the seed list that
- * isn't in local storage yet is appended. Never overwrites an admin-assigned color.
- */
 export function getFlavorDescriptors(): FlavorDescriptor[] {
-  const current = descriptorCollection.seedIfEmpty(SEED_FLAVOR_DESCRIPTORS)
-  const byId = new Map(current.map((d) => [d.id, d]))
-  let changed = false
-
-  for (const seed of SEED_FLAVOR_DESCRIPTORS) {
-    const existing = byId.get(seed.id)
-    if (!existing) {
-      byId.set(seed.id, seed)
-      changed = true
-    } else if (!existing.color && seed.color) {
-      byId.set(seed.id, { ...existing, color: seed.color })
-      changed = true
-    }
-  }
-
-  if (!changed) return current
-  const next = Array.from(byId.values())
-  descriptorCollection.saveAll(next)
-  return next
+  return store.flavorDescriptors
 }
 
-export function upsertFlavorDescriptor(descriptor: FlavorDescriptor): FlavorDescriptor[] {
-  return descriptorCollection.upsert(descriptor)
+export async function upsertFlavorDescriptor(descriptor: FlavorDescriptor): Promise<FlavorDescriptor[]> {
+  const { error } = await supabase.from('flavor_descriptors').upsert(toRow(descriptor))
+  if (error) throw error
+
+  const index = store.flavorDescriptors.findIndex((d) => d.id === descriptor.id)
+  if (index === -1) store.flavorDescriptors = [...store.flavorDescriptors, descriptor]
+  else store.flavorDescriptors = store.flavorDescriptors.map((d, i) => (i === index ? descriptor : d))
+  return store.flavorDescriptors
 }
 
-export function deleteFlavorDescriptor(id: string): FlavorDescriptor[] {
-  return descriptorCollection.remove(id)
+export async function deleteFlavorDescriptor(id: string): Promise<FlavorDescriptor[]> {
+  const { error } = await supabase.from('flavor_descriptors').delete().eq('id', id)
+  if (error) throw error
+
+  store.flavorDescriptors = store.flavorDescriptors.filter((d) => d.id !== id)
+  return store.flavorDescriptors
 }

@@ -11,8 +11,8 @@ export default function AdminBrewGuidesPage() {
   const categories = getAllBrewCategories()
   const categoryLabel = (id?: string) => categories.find((c) => c.id === id)?.label
 
-  const remove = (id: string) => {
-    deleteBrewGuide(id)
+  const remove = async (id: string) => {
+    await deleteBrewGuide(id)
     setConfirmingId(null)
     setGuides(getAllBrewGuides())
   }

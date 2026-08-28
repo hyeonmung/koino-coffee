@@ -1,11 +1,10 @@
-import { createLocalCollection } from '../localCollection'
+import { toRow } from '../caseMap'
 import type { BrewGuide } from '../schema'
-import { SEED_BREW_GUIDES } from '../seed/brewGuides'
-
-const collection = createLocalCollection<BrewGuide>('koi-sensory-map-brew-guides')
+import { supabase } from '../supabaseClient'
+import { store } from '../store'
 
 export function getAllBrewGuides(): BrewGuide[] {
-  return collection.seedIfEmpty(SEED_BREW_GUIDES)
+  return store.brewGuides
 }
 
 export function getPublishedBrewGuides(): BrewGuide[] {
@@ -20,12 +19,22 @@ export function getBrewGuideById(id: string): BrewGuide | undefined {
   return getAllBrewGuides().find((g) => g.id === id)
 }
 
-export function upsertBrewGuide(guide: BrewGuide): BrewGuide[] {
-  return collection.upsert(guide)
+export async function upsertBrewGuide(guide: BrewGuide): Promise<BrewGuide[]> {
+  const { error } = await supabase.from('brew_guides').upsert(toRow(guide))
+  if (error) throw error
+
+  const index = store.brewGuides.findIndex((g) => g.id === guide.id)
+  if (index === -1) store.brewGuides = [...store.brewGuides, guide]
+  else store.brewGuides = store.brewGuides.map((g, i) => (i === index ? guide : g))
+  return store.brewGuides
 }
 
-export function deleteBrewGuide(id: string): BrewGuide[] {
-  return collection.remove(id)
+export async function deleteBrewGuide(id: string): Promise<BrewGuide[]> {
+  const { error } = await supabase.from('brew_guides').delete().eq('id', id)
+  if (error) throw error
+
+  store.brewGuides = store.brewGuides.filter((g) => g.id !== id)
+  return store.brewGuides
 }
 
 export function brewGuideSlugExists(slug: string, excludeId?: string): boolean {

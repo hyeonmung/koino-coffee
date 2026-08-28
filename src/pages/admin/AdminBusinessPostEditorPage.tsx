@@ -57,7 +57,7 @@ export default function AdminBusinessPostEditorPage() {
   const addLink = () => patch({ relatedLinks: [...draft.relatedLinks, { label: '', url: '' }] })
   const removeLink = (index: number) => patch({ relatedLinks: draft.relatedLinks.filter((_, i) => i !== index) })
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!draft.title.trim() || !draft.slug.trim() || !draft.body.trim()) {
       setError('제목, Slug, 본문은 필수입니다.')
       return
@@ -69,7 +69,7 @@ export default function AdminBusinessPostEditorPage() {
     setError(null)
     const relatedLinks = draft.relatedLinks.filter((l) => l.label.trim() && l.url.trim())
     const next = { ...draft, slug: draft.slug.trim(), relatedLinks, updatedAt: new Date().toISOString() }
-    upsertBusinessPost(next)
+    await upsertBusinessPost(next)
     setDraft(next)
     if (isNew) navigate(`/admin/business/${next.id}`, { replace: true })
   }

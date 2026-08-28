@@ -10,8 +10,8 @@ export default function AdminBusinessPostsPage() {
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
   const [blockedMessage, setBlockedMessage] = useState<string | null>(null)
 
-  const remove = (post: BusinessPost) => {
-    const ok = deleteBusinessPost(post.id)
+  const remove = async (post: BusinessPost) => {
+    const ok = await deleteBusinessPost(post.id)
     if (!ok) {
       setBlockedMessage(`"${post.title}"은(는) 항상 첫 번째로 고정되는 시스템 게시물이라 삭제할 수 없습니다. 내용은 수정할 수 있습니다.`)
       setConfirmingId(null)

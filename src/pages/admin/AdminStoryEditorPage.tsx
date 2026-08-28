@@ -58,7 +58,7 @@ export default function AdminStoryEditorPage() {
     })
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!draft.title.trim() || !draft.slug.trim() || !draft.body.trim()) {
       setError('제목, Slug, 본문은 필수입니다.')
       return
@@ -73,7 +73,7 @@ export default function AdminStoryEditorPage() {
       .map((t) => t.trim())
       .filter(Boolean)
     const next = { ...draft, slug: draft.slug.trim(), tags, updatedAt: new Date().toISOString() }
-    upsertStory(next)
+    await upsertStory(next)
     setDraft(next)
     if (isNew) navigate(`/admin/stories/${next.id}`, { replace: true })
   }

@@ -1,15 +1,18 @@
-import { createLocalSingleton } from '../localCollection'
+import { toRow } from '../caseMap'
 import type { SiteSettings } from '../schema'
-import { DEFAULT_SITE_SETTINGS } from '../seed/siteSettings'
-
-const singleton = createLocalSingleton<SiteSettings>('koi-sensory-map-site-settings')
+import { supabase } from '../supabaseClient'
+import { store } from '../store'
 
 export function getSiteSettings(): SiteSettings {
-  return singleton.get(DEFAULT_SITE_SETTINGS)
+  return store.siteSettings
 }
 
-export function updateSiteSettings(patch: Partial<SiteSettings>): SiteSettings {
-  const next = { ...getSiteSettings(), ...patch, updatedAt: new Date().toISOString() }
-  singleton.set(next)
+export async function updateSiteSettings(patch: Partial<SiteSettings>): Promise<SiteSettings> {
+  const next: SiteSettings = { ...getSiteSettings(), ...patch, updatedAt: new Date().toISOString() }
+
+  const { error } = await supabase.from('site_settings').upsert({ id: true, ...toRow(next) })
+  if (error) throw error
+
+  store.siteSettings = next
   return next
 }

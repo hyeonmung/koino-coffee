@@ -1,8 +1,7 @@
-import { createLocalCollection } from '../localCollection'
+import { toRow } from '../caseMap'
 import type { BusinessPost } from '../schema'
-import { SEED_BUSINESS_POSTS } from '../seed/businessPosts'
-
-const collection = createLocalCollection<BusinessPost>('koi-sensory-map-business-posts')
+import { supabase } from '../supabaseClient'
+import { store } from '../store'
 
 function pinnedFirst(a: BusinessPost, b: BusinessPost): number {
   if (a.isSystemPinned && !b.isSystemPinned) return -1
@@ -11,7 +10,7 @@ function pinnedFirst(a: BusinessPost, b: BusinessPost): number {
 }
 
 export function getAllBusinessPosts(): BusinessPost[] {
-  return collection.seedIfEmpty(SEED_BUSINESS_POSTS).slice().sort(pinnedFirst)
+  return store.businessPosts.slice().sort(pinnedFirst)
 }
 
 export function getPublishedBusinessPosts(): BusinessPost[] {
@@ -26,15 +25,25 @@ export function getBusinessPostById(id: string): BusinessPost | undefined {
   return getAllBusinessPosts().find((p) => p.id === id)
 }
 
-export function upsertBusinessPost(post: BusinessPost): BusinessPost[] {
-  return collection.upsert(post)
+export async function upsertBusinessPost(post: BusinessPost): Promise<BusinessPost[]> {
+  const { error } = await supabase.from('business_posts').upsert(toRow(post))
+  if (error) throw error
+
+  const index = store.businessPosts.findIndex((p) => p.id === post.id)
+  if (index === -1) store.businessPosts = [...store.businessPosts, post]
+  else store.businessPosts = store.businessPosts.map((p, i) => (i === index ? post : p))
+  return store.businessPosts
 }
 
 /** Refuses to delete the system-pinned wholesale-inquiry post — returns false instead. */
-export function deleteBusinessPost(id: string): boolean {
+export async function deleteBusinessPost(id: string): Promise<boolean> {
   const post = getBusinessPostById(id)
   if (post?.isSystemPinned) return false
-  collection.remove(id)
+
+  const { error } = await supabase.from('business_posts').delete().eq('id', id)
+  if (error) throw error
+
+  store.businessPosts = store.businessPosts.filter((p) => p.id !== id)
   return true
 }
 

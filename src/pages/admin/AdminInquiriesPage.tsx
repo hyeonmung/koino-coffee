@@ -9,13 +9,13 @@ export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>(() => getAllInquiries())
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
 
-  const setStatus = (id: string, status: InquiryStatus) => {
-    updateInquiryStatus(id, status)
+  const setStatus = async (id: string, status: InquiryStatus) => {
+    await updateInquiryStatus(id, status)
     setInquiries(getAllInquiries())
   }
 
-  const remove = (id: string) => {
-    deleteInquiry(id)
+  const remove = async (id: string) => {
+    await deleteInquiry(id)
     setConfirmingId(null)
     setInquiries(getAllInquiries())
   }

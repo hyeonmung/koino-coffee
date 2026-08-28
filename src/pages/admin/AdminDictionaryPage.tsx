@@ -31,15 +31,15 @@ export default function AdminDictionaryPage() {
 
   const refresh = () => setTerms(getAllDictionaryTerms())
 
-  const save = () => {
+  const save = async () => {
     if (!editing || !editing.term.trim() || !editing.shortDefinition.trim()) return
-    upsertDictionaryTerm({ ...editing, updatedAt: new Date().toISOString() })
+    await upsertDictionaryTerm({ ...editing, updatedAt: new Date().toISOString() })
     setEditing(null)
     refresh()
   }
 
-  const remove = (id: string) => {
-    deleteDictionaryTerm(id)
+  const remove = async (id: string) => {
+    await deleteDictionaryTerm(id)
     setConfirmingId(null)
     refresh()
   }

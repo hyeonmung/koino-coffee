@@ -64,7 +64,7 @@ export default function AdminBrewGuideEditorPage() {
   const addStep = () => patch({ pourSteps: [...draft.pourSteps, { label: '', water: '', time: '' }] })
   const removeStep = (index: number) => patch({ pourSteps: draft.pourSteps.filter((_, i) => i !== index) })
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!draft.title.trim() || !draft.slug.trim()) {
       setError('Title과 Slug는 필수입니다.')
       return
@@ -75,7 +75,7 @@ export default function AdminBrewGuideEditorPage() {
     }
     setError(null)
     const next = { ...draft, slug: draft.slug.trim(), updatedAt: new Date().toISOString() }
-    upsertBrewGuide(next)
+    await upsertBrewGuide(next)
     setDraft(next)
     if (isNew) navigate(`/admin/brew-guides/${next.id}`, { replace: true })
   }

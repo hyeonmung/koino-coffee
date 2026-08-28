@@ -164,9 +164,9 @@ export default function AdminFlavorsPage() {
 
   const refresh = () => setDescriptors(getFlavorDescriptors())
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!newName.trim() || !newFamilyId) return
-    upsertFlavorDescriptor({
+    await upsertFlavorDescriptor({
       id: crypto.randomUUID(),
       name: newName.trim(),
       nameKo: newNameKo.trim() || undefined,
@@ -178,14 +178,14 @@ export default function AdminFlavorsPage() {
     refresh()
   }
 
-  const handleDelete = (id: string) => {
-    deleteFlavorDescriptor(id)
+  const handleDelete = async (id: string) => {
+    await deleteFlavorDescriptor(id)
     setConfirmingId(null)
     refresh()
   }
 
-  const handleSaveDescriptor = (d: FlavorDescriptor) => {
-    upsertFlavorDescriptor(d)
+  const handleSaveDescriptor = async (d: FlavorDescriptor) => {
+    await upsertFlavorDescriptor(d)
     setEditingId(null)
     refresh()
   }
