@@ -216,19 +216,22 @@ export default function AdminAboutEditorPage() {
         {blocks.map((block, idx) => (
           <div
             key={block.id}
-            draggable
-            onDragStart={() => setDragId(block.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault()
               if (dragId) reorderTo(dragId, idx)
               setDragId(null)
             }}
-            onDragEnd={() => setDragId(null)}
             className={`border border-navy/15 bg-white transition-opacity ${dragId === block.id ? 'opacity-30' : ''}`}
           >
             <div className="flex items-center gap-3 px-4 py-3">
-              <span className="shrink-0 cursor-grab select-none text-[15px] leading-none text-navy/30 hover:text-navy/60 active:cursor-grabbing" title="드래그하여 순서 변경">
+              <span
+                draggable
+                onDragStart={() => setDragId(block.id)}
+                onDragEnd={() => setDragId(null)}
+                className="shrink-0 cursor-grab select-none text-[15px] leading-none text-navy/30 hover:text-navy/60 active:cursor-grabbing"
+                title="드래그하여 순서 변경"
+              >
                 ⠿
               </span>
               <div className="flex shrink-0 flex-col gap-0.5">
