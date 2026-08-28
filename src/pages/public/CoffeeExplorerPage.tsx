@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
+import Pagination from '../../components/Pagination'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
@@ -37,19 +38,6 @@ const AVAILABILITY_OPTIONS: { value: Availability; label: string }[] = [
 ]
 
 const PAGE_SIZE = 12
-
-// Windowed page list: all numbers when few pages, otherwise 1 … current±1 … last.
-function getPageNumbers(current: number, total: number): (number | 'ellipsis')[] {
-  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
-  const pages = new Set<number>([1, 2, total - 1, total, current - 1, current, current + 1])
-  const sorted = [...pages].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b)
-  const result: (number | 'ellipsis')[] = []
-  sorted.forEach((p, i) => {
-    if (i > 0 && p - sorted[i - 1] > 1) result.push('ellipsis')
-    result.push(p)
-  })
-  return result
-}
 
 export default function CoffeeExplorerPage() {
   const allCoffees = useMemo(() => getPublishedCoffees(), [])
@@ -126,10 +114,6 @@ export default function CoffeeExplorerPage() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const currentPage = Math.min(page, totalPages)
   const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-  const goToPage = (p: number) => {
-    setPage(p)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   const hasActiveFilter =
     character !== 'ALL' || country !== 'ALL' || process !== 'ALL' || roastType !== 'ALL' || flavorFamily !== 'ALL' || availability !== 'ALL'
@@ -325,47 +309,7 @@ export default function CoffeeExplorerPage() {
                 ))}
               </div>
 
-              {totalPages > 1 && (
-                <div className="mt-10 flex items-center justify-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => goToPage(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    aria-label="이전 페이지"
-                    className="flex h-8 w-8 items-center justify-center border border-navy/20 text-[12px] text-navy/60 hover:border-navy hover:text-navy disabled:opacity-30 disabled:hover:border-navy/20 disabled:hover:text-navy/60"
-                  >
-                    ←
-                  </button>
-                  {getPageNumbers(currentPage, totalPages).map((p, i) =>
-                    p === 'ellipsis' ? (
-                      <span key={`e${i}`} className="px-1 text-[12px] text-navy/30">
-                        …
-                      </span>
-                    ) : (
-                      <button
-                        key={p}
-                        type="button"
-                        onClick={() => goToPage(p)}
-                        aria-current={p === currentPage ? 'page' : undefined}
-                        className={`flex h-8 min-w-8 items-center justify-center border px-1.5 text-[12px] font-semibold ${
-                          p === currentPage ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/60 hover:border-navy hover:text-navy'
-                        }`}
-                      >
-                        {p}
-                      </button>
-                    ),
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    aria-label="다음 페이지"
-                    className="flex h-8 w-8 items-center justify-center border border-navy/20 text-[12px] text-navy/60 hover:border-navy hover:text-navy disabled:opacity-30 disabled:hover:border-navy/20 disabled:hover:text-navy/60"
-                  >
-                    →
-                  </button>
-                </div>
-              )}
+              <Pagination page={currentPage} totalPages={totalPages} onChange={setPage} />
             </>
           )}
         </div>

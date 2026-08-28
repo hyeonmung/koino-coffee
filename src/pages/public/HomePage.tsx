@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useIsDesktop from '../../hooks/useIsDesktop'
 import CoffeeCard from '../../components/CoffeeCard'
+import Pagination from '../../components/Pagination'
 import DotScale from '../../components/DotScale'
 import FlavorNotes from '../../components/FlavorNotes'
 import KOIStarField from '../../components/decorative/KOIStarField'
@@ -29,8 +30,19 @@ export default function HomePage() {
   const isVisible = (key: HomeSectionKey) => settings.homeSectionVisibility[key] !== false
 
   const coffees = getPublishedCoffees().filter((c) => c.availability !== 'archive')
-  const featured = coffees.filter((c) => c.featured).slice(0, 4)
-  const currentCoffees = (featured.length > 0 ? featured : coffees).slice(0, 4)
+  const featured = coffees.filter((c) => c.featured)
+  // Featured coffees lead (page 1), then the rest of the catalog follows on later pages —
+  // so paging through this preview always eventually surfaces every published coffee.
+  const featuredIds = new Set(featured.map((c) => c.id))
+  const currentCoffees = featured.length > 0 ? [...featured, ...coffees.filter((c) => !featuredIds.has(c.id))] : coffees
+  const COFFEES_PAGE_SIZE = 4
+  const [coffeePage, setCoffeePage] = useState(1)
+  const coffeeTotalPages = Math.max(1, Math.ceil(currentCoffees.length / COFFEES_PAGE_SIZE))
+  const coffeeCurrentPage = Math.min(coffeePage, coffeeTotalPages)
+  const coffeePageItems = currentCoffees.slice(
+    (coffeeCurrentPage - 1) * COFFEES_PAGE_SIZE,
+    coffeeCurrentPage * COFFEES_PAGE_SIZE,
+  )
   const brewGuides = getPublishedBrewGuides().slice(0, 2)
   const stories = getPublishedStories().slice(0, 2)
 
@@ -162,11 +174,14 @@ export default function HomePage() {
           현재 소개 중인 원두가 없습니다.
         </p>
       ) : (
-        <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
-          {currentCoffees.map((coffee) => (
-            <CoffeeCard key={coffee.id} coffee={coffee} showRadar narrowMobileGrid />
-          ))}
-        </div>
+        <>
+          <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
+            {coffeePageItems.map((coffee) => (
+              <CoffeeCard key={coffee.id} coffee={coffee} showRadar narrowMobileGrid />
+            ))}
+          </div>
+          <Pagination page={coffeeCurrentPage} totalPages={coffeeTotalPages} onChange={setCoffeePage} scrollToTop={false} />
+        </>
       )}
     </>
   )
