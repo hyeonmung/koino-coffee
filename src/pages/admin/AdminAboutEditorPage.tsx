@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
 import ImageUploadField from '../../components/admin/ImageUploadField'
+import RichTextArea from '../../components/admin/RichTextArea'
 import AboutBlockRenderer from '../../components/about/AboutBlockRenderer'
 import {
   ABOUT_BACKGROUND_CLASS,
@@ -441,7 +442,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
             {draft.type === 'CTA' && (
               <>
                 <LabeledField label="본문 (선택)">
-                  <textarea value={draft.body ?? ''} onChange={(e) => patch({ body: e.target.value })} className={textareaClass} />
+                  <RichTextArea value={draft.body ?? ''} onChange={(v) => patch({ body: v })} className={textareaClass} />
                 </LabeledField>
                 <div className="grid grid-cols-2 gap-3">
                   <LabeledField label="버튼 문구">
@@ -498,7 +499,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
               <input value={draft.subtitle ?? ''} onChange={(e) => patch({ subtitle: e.target.value })} className={inputClass} />
             </LabeledField>
             <LabeledField label="본문 (빈 줄로 문단 구분, ## 로 소제목)">
-              <textarea value={draft.body ?? ''} onChange={(e) => patch({ body: e.target.value })} className={textareaClass} />
+              <RichTextArea value={draft.body ?? ''} onChange={(v) => patch({ body: v })} className={textareaClass} />
             </LabeledField>
             <LabeledField label="인용문 (선택)">
               <input value={draft.quote ?? ''} onChange={(e) => patch({ quote: e.target.value })} className={inputClass} />

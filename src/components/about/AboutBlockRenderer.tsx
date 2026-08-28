@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import StoryBody from '../StoryBody'
 import KOIStarField from '../decorative/KOIStarField'
+import { renderRichText } from '../../utils/richText'
 import {
   ABOUT_BACKGROUND_CLASS,
   ABOUT_BACKGROUND_TEXT_CLASS,
@@ -102,7 +103,9 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
     content = (
       <div className={`${TEXT_ALIGN_CLASS[block.textAlign]} ${ABOUT_TEXT_WIDTH_CLASS[block.textWidth]}`}>
         {heading}
-        {block.body && <p className="mt-3 text-[14px] leading-relaxed opacity-70">{block.body}</p>}
+        {block.body && (
+          <p className="mt-3 text-[14px] leading-relaxed opacity-70" dangerouslySetInnerHTML={{ __html: renderRichText(block.body) }} />
+        )}
         {block.ctaLabel && block.ctaUrl && (
           <Link
             to={block.ctaUrl}
