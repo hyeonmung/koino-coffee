@@ -9,7 +9,7 @@ export default function NotFoundPage() {
       <SEO title="페이지를 찾을 수 없습니다" noIndex />
       <PublicHeader />
 
-      <main className="w-full min-w-0 flex-1 mx-auto max-w-[560px] px-6 py-24 text-center">
+      <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[560px] px-6 py-24 text-center">
         <p className="font-serif text-[64px] font-bold text-navy/15">404</p>
         <h1 className="mt-2 font-serif text-[22px] font-bold text-navy">페이지를 찾을 수 없습니다</h1>
         <p className="mt-2 text-[13px] text-navy/55">주소가 잘못되었거나 삭제된 페이지일 수 있습니다.</p>

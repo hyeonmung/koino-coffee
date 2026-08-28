@@ -41,7 +41,7 @@ export default function CoffeeChartIndexPage() {
       <SEO title="원두 차트" description="코이노니아 원두의 핵심 정보를 한눈에 비교해보세요." />
       <PublicHeader />
 
-      <main className="w-full min-w-0 flex-1 mx-auto max-w-[1240px] px-6 py-10">
+      <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1240px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">KOINONIA CHART</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">원두 차트</h1>
         <p className="mt-2 max-w-[560px] text-[13px] leading-relaxed text-navy/60">

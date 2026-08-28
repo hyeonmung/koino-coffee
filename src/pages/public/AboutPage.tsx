@@ -17,7 +17,7 @@ export default function AboutPage() {
       <SEO title={seoTitle || '코이노니아'} description={seoDescription || hero.subtitle} />
       <PublicHeader />
 
-      <main className="flex-1">
+      <main className="w-full min-w-0 lg:flex-1">
         {/* HERO */}
         <div
           className={`relative flex min-h-[280px] w-full flex-col justify-center overflow-hidden px-6 py-16 sm:min-h-[380px] ${

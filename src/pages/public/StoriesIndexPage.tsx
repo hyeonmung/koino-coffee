@@ -21,7 +21,7 @@ export default function StoriesIndexPage() {
       <SEO title="뉴스&이야기" description="공지, 소식, 산지, 원두, 커피 교육에 관한 코이노니아의 뉴스와 이야기." />
       <PublicHeader />
 
-      <main className="w-full min-w-0 flex-1 mx-auto max-w-[1000px] px-6 py-10">
+      <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">NEWS & STORIES</p>
         <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">뉴스&이야기</h1>
 

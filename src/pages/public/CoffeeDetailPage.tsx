@@ -404,7 +404,7 @@ export default function CoffeeDetailPage() {
       />
       <PublicHeader />
 
-      <main className="w-full min-w-0 flex-1">
+      <main className="w-full min-w-0 lg:flex-1">
         <div className="mx-auto max-w-[1240px] px-6 py-10">
           {headerBlock}
 

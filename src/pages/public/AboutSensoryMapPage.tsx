@@ -11,7 +11,7 @@ export default function AboutSensoryMapPage() {
       <SEO title="KOINO SENSORY MAP 알아보기" description="KOINO SENSORY MAP이 원두를 설명하는 방식을 소개합니다." />
       <PublicHeader />
 
-      <main className="w-full min-w-0 flex-1 mx-auto max-w-[860px] px-6 py-10">
+      <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[860px] px-6 py-10">
         <p className="text-[11px] font-semibold tracking-[0.25em] text-accent">HOW TO READ</p>
         <h1 className="mt-2 font-serif text-[28px] font-bold leading-tight text-navy">KOINO SENSORY MAP 읽는 법</h1>
         <p className="mt-3 max-w-[560px] text-[13px] leading-relaxed text-navy/60">

@@ -385,7 +385,7 @@ export default function HomePage() {
       <SEO />
       <PublicHeader />
 
-      <main className="w-full min-w-0 flex-1">
+      <main className="w-full min-w-0 lg:flex-1">
         {heroSection}
 
         {isDesktop ? (
