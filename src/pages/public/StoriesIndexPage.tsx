@@ -66,8 +66,8 @@ export default function StoriesIndexPage() {
                   </div>
                 )}
                 <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>
-                <p className="mt-1 text-[18px] font-bold text-navy">{story.title}</p>
-                <p className="mt-2 text-[12px] text-navy/55">{story.excerpt}</p>
+                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-navy">{story.title}</p>
+                <p className="mt-2 whitespace-pre-line text-[12px] text-navy/55">{story.excerpt}</p>
                 <p className="mt-3 text-[10px] text-navy/35">
                   {new Date(story.publishedDate).toLocaleDateString('ko-KR')}
                 </p>

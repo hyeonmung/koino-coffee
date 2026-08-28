@@ -45,8 +45,8 @@ export default function CoffeeVisual({
         <p className="text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
         {showIdentity && (
           <div>
-            <p className="font-serif text-[15px] font-bold leading-tight text-warm-white/90">{coffee.coffeeName}</p>
-            {coffee.koreanName && <p className="mt-0.5 text-[10px] text-warm-white/40">{coffee.koreanName}</p>}
+            <p className="font-serif text-[15px] font-bold leading-tight whitespace-pre-line text-warm-white/90">{coffee.coffeeName}</p>
+            {coffee.koreanName && <p className="mt-0.5 whitespace-pre-line text-[10px] text-warm-white/40">{coffee.koreanName}</p>}
             {(coffee.country || year) && (
               <p className="mt-1.5 text-[9px] tracking-[0.15em] text-accent/70">
                 {[coffee.country, year].filter(Boolean).join(' · ')}

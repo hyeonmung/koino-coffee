@@ -194,7 +194,8 @@ export default function AdminSpotlightEditorPage() {
                   <span>제목 (Category Label)</span>
                   <span className="text-navy/30">한글 약 20~28자 권장</span>
                 </span>
-                <input
+                <textarea
+                  rows={1}
                   value={draft.label ?? ''}
                   onChange={(e) => patch({ label: e.target.value })}
                   placeholder="비워두면 콘텐츠 종류에 맞는 기본 라벨이 표시됩니다"
@@ -203,7 +204,7 @@ export default function AdminSpotlightEditorPage() {
               </label>
               <label className="block">
                 <span className="mb-1 block text-[10px] font-semibold text-navy/60">제목</span>
-                <input value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
+                <textarea rows={1} value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
               </label>
               <label className="block">
                 <span className="mb-1 flex items-center justify-between text-[10px] font-semibold text-navy/60">
@@ -242,7 +243,8 @@ export default function AdminSpotlightEditorPage() {
             )}
             <label className="mt-3 block">
               <span className="mb-1 block text-[10px] font-semibold text-navy/60">대체 텍스트 (Alt Text, 선택)</span>
-              <input
+              <textarea
+                rows={1}
                 value={draft.altText ?? ''}
                 onChange={(e) => patch({ altText: e.target.value })}
                 placeholder="비워두면 제목을 사용합니다"
@@ -260,7 +262,8 @@ export default function AdminSpotlightEditorPage() {
             <div className="mt-3 grid grid-cols-2 gap-3">
               <label className="block">
                 <span className="mb-1 block text-[10px] font-semibold text-navy/60">버튼 문구</span>
-                <input
+                <textarea
+                  rows={1}
                   value={draft.ctaText ?? ''}
                   onChange={(e) => patch({ ctaText: e.target.value })}
                   placeholder="자세히 보기"

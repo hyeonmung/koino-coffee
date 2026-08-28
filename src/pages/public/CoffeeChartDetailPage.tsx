@@ -20,7 +20,7 @@ const SPEC = ({ label, value }: { label: string; value?: string }) =>
   value ? (
     <div>
       <p className="text-[9px] font-semibold tracking-[0.12em] text-navy/40">{label}</p>
-      <p className="text-[13px] font-semibold text-navy">{value}</p>
+      <p className="text-[13px] font-semibold whitespace-pre-line text-navy">{value}</p>
     </div>
   ) : null
 
@@ -72,8 +72,8 @@ export default function CoffeeChartDetailPage() {
           <p className="mt-3 text-[12px] font-semibold tracking-[0.15em] text-navy/50">
             {coffee.country?.toUpperCase()}
           </p>
-          <h1 className="mt-1 font-serif text-[26px] font-bold leading-tight text-navy">{coffee.coffeeName}</h1>
-          {coffee.koreanName && <p className="text-[13px] text-navy/50">{coffee.koreanName}</p>}
+          <h1 className="mt-1 font-serif text-[26px] font-bold leading-tight whitespace-pre-line text-navy">{coffee.coffeeName}</h1>
+          {coffee.koreanName && <p className="whitespace-pre-line text-[13px] text-navy/50">{coffee.koreanName}</p>}
           <span className="mt-3 inline-block border border-navy bg-navy px-3 py-1 text-[11px] font-bold tracking-[0.15em] text-warm-white">
             {character.label}
           </span>

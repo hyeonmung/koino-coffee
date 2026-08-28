@@ -170,7 +170,7 @@ export default function DictionaryPage() {
                   {CATEGORY_LABEL[entry.category]}
                 </span>
               </div>
-              <p className="mt-1 text-[13px] text-navy/65">{entry.shortDefinition}</p>
+              <p className="mt-1 whitespace-pre-line text-[13px] text-navy/65">{entry.shortDefinition}</p>
             </Link>
           ))}
         </div>

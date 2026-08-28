@@ -179,9 +179,9 @@ export default function SpotlightCarousel({ slides }: SpotlightCarouselProps) {
         className="relative flex flex-col gap-2 border-t border-warm-white/10 bg-navy px-6 py-5 text-warm-white sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-8 sm:py-6"
       >
         <div className="relative min-w-0">
-          <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">{content.label}</p>
+          <p className="whitespace-pre-line text-[9px] font-semibold tracking-[0.25em] text-accent">{content.label}</p>
           <p className="mt-1 text-[19px] font-bold leading-snug sm:truncate sm:text-[22px]">{content.title}</p>
-          {content.description && <p className="mt-1 max-w-[440px] text-[11px] text-warm-white/70">{content.description}</p>}
+          {content.description && <p className="mt-1 max-w-[440px] whitespace-pre-line text-[11px] text-warm-white/70">{content.description}</p>}
         </div>
         <span className="relative shrink-0 text-[11px] font-semibold tracking-[0.1em] text-warm-white/70 group-hover/spotlight:text-warm-white">
           {content.ctaText} →

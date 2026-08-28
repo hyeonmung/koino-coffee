@@ -66,8 +66,8 @@ export default function BusinessPage() {
                   {post.isSystemPinned && <span className="text-accent">PIN ·</span>}
                   {BUSINESS_POST_CATEGORY_LABEL[post.category]}
                 </p>
-                <p className="mt-1 text-[18px] font-bold text-navy">{post.title}</p>
-                <p className="mt-2 text-[12px] text-navy/55">{post.excerpt}</p>
+                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-navy">{post.title}</p>
+                <p className="mt-2 whitespace-pre-line text-[12px] text-navy/55">{post.excerpt}</p>
                 <p className="mt-3 text-[10px] text-navy/35">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
               </Link>
             ))}

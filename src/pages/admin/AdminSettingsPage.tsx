@@ -48,23 +48,24 @@ export default function AdminSettingsPage() {
             </p>
           </div>
           <Field label="브랜드명 (작은 표기, 예: 코이노니아)">
-            <input value={settings.brandName} onChange={(e) => patch({ brandName: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={settings.brandName} onChange={(e) => patch({ brandName: e.target.value })} className={inputClass} />
           </Field>
           <Field label="로고 표기 (예: KOINONIA)">
-            <input value={settings.logoText} onChange={(e) => patch({ logoText: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={settings.logoText} onChange={(e) => patch({ logoText: e.target.value })} className={inputClass} />
           </Field>
         </SettingsSection>
 
         <SettingsSection title="연락처 · 링크">
           <div className="grid grid-cols-2 gap-3">
             <Field label="전화번호">
-              <input value={settings.phone ?? ''} onChange={(e) => patch({ phone: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={settings.phone ?? ''} onChange={(e) => patch({ phone: e.target.value })} className={inputClass} />
             </Field>
             <Field label="주소">
-              <input value={settings.address ?? ''} onChange={(e) => patch({ address: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={settings.address ?? ''} onChange={(e) => patch({ address: e.target.value })} className={inputClass} />
             </Field>
             <Field label="운영시간">
-              <input
+              <textarea
+                rows={1}
                 value={settings.businessHours ?? ''}
                 onChange={(e) => patch({ businessHours: e.target.value })}
                 className={inputClass}
@@ -93,13 +94,13 @@ export default function AdminSettingsPage() {
             />
           </Field>
           <Field label="Footer 저작권 문구">
-            <input value={settings.footerNote ?? ''} onChange={(e) => patch({ footerNote: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={settings.footerNote ?? ''} onChange={(e) => patch({ footerNote: e.target.value })} className={inputClass} />
           </Field>
         </SettingsSection>
 
         <SettingsSection title="SEO 기본값">
           <Field label="기본 SEO 제목">
-            <input value={settings.seoDefaultTitle} onChange={(e) => patch({ seoDefaultTitle: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={settings.seoDefaultTitle} onChange={(e) => patch({ seoDefaultTitle: e.target.value })} className={inputClass} />
           </Field>
           <Field label="기본 SEO 설명">
             <textarea

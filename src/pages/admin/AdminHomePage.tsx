@@ -68,7 +68,7 @@ export default function AdminHomePage() {
           <h2 className="mb-4 font-serif text-[15px] font-bold text-navy">01 · Hero</h2>
           <div className="space-y-3">
             <Field label="Hero 제목">
-              <input value={settings.heroTitle} onChange={(e) => patch({ heroTitle: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={settings.heroTitle} onChange={(e) => patch({ heroTitle: e.target.value })} className={inputClass} />
             </Field>
             <Field label="Hero Subtitle (줄바꿈 가능)">
               <textarea
@@ -80,7 +80,8 @@ export default function AdminHomePage() {
             <ImageUploadField label="Hero Image (선택)" value={settings.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
             <div className="grid grid-cols-2 gap-3">
               <Field label="Primary CTA 문구">
-                <input
+                <textarea
+                  rows={1}
                   value={settings.heroCtaPrimaryLabel}
                   onChange={(e) => patch({ heroCtaPrimaryLabel: e.target.value })}
                   className={inputClass}
@@ -94,7 +95,8 @@ export default function AdminHomePage() {
                 />
               </Field>
               <Field label="Secondary CTA 문구">
-                <input
+                <textarea
+                  rows={1}
                   value={settings.heroCtaSecondaryLabel}
                   onChange={(e) => patch({ heroCtaSecondaryLabel: e.target.value })}
                   className={inputClass}

@@ -54,7 +54,7 @@ const SpecRow = ({ labelKo, labelEn, value }: { labelKo: string; labelEn: string
       <p className="border-b border-navy/10 py-3 text-[12px] font-semibold whitespace-nowrap text-navy/50">
         {labelKo} <span className="text-navy/30">· {labelEn}</span>
       </p>
-      <p className="border-b border-navy/10 py-3 text-left text-[13px] font-semibold text-navy">{value}</p>
+      <p className="border-b border-navy/10 py-3 text-left text-[13px] font-semibold whitespace-pre-line text-navy">{value}</p>
     </>
   )
 }
@@ -141,8 +141,8 @@ export default function CoffeeDetailPage() {
       <div className="mt-1 flex items-stretch gap-4">
         <FlavorSpectrumSpine notes={coffee.notes} size="lg" />
         <div className="min-w-0">
-          <h1 className="font-serif text-[32px] font-bold leading-tight text-navy sm:text-[42px]">{coffee.coffeeName}</h1>
-          {coffee.koreanName && <p className="mt-0.5 text-[15px] text-navy/45">{coffee.koreanName}</p>}
+          <h1 className="font-serif text-[32px] font-bold leading-tight whitespace-pre-line text-navy sm:text-[42px]">{coffee.coffeeName}</h1>
+          {coffee.koreanName && <p className="mt-0.5 whitespace-pre-line text-[15px] text-navy/45">{coffee.koreanName}</p>}
         </div>
       </div>
 

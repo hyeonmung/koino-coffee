@@ -89,7 +89,7 @@ export default function AdminStoryEditorPage() {
 
       <div className="mt-6 max-w-[680px] space-y-4">
         <Field label="제목 (Title)">
-          <input value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
+          <textarea rows={1} value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
         </Field>
         <Field label="Slug (URL)">
           <input
@@ -116,7 +116,7 @@ export default function AdminStoryEditorPage() {
           </Field>
         </div>
         <Field label="요약 (Excerpt)">
-          <input value={draft.excerpt} onChange={(e) => patch({ excerpt: e.target.value })} className={inputClass} />
+          <textarea rows={1} value={draft.excerpt} onChange={(e) => patch({ excerpt: e.target.value })} className={inputClass} />
         </Field>
         <Field label="Tags (쉼표로 구분)">
           <input value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} className={inputClass} placeholder="산지, 교육" />
@@ -127,7 +127,7 @@ export default function AdminStoryEditorPage() {
         </Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="SEO 제목">
-            <input value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />
           </Field>
           <Field label="상태">
             <select value={draft.publishStatus} onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })} className={inputClass}>

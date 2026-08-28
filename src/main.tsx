@@ -41,7 +41,7 @@ function AppRoot() {
   if (!ready) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-warm-white">
-        <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOINONIA</p>
+        <img src="/brand/koinonia-wordmark.png" alt="KOINONIA" className="h-auto w-[200px]" />
       </div>
     )
   }

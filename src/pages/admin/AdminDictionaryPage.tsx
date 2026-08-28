@@ -67,10 +67,10 @@ export default function AdminDictionaryPage() {
           </p>
           <div className="grid grid-cols-2 gap-3">
             <Field label="영문 (Term) *">
-              <input value={editing.term} onChange={(e) => setEditing({ ...editing, term: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={editing.term} onChange={(e) => setEditing({ ...editing, term: e.target.value })} className={inputClass} />
             </Field>
             <Field label="한글">
-              <input value={editing.termKo ?? ''} onChange={(e) => setEditing({ ...editing, termKo: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={editing.termKo ?? ''} onChange={(e) => setEditing({ ...editing, termKo: e.target.value })} className={inputClass} />
             </Field>
           </div>
           <Field label="분류 (Category)">

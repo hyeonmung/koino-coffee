@@ -60,7 +60,8 @@ export default function AdminCharactersPage() {
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <label className="block">
                   <span className="mb-1 block text-[10px] font-semibold text-navy/60">대표 향미</span>
-                  <input
+                  <textarea
+                    rows={1}
                     value={character.flavors}
                     onChange={(e) => patch(character.key, { flavors: e.target.value })}
                     className={inputClass}
@@ -77,7 +78,8 @@ export default function AdminCharactersPage() {
                 </label>
                 <label className="block sm:col-span-2">
                   <span className="mb-1 block text-[10px] font-semibold text-navy/60">짧은 설명</span>
-                  <input
+                  <textarea
+                    rows={1}
                     value={character.description}
                     onChange={(e) => patch(character.key, { description: e.target.value })}
                     className={inputClass}

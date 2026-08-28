@@ -67,7 +67,7 @@ export default function BrewGuideIndexPage() {
                   {categoryLabel(guide.categoryId) ?? guide.equipment}
                   {categoryLabel(guide.categoryId) && ` · ${guide.equipment}`}
                 </p>
-                <p className="mt-1 text-[18px] font-bold text-navy">{guide.title}</p>
+                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-navy">{guide.title}</p>
                 {(guide.coffeeDose || guide.ratio || guide.totalTime) && (
                   <p className="mt-2 text-[12px] text-navy/55">
                     {[guide.coffeeDose, guide.ratio, guide.totalTime].filter(Boolean).join(' · ')}

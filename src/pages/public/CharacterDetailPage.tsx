@@ -54,7 +54,7 @@ export default function CharacterDetailPage() {
           {character.label}
         </span>
         <p className="mt-4 max-w-[560px] text-[16px] leading-relaxed text-navy/70">{character.heroCopy}</p>
-        <p className="mt-2 text-[12px] font-semibold tracking-[0.1em] text-navy/45">{character.flavors}</p>
+        <p className="mt-2 whitespace-pre-line text-[12px] font-semibold tracking-[0.1em] text-navy/45">{character.flavors}</p>
 
         {tendency && (
           <div className="mt-10 flex flex-col items-center border-t border-navy/15 pt-8 sm:flex-row sm:gap-10">

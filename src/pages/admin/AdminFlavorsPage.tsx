@@ -89,11 +89,11 @@ function DescriptorEditor({
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block">
           <span className={labelClass}>영문명</span>
-          <input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} className={`${inputClass} w-full`} />
+          <textarea rows={1} value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} className={`${inputClass} w-full`} />
         </label>
         <label className="block">
           <span className={labelClass}>한글명</span>
-          <input value={draft.nameKo ?? ''} onChange={(e) => setDraft({ ...draft, nameKo: e.target.value })} className={`${inputClass} w-full`} />
+          <textarea rows={1} value={draft.nameKo ?? ''} onChange={(e) => setDraft({ ...draft, nameKo: e.target.value })} className={`${inputClass} w-full`} />
         </label>
         <label className="block">
           <span className={labelClass}>향미 계열 (Family)</span>
@@ -111,7 +111,8 @@ function DescriptorEditor({
         </label>
         <label className="block">
           <span className={labelClass}>설명</span>
-          <input
+          <textarea
+            rows={2}
             value={draft.description ?? ''}
             onChange={(e) => setDraft({ ...draft, description: e.target.value })}
             className={`${inputClass} w-full`}
@@ -119,7 +120,8 @@ function DescriptorEditor({
         </label>
         <label className="block sm:col-span-2">
           <span className={labelClass}>예시</span>
-          <input
+          <textarea
+            rows={2}
             value={draft.example ?? ''}
             onChange={(e) => setDraft({ ...draft, example: e.target.value })}
             className={`${inputClass} w-full`}
@@ -203,11 +205,11 @@ export default function AdminFlavorsPage() {
       <div className="mt-6 flex flex-wrap items-end gap-2 border border-navy/15 bg-white p-4">
         <label className="block">
           <span className={labelClass}>영문명</span>
-          <input value={newName} onChange={(e) => setNewName(e.target.value)} className={inputClass} placeholder="Blackberry" />
+          <textarea rows={1} value={newName} onChange={(e) => setNewName(e.target.value)} className={inputClass} placeholder="Blackberry" />
         </label>
         <label className="block">
           <span className={labelClass}>한글명</span>
-          <input value={newNameKo} onChange={(e) => setNewNameKo(e.target.value)} className={inputClass} placeholder="블랙베리" />
+          <textarea rows={1} value={newNameKo} onChange={(e) => setNewNameKo(e.target.value)} className={inputClass} placeholder="블랙베리" />
         </label>
         <label className="block">
           <span className={labelClass}>향미 계열 (Family)</span>

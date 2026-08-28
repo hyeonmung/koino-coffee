@@ -93,7 +93,7 @@ export default function AdminBusinessPostEditorPage() {
 
       <div className="mt-6 max-w-[680px] space-y-4">
         <Field label="제목">
-          <input value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
+          <textarea rows={1} value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
         </Field>
         <Field label="Slug (URL)">
           <input
@@ -124,7 +124,7 @@ export default function AdminBusinessPostEditorPage() {
           </Field>
         </div>
         <Field label="요약">
-          <input value={draft.excerpt} onChange={(e) => patch({ excerpt: e.target.value })} className={inputClass} />
+          <textarea rows={1} value={draft.excerpt} onChange={(e) => patch({ excerpt: e.target.value })} className={inputClass} />
         </Field>
         <ImageUploadField label="커버 이미지" value={draft.coverImage ?? ''} onChange={(url) => patch({ coverImage: url })} />
         <Field label="본문 (빈 줄로 문단 구분, ## 로 소제목)">
@@ -139,7 +139,8 @@ export default function AdminBusinessPostEditorPage() {
           <div className="space-y-2">
             {draft.relatedLinks.map((link, i) => (
               <div key={i} className="flex gap-2">
-                <input
+                <textarea
+                  rows={1}
                   value={link.label}
                   onChange={(e) => updateLink(i, { label: e.target.value })}
                   className={inputClass}
@@ -164,7 +165,7 @@ export default function AdminBusinessPostEditorPage() {
 
         <div className="grid grid-cols-2 gap-3">
           <Field label="SEO 제목">
-            <input value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />
           </Field>
           <Field label="상태">
             <select

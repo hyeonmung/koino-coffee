@@ -117,7 +117,7 @@ export default function AdminBrewGuideEditorPage() {
           </select>
         </Field>
         <Field label="제목">
-          <input value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
+          <textarea rows={1} value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
         </Field>
         <Field label="Slug (URL)">
           <input

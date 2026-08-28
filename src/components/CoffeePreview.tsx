@@ -16,7 +16,7 @@ const MetaItem = ({ label, value }: { label: string; value: string }) => {
   return (
     <div>
       <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/45">{label}</p>
-      <p className="text-[12px] text-navy">{value}</p>
+      <p className="whitespace-pre-line text-[12px] text-navy">{value}</p>
     </div>
   )
 }
@@ -40,7 +40,7 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
         <p className="text-[11px] font-semibold tracking-[0.2em] text-navy/50">
           {coffee.country || 'ORIGIN'}
         </p>
-        <h2 className="mt-1 font-serif text-[22px] font-bold leading-tight text-navy">
+        <h2 className="mt-1 font-serif text-[22px] font-bold leading-tight whitespace-pre-line text-navy">
           {coffee.coffeeName || 'COFFEE NAME'}
         </h2>
       </div>

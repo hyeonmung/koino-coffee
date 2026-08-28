@@ -244,7 +244,7 @@ export default function AdminCoffeeEditorPage() {
               <>
                 {field(
                   '원두 이름 *',
-                  <input value={draft.coffeeName} onChange={(e) => patch({ coffeeName: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.coffeeName} onChange={(e) => patch({ coffeeName: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '원두 번호 (아카이브 번호)',
@@ -265,7 +265,8 @@ export default function AdminCoffeeEditorPage() {
                 )}
                 {field(
                   '한글명 (선택)',
-                  <input
+                  <textarea
+                    rows={1}
                     value={draft.koreanName ?? ''}
                     onChange={(e) => patch({ koreanName: e.target.value })}
                     className={inputClass}
@@ -286,7 +287,7 @@ export default function AdminCoffeeEditorPage() {
                 )}
                 {field(
                   '원산지 국가 *',
-                  <input value={draft.country} onChange={(e) => patch({ country: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.country} onChange={(e) => patch({ country: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '재고 상태',
@@ -344,18 +345,19 @@ export default function AdminCoffeeEditorPage() {
 
             {tab === '05 산지' && (
               <div className="grid grid-cols-2 gap-3">
-                {field('지역', <input value={draft.region} onChange={(e) => patch({ region: e.target.value })} className={inputClass} />)}
+                {field('지역', <textarea rows={1} value={draft.region} onChange={(e) => patch({ region: e.target.value })} className={inputClass} />)}
                 {field(
                   '세부 지역',
-                  <input value={draft.subregion ?? ''} onChange={(e) => patch({ subregion: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.subregion ?? ''} onChange={(e) => patch({ subregion: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '생산자',
-                  <input value={draft.producer} onChange={(e) => patch({ producer: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.producer} onChange={(e) => patch({ producer: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '농장 / 워싱 스테이션',
-                  <input
+                  <textarea
+                    rows={1}
                     value={draft.farmOrStation ?? ''}
                     onChange={(e) => patch({ farmOrStation: e.target.value })}
                     className={inputClass}
@@ -363,28 +365,28 @@ export default function AdminCoffeeEditorPage() {
                 )}
                 {field(
                   '고도',
-                  <input value={draft.altitude} onChange={(e) => patch({ altitude: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.altitude} onChange={(e) => patch({ altitude: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '품종',
-                  <input value={draft.variety} onChange={(e) => patch({ variety: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.variety} onChange={(e) => patch({ variety: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '수확 시기',
-                  <input value={draft.harvest ?? ''} onChange={(e) => patch({ harvest: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.harvest ?? ''} onChange={(e) => patch({ harvest: e.target.value })} className={inputClass} />,
                 )}
-                {field('로트', <input value={draft.lot ?? ''} onChange={(e) => patch({ lot: e.target.value })} className={inputClass} />)}
+                {field('로트', <textarea rows={1} value={draft.lot ?? ''} onChange={(e) => patch({ lot: e.target.value })} className={inputClass} />)}
                 {field(
                   '등급',
-                  <input value={draft.grade ?? ''} onChange={(e) => patch({ grade: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.grade ?? ''} onChange={(e) => patch({ grade: e.target.value })} className={inputClass} />,
                 )}
                 {field(
                   '가공 방식',
-                  <input value={draft.process} onChange={(e) => patch({ process: e.target.value })} className={inputClass} placeholder="Washed" />,
+                  <textarea rows={1} value={draft.process} onChange={(e) => patch({ process: e.target.value })} className={inputClass} placeholder="Washed" />,
                 )}
                 {field(
                   '로스팅 단계 (라이트 / 미디엄 라이트 / 미디엄 / 미디엄 다크 / 다크)',
-                  <input value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
+                  <textarea rows={1} value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
                 )}
               </div>
             )}

@@ -46,8 +46,8 @@ export default function CharactersIndexPage() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-[13px] text-navy/70">{character.description}</p>
-                  <p className="mt-1 text-[11px] text-navy/40">{character.flavors}</p>
+                  <p className="whitespace-pre-line text-[13px] text-navy/70">{character.description}</p>
+                  <p className="mt-1 whitespace-pre-line text-[11px] text-navy/40">{character.flavors}</p>
                 </div>
                 <p className="text-[11px] font-semibold tracking-wide text-navy/45 group-hover:text-accent">
                   {count}종의 원두 →

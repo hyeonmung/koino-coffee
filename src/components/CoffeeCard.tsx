@@ -60,13 +60,13 @@ export default function CoffeeCard({ coffee, showRadar = false, narrowMobileGrid
         <div className="min-w-0">
           {/* min-h reserves enough lines that the Character/Flavor row below starts at the same point across a grid row. */}
           <h3
-            className={`font-serif text-[17px] font-bold leading-snug text-navy ${
+            className={`font-serif text-[17px] font-bold leading-snug whitespace-pre-line text-navy ${
               narrowMobileGrid ? 'min-h-[70px] lg:min-h-12' : 'min-h-12'
             }`}
           >
             {coffee.coffeeName}
           </h3>
-          {coffee.koreanName && <p className="text-[11px] text-navy/40">{coffee.koreanName}</p>}
+          {coffee.koreanName && <p className="whitespace-pre-line text-[11px] text-navy/40">{coffee.koreanName}</p>}
 
           <div className="mt-2 flex min-w-0 items-center gap-2">
             <span className="shrink-0 text-[9px] font-bold tracking-[0.15em]" style={{ color: accent }}>

@@ -176,10 +176,10 @@ export default function AdminAboutEditorPage() {
         </div>
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <LabeledField label="제목">
-            <input value={hero.title} onChange={(e) => setHero({ ...hero, title: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={hero.title} onChange={(e) => setHero({ ...hero, title: e.target.value })} className={inputClass} />
           </LabeledField>
           <LabeledField label="Subtitle">
-            <input value={hero.subtitle ?? ''} onChange={(e) => setHero({ ...hero, subtitle: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={hero.subtitle ?? ''} onChange={(e) => setHero({ ...hero, subtitle: e.target.value })} className={inputClass} />
           </LabeledField>
           <ImageUploadField
             label="Hero 이미지 (Desktop)"
@@ -419,20 +419,20 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           <>
             <div className="grid grid-cols-2 gap-3">
               <LabeledField label="이름">
-                <input value={draft.personName ?? ''} onChange={(e) => patch({ personName: e.target.value })} className={inputClass} />
+                <textarea rows={1} value={draft.personName ?? ''} onChange={(e) => patch({ personName: e.target.value })} className={inputClass} />
               </LabeledField>
               <LabeledField label="영문 이름">
-                <input value={draft.personEnglishName ?? ''} onChange={(e) => patch({ personEnglishName: e.target.value })} className={inputClass} />
+                <textarea rows={1} value={draft.personEnglishName ?? ''} onChange={(e) => patch({ personEnglishName: e.target.value })} className={inputClass} />
               </LabeledField>
               <LabeledField label="직책">
-                <input value={draft.personRole ?? ''} onChange={(e) => patch({ personRole: e.target.value })} className={inputClass} placeholder="대표 · 로스터" />
+                <textarea rows={1} value={draft.personRole ?? ''} onChange={(e) => patch({ personRole: e.target.value })} className={inputClass} placeholder="대표 · 로스터" />
               </LabeledField>
               <LabeledField label="영문 직책">
-                <input value={draft.personEnglishRole ?? ''} onChange={(e) => patch({ personEnglishRole: e.target.value })} className={inputClass} placeholder="Founder / Roaster" />
+                <textarea rows={1} value={draft.personEnglishRole ?? ''} onChange={(e) => patch({ personEnglishRole: e.target.value })} className={inputClass} placeholder="Founder / Roaster" />
               </LabeledField>
             </div>
             <LabeledField label="한 줄 소개">
-              <input value={draft.subtitle ?? ''} onChange={(e) => patch({ subtitle: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={draft.subtitle ?? ''} onChange={(e) => patch({ subtitle: e.target.value })} className={inputClass} />
             </LabeledField>
             <LabeledField label="상세 소개 (빈 줄로 문단 구분, ## 로 소제목)">
               <textarea value={draft.body ?? ''} onChange={(e) => patch({ body: e.target.value })} className={textareaClass} />
@@ -442,7 +442,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           <>
             {draft.type !== 'QUOTE' && (
               <LabeledField label="제목">
-                <input value={draft.title ?? ''} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
+                <textarea rows={1} value={draft.title ?? ''} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
               </LabeledField>
             )}
             {draft.type === 'QUOTE' && (
@@ -451,7 +451,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                   <textarea value={draft.quote ?? ''} onChange={(e) => patch({ quote: e.target.value })} className={textareaClass} />
                 </LabeledField>
                 <LabeledField label="캡션 (선택, 예: 대표 이름)">
-                  <input value={draft.caption ?? ''} onChange={(e) => patch({ caption: e.target.value })} className={inputClass} />
+                  <textarea rows={1} value={draft.caption ?? ''} onChange={(e) => patch({ caption: e.target.value })} className={inputClass} />
                 </LabeledField>
               </>
             )}
@@ -462,7 +462,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                 </LabeledField>
                 <div className="grid grid-cols-2 gap-3">
                   <LabeledField label="버튼 문구">
-                    <input value={draft.ctaLabel ?? ''} onChange={(e) => patch({ ctaLabel: e.target.value })} className={inputClass} />
+                    <textarea rows={1} value={draft.ctaLabel ?? ''} onChange={(e) => patch({ ctaLabel: e.target.value })} className={inputClass} />
                   </LabeledField>
                   <LabeledField label="이동 링크">
                     <input value={draft.ctaUrl ?? ''} onChange={(e) => patch({ ctaUrl: e.target.value })} className={inputClass} placeholder="/coffees" />
@@ -473,7 +473,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           </>
         ) : draft.type === 'IMAGE_FULL' ? (
           <LabeledField label="캡션 (선택)">
-            <input value={draft.caption ?? ''} onChange={(e) => patch({ caption: e.target.value })} className={inputClass} />
+            <textarea rows={1} value={draft.caption ?? ''} onChange={(e) => patch({ caption: e.target.value })} className={inputClass} />
           </LabeledField>
         ) : draft.type === 'GALLERY' ? (
           <div>
@@ -491,7 +491,8 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                 <div key={i} className="border border-navy/10 p-3">
                   <ImageUploadField label={`사진 ${i + 1}`} value={img.url} onChange={(url) => updateGalleryImage(i, url, img.caption ?? '')} />
                   <div className="mt-2 flex gap-2">
-                    <input
+                    <textarea
+                      rows={1}
                       value={img.caption ?? ''}
                       onChange={(e) => updateGalleryImage(i, img.url, e.target.value)}
                       className={inputClass}
@@ -509,20 +510,20 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
         ) : (
           <>
             <LabeledField label="제목">
-              <input value={draft.title ?? ''} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={draft.title ?? ''} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
             </LabeledField>
             <LabeledField label="부제목 (선택)">
-              <input value={draft.subtitle ?? ''} onChange={(e) => patch({ subtitle: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={draft.subtitle ?? ''} onChange={(e) => patch({ subtitle: e.target.value })} className={inputClass} />
             </LabeledField>
             <LabeledField label="본문 (빈 줄로 문단 구분, ## 로 소제목)">
               <RichTextArea value={draft.body ?? ''} onChange={(v) => patch({ body: v })} className={textareaClass} />
             </LabeledField>
             <LabeledField label="인용문 (선택)">
-              <input value={draft.quote ?? ''} onChange={(e) => patch({ quote: e.target.value })} className={inputClass} />
+              <textarea rows={1} value={draft.quote ?? ''} onChange={(e) => patch({ quote: e.target.value })} className={inputClass} />
             </LabeledField>
             <div className="grid grid-cols-2 gap-3">
               <LabeledField label="CTA 버튼 문구 (선택)">
-                <input value={draft.ctaLabel ?? ''} onChange={(e) => patch({ ctaLabel: e.target.value })} className={inputClass} />
+                <textarea rows={1} value={draft.ctaLabel ?? ''} onChange={(e) => patch({ ctaLabel: e.target.value })} className={inputClass} />
               </LabeledField>
               <LabeledField label="CTA 링크 (선택)">
                 <input value={draft.ctaUrl ?? ''} onChange={(e) => patch({ ctaUrl: e.target.value })} className={inputClass} />
@@ -539,11 +540,11 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                 <div key={c.id} className="border border-navy/10 p-2.5">
                   <div className="flex gap-2">
                     <input value={c.year} onChange={(e) => updateCareer(c.id, { year: e.target.value })} className={`${inputClass} w-20`} placeholder="2024" />
-                    <input value={c.organization} onChange={(e) => updateCareer(c.id, { organization: e.target.value })} className={inputClass} placeholder="기관 · 대회 · 활동" />
+                    <textarea rows={1} value={c.organization} onChange={(e) => updateCareer(c.id, { organization: e.target.value })} className={inputClass} placeholder="기관 · 대회 · 활동" />
                     <button type="button" onClick={() => removeCareer(c.id)} className="shrink-0 text-navy/40 hover:text-red-500">×</button>
                   </div>
                   <div className="mt-1.5 flex gap-2">
-                    <input value={c.detail} onChange={(e) => updateCareer(c.id, { detail: e.target.value })} className={inputClass} placeholder="내용 (예: 1위, Judge)" />
+                    <textarea rows={1} value={c.detail} onChange={(e) => updateCareer(c.id, { detail: e.target.value })} className={inputClass} placeholder="내용 (예: 1위, Judge)" />
                     <select value={c.category} onChange={(e) => updateCareer(c.id, { category: e.target.value as AboutCareerCategory })} className={`${inputClass} w-24`}>
                       {ABOUT_CAREER_CATEGORIES.map((cat) => (
                         <option key={cat} value={cat}>{cat}</option>
