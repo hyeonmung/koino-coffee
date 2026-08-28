@@ -14,7 +14,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   purchaseUrl: '',
   businessUrl: '/business',
   footerNote: '© 코이노니아. 모든 원두 정보는 로스터가 직접 작성합니다.',
-  seoDefaultTitle: 'KOINONIA — 코이노니아 공식 홈페이지',
+  seoDefaultTitle: 'KOINONIA ROASTERS 공식사이트',
   seoDefaultDescription:
     '코이노니아의 원두, 향미, 로스팅, 추출 이야기를 만나보세요. 좋은 커피를 발견하고 나에게 맞는 한 잔을 찾는 코이노니아 공식 사이트입니다.',
   ogImage: 'https://koinoniaroasters.co.kr/og-image.png',
