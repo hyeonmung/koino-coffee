@@ -18,14 +18,19 @@ export default function SEO({ title, description, image, noIndex }: SEOProps) {
   const resolvedTitle = title ? `${title} — ${settings.logoText}` : settings.seoDefaultTitle
   const resolvedDescription = description ?? settings.seoDefaultDescription
   const resolvedImage = image ?? settings.ogImage
+  // Derived from the live location, never hardcoded — correct on localhost, Vercel preview
+  // URLs, and the production domain alike.
+  const canonicalUrl = `${window.location.origin}${window.location.pathname}${window.location.hash}`
 
   return (
     <Helmet>
       <title>{resolvedTitle}</title>
       <meta name="description" content={resolvedDescription} />
+      <link rel="canonical" href={canonicalUrl} />
       <meta property="og:title" content={resolvedTitle} />
       <meta property="og:description" content={resolvedDescription} />
       <meta property="og:type" content="website" />
+      <meta property="og:url" content={canonicalUrl} />
       {resolvedImage && <meta property="og:image" content={resolvedImage} />}
       <meta name="twitter:card" content="summary_large_image" />
       {noIndex && <meta name="robots" content="noindex, nofollow" />}

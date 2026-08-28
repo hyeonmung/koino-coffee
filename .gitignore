@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vercel
+
+# Secrets — this project has none checked in yet, but guard the standard names anyway
+.env
+.env.local
+.env.*.local
+*.pem
