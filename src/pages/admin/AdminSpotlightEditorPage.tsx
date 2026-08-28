@@ -11,7 +11,7 @@ import {
   upsertSpotlightSlide,
 } from '../../data/repositories/spotlightRepository'
 import { resolveSpotlightSlide } from '../../data/spotlightResolve'
-import type { SpotlightContentType, SpotlightOverlayStrength, SpotlightSlide } from '../../data/schema'
+import type { SpotlightContentType, SpotlightSlide } from '../../data/schema'
 
 const CONTENT_TYPES: { value: SpotlightContentType; label: string; hint: string }[] = [
   { value: 'FEATURED_COFFEE', label: '원두', hint: '지금 소개하고 싶은 원두를 골라 자동으로 불러옵니다.' },
@@ -23,12 +23,6 @@ const CONTENT_TYPES: { value: SpotlightContentType; label: string; hint: string 
   { value: 'EDUCATION', label: '교육', hint: '커피 클래스, 교육 프로그램 모집 안내.' },
   { value: 'BUSINESS', label: '납품', hint: '납품·컨설팅 등 B2B 안내.' },
   { value: 'CUSTOM', label: '자유 배너', hint: '위 항목에 해당하지 않는 자유 문구 배너.' },
-]
-
-const OVERLAY_OPTIONS: { value: SpotlightOverlayStrength; label: string }[] = [
-  { value: 'low', label: '낮음' },
-  { value: 'medium', label: '보통' },
-  { value: 'high', label: '높음' },
 ]
 
 const LINKED_TYPES: SpotlightContentType[] = ['FEATURED_COFFEE', 'STORY', 'BREW']
@@ -291,23 +285,6 @@ export default function AdminSpotlightEditorPage() {
                 />
               </label>
             </div>
-            <div className="mt-3">
-              <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">사진 위 어둡기</span>
-              <div className="flex gap-2">
-                {OVERLAY_OPTIONS.map((o) => (
-                  <button
-                    key={o.value}
-                    type="button"
-                    onClick={() => patch({ overlayStrength: o.value })}
-                    className={`border px-4 py-1.5 text-[12px] font-semibold ${
-                      draft.overlayStrength === o.value ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/60'
-                    }`}
-                  >
-                    {o.label}
-                  </button>
-                ))}
-              </div>
-            </div>
           </section>
 
           {/* STEP 5 */}
@@ -348,34 +325,26 @@ export default function AdminSpotlightEditorPage() {
               </button>
             </div>
           </div>
+          <p className="mt-1 text-[10px] text-navy/40">위쪽 사진 영역(850×550)과 아래쪽 텍스트 영역은 서로 분리되어 있습니다.</p>
 
-          <div
-            className={`relative mt-3 overflow-hidden border border-navy/15 ${
-              previewMode === 'desktop' ? 'aspect-[16/9] w-full' : 'mx-auto aspect-[9/16] w-[220px]'
-            }`}
-          >
+          <div className={`mt-2 overflow-hidden border border-navy/15 ${previewMode === 'mobile' ? 'mx-auto w-[220px]' : 'w-full'}`}>
             {preview ? (
               <>
-                {(previewMode === 'desktop' ? preview.desktopImage : preview.mobileImage) ? (
-                  <div
-                    className="h-full w-full bg-navy/10 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${previewMode === 'desktop' ? preview.desktopImage : preview.mobileImage})` }}
-                  />
-                ) : (
-                  <div className="koi-night-sky relative h-full w-full overflow-hidden">
-                    <KOIStarField />
-                  </div>
-                )}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-t ${
-                    draft.overlayStrength === 'low'
-                      ? 'from-navy/55 via-navy/10'
-                      : draft.overlayStrength === 'high'
-                        ? 'from-navy/95 via-navy/55'
-                        : 'from-navy/80 via-navy/30'
-                  } to-transparent`}
-                />
-                <div className="absolute inset-x-0 bottom-0 p-4 text-warm-white">
+                {/* 사진 영역 — 실제 사이트와 동일하게 850×550(17:11) 고정 */}
+                <div className="relative aspect-coffee-card w-full overflow-hidden">
+                  {(previewMode === 'desktop' ? preview.desktopImage : preview.mobileImage) ? (
+                    <div
+                      className="h-full w-full bg-navy/10 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${previewMode === 'desktop' ? preview.desktopImage : preview.mobileImage})` }}
+                    />
+                  ) : (
+                    <div className="koi-night-sky relative h-full w-full overflow-hidden">
+                      <KOIStarField />
+                    </div>
+                  )}
+                </div>
+                {/* 텍스트 영역 — 사진과 분리된 별도 패널 */}
+                <div className="border-t border-warm-white/10 bg-navy p-4 text-warm-white">
                   <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">{preview.label}</p>
                   <p className="mt-1 font-serif text-[16px] font-bold leading-snug">{preview.title}</p>
                   {preview.description && <p className="mt-1 text-[10px] text-warm-white/70">{preview.description}</p>}
@@ -383,7 +352,7 @@ export default function AdminSpotlightEditorPage() {
                 </div>
               </>
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-navy/5 px-4 text-center text-[12px] text-navy/40">
+              <div className="flex aspect-coffee-card w-full items-center justify-center bg-navy/5 px-4 text-center text-[12px] text-navy/40">
                 {isLinked ? '연결할 항목을 선택하면 미리보기가 표시됩니다.' : '제목을 입력하면 미리보기가 표시됩니다.'}
               </div>
             )}
