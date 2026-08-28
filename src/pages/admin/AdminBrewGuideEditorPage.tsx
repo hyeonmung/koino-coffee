@@ -14,7 +14,7 @@ function emptyGuide(): BrewGuide {
   return {
     id: crypto.randomUUID(),
     slug: '',
-    publishStatus: 'draft',
+    publishStatus: 'published',
     equipment: 'V60',
     title: '',
     coffeeDose: '',
@@ -188,22 +188,14 @@ export default function AdminBrewGuideEditorPage() {
         <Field label="이렇게 추출해보세요 (Tips)">
           <textarea value={draft.tips ?? ''} onChange={(e) => patch({ tips: e.target.value })} className={`${inputClass} min-h-[70px]`} />
         </Field>
-        <Field label="이런 맛이 난다면 (Common Problems)">
-          <textarea
-            value={draft.commonProblems ?? ''}
-            onChange={(e) => patch({ commonProblems: e.target.value })}
-            className={`${inputClass} min-h-[70px]`}
-          />
-        </Field>
         <Field label="상태">
           <select
             value={draft.publishStatus}
             onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })}
             className={inputClass}
           >
-            <option value="draft">초안</option>
             <option value="published">공개</option>
-            <option value="archived">보관</option>
+            <option value="draft">비공개</option>
           </select>
         </Field>
 
@@ -212,7 +204,7 @@ export default function AdminBrewGuideEditorPage() {
           onClick={handleSave}
           className="border border-navy bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
         >
-          저장
+          글쓰기
         </button>
       </div>
     </AdminLayout>

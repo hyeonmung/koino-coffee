@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { to: '/admin/flavors', label: '향미 관리' },
   { to: '/admin/dictionary', label: '커피 사전' },
   { to: '/admin/brew-guides', label: '브루 가이드' },
-  { to: '/admin/stories', label: '이야기' },
+  { to: '/admin/stories', label: '뉴스&이야기' },
   { to: '/admin/about', label: '코이노니아' },
   { to: '/admin/business', label: '납품 · 교육' },
   { to: '/admin/inquiries', label: '문의 관리' },

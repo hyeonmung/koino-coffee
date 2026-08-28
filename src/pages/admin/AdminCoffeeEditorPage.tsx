@@ -8,32 +8,16 @@ import CoffeePreview from '../../components/CoffeePreview'
 import FlavorNoteInput from '../../components/FlavorNoteInput'
 import SensoryProfileInput from '../../components/SensoryProfileInput'
 import { recommendCharacter } from '../../data/characterRecommend'
-import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getAllCoffees, getCoffeeById, slugExists, upsertCoffee } from '../../data/repositories/coffeeRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
-import { getAllStories } from '../../data/repositories/storyRepository'
-import type { Availability, Coffee, PublishStatus, RoastType } from '../../data/schema'
-import CoffeeVisual from '../../components/CoffeeVisual'
-import { COFFEE_CARD_ASPECT_RATIO, COFFEE_CARD_RATIO_LABEL, FOCAL_POINT_LABEL, type ImageFocalPoint } from '../../constants/media'
+import type { Availability, Coffee, PublishStatus } from '../../data/schema'
+import { COFFEE_CARD_ASPECT_RATIO } from '../../constants/media'
 import { formatCoffeeNumber } from '../../utils/coffeeNumber'
 import { slugifyFilename } from '../../utils/download'
 import { exportNodeAsPng } from '../../utils/pngExport'
 import { validateCoffeeDraft } from '../../utils/validation'
 
-const TABS = [
-  '01 기본정보',
-  '02 향미',
-  '03 센서리',
-  '04 캐릭터',
-  '05 산지',
-  '06 가공',
-  '07 로스팅',
-  '08 브루',
-  '09 스토리',
-  '10 미디어',
-  '11 SEO',
-  '12 발행',
-] as const
+const TABS = ['01 기본정보', '02 향미', '03 센서리', '04 캐릭터', '05 산지', '06 발행'] as const
 
 const now = () => new Date().toISOString()
 
@@ -54,7 +38,7 @@ function emptyCoffee(): Coffee {
     sensory: { acidity: 3, sweetness: 3, body: 3, finish: 3, flavor: 3, accessibility: 3 },
     createdAt: now(),
     updatedAt: now(),
-    publishStatus: 'draft',
+    publishStatus: 'published',
     featured: false,
     sortOrder: 0,
     availability: 'available',
@@ -105,8 +89,6 @@ export default function AdminCoffeeEditorPage() {
   const cardRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<HTMLDivElement>(null)
 
-  const brewGuides = useMemo(() => getAllBrewGuides(), [])
-  const stories = useMemo(() => getAllStories(), [])
   const flavorSuggestions = useMemo(() => getFlavorDescriptors().map((d) => d.name), [])
 
   useEffect(() => {
@@ -318,6 +300,17 @@ export default function AdminCoffeeEditorPage() {
                     <option value="archive">지난 원두 (단종)</option>
                   </select>,
                 )}
+                <ImageUploadField label="대표 이미지" value={draft.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
+                <div className="space-y-1 text-[11px] leading-relaxed text-navy/45">
+                  <p>권장 비율: 850 × 550 (17:11) — 원두 카드는 항상 이 비율로 잘려서 표시됩니다.</p>
+                  <p>권장 최소 해상도: 1700 × 1100px</p>
+                  <p>고화질 권장: 2550 × 1650px 이상</p>
+                </div>
+                {heroImageSize && Math.abs(heroImageSize.width / heroImageSize.height - COFFEE_CARD_ASPECT_RATIO) > 0.05 && (
+                  <p className="border border-accent/40 bg-accent/10 px-3 py-2 text-[11px] text-navy/70">
+                    권장 비율과 다릅니다 ({heroImageSize.width} × {heroImageSize.height}). 카드에서는 일부 영역이 잘릴 수 있습니다.
+                  </p>
+                )}
               </>
             )}
 
@@ -385,278 +378,18 @@ export default function AdminCoffeeEditorPage() {
                   '등급',
                   <input value={draft.grade ?? ''} onChange={(e) => patch({ grade: e.target.value })} className={inputClass} />,
                 )}
-              </div>
-            )}
-
-            {tab === '06 가공' && (
-              <div className="space-y-3">
                 {field(
                   '가공 방식',
                   <input value={draft.process} onChange={(e) => patch({ process: e.target.value })} className={inputClass} placeholder="Washed" />,
                 )}
                 {field(
-                  '설명',
-                  <textarea
-                    value={draft.processDescription ?? ''}
-                    onChange={(e) => patch({ processDescription: e.target.value })}
-                    className={textareaClass}
-                  />,
-                )}
-                <div className="grid grid-cols-2 gap-3">
-                  {field(
-                    '발효',
-                    <input value={draft.fermentation ?? ''} onChange={(e) => patch({ fermentation: e.target.value })} className={inputClass} />,
-                  )}
-                  {field(
-                    '건조',
-                    <input value={draft.drying ?? ''} onChange={(e) => patch({ drying: e.target.value })} className={inputClass} />,
-                  )}
-                  {field(
-                    '온도',
-                    <input
-                      value={draft.processTemperature ?? ''}
-                      onChange={(e) => patch({ processTemperature: e.target.value })}
-                      className={inputClass}
-                    />,
-                  )}
-                  {field(
-                    '기간',
-                    <input
-                      value={draft.processDuration ?? ''}
-                      onChange={(e) => patch({ processDuration: e.target.value })}
-                      className={inputClass}
-                    />,
-                  )}
-                </div>
-                <p className="text-[11px] text-navy/40">비워두면 공개 페이지에서 해당 항목은 표시되지 않습니다.</p>
-              </div>
-            )}
-
-            {tab === '07 로스팅' && (
-              <div className="space-y-5">
-                <div className="grid grid-cols-2 gap-3">
-                  {field(
-                    '로스팅 타입',
-                    <select
-                      value={draft.roastType ?? ''}
-                      onChange={(e) => patch({ roastType: (e.target.value || undefined) as RoastType | undefined })}
-                      className={inputClass}
-                    >
-                      <option value="">선택 안함</option>
-                      <option value="Filter">필터</option>
-                      <option value="Espresso">에스프레소</option>
-                      <option value="Omni">옴니</option>
-                    </select>,
-                  )}
-                  {field(
-                    '로스팅 단계 (라이트 / 미디엄 라이트 / 미디엄 / 미디엄 다크 / 다크)',
-                    <input value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
-                  )}
-                  {field(
-                    '로스팅 방향',
-                    <input
-                      value={draft.roastDirection ?? ''}
-                      onChange={(e) => patch({ roastDirection: e.target.value })}
-                      className={inputClass}
-                    />,
-                  )}
-                  {field(
-                    '추천 디개싱 (숙성 기간)',
-                    <input
-                      value={draft.recommendedRest ?? ''}
-                      onChange={(e) => patch({ recommendedRest: e.target.value })}
-                      className={inputClass}
-                      placeholder="7–21 Days"
-                    />,
-                  )}
-                  {field(
-                    '로스터',
-                    <input value={draft.roaster ?? ''} onChange={(e) => patch({ roaster: e.target.value })} className={inputClass} />,
-                  )}
-                </div>
-
-                {field(
-                  '로스터의 생각',
-                  <textarea
-                    value={draft.roasterComment ?? ''}
-                    onChange={(e) => patch({ roasterComment: e.target.value })}
-                    className={textareaClass}
-                  />,
-                )}
-                {field(
-                  '바리스타의 생각 (선택)',
-                  <textarea
-                    value={draft.baristaComment ?? ''}
-                    onChange={(e) => patch({ baristaComment: e.target.value })}
-                    className={textareaClass}
-                  />,
-                )}
-
-                <div>
-                  <p className="mb-2 text-[10px] font-semibold tracking-[0.1em] text-navy/60">
-                    로스팅 상세 데이터 (선택 — 입력한 항목만 공개 화면에 표시됩니다)
-                  </p>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {(
-                      [
-                        ['batch', '배치'],
-                        ['chargeTemp', '투입 온도'],
-                        ['turningPoint', '터닝포인트'],
-                        ['yellow', '옐로우'],
-                        ['firstCrack', '1차 크랙'],
-                        ['drop', '배출'],
-                        ['totalTime', '총 시간'],
-                        ['developmentTime', '디벨롭 타임'],
-                        ['developmentRatio', '디벨롭 비율'],
-                        ['dropTemp', '배출 온도'],
-                        ['machine', '로스팅 머신'],
-                      ] as const
-                    ).map(([key, label]) => (
-                      <input
-                        key={key}
-                        value={draft.roastData?.[key] ?? ''}
-                        onChange={(e) => patch({ roastData: { ...draft.roastData, [key]: e.target.value } })}
-                        className={inputClass}
-                        placeholder={label}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {tab === '08 브루' && (
-              <div className="space-y-2">
-                {brewGuides.length === 0 && <p className="text-[12px] text-navy/45">등록된 브루 가이드가 없습니다.</p>}
-                {brewGuides.map((guide) => (
-                  <label key={guide.id} className="flex items-center gap-2 border border-navy/15 px-3 py-2 text-[12px]">
-                    <input
-                      type="checkbox"
-                      checked={draft.brewGuideIds.includes(guide.id)}
-                      onChange={(e) => {
-                        const next = e.target.checked
-                          ? [...draft.brewGuideIds, guide.id]
-                          : draft.brewGuideIds.filter((id_) => id_ !== guide.id)
-                        patch({ brewGuideIds: next })
-                      }}
-                    />
-                    <span className="font-semibold text-navy">{guide.equipment}</span>
-                    <span className="text-navy/50">{guide.title}</span>
-                  </label>
-                ))}
-              </div>
-            )}
-
-            {tab === '09 스토리' && (
-              <div className="space-y-3">
-                {field(
-                  '추천 대상',
-                  <textarea
-                    value={draft.recommendedFor ?? ''}
-                    onChange={(e) => patch({ recommendedFor: e.target.value })}
-                    className={textareaClass}
-                    placeholder="예: 화사하고 차처럼 깔끔한 커피를 좋아하는 분"
-                  />,
-                )}
-                {field(
-                  '연관 스토리',
-                  <select
-                    value={draft.storyId ?? ''}
-                    onChange={(e) => patch({ storyId: e.target.value || undefined })}
-                    className={inputClass}
-                  >
-                    <option value="">연결 안함</option>
-                    {stories.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.title}
-                      </option>
-                    ))}
-                  </select>,
+                  '로스팅 단계 (라이트 / 미디엄 라이트 / 미디엄 / 미디엄 다크 / 다크)',
+                  <input value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
                 )}
               </div>
             )}
 
-            {tab === '10 미디어' && (
-              <div className="space-y-5">
-                <ImageUploadField label="대표 이미지" value={draft.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
-                <div className="space-y-1 text-[11px] leading-relaxed text-navy/45">
-                  <p>권장 비율: 850 × 550 (17:11) — 원두 카드는 항상 이 비율로 잘려서 표시됩니다.</p>
-                  <p>권장 최소 해상도: 1700 × 1100px</p>
-                  <p>고화질 권장: 2550 × 1650px 이상</p>
-                </div>
-
-                {heroImageSize && Math.abs(heroImageSize.width / heroImageSize.height - COFFEE_CARD_ASPECT_RATIO) > 0.05 && (
-                  <p className="border border-accent/40 bg-accent/10 px-3 py-2 text-[11px] text-navy/70">
-                    권장 비율과 다릅니다 ({heroImageSize.width} × {heroImageSize.height}). 카드에서는 일부 영역이 잘릴 수 있습니다. 아래
-                    미리보기와 사진 위치 설정으로 확인하세요.
-                  </p>
-                )}
-
-                <div>
-                  <span className="mb-1.5 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">사진 위치</span>
-                  <p className="mb-2 text-[11px] text-navy/40">
-                    사진이 카드 비율({COFFEE_CARD_RATIO_LABEL})보다 크거나 작을 때, 어느 부분을 중심으로 잘라 보여줄지 정합니다.
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {(Object.keys(FOCAL_POINT_LABEL) as ImageFocalPoint[]).map((fp) => (
-                      <button
-                        key={fp}
-                        type="button"
-                        onClick={() => patch({ imageFocalPoint: fp })}
-                        className={`border px-3 py-1.5 text-[11px] font-medium transition-colors ${
-                          (draft.imageFocalPoint ?? 'center') === fp
-                            ? 'border-navy bg-navy text-warm-white'
-                            : 'border-navy/25 text-navy/60 hover:border-navy/50'
-                        }`}
-                      >
-                        {FOCAL_POINT_LABEL[fp]}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="mb-1.5 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">
-                    카드 미리보기 ({COFFEE_CARD_RATIO_LABEL})
-                  </span>
-                  <div className="w-[240px] overflow-hidden border border-navy/15">
-                    <CoffeeVisual coffee={draft} focalPoint={draft.imageFocalPoint} />
-                  </div>
-                </div>
-
-                {field(
-                  '구매 링크 (URL)',
-                  <input
-                    value={draft.purchaseUrl ?? ''}
-                    onChange={(e) => patch({ purchaseUrl: e.target.value })}
-                    className={inputClass}
-                    placeholder="https://..."
-                  />,
-                )}
-                <p className="text-[11px] text-navy/40">
-                  중앙 미디어 라이브러리 업로드는 Supabase Storage 연결 후 지원됩니다. 지금은 외부 이미지 URL을 입력해주세요.
-                </p>
-              </div>
-            )}
-
-            {tab === '11 SEO' && (
-              <div className="space-y-3">
-                {field(
-                  'SEO 제목',
-                  <input value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />,
-                )}
-                {field(
-                  'SEO 설명',
-                  <textarea
-                    value={draft.seoDescription ?? ''}
-                    onChange={(e) => patch({ seoDescription: e.target.value })}
-                    className={textareaClass}
-                  />,
-                )}
-              </div>
-            )}
-
-            {tab === '12 발행' && (
+            {tab === '06 발행' && (
               <div className="space-y-3">
                 {field(
                   '공개 상태',
@@ -665,9 +398,8 @@ export default function AdminCoffeeEditorPage() {
                     onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })}
                     className={inputClass}
                   >
-                    <option value="draft">초안</option>
                     <option value="published">공개</option>
-                    <option value="archived">보관</option>
+                    <option value="draft">비공개</option>
                   </select>,
                 )}
                 <label className="flex items-center gap-2 text-[12px] text-navy">

@@ -52,7 +52,7 @@ export default function AdminBusinessPostsPage() {
                 {post.title}
               </p>
               <p className="text-[11px] text-navy/45">
-                {BUSINESS_POST_CATEGORY_LABEL[post.category]} · {post.publishStatus === 'published' ? '공개' : '초안'}
+                {BUSINESS_POST_CATEGORY_LABEL[post.category]} · {post.publishStatus === 'published' ? '공개' : '비공개'}
               </p>
             </div>
             <div className="flex gap-1.5">

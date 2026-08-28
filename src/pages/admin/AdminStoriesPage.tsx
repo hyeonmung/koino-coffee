@@ -33,7 +33,7 @@ export default function AdminStoriesPage() {
             <div>
               <p className="text-[13px] font-semibold text-navy">{story.title}</p>
               <p className="text-[11px] text-navy/45">
-                {STORY_CATEGORY_LABEL[story.category]} · {story.publishStatus === 'published' ? '공개' : '초안'}
+                {STORY_CATEGORY_LABEL[story.category]} · {story.publishStatus === 'published' ? '공개' : '비공개'}
               </p>
             </div>
             <div className="flex gap-1.5">

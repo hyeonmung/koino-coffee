@@ -9,7 +9,8 @@ import { deleteCoffee, getAllCoffees, upsertCoffee } from '../../data/repositori
 import { CUP_CHARACTERS, type CupCharacter } from '../../types'
 import { formatCoffeeNumber } from '../../utils/coffeeNumber'
 
-const STATUS_LABEL: Record<PublishStatus, string> = { draft: '초안', published: '공개', archived: '보관' }
+const STATUS_LABEL: Record<PublishStatus, string> = { draft: '비공개', published: '공개', archived: '비공개' }
+const STATUS_OPTIONS: PublishStatus[] = ['published', 'draft']
 
 export default function AdminCoffeeListPage() {
   const [coffees, setCoffees] = useState<Coffee[]>([])
@@ -62,7 +63,7 @@ export default function AdminCoffeeListPage() {
       id: crypto.randomUUID(),
       slug: `${coffee.slug}-copy-${Date.now().toString(36)}`,
       coffeeName: `${coffee.coffeeName} (Copy)`,
-      publishStatus: 'draft',
+      publishStatus: 'published',
       featured: false,
       isSample: false,
       createdAt: now,
@@ -119,8 +120,7 @@ export default function AdminCoffeeListPage() {
         >
           <option value="ALL">전체 상태</option>
           <option value="published">공개</option>
-          <option value="draft">초안</option>
-          <option value="archived">보관</option>
+          <option value="draft">비공개</option>
         </select>
       </div>
 
@@ -165,7 +165,7 @@ export default function AdminCoffeeListPage() {
                     onChange={(e) => setPublishStatus(coffee, e.target.value as PublishStatus)}
                     className="border border-navy/20 bg-white px-1.5 py-1 text-[11px] text-navy outline-none"
                   >
-                    {(Object.keys(STATUS_LABEL) as PublishStatus[]).map((s) => (
+                    {STATUS_OPTIONS.map((s) => (
                       <option key={s} value={s}>
                         {STATUS_LABEL[s]}
                       </option>

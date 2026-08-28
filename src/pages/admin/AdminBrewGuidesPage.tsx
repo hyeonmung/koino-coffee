@@ -48,7 +48,7 @@ export default function AdminBrewGuidesPage() {
                 {guide.equipment} · {guide.title}
               </p>
               <p className="text-[11px] text-navy/45">
-                {guide.publishStatus === 'published' ? '공개' : '초안'}
+                {guide.publishStatus === 'published' ? '공개' : '비공개'}
                 {categoryLabel(guide.categoryId) && ` · ${categoryLabel(guide.categoryId)}`}
               </p>
             </div>

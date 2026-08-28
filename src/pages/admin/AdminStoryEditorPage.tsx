@@ -17,7 +17,7 @@ function emptyStory(): Story {
   return {
     id: crypto.randomUUID(),
     slug: '',
-    publishStatus: 'draft',
+    publishStatus: 'published',
     title: '',
     excerpt: '',
     body: '',
@@ -131,9 +131,8 @@ export default function AdminStoryEditorPage() {
           </Field>
           <Field label="상태">
             <select value={draft.publishStatus} onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })} className={inputClass}>
-              <option value="draft">초안</option>
               <option value="published">공개</option>
-              <option value="archived">보관</option>
+              <option value="draft">비공개</option>
             </select>
           </Field>
         </div>
@@ -143,7 +142,7 @@ export default function AdminStoryEditorPage() {
           onClick={handleSave}
           className="border border-navy bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
         >
-          저장
+          글쓰기
         </button>
       </div>
     </AdminLayout>

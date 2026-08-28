@@ -48,7 +48,7 @@ export default function AdminDashboardPage() {
       <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <StatCard label="전체 원두" value={coffees.length} to="/admin/coffees" />
         <StatCard label="공개 중" value={published} to="/admin/coffees" />
-        <StatCard label="초안" value={draft} to="/admin/coffees" />
+        <StatCard label="비공개" value={draft} to="/admin/coffees" />
         <StatCard label="지난 원두" value={archived} to="/admin/coffees" />
         <StatCard label="정보 보완 필요" value={incomplete} to="/admin/coffees" highlight={incomplete > 0} />
         <StatCard label="새 문의" value={newInquiries} to="/admin/inquiries" highlight={newInquiries > 0} />
