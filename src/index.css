@@ -87,14 +87,20 @@ input[type='number'] {
    mobile menu overlay, one homepage CTA band). Kept as pure CSS + a small
    reusable <KOIStarField> SVG component so the effect stays consistent and
    never turns into a "space theme": one whisper-soft gradient, a sparse set
-   of tiny gold star points, motion optional and barely perceptible. */
-.koi-night-sky {
-  position: relative;
-  isolation: isolate;
-  background-color: var(--color-navy);
-  background-image:
-    radial-gradient(ellipse 60% 45% at 18% 0%, rgba(255, 255, 255, 0.04), transparent 60%),
-    radial-gradient(ellipse 55% 40% at 88% 100%, rgba(255, 255, 255, 0.03), transparent 65%);
+   of tiny gold star points, motion optional and barely perceptible.
+   In `@layer base` so a `fixed`/`absolute` utility on the same element (e.g. the
+   mobile nav drawer) correctly overrides this default `position: relative` —
+   unlayered CSS would otherwise always win over Tailwind's utilities layer
+   regardless of source order, silently breaking `position: fixed` there. */
+@layer base {
+  .koi-night-sky {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--color-navy);
+    background-image:
+      radial-gradient(ellipse 60% 45% at 18% 0%, rgba(255, 255, 255, 0.04), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 88% 100%, rgba(255, 255, 255, 0.03), transparent 65%);
+  }
 }
 
 @keyframes koi-star-twinkle {
