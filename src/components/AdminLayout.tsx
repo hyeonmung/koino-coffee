@@ -23,7 +23,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <header className="border-b border-navy/15 bg-white">
         <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-4">
           <Link to="/admin" className="flex items-center gap-2">
-            <img src="/brand/koi-logo.png" alt="" className="h-8 w-8 shrink-0" />
+            <img src="/brand/koi-logo.png" alt="" className="h-11 w-11 shrink-0" />
             <span>
               <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노니아</p>
               <p className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">KOINONIA — 관리자</p>
