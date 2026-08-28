@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import useIsDesktop from '../../hooks/useIsDesktop'
 import CoffeeCard from '../../components/CoffeeCard'
 import DotScale from '../../components/DotScale'
 import FlavorNotes from '../../components/FlavorNotes'
@@ -22,21 +23,6 @@ import { getPublishedSpotlightSlides } from '../../data/repositories/spotlightRe
 import { getPublishedStories } from '../../data/repositories/storyRepository'
 import { CUP_CHARACTERS } from '../../types'
 import type { HomeSectionKey, SpotlightSlide } from '../../data/schema'
-
-// Keeps the Hero poster's box height matched to the KOI SPOTLIGHT banner's actual
-// (content-driven) height, so the two boxes line up side by side on desktop —
-// only at the lg breakpoint, where they sit in the same grid row.
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1024px)')
-    setIsDesktop(mq.matches)
-    const onChange = () => setIsDesktop(mq.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-  return isDesktop
-}
 
 export default function HomePage() {
   const settings = getSiteSettings()
