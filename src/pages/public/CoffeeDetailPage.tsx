@@ -132,7 +132,7 @@ export default function CoffeeDetailPage() {
   // ——— Always visible, on every breakpoint: hero visual, identity, CTAs, spec rows, flavor notes. ———
   const headerBlock = (
     <>
-      <CoffeeVisual coffee={coffee} aspect="aspect-[3/1]" showIdentity className="mb-8" />
+      <CoffeeVisual coffee={coffee} showIdentity className="mb-8" />
 
       <div className="flex flex-wrap items-baseline gap-2 text-[11px] font-semibold tracking-[0.25em] text-navy/45">
         {number && <span className="text-accent">{number}</span>}

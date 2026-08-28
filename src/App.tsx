@@ -1,5 +1,6 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminGate from './components/AdminGate'
+import ScrollToTop from './components/ScrollToTop'
 import AdminAboutEditorPage from './pages/admin/AdminAboutEditorPage'
 import AdminBrewCategoriesPage from './pages/admin/AdminBrewCategoriesPage'
 import AdminBrewGuideEditorPage from './pages/admin/AdminBrewGuideEditorPage'
@@ -47,6 +48,7 @@ function GalleryRedirect() {
 export default function App() {
   return (
     <HashRouter>
+      <ScrollToTop />
       <Routes>
         {/* Public */}
         <Route path="/" element={<HomePage />} />
