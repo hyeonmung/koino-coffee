@@ -5,6 +5,7 @@ import CoffeeVisual from '../../components/CoffeeVisual'
 import FlavorNotes from '../../components/FlavorNotes'
 import FlavorSpectrumSpine from '../../components/FlavorSpectrumSpine'
 import InfoTooltip from '../../components/InfoTooltip'
+import Pagination from '../../components/Pagination'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import QRCodeBlock from '../../components/QRCodeBlock'
@@ -391,9 +392,13 @@ export default function CoffeeDetailPage() {
     forYouContent ? { id: 'foryou', label: '추천 커피', content: forYouContent } : null,
     { id: 'share', label: '공유', content: qrContent },
   ]
+  // Only sections this coffee actually has data for get a page — so the page count grows
+  // or shrinks on its own as an admin fills in more fields (recipe, story, comments...).
   const mobileTabs = rawMobileTabs.filter((t): t is MobileTab => t !== null)
-  const [selectedMobileTab, setSelectedMobileTab] = useState<string | null>(null)
-  const activeMobileTab = mobileTabs.some((t) => t.id === selectedMobileTab) ? selectedMobileTab : mobileTabs[0]?.id
+  const [mobilePage, setMobilePage] = useState(1)
+  const mobileTotalPages = Math.max(1, mobileTabs.length)
+  const mobileCurrentPage = Math.min(mobilePage, mobileTotalPages)
+  const activeMobileTab = mobileTabs[mobileCurrentPage - 1]
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
@@ -425,21 +430,11 @@ export default function CoffeeDetailPage() {
           ) : (
             mobileTabs.length > 0 && (
               <div className="mt-10 border-t border-navy/15 pt-6">
-                <div className="-mx-6 flex gap-1.5 overflow-x-auto px-6 pb-4">
-                  {mobileTabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      onClick={() => setSelectedMobileTab(tab.id)}
-                      className={`shrink-0 whitespace-nowrap border px-3 py-1.5 text-[12px] font-semibold transition-colors ${
-                        activeMobileTab === tab.id ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/55 hover:border-navy/50'
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-                <div>{mobileTabs.find((t) => t.id === activeMobileTab)?.content}</div>
+                <p className="text-[10px] font-semibold tracking-[0.2em] text-accent">
+                  {mobileCurrentPage} / {mobileTotalPages} · {activeMobileTab?.label}
+                </p>
+                <div className="mt-4">{activeMobileTab?.content}</div>
+                <Pagination page={mobileCurrentPage} totalPages={mobileTotalPages} onChange={setMobilePage} scrollToTop={false} />
               </div>
             )
           )}
