@@ -80,26 +80,28 @@ export default function CoffeeExplorerPage() {
     return Array.from(new Set<string>(values)).sort()
   }, [allCoffees])
 
-  const filtered = allCoffees.filter((c) => {
-    if (character !== 'ALL' && c.character !== character) return false
-    if (country !== 'ALL' && c.country !== country) return false
-    if (process !== 'ALL' && c.process !== process) return false
-    if (roastType !== 'ALL' && c.roastType !== roastType) return false
-    if (availability !== 'ALL' && c.availability !== availability) return false
-    if (flavorFamily !== 'ALL') {
-      const matches = c.notes.some((note) => findDescriptorByNote(note, descriptors)?.familyId === flavorFamily)
-      if (!matches) return false
-    }
-    if (query.trim()) {
-      const q = query.trim().toLowerCase()
-      const haystack = [c.coffeeName, c.country, c.region, c.producer, c.farmOrStation, c.variety, c.process, ...c.notes]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase()
-      if (!haystack.includes(q)) return false
-    }
-    return true
-  })
+  const filtered = allCoffees
+    .filter((c) => {
+      if (character !== 'ALL' && c.character !== character) return false
+      if (country !== 'ALL' && c.country !== country) return false
+      if (process !== 'ALL' && c.process !== process) return false
+      if (roastType !== 'ALL' && c.roastType !== roastType) return false
+      if (availability !== 'ALL' && c.availability !== availability) return false
+      if (flavorFamily !== 'ALL') {
+        const matches = c.notes.some((note) => findDescriptorByNote(note, descriptors)?.familyId === flavorFamily)
+        if (!matches) return false
+      }
+      if (query.trim()) {
+        const q = query.trim().toLowerCase()
+        const haystack = [c.coffeeName, c.country, c.region, c.producer, c.farmOrStation, c.variety, c.process, ...c.notes]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase()
+        if (!haystack.includes(q)) return false
+      }
+      return true
+    })
+    .sort((a, b) => (a.coffeeNumber ?? Infinity) - (b.coffeeNumber ?? Infinity))
 
   const resetFilters = () => {
     setCharacter('ALL')

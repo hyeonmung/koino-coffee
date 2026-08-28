@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { getSiteSettings } from '../data/repositories/siteSettingsRepository'
 import KOIStarField from './decorative/KOIStarField'
@@ -19,6 +19,29 @@ export default function PublicHeader() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
+
+  // Locks the page behind the mobile menu overlay — `overflow: hidden` alone doesn't stop
+  // iOS Safari's touch rubber-band scroll from leaking through to the body, so the body is
+  // pinned in place (position: fixed) and its scroll position restored on close.
+  useEffect(() => {
+    if (!open) return
+    const scrollY = window.scrollY
+    const body = document.body.style
+    const prev = { position: body.position, top: body.top, left: body.left, right: body.right, width: body.width }
+    body.position = 'fixed'
+    body.top = `-${scrollY}px`
+    body.left = '0'
+    body.right = '0'
+    body.width = '100%'
+    return () => {
+      body.position = prev.position
+      body.top = prev.top
+      body.left = prev.left
+      body.right = prev.right
+      body.width = prev.width
+      window.scrollTo(0, scrollY)
+    }
+  }, [open])
 
   const submitSearch = () => {
     if (!query.trim()) return
