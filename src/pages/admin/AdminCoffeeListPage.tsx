@@ -34,7 +34,7 @@ export default function AdminCoffeeListPage() {
     .filter((c) => character === 'ALL' || c.character === character)
     .filter((c) => status === 'ALL' || c.publishStatus === status)
     .filter((c) => !query.trim() || c.coffeeName.toLowerCase().includes(query.trim().toLowerCase()))
-    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .sort((a, b) => (a.coffeeNumber ?? Infinity) - (b.coffeeNumber ?? Infinity))
 
   const setPublishStatus = async (coffee: Coffee, publishStatus: PublishStatus) => {
     await upsertCoffee({ ...coffee, publishStatus, updatedAt: new Date().toISOString() })
