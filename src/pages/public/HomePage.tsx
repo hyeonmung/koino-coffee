@@ -98,8 +98,8 @@ export default function HomePage() {
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
           <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
-            {/* Left ~42% — brand poster, box-matched to the right banner's height (h-[320px]/sm:h-[420px]/lg:h-full+min-h-[560px]) */}
-            <div className="flex h-[320px] w-full items-center justify-center bg-white sm:h-[420px] lg:col-span-5 lg:h-full lg:min-h-[560px]">
+            {/* Left ~42% — brand poster. Stretches (via CSS Grid's default row alignment) to match whatever height the right banner's photo+text content naturally comes out to. */}
+            <div className="w-full bg-white lg:col-span-5 lg:h-full">
               <img
                 src="/home/hero-poster.jpg"
                 alt="KOINONIA ROASTERS — A Cup, A New Destination"
@@ -107,19 +107,19 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show */}
-            <div className="relative h-[320px] w-full sm:h-[420px] lg:col-span-7 lg:h-full lg:min-h-[560px]">
+            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show. The photo area is a fixed 850×550 (17:11, same as the Coffee Card ratio) — see SpotlightCarousel for the photo/text split. */}
+            <div className="w-full lg:col-span-7">
               {spotlightSlides.length > 0 ? (
                 <SpotlightCarousel slides={spotlightSlides} />
               ) : settings.heroImage ? (
                 <div
-                  className="h-full w-full bg-navy/5 bg-cover bg-center"
+                  className="aspect-coffee-card w-full bg-navy/5 bg-cover bg-center"
                   style={{ backgroundImage: `url(${settings.heroImage})` }}
                   role="img"
                   aria-label={settings.brandName}
                 />
               ) : (
-                <div className="koi-night-sky relative h-full w-full overflow-hidden">
+                <div className="koi-night-sky relative aspect-coffee-card w-full overflow-hidden">
                   <KOIStarField />
                 </div>
               )}
