@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import type { HomeSectionKey, SiteSettings } from '../../data/schema'
 import { getSiteSettings, updateSiteSettings } from '../../data/repositories/siteSettingsRepository'
 
@@ -76,9 +77,7 @@ export default function AdminHomePage() {
                 className={`${inputClass} min-h-[70px]`}
               />
             </Field>
-            <Field label="Hero Image URL (선택)">
-              <input value={settings.heroImage ?? ''} onChange={(e) => patch({ heroImage: e.target.value })} className={inputClass} />
-            </Field>
+            <ImageUploadField label="Hero Image (선택)" value={settings.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
             <div className="grid grid-cols-2 gap-3">
               <Field label="Primary CTA 문구">
                 <input

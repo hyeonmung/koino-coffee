@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import { getAllCharacters, updateCharacter } from '../../data/repositories/characterRepository'
 import type { Character } from '../../data/schema'
 
@@ -90,15 +91,13 @@ export default function AdminCharactersPage() {
                     className={`${inputClass} min-h-[70px]`}
                   />
                 </label>
-                <label className="block sm:col-span-2">
-                  <span className="mb-1 block text-[10px] font-semibold text-navy/60">이미지 URL (선택)</span>
-                  <input
+                <div className="sm:col-span-2">
+                  <ImageUploadField
+                    label="이미지 (선택)"
                     value={character.image ?? ''}
-                    onChange={(e) => patch(character.key, { image: e.target.value })}
-                    className={inputClass}
-                    placeholder="https://..."
+                    onChange={(url) => patch(character.key, { image: url })}
                   />
-                </label>
+                </div>
               </div>
             </div>
           ))}

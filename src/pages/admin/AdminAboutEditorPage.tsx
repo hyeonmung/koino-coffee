@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import AboutBlockRenderer from '../../components/about/AboutBlockRenderer'
 import {
   ABOUT_BACKGROUND_CLASS,
@@ -179,9 +180,12 @@ export default function AdminAboutEditorPage() {
           <LabeledField label="Subtitle">
             <input value={hero.subtitle ?? ''} onChange={(e) => setHero({ ...hero, subtitle: e.target.value })} className={inputClass} />
           </LabeledField>
-          <LabeledField label="Hero 이미지 URL (Desktop)">
-            <input value={hero.imageDesktop ?? ''} onChange={(e) => setHero({ ...hero, imageDesktop: e.target.value })} className={inputClass} placeholder="비워두면 KOI 브랜드 플레이스홀더" />
-          </LabeledField>
+          <ImageUploadField
+            label="Hero 이미지 (Desktop)"
+            value={hero.imageDesktop ?? ''}
+            onChange={(url) => setHero({ ...hero, imageDesktop: url })}
+            placeholder="비워두면 KOI 브랜드 플레이스홀더"
+          />
           <LabeledField label="사진 위 어둡기">
             <PillGroup
               options={[
@@ -462,12 +466,21 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
               value={String(draft.galleryColumns ?? 3)}
               onChange={(v) => patch({ galleryColumns: Number(v) as 2 | 3 })}
             />
-            <div className="mt-3 space-y-2">
+            <div className="mt-3 space-y-4">
               {(draft.galleryImages ?? []).map((img, i) => (
-                <div key={i} className="flex gap-2">
-                  <input value={img.url} onChange={(e) => updateGalleryImage(i, e.target.value, img.caption ?? '')} className={inputClass} placeholder="이미지 URL" />
-                  <input value={img.caption ?? ''} onChange={(e) => updateGalleryImage(i, img.url, e.target.value)} className={inputClass} placeholder="캡션 (선택)" />
-                  <button type="button" onClick={() => removeGalleryImage(i)} className="shrink-0 text-navy/40 hover:text-red-500">×</button>
+                <div key={i} className="border border-navy/10 p-3">
+                  <ImageUploadField label={`사진 ${i + 1}`} value={img.url} onChange={(url) => updateGalleryImage(i, url, img.caption ?? '')} />
+                  <div className="mt-2 flex gap-2">
+                    <input
+                      value={img.caption ?? ''}
+                      onChange={(e) => updateGalleryImage(i, img.url, e.target.value)}
+                      className={inputClass}
+                      placeholder="캡션 (선택)"
+                    />
+                    <button type="button" onClick={() => removeGalleryImage(i)} className="shrink-0 text-navy/40 hover:text-red-500">
+                      ×
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -530,9 +543,12 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
 
         {hasImage && (
           <div className="border-t border-navy/10 pt-4">
-            <LabeledField label="사진 URL">
-              <input value={draft.image ?? ''} onChange={(e) => patch({ image: e.target.value })} className={inputClass} placeholder="비워두면 KOI 브랜드 플레이스홀더" />
-            </LabeledField>
+            <ImageUploadField
+              label="사진"
+              value={draft.image ?? ''}
+              onChange={(url) => patch({ image: url })}
+              placeholder="비워두면 KOI 브랜드 플레이스홀더"
+            />
             <div className="mt-3 grid grid-cols-2 gap-3">
               <LabeledField label="이미지 비율">
                 <select value={draft.imageRatio ?? '4:5'} onChange={(e) => patch({ imageRatio: e.target.value as AboutImageRatio })} className={inputClass}>

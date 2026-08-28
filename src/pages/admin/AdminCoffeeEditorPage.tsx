@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
 import CharacterRecommendationPanel from '../../components/admin/CharacterRecommendationPanel'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import CharacterSelector from '../../components/CharacterSelector'
 import CoffeePreview from '../../components/CoffeePreview'
 import FlavorNoteInput from '../../components/FlavorNoteInput'
@@ -577,15 +578,7 @@ export default function AdminCoffeeEditorPage() {
 
             {tab === '10 MEDIA' && (
               <div className="space-y-5">
-                {field(
-                  'Hero Image URL',
-                  <input
-                    value={draft.heroImage ?? ''}
-                    onChange={(e) => patch({ heroImage: e.target.value })}
-                    className={inputClass}
-                    placeholder="https://..."
-                  />,
-                )}
+                <ImageUploadField label="Hero Image" value={draft.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
                 <div className="space-y-1 text-[11px] leading-relaxed text-navy/45">
                   <p>권장 비율: 850 × 550 (17:11) — 원두 카드는 항상 이 비율로 잘려서 표시됩니다.</p>
                   <p>권장 최소 해상도: 1700 × 1100px</p>

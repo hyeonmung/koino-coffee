@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getStoryById, storySlugExists, upsertStory } from '../../data/repositories/storyRepository'
 import type { PublishStatus, Story, StoryCategory } from '../../data/schema'
@@ -120,9 +121,7 @@ export default function AdminStoryEditorPage() {
         <Field label="Tags (쉼표로 구분)">
           <input value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} className={inputClass} placeholder="산지, 교육" />
         </Field>
-        <Field label="커버 이미지 URL">
-          <input value={draft.coverImage ?? ''} onChange={(e) => patch({ coverImage: e.target.value })} className={inputClass} />
-        </Field>
+        <ImageUploadField label="커버 이미지" value={draft.coverImage ?? ''} onChange={(url) => patch({ coverImage: url })} />
         <Field label="본문 (빈 줄로 문단 구분, ## 로 소제목)">
           <textarea value={draft.body} onChange={(e) => patch({ body: e.target.value })} className={`${inputClass} min-h-[220px]`} />
         </Field>

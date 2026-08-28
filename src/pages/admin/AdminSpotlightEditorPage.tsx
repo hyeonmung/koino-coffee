@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import KOIStarField from '../../components/decorative/KOIStarField'
 import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getAllCoffees } from '../../data/repositories/coffeeRepository'
@@ -222,19 +223,13 @@ export default function AdminSpotlightEditorPage() {
           <section className="border border-navy/15 bg-white p-5">
             <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 3 · 사진 {draft.contentType === 'VIDEO' && '/ 영상'}</p>
             <div className="mt-3 grid grid-cols-2 gap-3">
-              <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">Desktop 사진 URL</span>
-                <input value={draft.desktopImage ?? ''} onChange={(e) => patch({ desktopImage: e.target.value })} className={inputClass} />
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">Mobile 사진 URL (선택)</span>
-                <input
-                  value={draft.mobileImage ?? ''}
-                  onChange={(e) => patch({ mobileImage: e.target.value })}
-                  placeholder="비워두면 Desktop 사진을 사용합니다"
-                  className={inputClass}
-                />
-              </label>
+              <ImageUploadField label="Desktop 사진" value={draft.desktopImage ?? ''} onChange={(url) => patch({ desktopImage: url })} />
+              <ImageUploadField
+                label="Mobile 사진 (선택)"
+                value={draft.mobileImage ?? ''}
+                onChange={(url) => patch({ mobileImage: url })}
+                placeholder="비워두면 Desktop 사진을 사용합니다"
+              />
             </div>
             {draft.contentType === 'VIDEO' && (
               <div className="mt-3 grid grid-cols-2 gap-3">
@@ -242,10 +237,7 @@ export default function AdminSpotlightEditorPage() {
                   <span className="mb-1 block text-[10px] font-semibold text-navy/60">영상 URL (YouTube 등)</span>
                   <input value={draft.videoUrl ?? ''} onChange={(e) => patch({ videoUrl: e.target.value })} className={inputClass} />
                 </label>
-                <label className="block">
-                  <span className="mb-1 block text-[10px] font-semibold text-navy/60">영상 썸네일(Poster) URL</span>
-                  <input value={draft.videoPoster ?? ''} onChange={(e) => patch({ videoPoster: e.target.value })} className={inputClass} />
-                </label>
+                <ImageUploadField label="영상 썸네일 (Poster)" value={draft.videoPoster ?? ''} onChange={(url) => patch({ videoPoster: url })} />
               </div>
             )}
             <label className="mt-3 block">

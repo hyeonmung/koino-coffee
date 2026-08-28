@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AdminLayout from '../../components/AdminLayout'
+import ImageUploadField from '../../components/admin/ImageUploadField'
 import { getSiteSettings, updateSiteSettings } from '../../data/repositories/siteSettingsRepository'
 import type { SiteSettings } from '../../data/schema'
 
@@ -107,9 +108,7 @@ export default function AdminSettingsPage() {
               className={`${inputClass} min-h-[70px]`}
             />
           </Field>
-          <Field label="OG 이미지 URL">
-            <input value={settings.ogImage ?? ''} onChange={(e) => patch({ ogImage: e.target.value })} className={inputClass} />
-          </Field>
+          <ImageUploadField label="OG 이미지" value={settings.ogImage ?? ''} onChange={(url) => patch({ ogImage: url })} />
         </SettingsSection>
 
         <p className="text-[11px] text-navy/40">
