@@ -17,6 +17,7 @@ import { CHARACTER_STYLE } from '../../constants/characterStyle'
 import { SENSORY_FIELDS } from '../../constants/sensory'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getCoffeeBySlug, getPublishedCoffees } from '../../data/repositories/coffeeRepository'
+import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getStoryById } from '../../data/repositories/storyRepository'
 import { getSimilarCoffees } from '../../data/similarCoffees'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
@@ -62,6 +63,7 @@ export default function CoffeeDetailPage() {
   const { slug = '' } = useParams()
   const coffee = useMemo(() => getCoffeeBySlug(slug), [slug])
   const allCoffees = useMemo(() => getPublishedCoffees(), [])
+  const descriptors = useMemo(() => getFlavorDescriptors(), [])
   const brewGuides = useMemo(() => getPublishedBrewGuides(), [])
   const settings = useMemo(() => getSiteSettings(), [])
   const [busy, setBusy] = useState<string | null>(null)
@@ -80,7 +82,7 @@ export default function CoffeeDetailPage() {
   const linkedGuides = brewGuides.filter((g) => coffee.brewGuideIds.includes(g.id))
   const recipe = linkedGuides[0]
   const linkedStory = coffee.storyId ? getStoryById(coffee.storyId) : undefined
-  const similar = getSimilarCoffees(coffee, allCoffees, 3)
+  const similar = getSimilarCoffees(coffee, allCoffees, descriptors, 3)
   const number = formatCoffeeNumber(coffee.coffeeNumber)
 
   const shareUrl = `${window.location.origin}${window.location.pathname}#/coffees/${coffee.slug}`
