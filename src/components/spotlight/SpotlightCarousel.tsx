@@ -176,7 +176,7 @@ export default function SpotlightCarousel({ slides }: SpotlightCarouselProps) {
             window.open(content.ctaUrl, '_blank', 'noreferrer')
           }
         }}
-        className="relative flex flex-1 flex-col justify-center gap-2 border-t border-warm-white/10 bg-navy px-6 py-6 text-warm-white sm:flex-row sm:items-end sm:justify-between sm:gap-4 sm:px-8 sm:py-7"
+        className="relative flex flex-col gap-2 border-t border-warm-white/10 bg-navy px-6 py-5 text-warm-white sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-8 sm:py-6"
       >
         <div className="relative min-w-0">
           <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">{content.label}</p>

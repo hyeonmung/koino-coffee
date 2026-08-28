@@ -98,7 +98,7 @@ export default function HomePage() {
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
           <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
-            {/* Left ~42% — brand poster. Stretches (via CSS Grid's default row alignment) to match whatever height the right banner's photo+text content naturally comes out to. */}
+            {/* Left ~42% — brand poster. Sized by its own image aspect ratio; no longer height-matched to the right banner (see note there). */}
             <div className="w-full bg-white lg:col-span-5 lg:h-full">
               <img
                 src="/home/hero-poster.jpg"
@@ -107,8 +107,8 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show. The photo area is a fixed 850×550 (17:11, same as the Coffee Card ratio) — see SpotlightCarousel for the photo/text split. */}
-            <div className="w-full lg:col-span-7">
+            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show. The photo area is a fixed 850×550 (17:11, same as the Coffee Card ratio) — see SpotlightCarousel for the photo/text split. lg:self-start keeps this column sized to its own content (photo + compact text) instead of stretching to match the poster's taller natural height, which previously left the text panel padded out with dead space. */}
+            <div className="w-full lg:col-span-7 lg:self-start">
               {spotlightSlides.length > 0 ? (
                 <SpotlightCarousel slides={spotlightSlides} />
               ) : settings.heroImage ? (
