@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import DotScale from '../../components/DotScale'
@@ -22,6 +22,21 @@ import { getPublishedSpotlightSlides } from '../../data/repositories/spotlightRe
 import { getPublishedStories } from '../../data/repositories/storyRepository'
 import { CUP_CHARACTERS } from '../../types'
 import type { HomeSectionKey, SpotlightSlide } from '../../data/schema'
+
+// Keeps the Hero poster's box height matched to the KOI SPOTLIGHT banner's actual
+// (content-driven) height, so the two boxes line up side by side on desktop —
+// only at the lg breakpoint, where they sit in the same grid row.
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    setIsDesktop(mq.matches)
+    const onChange = () => setIsDesktop(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return isDesktop
+}
 
 export default function HomePage() {
   const settings = getSiteSettings()
@@ -83,6 +98,23 @@ export default function HomePage() {
           ]
         : []
 
+  const isDesktop = useIsDesktop()
+  const bannerRef = useRef<HTMLDivElement>(null)
+  const [bannerHeight, setBannerHeight] = useState<number | null>(null)
+  useEffect(() => {
+    if (!isDesktop) {
+      setBannerHeight(null)
+      return
+    }
+    const el = bannerRef.current
+    if (!el) return
+    const update = () => setBannerHeight(el.getBoundingClientRect().height)
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [isDesktop, spotlightSlides.length])
+
   const showCharacter = isVisible('cupCharacter')
   const showChart = isVisible('coffeeChart') && Boolean(chartExample)
   const showTasteFinder = isVisible('tasteFinder')
@@ -98,17 +130,20 @@ export default function HomePage() {
         {/* SCREEN 1 — Brand Hero + Featured Coffee, one composite view */}
         <section className="border-b border-navy/15">
           <div className="mx-auto grid max-w-[1240px] grid-cols-1 lg:grid-cols-12">
-            {/* Left ~42% — brand poster. Sized by its own image aspect ratio; no longer height-matched to the right banner (see note there). */}
-            <div className="w-full bg-white lg:col-span-5 lg:h-full">
+            {/* Left ~42% — brand poster. On desktop its box height is measured from the banner column (bannerRef) and applied here, so the two boxes match exactly; the image crops (object-cover, anchored top) to fill that height. On mobile it just shows full, uncropped. */}
+            <div
+              className="w-full bg-white lg:col-span-5"
+              style={isDesktop && bannerHeight ? { height: bannerHeight } : undefined}
+            >
               <img
                 src="/home/hero-poster.jpg"
                 alt="KOINONIA ROASTERS — A Cup, A New Destination"
-                className="h-full w-full object-contain"
+                className={isDesktop ? 'h-full w-full object-cover object-center' : 'h-auto w-full object-contain'}
               />
             </div>
 
-            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show. The photo area is a fixed 850×550 (17:11, same as the Coffee Card ratio) — see SpotlightCarousel for the photo/text split. lg:self-start keeps this column sized to its own content (photo + compact text) instead of stretching to match the poster's taller natural height, which previously left the text panel padded out with dead space. */}
-            <div className="w-full lg:col-span-7 lg:self-start">
+            {/* Right ~58% — KOI SPOTLIGHT: a small live carousel, or the plain brand photo/placeholder when there's nothing to show. The photo area is a fixed 850×550 (17:11, same as the Coffee Card ratio) — see SpotlightCarousel for the photo/text split. lg:self-start + bannerRef: this column sizes to its own content (photo + compact text), and its measured height drives the poster column's height above. */}
+            <div ref={bannerRef} className="w-full lg:col-span-7 lg:self-start">
               {spotlightSlides.length > 0 ? (
                 <SpotlightCarousel slides={spotlightSlides} />
               ) : settings.heroImage ? (
