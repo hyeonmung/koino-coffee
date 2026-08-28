@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import useIsDesktop from '../../hooks/useIsDesktop'
 import CoffeeCard from '../../components/CoffeeCard'
 import Pagination from '../../components/Pagination'
 import PublicFooter from '../../components/PublicFooter'
@@ -37,9 +38,12 @@ const AVAILABILITY_OPTIONS: { value: Availability; label: string }[] = [
   { value: 'archive', label: '지난 커피' },
 ]
 
-const PAGE_SIZE = 12
+const PAGE_SIZE_DESKTOP = 12
+const PAGE_SIZE_MOBILE = 6
 
 export default function CoffeeExplorerPage() {
+  const isDesktop = useIsDesktop()
+  const PAGE_SIZE = isDesktop ? PAGE_SIZE_DESKTOP : PAGE_SIZE_MOBILE
   const allCoffees = useMemo(() => getPublishedCoffees(), [])
   const descriptors = useMemo(() => getFlavorDescriptors(), [])
   const families = useMemo(() => getFlavorFamilies(), [])
