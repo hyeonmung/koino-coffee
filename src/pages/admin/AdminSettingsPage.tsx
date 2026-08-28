@@ -119,7 +119,7 @@ export default function AdminSettingsPage() {
           </a>
           에서, 코이노니아 소개는{' '}
           <a href="#/admin/about" className="underline">
-            코이노니아
+            About 코이노니아
           </a>{' '}
           메뉴에서, 납품·교육 서비스 소개는{' '}
           <a href="#/admin/business" className="underline">
