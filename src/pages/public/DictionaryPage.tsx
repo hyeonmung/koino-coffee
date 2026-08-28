@@ -81,7 +81,7 @@ export default function DictionaryPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[860px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DICTIONARY</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">커피 사전</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">커피 사전</h1>
 
         <input
           value={query}
@@ -164,7 +164,7 @@ export default function DictionaryPage() {
           {filtered.map((entry) => (
             <Link key={entry.id} to={`/dictionary/${entry.id}`} className="block py-4 hover:bg-white">
               <div className="flex flex-wrap items-baseline gap-2">
-                <p className="font-serif text-[15px] font-bold text-navy">{entry.term}</p>
+                <p className="text-[15px] font-bold text-navy">{entry.term}</p>
                 {entry.termKo && <p className="text-[12px] text-navy/45">{entry.termKo}</p>}
                 <span className="ml-auto text-[9px] font-semibold tracking-wide text-navy/35">
                   {CATEGORY_LABEL[entry.category]}

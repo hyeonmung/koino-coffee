@@ -69,7 +69,7 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
               {field.labelKo}
               <InfoTooltip title={field.labelKo} criteria={field.criteria} />
             </span>
-            <span className="font-serif text-[13px] font-semibold text-navy">{coffee.sensory[field.key]}</span>
+            <span className="text-[13px] font-semibold text-navy">{coffee.sensory[field.key]}</span>
           </div>
         ))}
       </div>

@@ -13,7 +13,7 @@ export default function AboutSensoryMapPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[860px] px-6 py-10">
         <p className="text-[11px] font-semibold tracking-[0.25em] text-accent">HOW TO READ</p>
-        <h1 className="mt-2 font-serif text-[28px] font-bold leading-tight text-navy">KOINO SENSORY MAP 읽는 법</h1>
+        <h1 className="mt-2 text-[28px] font-bold leading-tight text-navy">KOINO SENSORY MAP 읽는 법</h1>
         <p className="mt-3 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
           코이노니아는 원두마다 CUP CHARACTER와 6가지 관능(Sensory) 점수를 매겨 육각형 레이더 차트로
           표시합니다. 산미가 높다고 더 좋은 커피가 아니며, 접근성이 높다고 더 좋은 커피도 아닙니다.
@@ -27,7 +27,7 @@ export default function AboutSensoryMapPage() {
             { n: '03', title: 'Sensory Profile', desc: '산미·단맛·바디·여운 등을 시각화' },
           ].map((step) => (
             <div key={step.n} className="text-center">
-              <p className="font-serif text-[28px] font-bold text-accent">{step.n}</p>
+              <p className="text-[28px] font-bold text-accent">{step.n}</p>
               <p className="mt-2 text-[15px] font-bold text-navy">{step.title}</p>
               <p className="mt-1 text-[12px] text-navy/55">{step.desc}</p>
             </div>
@@ -35,7 +35,7 @@ export default function AboutSensoryMapPage() {
         </section>
 
         <section className="mt-14">
-          <h2 className="font-serif text-[18px] font-bold text-navy">CUP CHARACTER</h2>
+          <h2 className="text-[18px] font-bold text-navy">CUP CHARACTER</h2>
           <p className="mt-1 text-[12px] text-navy/50">
             원두가 가진 인상을 5가지 성격으로 분류한 것입니다. 우열이 아니라 스타일의 차이입니다.
           </p>
@@ -56,7 +56,7 @@ export default function AboutSensoryMapPage() {
         </section>
 
         <section className="mt-14">
-          <h2 className="font-serif text-[18px] font-bold text-navy">SENSORY PROFILE (1~5점)</h2>
+          <h2 className="text-[18px] font-bold text-navy">SENSORY PROFILE (1~5점)</h2>
           <p className="mt-1 text-[12px] text-navy/50">
             산미·단맛·바디·여운·플레이버·접근성 6가지 항목을 1점(약함)부터 5점(강함)까지 평가합니다.
           </p>
@@ -70,7 +70,7 @@ export default function AboutSensoryMapPage() {
                 <ol className="mt-3 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
                   {field.criteria.map((text, i) => (
                     <li key={i} className="flex gap-2 text-[12px] leading-snug text-navy/70">
-                      <span className="shrink-0 font-serif font-bold text-navy">{i + 1}</span>
+                      <span className="shrink-0 font-bold text-navy">{i + 1}</span>
                       <span>{text}</span>
                     </li>
                   ))}

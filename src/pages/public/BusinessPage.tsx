@@ -21,7 +21,7 @@ export default function BusinessPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BUSINESS</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">납품 · 교육</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">납품 · 교육</h1>
         <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">코이노니아의 원두 납품과 교육 소식을 안내합니다.</p>
 
         <div className="mt-6 flex flex-wrap gap-1.5">
@@ -66,7 +66,7 @@ export default function BusinessPage() {
                   {post.isSystemPinned && <span className="text-accent">PIN ·</span>}
                   {BUSINESS_POST_CATEGORY_LABEL[post.category]}
                 </p>
-                <p className="mt-1 font-serif text-[18px] font-bold text-navy">{post.title}</p>
+                <p className="mt-1 text-[18px] font-bold text-navy">{post.title}</p>
                 <p className="mt-2 text-[12px] text-navy/55">{post.excerpt}</p>
                 <p className="mt-3 text-[10px] text-navy/35">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
               </Link>

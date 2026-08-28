@@ -17,7 +17,7 @@ export default function CharactersIndexPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">CUP CHARACTER</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">커피의 5가지 성격</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">커피의 5가지 성격</h1>
         <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">
           우열이 아니라 스타일의 차이입니다. 나에게 맞는 인상을 먼저 골라보세요.
         </p>

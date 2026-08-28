@@ -203,7 +203,7 @@ export default function CoffeeDetailPage() {
 
       {coffee.notes.length > 0 && (
         <section className="mt-10 border-t border-navy/15 pt-8">
-          <h2 className="font-serif text-[18px] font-bold text-navy">플레이버 노트</h2>
+          <h2 className="text-[18px] font-bold text-navy">플레이버 노트</h2>
           <FlavorNotes notes={coffee.notes} className="mt-3 block text-[18px] font-medium leading-relaxed" />
         </section>
       )}
@@ -217,7 +217,7 @@ export default function CoffeeDetailPage() {
     <>
       {originFields.length > 0 && (
         <div>
-          <h2 className="font-serif text-[18px] font-bold text-navy">산지 정보</h2>
+          <h2 className="text-[18px] font-bold text-navy">산지 정보</h2>
           <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
             {originFields.map((f) => (
               <FieldRow key={f.labelEn} label={`${f.labelKo} · ${f.labelEn}`} value={f.value} />
@@ -228,7 +228,7 @@ export default function CoffeeDetailPage() {
 
       {(coffee.processDescription || processFields.length > 0) && (
         <div className={originFields.length > 0 ? 'mt-10' : ''}>
-          <h2 className="font-serif text-[18px] font-bold text-navy">가공 방식</h2>
+          <h2 className="text-[18px] font-bold text-navy">가공 방식</h2>
           {coffee.processDescription && <p className="mt-2 text-[13px] leading-relaxed text-navy/65">{coffee.processDescription}</p>}
           {processFields.length > 0 && (
             <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
@@ -242,7 +242,7 @@ export default function CoffeeDetailPage() {
 
       {(coffee.roastType || coffee.roastDirection) && (
         <div className={originFields.length > 0 || coffee.processDescription || processFields.length > 0 ? 'mt-10' : ''}>
-          <h2 className="font-serif text-[18px] font-bold text-navy">로스팅 이야기</h2>
+          <h2 className="text-[18px] font-bold text-navy">로스팅 이야기</h2>
           <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
             <FieldRow label="로스팅 타입 · ROAST TYPE" value={coffee.roastType} />
             <FieldRow label="로스팅 방향 · ROAST DIRECTION" value={coffee.roastDirection} />
@@ -254,7 +254,7 @@ export default function CoffeeDetailPage() {
 
   const sensoryContent = (
     <>
-      <h2 className="font-serif text-[18px] font-bold text-navy">센서리 프로파일</h2>
+      <h2 className="text-[18px] font-bold text-navy">센서리 프로파일</h2>
       <div className="mt-4 flex justify-center">
         <RadarChart ref={chartRef} sensory={coffee.sensory} size={280} accentColor={characterAccent} accentSoft={characterAccentSoft} />
       </div>
@@ -265,7 +265,7 @@ export default function CoffeeDetailPage() {
               {field.labelKo}
               <InfoTooltip title={field.labelKo} criteria={field.criteria} />
             </span>
-            <span className="font-serif text-[13px] font-semibold text-navy">{coffee.sensory[field.key]}</span>
+            <span className="text-[13px] font-semibold text-navy">{coffee.sensory[field.key]}</span>
           </div>
         ))}
       </div>
@@ -301,7 +301,7 @@ export default function CoffeeDetailPage() {
   const recipeContent = recipe && (
     <>
       <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">{recipe.equipment}</p>
-      <h2 className="mt-1 font-serif text-[20px] font-bold text-navy">이 커피를 위한 추천 레시피</h2>
+      <h2 className="mt-1 text-[20px] font-bold text-navy">이 커피를 위한 추천 레시피</h2>
 
       <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <FieldRow label="원두" value={recipe.coffeeDose} />
@@ -349,7 +349,7 @@ export default function CoffeeDetailPage() {
     <>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORY</p>
       <Link to={`/stories/${linkedStory.slug}`} className="mt-2 block border border-navy/15 p-5 hover:border-navy">
-        <p className="font-serif text-[16px] font-bold text-navy">{linkedStory.title}</p>
+        <p className="text-[16px] font-bold text-navy">{linkedStory.title}</p>
         <p className="mt-1 text-[12px] text-navy/55">{linkedStory.excerpt}</p>
       </Link>
     </>
@@ -364,7 +364,7 @@ export default function CoffeeDetailPage() {
       )}
       {similar.length > 0 && (
         <>
-          <h2 className={`font-serif text-[18px] font-bold text-navy ${coffee.recommendedFor ? 'mt-4' : ''}`}>비슷한 커피</h2>
+          <h2 className={`text-[18px] font-bold text-navy ${coffee.recommendedFor ? 'mt-4' : ''}`}>비슷한 커피</h2>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {similar.map((c) => (
               <CoffeeCard key={c.id} coffee={c} />

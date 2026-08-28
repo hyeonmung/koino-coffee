@@ -38,7 +38,7 @@ export default function ComparePage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COMPARE</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">원두 비교하기</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">원두 비교하기</h1>
         <p className="mt-2 text-[13px] text-navy/55">최대 {MAX_COMPARE}개의 원두를 선택해 비교할 수 있습니다.</p>
 
         <div className="mt-6 flex flex-wrap gap-2">

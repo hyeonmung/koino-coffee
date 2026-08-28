@@ -163,7 +163,7 @@ export default function HomePage() {
   const coffeesContent = showCoffees && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="font-serif text-[22px] font-bold text-navy">코이노니아 원두 리스트</h2>
+        <h2 className="text-[22px] font-bold text-navy">코이노니아 원두 리스트</h2>
         <Link to="/coffees" className="text-[12px] font-semibold text-navy/50 hover:text-navy">
           전체 원두 보기 →
         </Link>
@@ -194,8 +194,8 @@ export default function HomePage() {
           const info = CHARACTER_INFO[key]
           return (
             <Link key={key} to={`/characters/${key.toLowerCase()}`} className="group flex flex-col gap-1.5 py-4 pr-3 sm:px-4">
-              <span className="font-serif text-[10px] text-navy/30">0{i + 1}</span>
-              <span className="font-serif text-[16px] font-bold text-navy transition-colors group-hover:text-accent">
+              <span className="text-[10px] text-navy/30">0{i + 1}</span>
+              <span className="text-[16px] font-bold text-navy transition-colors group-hover:text-accent">
                 {info.label}
               </span>
               <span className="text-[11px] leading-snug text-navy/50">{info.description}</span>
@@ -209,7 +209,7 @@ export default function HomePage() {
 
   const chartContent = showChart && chartExample && (
     <>
-      <h2 className="font-serif text-[22px] font-bold text-navy">원두를 한눈에</h2>
+      <h2 className="text-[22px] font-bold text-navy">원두를 한눈에</h2>
       <p className="mt-2 max-w-[420px] text-[13px] text-navy/55">
         향미, 가공, 로스팅, 센서리, 추출 정보를 한 화면에서 확인해보세요.
       </p>
@@ -288,7 +288,7 @@ export default function HomePage() {
       {showTasteFinder && (
         <Link to="/discover" className="group block">
           <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">취향 찾기</p>
-          <h2 className="mt-2 font-serif text-[22px] font-bold leading-tight text-navy">나에게 맞는 한 잔</h2>
+          <h2 className="mt-2 text-[22px] font-bold leading-tight text-navy">나에게 맞는 한 잔</h2>
           <p className="mt-3 max-w-[320px] text-[13px] leading-relaxed text-navy/55">
             산미, 향, 질감에 대한 몇 가지 질문으로 나에게 가까운 커피를 찾아보세요.
           </p>
@@ -299,7 +299,7 @@ export default function HomePage() {
       {dictionaryTerm && (
         <div className={showTasteFinder ? 'mt-10 border-t border-navy/10 pt-10' : ''}>
           <p className="text-[10px] font-semibold tracking-[0.2em] text-navy/40">커피 사전</p>
-          <h2 className="mt-2 font-serif text-[20px] font-bold text-navy">어려운 용어, 쉽게</h2>
+          <h2 className="mt-2 text-[20px] font-bold text-navy">어려운 용어, 쉽게</h2>
           <p className="mt-3 max-w-[320px] text-[13px] leading-relaxed text-navy/55">
             {dictionaryTerm.termKo ?? dictionaryTerm.term}는 무엇을 뜻하는지, 익숙한 예와 함께 설명합니다.
           </p>
@@ -324,7 +324,7 @@ export default function HomePage() {
   const brewContent = showBrew && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="font-serif text-[18px] font-bold text-navy">집에서 더 맛있게</h2>
+        <h2 className="text-[18px] font-bold text-navy">집에서 더 맛있게</h2>
         <Link to="/brew-guide" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
           전체 보기 →
         </Link>
@@ -334,7 +334,7 @@ export default function HomePage() {
           <Link key={guide.id} to={`/brew-guide/${guide.slug}`} className="group flex items-center justify-between gap-4 py-4 hover:bg-white">
             <div className="min-w-0">
               <p className="text-[10px] font-semibold tracking-[0.1em] text-navy/40">{guide.equipment}</p>
-              <p className="mt-0.5 truncate font-serif text-[15px] font-bold text-navy">{guide.title}</p>
+              <p className="mt-0.5 truncate text-[15px] font-bold text-navy">{guide.title}</p>
               <p className="mt-0.5 text-[11px] text-navy/45">
                 {guide.coffeeDose} · {guide.ratio} · {guide.totalTime}
               </p>
@@ -349,7 +349,7 @@ export default function HomePage() {
   const storiesContent = showStories && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="font-serif text-[18px] font-bold text-navy">커피 이야기</h2>
+        <h2 className="text-[18px] font-bold text-navy">커피 이야기</h2>
         <Link to="/stories" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
           전체 보기 →
         </Link>
@@ -373,7 +373,7 @@ export default function HomePage() {
               </div>
             )}
             <p className="mt-2 text-[9px] font-semibold tracking-[0.15em] text-navy/40">{STORY_CATEGORY_LABEL[story.category]}</p>
-            <p className="mt-0.5 font-serif text-[13px] font-bold leading-snug text-navy">{story.title}</p>
+            <p className="mt-0.5 text-[13px] font-bold leading-snug text-navy">{story.title}</p>
           </Link>
         ))}
       </div>

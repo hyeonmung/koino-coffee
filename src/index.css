@@ -1,4 +1,12 @@
 @import 'tailwindcss';
+@import '@fontsource/instrument-serif/400.css';
+
+@font-face {
+  font-family: 'SUIT Variable';
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/SUIT-Variable.woff2') format('woff2-variations');
+}
 
 @theme {
   --color-navy: #14213d;
@@ -6,8 +14,10 @@
   --color-accent: #f2c94c;
   --color-warm-white: #faf8f4;
   --font-sans:
-    'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-serif: 'Playfair Display', 'Gowun Batang', 'Georgia', serif;
+    'SUIT Variable', 'SUIT', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* Instrument Serif has no Hangul glyphs, so Korean text inside a font-serif element falls
+     back to SUIT automatically — this token is reserved for the English Coffee Name only. */
+  --font-serif: 'Instrument Serif', 'SUIT Variable', 'SUIT', serif;
 
   /* Single source of truth for the Coffee Card image ratio (850×550 / 17:11).
      Generates the `aspect-coffee-card` utility — see src/constants/media.ts. */

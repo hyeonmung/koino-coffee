@@ -53,7 +53,7 @@ export default function TasteFinderPage() {
         {!showResults ? (
           <>
             <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">FIND YOUR COFFEE</p>
-            <h1 className="mt-1 text-center font-serif text-[26px] font-bold text-navy">좋아하는 맛에서 시작해보세요.</h1>
+            <h1 className="mt-1 text-center text-[26px] font-bold text-navy">좋아하는 맛에서 시작해보세요.</h1>
             <p className="mt-6 text-center text-[11px] font-semibold text-navy/40">
               {step + 1} / {TOTAL_STEPS} · {TOPIC_LABEL[current.topic]}
             </p>
@@ -94,7 +94,7 @@ export default function TasteFinderPage() {
         ) : (
           <>
             <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">YOUR COFFEE</p>
-            <h1 className="mt-1 text-center font-serif text-[26px] font-bold text-navy">추천 커피</h1>
+            <h1 className="mt-1 text-center text-[26px] font-bold text-navy">추천 커피</h1>
             <p className="mx-auto mt-2 max-w-[420px] text-center text-[11px] text-navy/45">
               Match %는 과학적 정확도가 아니라 KOINO 프로파일을 기준으로 계산한 취향 유사도입니다.
             </p>
@@ -111,7 +111,7 @@ export default function TasteFinderPage() {
                       <p className="text-[11px] font-semibold tracking-[0.15em] text-accent">
                         {i === 0 ? '1위 추천' : `${i + 1}위`}
                       </p>
-                      <p className="font-serif text-[20px] font-bold text-navy">{match.score}%</p>
+                      <p className="text-[20px] font-bold text-navy">{match.score}%</p>
                     </div>
                     <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_160px]">
                       <div>
@@ -151,7 +151,7 @@ export default function TasteFinderPage() {
 function QuestionBlock({ title, helperText, children }: { title: string; helperText?: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="font-serif text-[18px] font-bold leading-snug text-navy">{title}</h2>
+      <h2 className="text-[18px] font-bold leading-snug text-navy">{title}</h2>
       {helperText && <p className="mt-2 text-[12px] leading-relaxed text-navy/50">{helperText}</p>}
       <div className="mt-5 flex flex-col gap-2">{children}</div>
     </div>

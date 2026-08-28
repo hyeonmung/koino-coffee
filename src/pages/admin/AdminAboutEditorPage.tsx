@@ -187,6 +187,12 @@ export default function AdminAboutEditorPage() {
             onChange={(url) => setHero({ ...hero, imageDesktop: url })}
             placeholder="비워두면 KOI 브랜드 플레이스홀더"
           />
+          <ImageUploadField
+            label="Hero 이미지 (Mobile)"
+            value={hero.imageMobile ?? ''}
+            onChange={(url) => setHero({ ...hero, imageMobile: url })}
+            placeholder="비워두면 Desktop 이미지를 그대로 사용"
+          />
           <LabeledField label="사진 위 어둡기">
             <PillGroup
               options={[
@@ -207,6 +213,16 @@ export default function AdminAboutEditorPage() {
               ]}
               value={hero.textPositionDesktop}
               onChange={(v) => setHero({ ...hero, textPositionDesktop: v as AboutHeroSettings['textPositionDesktop'] })}
+            />
+          </LabeledField>
+          <LabeledField label="텍스트 위치 (Mobile)">
+            <PillGroup
+              options={[
+                { value: 'LEFT', label: '왼쪽' },
+                { value: 'CENTER', label: '가운데' },
+              ]}
+              value={hero.textPositionMobile}
+              onChange={(v) => setHero({ ...hero, textPositionMobile: v as AboutHeroSettings['textPositionMobile'] })}
             />
           </LabeledField>
         </div>

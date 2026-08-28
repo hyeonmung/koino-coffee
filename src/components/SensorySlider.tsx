@@ -19,7 +19,7 @@ export default function SensorySlider({ field, value, onChange }: SensorySliderP
           <span className="text-[10px] text-navy/45">{field.label}</span>
           <InfoTooltip title={field.labelKo} criteria={field.criteria} />
         </div>
-        <span className="min-w-[1.5rem] text-right font-serif text-[15px] font-semibold text-navy">
+        <span className="min-w-[1.5rem] text-right text-[15px] font-semibold text-navy">
           {value}
         </span>
       </div>

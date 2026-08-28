@@ -15,7 +15,7 @@ export default function StoryBody({ body }: StoryBodyProps) {
       {blocks.map((block, i) => {
         if (block.startsWith('## ')) {
           return (
-            <h2 key={i} className="font-serif text-[18px] font-bold text-navy" dangerouslySetInnerHTML={{ __html: renderRichText(block.slice(3)) }} />
+            <h2 key={i} className="text-[18px] font-bold text-navy" dangerouslySetInnerHTML={{ __html: renderRichText(block.slice(3)) }} />
           )
         }
         return (

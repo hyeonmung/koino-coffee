@@ -72,7 +72,7 @@ export default function CharacterDetailPage() {
         )}
 
         <section className="mt-14 border-t border-navy/15 pt-10">
-          <h2 className="font-serif text-[20px] font-bold text-navy">{character.label} 원두</h2>
+          <h2 className="text-[20px] font-bold text-navy">{character.label} 원두</h2>
           {coffees.length === 0 ? (
             <p className="mt-4 border border-navy/15 bg-white px-6 py-10 text-center text-[13px] text-navy/45">
               현재 소개 중인 {character.label} 커피가 없습니다.

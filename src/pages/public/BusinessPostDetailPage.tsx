@@ -29,7 +29,7 @@ export default function BusinessPostDetailPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[720px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{BUSINESS_POST_CATEGORY_LABEL[post.category]}</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold leading-tight text-navy">{post.title}</h1>
+        <h1 className="mt-1 text-[28px] font-bold leading-tight text-navy">{post.title}</h1>
         <p className="mt-2 text-[11px] text-navy/40">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
 
         <div className="mt-8 border-t border-navy/15 pt-8">

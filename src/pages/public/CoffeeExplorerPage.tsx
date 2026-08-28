@@ -163,7 +163,7 @@ export default function CoffeeExplorerPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1240px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COFFEE LIBRARY</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">원두</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">원두</h1>
 
         <input
           value={query}
@@ -327,7 +327,7 @@ export default function CoffeeExplorerPage() {
           <div className="absolute inset-0 bg-navy/40" onClick={() => setMobileOpen(false)} />
           <div className="absolute inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto bg-warm-white p-6">
             <div className="flex items-center justify-between">
-              <h2 className="font-serif text-[18px] font-bold text-navy">필터</h2>
+              <h2 className="text-[18px] font-bold text-navy">필터</h2>
               <button type="button" onClick={() => setMobileOpen(false)} className="text-[13px] text-navy/50" aria-label="필터 닫기">
                 ✕
               </button>

@@ -64,7 +64,7 @@ function CareerTimeline({ careers }: { careers: AboutCareerItem[] }) {
       <div className="mt-3 space-y-3">
         {shown.map((c) => (
           <div key={c.id} className="flex gap-4 border-b border-current/10 pb-3 text-[13px]">
-            <span className="w-12 shrink-0 font-serif font-bold">{c.year}</span>
+            <span className="w-12 shrink-0 font-bold">{c.year}</span>
             <div>
               <p className="font-medium">{c.organization}</p>
               {c.detail && <p className="mt-0.5 opacity-60">{c.detail}</p>}
@@ -93,7 +93,7 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
   const heading = (
     <>
       {block.subtitle && <p className="text-[11px] font-semibold tracking-[0.2em] opacity-50">{block.subtitle}</p>}
-      {block.title && <h2 className="mt-1 font-serif text-[26px] font-bold leading-tight">{block.title}</h2>}
+      {block.title && <h2 className="mt-1 text-[26px] font-bold leading-tight">{block.title}</h2>}
     </>
   )
 
@@ -121,7 +121,7 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
   } else if (block.type === 'QUOTE') {
     content = (
       <div className={`${TEXT_ALIGN_CLASS[block.textAlign]} ${ABOUT_TEXT_WIDTH_CLASS[block.textWidth]}`}>
-        {block.quote && <blockquote className="font-serif text-[26px] font-bold leading-snug">&ldquo;{block.quote}&rdquo;</blockquote>}
+        {block.quote && <blockquote className="text-[26px] font-bold leading-snug">&ldquo;{block.quote}&rdquo;</blockquote>}
         {block.caption && <p className="mt-4 text-[12px] opacity-50">{block.caption}</p>}
       </div>
     )
@@ -158,7 +158,7 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
         {block.type === 'PERSON' ? (
           <>
             {block.personRole && <p className="text-[11px] font-semibold tracking-[0.2em] opacity-50">{block.personRole}</p>}
-            {block.personName && <h2 className="mt-1 font-serif text-[28px] font-bold leading-tight">{block.personName}</h2>}
+            {block.personName && <h2 className="mt-1 text-[28px] font-bold leading-tight">{block.personName}</h2>}
             {(block.personEnglishName || block.personEnglishRole) && (
               <p className="mt-0.5 text-[12px] opacity-45">
                 {block.personEnglishName}
@@ -176,7 +176,7 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
             <StoryBody body={block.body} />
           </div>
         )}
-        {block.quote && <blockquote className="mt-4 font-serif text-[17px] font-bold leading-snug opacity-90">&ldquo;{block.quote}&rdquo;</blockquote>}
+        {block.quote && <blockquote className="mt-4 text-[17px] font-bold leading-snug opacity-90">&ldquo;{block.quote}&rdquo;</blockquote>}
         {block.type === 'PERSON' && <CareerTimeline careers={block.careers ?? []} />}
         {block.ctaLabel && block.ctaUrl && (
           <Link to={block.ctaUrl} className="mt-5 inline-block text-[12px] font-semibold underline opacity-70 hover:opacity-100">

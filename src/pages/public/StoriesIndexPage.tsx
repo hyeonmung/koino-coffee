@@ -23,7 +23,7 @@ export default function StoriesIndexPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">NEWS & STORIES</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">뉴스&이야기</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">뉴스&이야기</h1>
 
         <div className="mt-6 flex flex-wrap gap-1.5">
           {(['ALL', ...CATEGORIES] as const).map((c) => (
@@ -66,7 +66,7 @@ export default function StoriesIndexPage() {
                   </div>
                 )}
                 <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">{STORY_CATEGORY_LABEL[story.category]}</p>
-                <p className="mt-1 font-serif text-[18px] font-bold text-navy">{story.title}</p>
+                <p className="mt-1 text-[18px] font-bold text-navy">{story.title}</p>
                 <p className="mt-2 text-[12px] text-navy/55">{story.excerpt}</p>
                 <p className="mt-3 text-[10px] text-navy/35">
                   {new Date(story.publishedDate).toLocaleDateString('ko-KR')}

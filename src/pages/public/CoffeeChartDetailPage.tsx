@@ -90,7 +90,7 @@ export default function CoffeeChartDetailPage() {
           {coffee.notes.length > 0 && (
             <div className="mt-6 border-t border-navy/10 pt-5">
               <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">FLAVOR NOTES</p>
-              <FlavorNotes notes={coffee.notes} className="mt-2 block font-serif text-[17px] font-semibold" />
+              <FlavorNotes notes={coffee.notes} className="mt-2 block text-[17px] font-semibold" />
             </div>
           )}
 
@@ -112,7 +112,7 @@ export default function CoffeeChartDetailPage() {
                     </span>
                     <div className="flex items-center gap-2">
                       <DotScale value={coffee.sensory[field.key]} />
-                      <span className="w-3 text-right font-serif text-[12px] font-bold text-navy">
+                      <span className="w-3 text-right text-[12px] font-bold text-navy">
                         {coffee.sensory[field.key]}
                       </span>
                     </div>

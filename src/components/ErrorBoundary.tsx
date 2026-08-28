@@ -26,7 +26,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-warm-white px-6 text-center">
         <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOINONIA</p>
-        <h1 className="mt-3 font-serif text-[24px] font-bold text-navy">일시적인 오류가 발생했습니다.</h1>
+        <h1 className="mt-3 text-[24px] font-bold text-navy">일시적인 오류가 발생했습니다.</h1>
         <p className="mt-2 max-w-[360px] text-[13px] text-navy/55">
           페이지를 불러오는 중 문제가 생겼습니다. 새로고침하거나 홈으로 돌아가 다시 시도해주세요.
         </p>

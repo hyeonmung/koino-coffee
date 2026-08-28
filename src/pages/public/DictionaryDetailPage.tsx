@@ -84,7 +84,7 @@ export default function DictionaryDetailPage() {
         <p className="mt-4 text-[9px] font-semibold tracking-[0.15em] text-navy/40">
           분류 · {CATEGORY_LABEL[entry.category]}
         </p>
-        <h1 className="mt-1 font-serif text-[30px] font-bold uppercase text-navy">{entry.term}</h1>
+        <h1 className="mt-1 text-[30px] font-bold uppercase text-navy">{entry.term}</h1>
         {entry.termKo && <p className="text-[15px] text-navy/50">{entry.termKo}</p>}
 
         <section className="mt-8 border-t border-navy/10 pt-6">

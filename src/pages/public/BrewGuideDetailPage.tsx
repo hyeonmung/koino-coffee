@@ -23,7 +23,7 @@ export default function BrewGuideDetailPage() {
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[720px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{guide.equipment}</p>
-        <h1 className="mt-1 font-serif text-[28px] font-bold text-navy">{guide.title}</h1>
+        <h1 className="mt-1 text-[28px] font-bold text-navy">{guide.title}</h1>
 
         <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
           <SpecCell label="원두량" value={guide.coffeeDose} />
@@ -36,7 +36,7 @@ export default function BrewGuideDetailPage() {
 
         {guide.pourSteps.length > 0 && (
           <section className="mt-10">
-            <h2 className="font-serif text-[16px] font-bold text-navy">추출 순서</h2>
+            <h2 className="text-[16px] font-bold text-navy">추출 순서</h2>
             <div className="mt-4 space-y-2">
               {guide.pourSteps.map((step, i) => (
                 <div key={i} className="flex items-center gap-4 border border-navy/15 bg-white px-4 py-2.5">

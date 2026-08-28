@@ -180,7 +180,7 @@ export default function SpotlightCarousel({ slides }: SpotlightCarouselProps) {
       >
         <div className="relative min-w-0">
           <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">{content.label}</p>
-          <p className="mt-1 font-serif text-[19px] font-bold leading-snug sm:truncate sm:text-[22px]">{content.title}</p>
+          <p className="mt-1 text-[19px] font-bold leading-snug sm:truncate sm:text-[22px]">{content.title}</p>
           {content.description && <p className="mt-1 max-w-[440px] text-[11px] text-warm-white/70">{content.description}</p>}
         </div>
         <span className="relative shrink-0 text-[11px] font-semibold tracking-[0.1em] text-warm-white/70 group-hover/spotlight:text-warm-white">
