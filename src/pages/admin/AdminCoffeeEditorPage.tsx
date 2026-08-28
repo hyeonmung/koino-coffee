@@ -21,18 +21,18 @@ import { exportNodeAsPng } from '../../utils/pngExport'
 import { validateCoffeeDraft } from '../../utils/validation'
 
 const TABS = [
-  '01 BASIC',
-  '02 FLAVOR',
-  '03 SENSORY',
-  '04 CHARACTER',
-  '05 ORIGIN',
-  '06 PROCESS',
-  '07 ROAST',
-  '08 BREW',
-  '09 STORY',
-  '10 MEDIA',
+  '01 기본정보',
+  '02 향미',
+  '03 센서리',
+  '04 캐릭터',
+  '05 산지',
+  '06 가공',
+  '07 로스팅',
+  '08 브루',
+  '09 스토리',
+  '10 미디어',
   '11 SEO',
-  '12 PUBLISH',
+  '12 발행',
 ] as const
 
 const now = () => new Date().toISOString()
@@ -82,7 +82,7 @@ export default function AdminCoffeeEditorPage() {
   const navigate = useNavigate()
 
   const [draft, setDraft] = useState<Coffee>(() => (isNew ? emptyCoffee() : getCoffeeById(id!) ?? emptyCoffee()))
-  const [tab, setTab] = useState<(typeof TABS)[number]>('01 BASIC')
+  const [tab, setTab] = useState<(typeof TABS)[number]>('01 기본정보')
   const [slugTouched, setSlugTouched] = useState(!isNew)
   const [errors, setErrors] = useState<string[]>([])
   const [saved, setSaved] = useState(false)
@@ -94,7 +94,7 @@ export default function AdminCoffeeEditorPage() {
   // that coffee's data. Reset explicitly whenever the route's id changes.
   useEffect(() => {
     setDraft(isNew ? emptyCoffee() : (getCoffeeById(id!) ?? emptyCoffee()))
-    setTab('01 BASIC')
+    setTab('01 기본정보')
     setSlugTouched(!isNew)
     setErrors([])
     setSaved(false)
@@ -258,14 +258,14 @@ export default function AdminCoffeeEditorPage() {
           </div>
 
           <div className="mt-6 space-y-4">
-            {tab === '01 BASIC' && (
+            {tab === '01 기본정보' && (
               <>
                 {field(
-                  'Coffee Name *',
+                  '원두 이름 *',
                   <input value={draft.coffeeName} onChange={(e) => patch({ coffeeName: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  '원두 번호 (KOI Coffee Archive Number)',
+                  '원두 번호 (아카이브 번호)',
                   <div>
                     <input
                       type="number"
@@ -291,7 +291,7 @@ export default function AdminCoffeeEditorPage() {
                   />,
                 )}
                 {field(
-                  'Slug (URL)',
+                  'URL 주소 (Slug)',
                   <input
                     value={draft.slug}
                     onChange={(e) => {
@@ -303,31 +303,31 @@ export default function AdminCoffeeEditorPage() {
                   />,
                 )}
                 {field(
-                  'Country *',
+                  '원산지 국가 *',
                   <input value={draft.country} onChange={(e) => patch({ country: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  'Availability',
+                  '재고 상태',
                   <select
                     value={draft.availability}
                     onChange={(e) => patch({ availability: e.target.value as Availability })}
                     className={inputClass}
                   >
-                    <option value="available">Available</option>
-                    <option value="limited">Limited</option>
-                    <option value="archive">Archive (Past Coffee)</option>
+                    <option value="available">판매중</option>
+                    <option value="limited">한정 수량</option>
+                    <option value="archive">지난 원두 (단종)</option>
                   </select>,
                 )}
               </>
             )}
 
-            {tab === '02 FLAVOR' && (
+            {tab === '02 향미' && (
               <FlavorNoteInput notes={draft.notes} onChange={(notes) => patch({ notes })} suggestions={flavorSuggestions} />
             )}
 
-            {tab === '03 SENSORY' && <SensoryProfileInput sensory={draft.sensory} onChange={(sensory) => patch({ sensory })} />}
+            {tab === '03 센서리' && <SensoryProfileInput sensory={draft.sensory} onChange={(sensory) => patch({ sensory })} />}
 
-            {tab === '04 CHARACTER' && (
+            {tab === '04 캐릭터' && (
               <>
                 <CharacterRecommendationPanel
                   recommendation={recommendation}
@@ -338,7 +338,7 @@ export default function AdminCoffeeEditorPage() {
                   <CharacterSelector value={draft.character} onChange={(character) => patch({ character })} />
                 </div>
                 {field(
-                  'Why this Character? (선택)',
+                  '이 캐릭터를 선택한 이유 (선택)',
                   <textarea
                     value={draft.characterReason ?? ''}
                     onChange={(e) => patch({ characterReason: e.target.value })}
@@ -349,19 +349,19 @@ export default function AdminCoffeeEditorPage() {
               </>
             )}
 
-            {tab === '05 ORIGIN' && (
+            {tab === '05 산지' && (
               <div className="grid grid-cols-2 gap-3">
-                {field('Region', <input value={draft.region} onChange={(e) => patch({ region: e.target.value })} className={inputClass} />)}
+                {field('지역', <input value={draft.region} onChange={(e) => patch({ region: e.target.value })} className={inputClass} />)}
                 {field(
-                  'Subregion',
+                  '세부 지역',
                   <input value={draft.subregion ?? ''} onChange={(e) => patch({ subregion: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  'Producer',
+                  '생산자',
                   <input value={draft.producer} onChange={(e) => patch({ producer: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  'Farm / Washing Station',
+                  '농장 / 워싱 스테이션',
                   <input
                     value={draft.farmOrStation ?? ''}
                     onChange={(e) => patch({ farmOrStation: e.target.value })}
@@ -369,33 +369,33 @@ export default function AdminCoffeeEditorPage() {
                   />,
                 )}
                 {field(
-                  'Altitude',
+                  '고도',
                   <input value={draft.altitude} onChange={(e) => patch({ altitude: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  'Variety',
+                  '품종',
                   <input value={draft.variety} onChange={(e) => patch({ variety: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  'Harvest',
+                  '수확 시기',
                   <input value={draft.harvest ?? ''} onChange={(e) => patch({ harvest: e.target.value })} className={inputClass} />,
                 )}
-                {field('Lot', <input value={draft.lot ?? ''} onChange={(e) => patch({ lot: e.target.value })} className={inputClass} />)}
+                {field('로트', <input value={draft.lot ?? ''} onChange={(e) => patch({ lot: e.target.value })} className={inputClass} />)}
                 {field(
-                  'Grade',
+                  '등급',
                   <input value={draft.grade ?? ''} onChange={(e) => patch({ grade: e.target.value })} className={inputClass} />,
                 )}
               </div>
             )}
 
-            {tab === '06 PROCESS' && (
+            {tab === '06 가공' && (
               <div className="space-y-3">
                 {field(
-                  'Process Name',
+                  '가공 방식',
                   <input value={draft.process} onChange={(e) => patch({ process: e.target.value })} className={inputClass} placeholder="Washed" />,
                 )}
                 {field(
-                  'Description',
+                  '설명',
                   <textarea
                     value={draft.processDescription ?? ''}
                     onChange={(e) => patch({ processDescription: e.target.value })}
@@ -404,15 +404,15 @@ export default function AdminCoffeeEditorPage() {
                 )}
                 <div className="grid grid-cols-2 gap-3">
                   {field(
-                    'Fermentation',
+                    '발효',
                     <input value={draft.fermentation ?? ''} onChange={(e) => patch({ fermentation: e.target.value })} className={inputClass} />,
                   )}
                   {field(
-                    'Drying',
+                    '건조',
                     <input value={draft.drying ?? ''} onChange={(e) => patch({ drying: e.target.value })} className={inputClass} />,
                   )}
                   {field(
-                    'Temperature',
+                    '온도',
                     <input
                       value={draft.processTemperature ?? ''}
                       onChange={(e) => patch({ processTemperature: e.target.value })}
@@ -420,7 +420,7 @@ export default function AdminCoffeeEditorPage() {
                     />,
                   )}
                   {field(
-                    'Duration',
+                    '기간',
                     <input
                       value={draft.processDuration ?? ''}
                       onChange={(e) => patch({ processDuration: e.target.value })}
@@ -432,28 +432,28 @@ export default function AdminCoffeeEditorPage() {
               </div>
             )}
 
-            {tab === '07 ROAST' && (
+            {tab === '07 로스팅' && (
               <div className="space-y-5">
                 <div className="grid grid-cols-2 gap-3">
                   {field(
-                    'Roast Type',
+                    '로스팅 타입',
                     <select
                       value={draft.roastType ?? ''}
                       onChange={(e) => patch({ roastType: (e.target.value || undefined) as RoastType | undefined })}
                       className={inputClass}
                     >
                       <option value="">선택 안함</option>
-                      <option value="Filter">Filter</option>
-                      <option value="Espresso">Espresso</option>
-                      <option value="Omni">Omni</option>
+                      <option value="Filter">필터</option>
+                      <option value="Espresso">에스프레소</option>
+                      <option value="Omni">옴니</option>
                     </select>,
                   )}
                   {field(
-                    'Roast Level (Light / Medium Light / Medium / Medium Dark / Dark)',
+                    '로스팅 단계 (라이트 / 미디엄 라이트 / 미디엄 / 미디엄 다크 / 다크)',
                     <input value={draft.roastLevel} onChange={(e) => patch({ roastLevel: e.target.value })} className={inputClass} />,
                   )}
                   {field(
-                    'Roast Direction',
+                    '로스팅 방향',
                     <input
                       value={draft.roastDirection ?? ''}
                       onChange={(e) => patch({ roastDirection: e.target.value })}
@@ -461,7 +461,7 @@ export default function AdminCoffeeEditorPage() {
                     />,
                   )}
                   {field(
-                    '추천 디개싱 (Recommended Rest)',
+                    '추천 디개싱 (숙성 기간)',
                     <input
                       value={draft.recommendedRest ?? ''}
                       onChange={(e) => patch({ recommendedRest: e.target.value })}
@@ -470,13 +470,13 @@ export default function AdminCoffeeEditorPage() {
                     />,
                   )}
                   {field(
-                    '로스터 (Roaster)',
+                    '로스터',
                     <input value={draft.roaster ?? ''} onChange={(e) => patch({ roaster: e.target.value })} className={inputClass} />,
                   )}
                 </div>
 
                 {field(
-                  '로스터의 생각 (Roaster’s Comment)',
+                  '로스터의 생각',
                   <textarea
                     value={draft.roasterComment ?? ''}
                     onChange={(e) => patch({ roasterComment: e.target.value })}
@@ -484,7 +484,7 @@ export default function AdminCoffeeEditorPage() {
                   />,
                 )}
                 {field(
-                  '바리스타의 생각 (Barista’s Comment, 선택)',
+                  '바리스타의 생각 (선택)',
                   <textarea
                     value={draft.baristaComment ?? ''}
                     onChange={(e) => patch({ baristaComment: e.target.value })}
@@ -494,22 +494,22 @@ export default function AdminCoffeeEditorPage() {
 
                 <div>
                   <p className="mb-2 text-[10px] font-semibold tracking-[0.1em] text-navy/60">
-                    Advanced Roast Data (선택 — 입력한 항목만 공개 화면에 표시됩니다)
+                    로스팅 상세 데이터 (선택 — 입력한 항목만 공개 화면에 표시됩니다)
                   </p>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {(
                       [
-                        ['batch', 'Batch'],
-                        ['chargeTemp', 'Charge Temp'],
-                        ['turningPoint', 'Turning Point'],
-                        ['yellow', 'Yellow'],
-                        ['firstCrack', 'First Crack'],
-                        ['drop', 'Drop'],
-                        ['totalTime', 'Total Time'],
-                        ['developmentTime', 'Development Time'],
-                        ['developmentRatio', 'Development Ratio'],
-                        ['dropTemp', 'Drop Temp'],
-                        ['machine', 'Machine'],
+                        ['batch', '배치'],
+                        ['chargeTemp', '투입 온도'],
+                        ['turningPoint', '터닝포인트'],
+                        ['yellow', '옐로우'],
+                        ['firstCrack', '1차 크랙'],
+                        ['drop', '배출'],
+                        ['totalTime', '총 시간'],
+                        ['developmentTime', '디벨롭 타임'],
+                        ['developmentRatio', '디벨롭 비율'],
+                        ['dropTemp', '배출 온도'],
+                        ['machine', '로스팅 머신'],
                       ] as const
                     ).map(([key, label]) => (
                       <input
@@ -525,9 +525,9 @@ export default function AdminCoffeeEditorPage() {
               </div>
             )}
 
-            {tab === '08 BREW' && (
+            {tab === '08 브루' && (
               <div className="space-y-2">
-                {brewGuides.length === 0 && <p className="text-[12px] text-navy/45">등록된 Brew Guide가 없습니다.</p>}
+                {brewGuides.length === 0 && <p className="text-[12px] text-navy/45">등록된 브루 가이드가 없습니다.</p>}
                 {brewGuides.map((guide) => (
                   <label key={guide.id} className="flex items-center gap-2 border border-navy/15 px-3 py-2 text-[12px]">
                     <input
@@ -547,10 +547,10 @@ export default function AdminCoffeeEditorPage() {
               </div>
             )}
 
-            {tab === '09 STORY' && (
+            {tab === '09 스토리' && (
               <div className="space-y-3">
                 {field(
-                  'Recommended For',
+                  '추천 대상',
                   <textarea
                     value={draft.recommendedFor ?? ''}
                     onChange={(e) => patch({ recommendedFor: e.target.value })}
@@ -559,7 +559,7 @@ export default function AdminCoffeeEditorPage() {
                   />,
                 )}
                 {field(
-                  'Related Story',
+                  '연관 스토리',
                   <select
                     value={draft.storyId ?? ''}
                     onChange={(e) => patch({ storyId: e.target.value || undefined })}
@@ -576,9 +576,9 @@ export default function AdminCoffeeEditorPage() {
               </div>
             )}
 
-            {tab === '10 MEDIA' && (
+            {tab === '10 미디어' && (
               <div className="space-y-5">
-                <ImageUploadField label="Hero Image" value={draft.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
+                <ImageUploadField label="대표 이미지" value={draft.heroImage ?? ''} onChange={(url) => patch({ heroImage: url })} />
                 <div className="space-y-1 text-[11px] leading-relaxed text-navy/45">
                   <p>권장 비율: 850 × 550 (17:11) — 원두 카드는 항상 이 비율로 잘려서 표시됩니다.</p>
                   <p>권장 최소 해상도: 1700 × 1100px</p>
@@ -625,7 +625,7 @@ export default function AdminCoffeeEditorPage() {
                 </div>
 
                 {field(
-                  'Purchase URL',
+                  '구매 링크 (URL)',
                   <input
                     value={draft.purchaseUrl ?? ''}
                     onChange={(e) => patch({ purchaseUrl: e.target.value })}
@@ -634,7 +634,7 @@ export default function AdminCoffeeEditorPage() {
                   />,
                 )}
                 <p className="text-[11px] text-navy/40">
-                  중앙 Media Library 업로드는 Supabase Storage 연결 후 지원됩니다. 지금은 외부 이미지 URL을 입력해주세요.
+                  중앙 미디어 라이브러리 업로드는 Supabase Storage 연결 후 지원됩니다. 지금은 외부 이미지 URL을 입력해주세요.
                 </p>
               </div>
             )}
@@ -642,11 +642,11 @@ export default function AdminCoffeeEditorPage() {
             {tab === '11 SEO' && (
               <div className="space-y-3">
                 {field(
-                  'SEO Title',
+                  'SEO 제목',
                   <input value={draft.seoTitle ?? ''} onChange={(e) => patch({ seoTitle: e.target.value })} className={inputClass} />,
                 )}
                 {field(
-                  'SEO Description',
+                  'SEO 설명',
                   <textarea
                     value={draft.seoDescription ?? ''}
                     onChange={(e) => patch({ seoDescription: e.target.value })}
@@ -656,18 +656,18 @@ export default function AdminCoffeeEditorPage() {
               </div>
             )}
 
-            {tab === '12 PUBLISH' && (
+            {tab === '12 발행' && (
               <div className="space-y-3">
                 {field(
-                  'Status',
+                  '공개 상태',
                   <select
                     value={draft.publishStatus}
                     onChange={(e) => patch({ publishStatus: e.target.value as PublishStatus })}
                     className={inputClass}
                   >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
-                    <option value="archived">Archived</option>
+                    <option value="draft">초안</option>
+                    <option value="published">공개</option>
+                    <option value="archived">보관</option>
                   </select>,
                 )}
                 <label className="flex items-center gap-2 text-[12px] text-navy">
@@ -683,7 +683,7 @@ export default function AdminCoffeeEditorPage() {
                   원두 차트(/coffee-chart)에 노출
                 </label>
                 {field(
-                  'Sort Order',
+                  '정렬 순서',
                   <input
                     type="number"
                     value={draft.sortOrder}
@@ -704,7 +704,7 @@ export default function AdminCoffeeEditorPage() {
                 )}
 
                 <div className="border-t border-navy/15 pt-4">
-                  <p className="mb-2 text-[10px] font-semibold tracking-[0.15em] text-navy/40">PNG EXPORT</p>
+                  <p className="mb-2 text-[10px] font-semibold tracking-[0.15em] text-navy/40">PNG 내보내기</p>
                   <div className="flex gap-2">
                     <button
                       type="button"
@@ -730,7 +730,7 @@ export default function AdminCoffeeEditorPage() {
         </div>
 
         <div className="xl:sticky xl:top-6 xl:self-start">
-          <p className="mb-2 text-[10px] font-semibold tracking-[0.15em] text-navy/40">LIVE PREVIEW</p>
+          <p className="mb-2 text-[10px] font-semibold tracking-[0.15em] text-navy/40">실시간 미리보기</p>
           <CoffeePreview coffee={draft} ref={cardRef} chartRef={chartRef} />
         </div>
       </div>

@@ -17,7 +17,7 @@ export default function CharacterRecommendationPanel({ recommendation, current, 
   if (!recommendation) {
     return (
       <div className="border border-navy/15 bg-white px-4 py-3 text-[12px] text-navy/45">
-        Flavor Notes를 입력하면 시스템이 어울리는 Character를 추천합니다. (03 SENSORY 탭까지 입력하면 더 정확해집니다.)
+        향미 노트를 입력하면 시스템이 어울리는 캐릭터를 추천합니다. (03 센서리 탭까지 입력하면 더 정확해집니다.)
       </div>
     )
   }
@@ -40,7 +40,7 @@ export default function CharacterRecommendationPanel({ recommendation, current, 
 
       {reasonNotes.length > 0 && (
         <p className="mt-1.5 text-[12px] leading-relaxed text-navy/60">
-          <span className="font-semibold text-navy/80">{reasonNotes.join(', ')}</span>이(가) {character} Flavor Family와 높은
+          <span className="font-semibold text-navy/80">{reasonNotes.join(', ')}</span>이(가) {character} 향미 계열과 높은
           관련성을 가집니다.
         </p>
       )}

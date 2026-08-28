@@ -72,7 +72,7 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
               setDragIndex(null)
             }}
             onDragEnd={() => setDragIndex(null)}
-            title="드래그하여 순서 변경 — 첫 번째 순서가 대표 Cup Note이자 Spectrum Spine 맨 위 색이 됩니다"
+            title="드래그하여 순서 변경 — 첫 번째 순서가 대표 향미 노트이자 향미 스펙트럼 맨 위 색이 됩니다"
             className={`flex cursor-grab items-center gap-1 border border-navy/20 bg-warm-white px-2 py-1 text-[11px] text-navy transition-opacity active:cursor-grabbing ${
               dragIndex === i ? 'opacity-30' : ''
             }`}
@@ -98,7 +98,7 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
             addNote(draft)
             setTimeout(() => setShowSuggestions(false), 100)
           }}
-          placeholder={atLimit ? '최대 6개까지 입력 가능' : 'Flavor 입력 후 Enter'}
+          placeholder={atLimit ? '최대 6개까지 입력 가능' : '향미 입력 후 Enter'}
           disabled={atLimit}
           className="min-w-[100px] flex-1 bg-transparent px-1 py-1 text-[13px] text-navy outline-none placeholder:text-navy/35 disabled:cursor-not-allowed"
         />
@@ -109,7 +109,7 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
 
       {notes.length > 0 && (
         <div className="mt-3 flex h-10 items-stretch gap-3 border-t border-navy/10 pt-3">
-          <span className="self-center text-[10px] font-semibold tracking-[0.1em] text-navy/40">SPECTRUM SPINE 미리보기</span>
+          <span className="self-center text-[10px] font-semibold tracking-[0.1em] text-navy/40">향미 스펙트럼 미리보기</span>
           <FlavorSpectrumSpine notes={notes} size="md" />
         </div>
       )}

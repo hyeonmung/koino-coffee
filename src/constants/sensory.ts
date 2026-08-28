@@ -37,9 +37,9 @@ export const SENSORY_FIELDS: SensoryFieldInfo[] = [
     label: 'BODY',
     labelKo: '바디',
     criteria: [
-      '매우 가볍고 Tea-like',
+      '매우 가볍고 차처럼 산뜻함',
       '가벼운 질감',
-      'Medium Body',
+      '중간 정도의 바디감',
       '묵직하고 풍부함',
       '매우 농도감 있고 무게감이 큼',
     ],
