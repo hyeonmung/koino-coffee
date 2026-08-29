@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AdminGate from './components/AdminGate'
+import Analytics from './components/Analytics'
 import ScrollToTop from './components/ScrollToTop'
 
 // Route-level code splitting: the admin editor pages (and every public page) only
@@ -54,6 +55,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Analytics />
       <Suspense fallback={null}>
         <Routes>
           {/* Public */}

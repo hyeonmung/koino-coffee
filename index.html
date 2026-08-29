@@ -26,6 +26,21 @@
     <meta name="twitter:image" content="https://koinoniaroasters.co.kr/og-image.png" />
 
     <link rel="preload" href="/fonts/SUIT-Variable.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3H1BBT9BMY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      // send_page_view: false — this is a client-routed SPA, so src/components/Analytics.tsx
+      // sends every page_view by hand (including the first) instead of relying on gtag's own
+      // auto-fired one, which would otherwise only ever cover the very first load.
+      gtag('config', 'G-3H1BBT9BMY', { send_page_view: false })
+    </script>
+
     <script>
       // One-time compatibility shim: this site used to run on HashRouter (URLs like
       // /#/coffees/x). Any link, QR code, or bookmark printed/shared before the switch to
