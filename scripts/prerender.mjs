@@ -75,13 +75,13 @@ function renderPage(routePath, { title, description, image }) {
     `<div id="root"><div style="padding:48px 24px;font-family:sans-serif;color:#1b2340"><p style="font-size:11px;letter-spacing:.15em;opacity:.5">${BRAND}</p><h1 style="font-size:22px;font-weight:700;margin-top:8px">${escapeHtml(title || BRAND)}</h1><p style="margin-top:8px;opacity:.7;max-width:560px;line-height:1.6">${escapeHtml(desc)}</p></div></div>`,
   )
 
-  // Flat "<route>.html" files, not "<route>/index.html" directories: with vercel.json's
-  // cleanUrls, a request for /coffees/foo resolves straight to coffees/foo.html regardless
-  // of a trailing slash. The directory+index.html form only resolves reliably *with* a
-  // trailing slash on some static servers, which real visitors never type.
-  const outPath = path.join(distDir, `${routePath.replace(/^\//, '') || 'index'}.html`)
-  fs.mkdirSync(path.dirname(outPath), { recursive: true })
-  fs.writeFileSync(outPath, html)
+  // "<route>/index.html": Vercel's static file serving resolves a directory path straight
+  // to its index.html with no extra config needed, and — unlike the flat "<route>.html" +
+  // cleanUrls approach — doesn't fight with the vercel.json catch-all rewrite that serves
+  // the SPA shell for every other route (verified live; cleanUrls broke that fallback).
+  const outDir = path.join(distDir, routePath.replace(/^\//, ''))
+  fs.mkdirSync(outDir, { recursive: true })
+  fs.writeFileSync(path.join(outDir, 'index.html'), html)
   pages.push(routePath)
 }
 
