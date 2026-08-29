@@ -104,16 +104,36 @@ async function run() {
   renderPage('/', {}) // matches the default tags already baked into dist/index.html — keeps output consistent
   for (const [routePath, meta] of STATIC_PAGES) renderPage(routePath, meta)
 
-  const [{ data: coffees, error: coffeesErr }, { data: stories, error: storiesErr }, { data: guides, error: guidesErr }, { data: posts, error: postsErr }, { data: characters, error: charsErr }] =
-    await Promise.all([
-      supabase.from('coffees').select('slug, coffee_name, country, notes, character, hero_image, seo_title, seo_description, publish_status'),
-      supabase.from('stories').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
-      supabase.from('brew_guides').select('slug, title, equipment, coffee_dose, ratio, publish_status'),
-      supabase.from('business_posts').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
-      supabase.from('characters').select('key, label, description'),
-    ])
+  const [
+    { data: coffees, error: coffeesErr },
+    { data: stories, error: storiesErr },
+    { data: guides, error: guidesErr },
+    { data: posts, error: postsErr },
+    { data: characters, error: charsErr },
+    { data: dictionaryTerms, error: dictErr },
+    { data: flavorDescriptors, error: flavorErr },
+    { data: flavorFamilies, error: familiesErr },
+  ] = await Promise.all([
+    supabase.from('coffees').select('slug, coffee_name, country, notes, character, hero_image, seo_title, seo_description, publish_status'),
+    supabase.from('stories').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
+    supabase.from('brew_guides').select('slug, title, equipment, coffee_dose, ratio, publish_status'),
+    supabase.from('business_posts').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
+    supabase.from('characters').select('key, label, description'),
+    supabase.from('dictionary_terms').select('id, term, short_definition'),
+    supabase.from('flavor_descriptors').select('id, name, description, family_id'),
+    supabase.from('flavor_families').select('id, name'),
+  ])
 
-  for (const [name, err] of [['coffees', coffeesErr], ['stories', storiesErr], ['brew_guides', guidesErr], ['business_posts', postsErr], ['characters', charsErr]]) {
+  for (const [name, err] of [
+    ['coffees', coffeesErr],
+    ['stories', storiesErr],
+    ['brew_guides', guidesErr],
+    ['business_posts', postsErr],
+    ['characters', charsErr],
+    ['dictionary_terms', dictErr],
+    ['flavor_descriptors', flavorErr],
+    ['flavor_families', familiesErr],
+  ]) {
     if (err) console.warn(`[prerender] failed to fetch ${name}:`, err.message)
   }
 
@@ -154,6 +174,19 @@ async function run() {
 
   for (const c of characters ?? []) {
     renderPage(`/characters/${c.key.toLowerCase()}`, { title: c.label, description: c.description })
+  }
+
+  // /dictionary/:slug is dual-purpose (see DictionaryDetailPage.tsx) — the slug is either a
+  // dictionary_terms.id or a flavor_descriptors.id, both rendered by the same route.
+  for (const t of dictionaryTerms ?? []) {
+    renderPage(`/dictionary/${encodeURIComponent(t.id)}`, { title: `${t.term} — 커피 사전`, description: t.short_definition })
+  }
+  for (const d of flavorDescriptors ?? []) {
+    const family = flavorFamilies?.find((f) => f.id === d.family_id)
+    renderPage(`/dictionary/${encodeURIComponent(d.id)}`, {
+      title: `${d.name} — 커피 사전`,
+      description: d.description || `${family?.name ?? 'Flavor'} 계열의 향미입니다.`,
+    })
   }
 
   const sitemap =
