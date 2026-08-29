@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react'
+import { supabase } from '../../data/supabaseClient'
 
 const MAX_DIMENSION = 1600
 const JPEG_QUALITY = 0.85
-const LARGE_WARNING_BYTES = 1_500_000
 
-function readImageFile(file: File): Promise<string> {
+function readImageBlob(file: File): Promise<{ blob: Blob; ext: string }> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onerror = () => reject(new Error('파일을 읽을 수 없습니다.'))
@@ -28,7 +28,17 @@ function readImageFile(file: File): Promise<string> {
         }
         ctx.drawImage(img, 0, 0, width, height)
         const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg'
-        resolve(canvas.toDataURL(mime, JPEG_QUALITY))
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error('이미지를 처리할 수 없습니다.'))
+              return
+            }
+            resolve({ blob, ext: mime === 'image/png' ? 'png' : 'jpg' })
+          },
+          mime,
+          JPEG_QUALITY,
+        )
       }
       img.src = reader.result as string
     }
@@ -59,8 +69,12 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
     setError('')
     setBusy(true)
     try {
-      const dataUrl = await readImageFile(file)
-      onChange(dataUrl)
+      const { blob, ext } = await readImageBlob(file)
+      const path = `${crypto.randomUUID()}.${ext}`
+      const { error: uploadError } = await supabase.storage.from('images').upload(path, blob, { contentType: blob.type })
+      if (uploadError) throw uploadError
+      const { data } = supabase.storage.from('images').getPublicUrl(path)
+      onChange(data.publicUrl)
     } catch (e) {
       setError(e instanceof Error ? e.message : '이미지를 처리하지 못했습니다.')
     } finally {
@@ -68,8 +82,9 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
     }
   }
 
+  // Older content saved before this field uploaded to storage may still hold a base64
+  // data: URI directly — still displays fine, just can't show a meaningful byte size for it.
   const isDataUrl = value.startsWith('data:')
-  const approxBytes = isDataUrl ? Math.round((value.length * 3) / 4) : 0
 
   return (
     <div>
@@ -112,7 +127,7 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
           </>
         ) : (
           <>
-            <p className="text-[12px] text-navy/50">{busy ? '이미지 처리 중...' : '이미지를 여기로 드래그하세요'}</p>
+            <p className="text-[12px] text-navy/50">{busy ? '업로드 중...' : '이미지를 여기로 드래그하세요'}</p>
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
@@ -135,18 +150,13 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
       </div>
 
       {error && <p className="mt-1 text-[11px] text-red-500">{error}</p>}
-      {approxBytes > LARGE_WARNING_BYTES && (
-        <p className="mt-1 text-[11px] text-accent">
-          이미지 용량이 큽니다 (약 {(approxBytes / 1_000_000).toFixed(1)}MB). 브라우저 저장 공간이 부족해질 수 있어요.
-        </p>
-      )}
 
       <details className="mt-2" open={Boolean(value) && !isDataUrl}>
         <summary className="cursor-pointer text-[10px] text-navy/40 hover:text-navy/60">또는 이미지 URL 직접 입력</summary>
         <input
           value={isDataUrl ? '' : value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={isDataUrl ? '(업로드된 이미지 사용 중 — 입력하면 대체됩니다)' : placeholder ?? 'https://...'}
+          placeholder={isDataUrl ? '(업로드된 이미지 사용 중 — 입력하면 대체됩니다)' : (placeholder ?? 'https://...')}
           className="mt-1.5 w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy"
         />
       </details>

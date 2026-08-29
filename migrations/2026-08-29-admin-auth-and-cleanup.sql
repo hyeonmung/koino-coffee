@@ -14,6 +14,12 @@
 --     business_sections on site_settings) that the app stopped reading/writing
 --     back on 2026-08-29 — they were replaced by the About block editor and the
 --     business_posts content system.
+--  3. Creates a public "images" storage bucket, with the same public-read /
+--     staff-write split as the tables above. Uploaded images (coffee photos,
+--     the About page hero, etc.) were being stored as base64 text directly in
+--     the database — this bucket is where scripts/migrate-images-to-storage.mjs
+--     moves the existing ones to, and where new uploads go from now on
+--     (src/components/admin/ImageUploadField.tsx).
 
 -- ── 1. Tighten row-level security ───────────────────────────────────────────
 do $$
@@ -47,3 +53,17 @@ alter table site_settings drop column if exists about_intro;
 alter table site_settings drop column if exists about_sections;
 alter table site_settings drop column if exists business_intro;
 alter table site_settings drop column if exists business_sections;
+
+-- ── 3. Public image storage bucket ──────────────────────────────────────────
+insert into storage.buckets (id, name, public)
+values ('images', 'images', true)
+on conflict (id) do nothing;
+
+drop policy if exists "public_read_images" on storage.objects;
+create policy "public_read_images" on storage.objects
+  for select using (bucket_id = 'images');
+
+drop policy if exists "staff_write_images" on storage.objects;
+create policy "staff_write_images" on storage.objects
+  for all using (bucket_id = 'images' and auth.role() = 'authenticated')
+  with check (bucket_id = 'images' and auth.role() = 'authenticated');
