@@ -163,7 +163,7 @@ export default function HomePage() {
   const coffeesContent = showCoffees && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="text-[22px] font-bold text-navy">코이노니아 원두 리스트</h2>
+        <h2 className="text-[22px] font-bold text-navy">코이노니아 로스터스 싱글 리스트</h2>
         <Link to="/coffees" className="text-[12px] font-semibold text-navy/50 hover:text-navy">
           전체 원두 보기 →
         </Link>
