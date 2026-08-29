@@ -380,6 +380,19 @@ export interface Inquiry {
   createdAt: string
 }
 
+/** Submitted from the public wholesale-order form on a BusinessPost with category WHOLESALE. */
+export interface WholesaleRequest {
+  id: string
+  name: string
+  phone: string
+  address: string
+  coffeeType: string
+  expectedKg: string
+  orderFrequency: string
+  status: InquiryStatus
+  createdAt: string
+}
+
 export type SpotlightContentType =
   | 'FEATURED_COFFEE'
   | 'NOTICE'

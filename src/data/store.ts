@@ -15,6 +15,7 @@ import type {
   SiteSettings,
   SpotlightSlide,
   Story,
+  WholesaleRequest,
 } from './schema'
 import { DEFAULT_ABOUT_PAGE_SETTINGS } from './seed/aboutBlocks'
 import { DEFAULT_SITE_SETTINGS } from './seed/siteSettings'
@@ -41,6 +42,7 @@ export const store = {
   spotlightSlides: [] as SpotlightSlide[],
   dictionaryTerms: [] as DictionaryTerm[],
   inquiries: [] as Inquiry[],
+  wholesaleRequests: [] as WholesaleRequest[],
   siteSettings: DEFAULT_SITE_SETTINGS as SiteSettings,
   aboutPageSettings: DEFAULT_ABOUT_PAGE_SETTINGS as AboutPageSettings,
 }
@@ -79,6 +81,7 @@ export function initStore(): Promise<void> {
       spotlightSlides,
       dictionaryTerms,
       inquiries,
+      wholesaleRequests,
       siteSettingsRow,
       aboutPageSettingsRow,
     ] = await Promise.all([
@@ -94,6 +97,7 @@ export function initStore(): Promise<void> {
       supabase.from('spotlight_slides').select('*'),
       supabase.from('dictionary_terms').select('*'),
       supabase.from('inquiries').select('*'),
+      supabase.from('wholesale_requests').select('*'),
       supabase.from('site_settings').select('*').maybeSingle(),
       supabase.from('about_page_settings').select('*').maybeSingle(),
     ])
@@ -112,6 +116,7 @@ export function initStore(): Promise<void> {
     store.spotlightSlides = (spotlightSlides.data ?? []).map((r) => rowToCamel<SpotlightSlide>(r))
     store.dictionaryTerms = (dictionaryTerms.data ?? []).map((r) => rowToCamel<DictionaryTerm>(r))
     store.inquiries = (inquiries.data ?? []).map((r) => rowToCamel<Inquiry>(r))
+    store.wholesaleRequests = (wholesaleRequests.data ?? []).map((r) => rowToCamel<WholesaleRequest>(r))
     store.siteSettings = siteSettingsRow.data
       ? { ...DEFAULT_SITE_SETTINGS, ...rowToCamel<SiteSettings>(siteSettingsRow.data) }
       : DEFAULT_SITE_SETTINGS

@@ -339,27 +339,41 @@ create table if not exists inquiries (
   created_at timestamptz not null default now()
 );
 
+-- ── Wholesale order requests (public form on a WHOLESALE business post) ────
+create table if not exists wholesale_requests (
+  id text primary key default gen_random_uuid()::text,
+  name text not null,
+  phone text not null,
+  address text not null,
+  coffee_type text not null default '',
+  expected_kg text not null default '',
+  order_frequency text not null default '',
+  status text not null default 'new' check (status in ('new', 'read', 'archived')),
+  created_at timestamptz not null default now()
+);
+
 -- ── Row Level Security ───────────────────────────────────────────────────────
--- Every content table: public read (the site needs that), staff-only write. inquiries is
--- the one exception — it holds submitters' contact info, so it's staff-read-only, with a
--- separate public-insert policy instead (the public business-inquiry form on /business
--- needs to write without a staff session; see src/components/BusinessInquiryForm.tsx and
--- migrations/2026-08-29-admin-auth-and-cleanup.sql for how this evolved).
+-- Every content table: public read (the site needs that), staff-only write. inquiries and
+-- wholesale_requests are the exception — they hold submitters' contact info, so they're
+-- staff-read-only, with a separate public-insert policy instead (the public forms on
+-- /business need to write without a staff session; see src/components/BusinessInquiryForm.tsx,
+-- src/components/WholesaleOrderForm.tsx, and the dated migration files for how this evolved).
 do $$
 declare
   t text;
+  no_public_read text[] := array['inquiries', 'wholesale_requests'];
 begin
   for t in
     select unnest(array[
       'characters', 'flavor_families', 'flavor_descriptors', 'brew_categories', 'brew_guides',
       'stories', 'coffees', 'business_posts', 'site_settings', 'about_blocks',
-      'about_page_settings', 'spotlight_slides', 'dictionary_terms', 'inquiries'
+      'about_page_settings', 'spotlight_slides', 'dictionary_terms', 'inquiries', 'wholesale_requests'
     ])
   loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists "public_all" on %I', t);
     execute format('drop policy if exists "public_read" on %I', t);
-    if t <> 'inquiries' then
+    if not (t = any(no_public_read)) then
       execute format('create policy "public_read" on %I for select using (true)', t);
     end if;
     execute format('drop policy if exists "staff_write" on %I', t);
@@ -369,6 +383,12 @@ begin
     );
   end loop;
 end $$;
+
+drop policy if exists "public_insert_inquiry" on inquiries;
+create policy "public_insert_inquiry" on inquiries for insert with check (true);
+
+drop policy if exists "public_insert_wholesale" on wholesale_requests;
+create policy "public_insert_wholesale" on wholesale_requests for insert with check (true);
 
 drop policy if exists "public_insert_inquiry" on inquiries;
 create policy "public_insert_inquiry" on inquiries for insert with check (true);

@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { to: '/admin/stories', label: '뉴스&이야기' },
   { to: '/admin/business', label: '납품 · 교육' },
   { to: '/admin/inquiries', label: '문의 관리' },
+  { to: '/admin/wholesale-requests', label: '납품 신청' },
   { to: '/admin/settings', label: '사이트 설정' },
 ]
 

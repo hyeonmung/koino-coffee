@@ -26,6 +26,7 @@ const AdminSpotlightEditorPage = lazy(() => import('./pages/admin/AdminSpotlight
 const AdminSpotlightPage = lazy(() => import('./pages/admin/AdminSpotlightPage'))
 const AdminStoriesPage = lazy(() => import('./pages/admin/AdminStoriesPage'))
 const AdminStoryEditorPage = lazy(() => import('./pages/admin/AdminStoryEditorPage'))
+const AdminWholesaleRequestsPage = lazy(() => import('./pages/admin/AdminWholesaleRequestsPage'))
 const AboutPage = lazy(() => import('./pages/public/AboutPage'))
 const AboutSensoryMapPage = lazy(() => import('./pages/public/AboutSensoryMapPage'))
 const BrewGuideDetailPage = lazy(() => import('./pages/public/BrewGuideDetailPage'))
@@ -276,6 +277,14 @@ export default function App() {
             element={
               <AdminGate>
                 <AdminInquiriesPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/wholesale-requests"
+            element={
+              <AdminGate>
+                <AdminWholesaleRequestsPage />
               </AdminGate>
             }
           />

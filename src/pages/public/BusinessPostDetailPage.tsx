@@ -4,6 +4,7 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
 import StoryBody from '../../components/StoryBody'
+import WholesaleOrderForm from '../../components/WholesaleOrderForm'
 import { BUSINESS_POST_CATEGORY_LABEL } from '../../constants/businessPostCategories'
 import { getBusinessPostBySlug } from '../../data/repositories/businessPostRepository'
 
@@ -51,6 +52,17 @@ export default function BusinessPostDetailPage() {
               </a>
             ))}
           </div>
+        )}
+
+        {post.category === 'WHOLESALE' && (
+          <section className="mt-10 border-t border-navy/15 pt-8">
+            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">ORDER</p>
+            <h2 className="mt-1 text-[20px] font-bold text-navy">원두 납품 신청</h2>
+            <p className="mt-2 text-[12px] text-navy/55">아래 정보를 남겨주시면 확인 후 순차적으로 안내드리겠습니다.</p>
+            <div className="mt-5">
+              <WholesaleOrderForm />
+            </div>
+          </section>
         )}
       </main>
 
