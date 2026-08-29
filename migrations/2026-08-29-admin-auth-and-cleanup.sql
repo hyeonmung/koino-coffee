@@ -59,6 +59,13 @@ insert into storage.buckets (id, name, public)
 values ('images', 'images', true)
 on conflict (id) do nothing;
 
+-- storage.buckets has RLS enabled by default with no policy of its own — without this,
+-- the bucket row exists but the Storage API can't see it (returns 404 "Bucket not found"
+-- even though `select * from storage.buckets` in the SQL editor shows the row, because
+-- that query runs as postgres and bypasses RLS while the Storage API's own lookup doesn't).
+drop policy if exists "public_read_bucket" on storage.buckets;
+create policy "public_read_bucket" on storage.buckets for select using (id = 'images');
+
 drop policy if exists "public_read_images" on storage.objects;
 create policy "public_read_images" on storage.objects
   for select using (bucket_id = 'images');
