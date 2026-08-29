@@ -1,13 +1,14 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
-import { getPublishedCoffees } from '../data/repositories/coffeeRepository'
 import { addWholesaleRequest } from '../data/repositories/wholesaleRequestRepository'
 import type { WholesaleRequest } from '../data/schema'
+
+const COFFEE_TYPE_OPTIONS = ['우든 크래프트', '인디고 오션']
 
 const EMPTY = {
   name: '',
   phone: '',
   address: '',
-  coffeeType: '',
+  coffeeType: COFFEE_TYPE_OPTIONS[0],
   expectedKg: '',
   orderFrequency: '',
 }
@@ -17,7 +18,6 @@ export default function WholesaleOrderForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
-  const coffeeNames = getPublishedCoffees().map((c) => c.coffeeName)
 
   const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) => setForm((f) => ({ ...f, [key]: value }))
 
@@ -99,19 +99,18 @@ export default function WholesaleOrderForm() {
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Field label="원하시는 원두 종류 (선택)">
-          <input
+        <Field label="원하시는 원두 종류">
+          <select
             value={form.coffeeType}
             onChange={(e) => set('coffeeType', e.target.value)}
-            list="wholesale-coffee-names"
-            placeholder="예: 에티오피아 계열"
             className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
-          />
-          <datalist id="wholesale-coffee-names">
-            {coffeeNames.map((name) => (
-              <option key={name} value={name} />
+          >
+            {COFFEE_TYPE_OPTIONS.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
             ))}
-          </datalist>
+          </select>
         </Field>
         <Field label="예상 kg (선택)">
           <input
