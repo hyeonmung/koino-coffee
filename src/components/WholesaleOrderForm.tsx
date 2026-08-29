@@ -44,6 +44,21 @@ export default function WholesaleOrderForm() {
       await addWholesaleRequest(request)
       setDone(true)
       setForm(EMPTY)
+
+      // Best-effort email notification — the DB row above is the real record, so a failure
+      // here (network hiccup, email service down) must never block the success screen.
+      fetch('/api/notify-wholesale-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: request.name,
+          phone: request.phone,
+          address: request.address,
+          coffeeType: request.coffeeType,
+          expectedKg: request.expectedKg,
+          orderFrequency: request.orderFrequency,
+        }),
+      }).catch(() => {})
     } catch {
       setError('신청 접수 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.')
     } finally {
