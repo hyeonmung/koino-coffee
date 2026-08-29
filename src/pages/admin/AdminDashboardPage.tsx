@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
-import { checkCompleteness } from '../../data/completeness'
 import { getAllCoffees } from '../../data/repositories/coffeeRepository'
 import { getAllStories } from '../../data/repositories/storyRepository'
 import { getAllBrewGuides } from '../../data/repositories/brewGuideRepository'
@@ -11,7 +10,6 @@ export default function AdminDashboardPage() {
   const published = coffees.filter((c) => c.publishStatus === 'published').length
   const draft = coffees.filter((c) => c.publishStatus === 'draft').length
   const archived = coffees.filter((c) => c.publishStatus === 'archived').length
-  const incomplete = coffees.filter((c) => checkCompleteness(c).percent < 70).length
   const stories = getAllStories()
   const brewGuides = getAllBrewGuides()
   const inquiries = getAllInquiries()
@@ -23,12 +21,11 @@ export default function AdminDashboardPage() {
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DASHBOARD</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">운영 현황</h1>
 
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard label="전체 원두" value={coffees.length} to="/admin/coffees" />
         <StatCard label="공개 중" value={published} to="/admin/coffees" />
         <StatCard label="비공개" value={draft} to="/admin/coffees" />
         <StatCard label="지난 원두" value={archived} to="/admin/coffees" />
-        <StatCard label="정보 보완 필요" value={incomplete} to="/admin/coffees" highlight={incomplete > 0} />
         <StatCard label="새 문의" value={newInquiries} to="/admin/inquiries" highlight={newInquiries > 0} />
       </div>
 

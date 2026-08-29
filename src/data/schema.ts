@@ -180,18 +180,6 @@ export interface Story {
   updatedAt: string
 }
 
-export interface StorySection {
-  heading: string
-  body: string
-  image?: string
-}
-
-export interface BusinessSection {
-  key: string
-  title: string
-  body: string
-}
-
 export type BusinessPostCategory = 'WHOLESALE' | 'EDUCATION' | 'CLASS' | 'NOTICE' | 'PARTNERSHIP'
 
 export interface BusinessLink {
@@ -259,12 +247,6 @@ export interface SiteSettings {
   homepageFeaturedCoffeeIds: string[]
   homepageStoryIds: string[]
   homeSectionVisibility: Partial<Record<HomeSectionKey, boolean>>
-
-  aboutIntro: string
-  aboutSections: StorySection[]
-
-  businessIntro: string
-  businessSections: BusinessSection[]
 
   updatedAt: string
 }

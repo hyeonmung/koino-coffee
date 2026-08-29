@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import AdminLayout from '../../components/AdminLayout'
 import { CHARACTER_INFO } from '../../constants/characters'
 import { recommendCharacter } from '../../data/characterRecommend'
-import { checkCompleteness } from '../../data/completeness'
 import type { Coffee, PublishStatus } from '../../data/schema'
 import { deleteCoffee, getAllCoffees, upsertCoffee } from '../../data/repositories/coffeeRepository'
 import { CUP_CHARACTERS, type CupCharacter } from '../../types'
@@ -130,7 +129,6 @@ export default function AdminCoffeeListPage() {
               <th className="px-3 py-2">산지</th>
               <th className="px-3 py-2">상태</th>
               <th className="px-3 py-2">Featured</th>
-              <th className="px-3 py-2">완성도</th>
               <th className="px-3 py-2 text-right">작업</th>
             </tr>
           </thead>
@@ -198,9 +196,6 @@ export default function AdminCoffeeListPage() {
                       ▼
                     </button>
                   </div>
-                </td>
-                <td className="px-3 py-2.5" title={checkCompleteness(coffee).missing.slice(0, 3).join(', ')}>
-                  <span className="text-navy/60">{checkCompleteness(coffee).percent}%</span>
                 </td>
                 <td className="px-3 py-2.5">
                   <div className="flex justify-end gap-1.5">
