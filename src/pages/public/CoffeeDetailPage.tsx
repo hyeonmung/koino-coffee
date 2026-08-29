@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import CoffeeCard from '../../components/CoffeeCard'
 import CoffeeVisual from '../../components/CoffeeVisual'
@@ -68,7 +68,15 @@ export default function CoffeeDetailPage() {
   const settings = useMemo(() => getSiteSettings(), [])
   const [busy, setBusy] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [mobilePage, setMobilePage] = useState(1)
   const isDesktop = useIsDesktop()
+
+  // Navigating from one coffee's detail page straight to another (same route, new slug)
+  // doesn't remount this component, so without this the mobile tab pager would keep
+  // whatever page index the previous coffee was showing.
+  useEffect(() => {
+    setMobilePage(1)
+  }, [slug])
 
   const chartRef = useRef<HTMLDivElement>(null)
 
@@ -397,7 +405,6 @@ export default function CoffeeDetailPage() {
   // Only sections this coffee actually has data for get a page — so the page count grows
   // or shrinks on its own as an admin fills in more fields (recipe, story, comments...).
   const mobileTabs = rawMobileTabs.filter((t): t is MobileTab => t !== null)
-  const [mobilePage, setMobilePage] = useState(1)
   const mobileTotalPages = Math.max(1, mobileTabs.length)
   const mobileCurrentPage = Math.min(mobilePage, mobileTotalPages)
   const activeMobileTab = mobileTabs[mobileCurrentPage - 1]

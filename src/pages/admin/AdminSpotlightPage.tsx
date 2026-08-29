@@ -23,12 +23,8 @@ const CONTENT_TYPE_KOREAN: Record<SpotlightSlide['contentType'], string> = {
 }
 
 export default function AdminSpotlightPage() {
-  const [slides, setSlides] = useState<SpotlightSlide[]>([])
+  const [slides, setSlides] = useState<SpotlightSlide[]>(() => getAllSpotlightSlides())
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
-
-  useEffect(() => {
-    setSlides(getAllSpotlightSlides())
-  }, [])
 
   useEffect(() => {
     if (!confirmingId) return

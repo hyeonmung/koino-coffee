@@ -13,15 +13,11 @@ const STATUS_LABEL: Record<PublishStatus, string> = { draft: '비공개', publis
 const STATUS_OPTIONS: PublishStatus[] = ['published', 'draft']
 
 export default function AdminCoffeeListPage() {
-  const [coffees, setCoffees] = useState<Coffee[]>([])
+  const [coffees, setCoffees] = useState<Coffee[]>(() => getAllCoffees())
   const [query, setQuery] = useState('')
   const [character, setCharacter] = useState<'ALL' | CupCharacter>('ALL')
   const [status, setStatus] = useState<'ALL' | PublishStatus>('ALL')
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
-
-  useEffect(() => {
-    setCoffees(getAllCoffees())
-  }, [])
 
   useEffect(() => {
     if (!confirmingId) return
