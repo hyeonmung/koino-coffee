@@ -26,6 +26,15 @@
     <meta name="twitter:image" content="https://koinoniaroasters.co.kr/og-image.png" />
 
     <link rel="preload" href="/fonts/SUIT-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <script>
+      // One-time compatibility shim: this site used to run on HashRouter (URLs like
+      // /#/coffees/x). Any link, QR code, or bookmark printed/shared before the switch to
+      // clean URLs still lands here with a #/ hash — rewrite it to the real path before the
+      // router mounts so those old links keep working instead of silently 404ing.
+      if (location.hash.indexOf('#/') === 0) {
+        history.replaceState(null, '', location.hash.slice(1) + location.search)
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

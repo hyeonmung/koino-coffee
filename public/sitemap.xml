@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Static top-level routes only. This SPA uses HashRouter (URLs like /#/coffees), and
-  per-coffee/dictionary/story detail pages are stored in the browser's LocalStorage, not
-  read at build time — so their slugs cannot be enumerated here without a real backend.
-  See README.md → "남아 있는 제한사항" for the full disclosure. Replace example.com with
-  the real production domain before going live (see LAUNCH_CHECKLIST.md).
+  Fallback: static top-level routes only. This file ships as-is if the prerender step
+  (scripts/prerender.mjs, runs after `vite build`) can't reach Supabase at build time —
+  otherwise that script overwrites dist/sitemap.xml with every published coffee, story,
+  brew guide, and business post URL included too.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://koinoniaroasters.co.kr/#/</loc><priority>1.0</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/coffees</loc><priority>0.9</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/coffee-chart</loc><priority>0.9</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/discover</loc><priority>0.7</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/compare</loc><priority>0.5</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/characters</loc><priority>0.6</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/dictionary</loc><priority>0.6</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/brew-guide</loc><priority>0.6</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/stories</loc><priority>0.6</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/about</loc><priority>0.7</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/business</loc><priority>0.6</priority></url>
-  <url><loc>https://koinoniaroasters.co.kr/#/about-sensory-map</loc><priority>0.4</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/</loc><priority>1.0</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/coffees</loc><priority>0.9</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/coffee-chart</loc><priority>0.9</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/discover</loc><priority>0.7</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/compare</loc><priority>0.5</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/characters</loc><priority>0.6</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/dictionary</loc><priority>0.6</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/brew-guide</loc><priority>0.6</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/stories</loc><priority>0.6</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/about</loc><priority>0.7</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/business</loc><priority>0.6</priority></url>
+  <url><loc>https://koinoniaroasters.co.kr/about-sensory-map</loc><priority>0.4</priority></url>
 </urlset>

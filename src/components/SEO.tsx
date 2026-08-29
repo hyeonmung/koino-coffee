@@ -20,7 +20,7 @@ export default function SEO({ title, description, image, noIndex }: SEOProps) {
   const resolvedImage = image ?? settings.ogImage
   // Derived from the live location, never hardcoded — correct on localhost, Vercel preview
   // URLs, and the production domain alike.
-  const canonicalUrl = `${window.location.origin}${window.location.pathname}${window.location.hash}`
+  const canonicalUrl = `${window.location.origin}${window.location.pathname}`
 
   return (
     <Helmet>

@@ -148,7 +148,7 @@ export default function AdminDictionaryPage() {
 
       <p className="mt-6 text-[11px] text-navy/40">
         Flavor Notes(향미 단어)는 별도로{' '}
-        <a href="#/admin/flavors" className="underline">
+        <a href="/admin/flavors" className="underline">
           향미 관리
         </a>
         에서 등록합니다.

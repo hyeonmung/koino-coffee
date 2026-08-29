@@ -428,7 +428,7 @@ export default function AdminCoffeeEditorPage() {
 
                 {!isNew && draft.slug && (
                   <a
-                    href={`#/coffee-chart/${draft.slug}`}
+                    href={`/coffee-chart/${draft.slug}`}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-block border border-navy/25 px-3 py-2 text-[11px] font-semibold text-navy hover:border-navy"

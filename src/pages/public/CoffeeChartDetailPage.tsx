@@ -38,7 +38,7 @@ export default function CoffeeChartDetailPage() {
   const characterAccent = CHARACTER_STYLE[coffee.character].accent
   const guide = coffee.brewGuideIds[0] ? getBrewGuideById(coffee.brewGuideIds[0]) : undefined
   const hasAdvanced = coffee.roastData && Object.values(coffee.roastData).some(Boolean)
-  const shareUrl = `${window.location.origin}${window.location.pathname}#/coffee-chart/${coffee.slug}`
+  const shareUrl = `${window.location.origin}/coffee-chart/${coffee.slug}`
   const slugBase = slugifyFilename(coffee.coffeeName)
 
   const handleExport = async (presetKey: string) => {

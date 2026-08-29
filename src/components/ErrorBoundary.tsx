@@ -39,7 +39,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             새로고침
           </button>
           <a
-            href="#/"
+            href="/"
             className="border border-navy/25 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:border-navy"
           >
             홈으로 이동

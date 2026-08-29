@@ -206,7 +206,7 @@ export default function AdminCoffeeListPage() {
                   <div className="flex justify-end gap-1.5">
                     {coffee.publishStatus === 'published' && (
                       <a
-                        href={`#/coffees/${coffee.slug}`}
+                        href={`/coffees/${coffee.slug}`}
                         target="_blank"
                         rel="noreferrer"
                         className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60 hover:border-navy hover:text-navy"

@@ -93,7 +93,7 @@ export default function CoffeeDetailPage() {
   const similar = getSimilarCoffees(coffee, allCoffees, descriptors, 3)
   const number = formatCoffeeNumber(coffee.coffeeNumber)
 
-  const shareUrl = `${window.location.origin}${window.location.pathname}#/coffees/${coffee.slug}`
+  const shareUrl = `${window.location.origin}/coffees/${coffee.slug}`
   const slugBase = slugifyFilename(coffee.coffeeName)
 
   const handleShare = async () => {

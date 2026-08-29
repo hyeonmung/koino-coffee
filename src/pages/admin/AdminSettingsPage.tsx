@@ -114,15 +114,15 @@ export default function AdminSettingsPage() {
 
         <p className="text-[11px] text-navy/40">
           홈페이지 Hero 문구는{' '}
-          <a href="#/admin/home" className="underline">
+          <a href="/admin/home" className="underline">
             홈 관리
           </a>
           에서, 코이노니아 소개는{' '}
-          <a href="#/admin/about" className="underline">
+          <a href="/admin/about" className="underline">
             About 코이노니아
           </a>{' '}
           메뉴에서, 납품·교육 서비스 소개는{' '}
-          <a href="#/admin/business" className="underline">
+          <a href="/admin/business" className="underline">
             납품 · 교육
           </a>{' '}
           메뉴에서 관리합니다.
