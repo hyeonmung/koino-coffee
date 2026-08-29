@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { supabase } from '../data/supabaseClient'
 import { getSiteSettings } from '../data/repositories/siteSettingsRepository'
+import { useSupabaseSession } from '../hooks/useSupabaseSession'
 import KOIStarField from './decorative/KOIStarField'
+import LoginForm from './LoginForm'
 
 const NAV_LINKS = [
   { to: '/about', label: 'About 코이노니아' },
@@ -18,7 +21,19 @@ export default function PublicHeader() {
   const settings = getSiteSettings()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [loginOpen, setLoginOpen] = useState(false)
   const navigate = useNavigate()
+  const session = useSupabaseSession()
+  const loginBoxRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!loginOpen) return
+    const onClickOutside = (e: MouseEvent) => {
+      if (loginBoxRef.current && !loginBoxRef.current.contains(e.target as Node)) setLoginOpen(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [loginOpen])
 
   // Locks the page behind the mobile menu overlay — `overflow: hidden` alone doesn't stop
   // iOS Safari's touch rubber-band scroll from leaking through to the body, so the body is
@@ -102,6 +117,33 @@ export default function PublicHeader() {
             </a>
           )}
 
+          <div ref={loginBoxRef} className="relative hidden sm:block">
+            {session ? (
+              <button
+                type="button"
+                onClick={() => supabase.auth.signOut()}
+                className="border border-navy/25 px-3 py-2 text-[11px] font-semibold tracking-[0.05em] text-navy/70 hover:border-navy hover:text-navy"
+              >
+                로그아웃
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setLoginOpen((v) => !v)}
+                  className="border border-navy/25 px-3 py-2 text-[11px] font-semibold tracking-[0.05em] text-navy/70 hover:border-navy hover:text-navy"
+                >
+                  로그인
+                </button>
+                {loginOpen && (
+                  <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-[260px] border border-navy/15 bg-white p-5 shadow-lg">
+                    <LoginForm onSuccess={() => setLoginOpen(false)} />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -142,6 +184,22 @@ export default function PublicHeader() {
                 {link.label}
               </NavLink>
             ))}
+
+            <div className="mt-6 border-t border-warm-white/10 pt-6">
+              {session ? (
+                <button
+                  type="button"
+                  onClick={() => supabase.auth.signOut()}
+                  className="text-[14px] font-semibold text-warm-white/85"
+                >
+                  로그아웃
+                </button>
+              ) : (
+                <div className="border border-warm-white/20 bg-white p-5">
+                  <LoginForm onSuccess={() => setOpen(false)} />
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       )}

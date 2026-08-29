@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import useIsDesktop from '../../hooks/useIsDesktop'
+import { useSupabaseSession } from '../../hooks/useSupabaseSession'
 import CoffeeCard from '../../components/CoffeeCard'
 import Pagination from '../../components/Pagination'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
+import QuickAddCoffeeForm from '../../components/QuickAddCoffeeForm'
 import SEO from '../../components/SEO'
+import { OWNER_EMAIL } from '../../constants/owner'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getFlavorDescriptors, getFlavorFamilies } from '../../data/repositories/flavorRepository'
 import { findDescriptorByNote } from '../../data/flavorMatch'
@@ -44,7 +47,11 @@ const PAGE_SIZE_MOBILE = 6
 export default function CoffeeExplorerPage() {
   const isDesktop = useIsDesktop()
   const PAGE_SIZE = isDesktop ? PAGE_SIZE_DESKTOP : PAGE_SIZE_MOBILE
-  const allCoffees = useMemo(() => getPublishedCoffees(), [])
+  const [refreshKey, setRefreshKey] = useState(0)
+  const allCoffees = useMemo(() => getPublishedCoffees(), [refreshKey])
+  const session = useSupabaseSession()
+  const isOwner = session?.user.email === OWNER_EMAIL
+  const [quickAddOpen, setQuickAddOpen] = useState(false)
   const descriptors = useMemo(() => getFlavorDescriptors(), [])
   const families = useMemo(() => getFlavorFamilies(), [])
   const [searchParams] = useSearchParams()
@@ -164,8 +171,31 @@ export default function CoffeeExplorerPage() {
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1240px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COFFEE LIBRARY</p>
-        <h1 className="mt-1 text-[28px] font-bold text-navy">원두</h1>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COFFEE LIBRARY</p>
+            <h1 className="mt-1 text-[28px] font-bold text-navy">원두</h1>
+          </div>
+          {isOwner && (
+            <button
+              type="button"
+              onClick={() => setQuickAddOpen(true)}
+              className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+            >
+              + 원두 추가
+            </button>
+          )}
+        </div>
+
+        {quickAddOpen && (
+          <QuickAddCoffeeForm
+            onClose={() => setQuickAddOpen(false)}
+            onCreated={() => {
+              setQuickAddOpen(false)
+              setRefreshKey((k) => k + 1)
+            }}
+          />
+        )}
 
         <input
           value={query}
