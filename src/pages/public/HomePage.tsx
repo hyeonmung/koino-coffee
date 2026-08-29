@@ -310,7 +310,7 @@ export default function HomePage() {
   const brewContent = showBrew && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="text-[18px] font-bold text-navy">집에서 더 맛있게</h2>
+        <h2 className="text-[18px] font-bold text-navy">코이노니아 로스터스 끄적끄적</h2>
         <Link to="/brew-guide" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
           전체 보기 →
         </Link>
@@ -335,7 +335,7 @@ export default function HomePage() {
   const storiesContent = showStories && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="text-[18px] font-bold text-navy">커피 이야기</h2>
+        <h2 className="text-[18px] font-bold text-navy">코이노니아 칼럼</h2>
         <Link to="/stories" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
           전체 보기 →
         </Link>
