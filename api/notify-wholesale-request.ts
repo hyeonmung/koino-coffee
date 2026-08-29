@@ -1,8 +1,10 @@
-// Vercel serverless function (Node.js runtime, Web-standard Request/Response signature —
-// no @vercel/node dependency needed). Fires an email to the shop owner whenever the public
-// wholesale order form (src/components/WholesaleOrderForm.tsx) submits successfully. Best
-// effort only: the form's real source of truth is the wholesale_requests DB row, already
-// written before this is called — a failure here just means no email, not a lost request.
+// Vercel serverless function (Node.js runtime). Fires an email to the shop owner whenever
+// the public wholesale order form (src/components/WholesaleOrderForm.tsx) submits
+// successfully. Best effort only: the form's real source of truth is the wholesale_requests
+// DB row, already written before this is called — a failure here just means no email, not a
+// lost request.
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+
 const NOTIFY_TO = 'hyeonnim98@naver.com'
 
 interface WholesaleRequestPayload {
@@ -18,23 +20,20 @@ function escapeHtml(s: string) {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string)
 }
 
-export default async function handler(request: Request): Promise<Response> {
-  if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Method not allowed' })
+    return
   }
 
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
     // Not configured yet — don't break the form over it, just skip silently server-side.
-    return new Response(JSON.stringify({ skipped: true }), { status: 200 })
+    res.status(200).json({ skipped: true })
+    return
   }
 
-  let body: WholesaleRequestPayload
-  try {
-    body = await request.json()
-  } catch {
-    return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400 })
-  }
+  const body = req.body as WholesaleRequestPayload
 
   const rows: [string, string][] = [
     ['성함', body.name],
@@ -58,25 +57,31 @@ export default async function handler(request: Request): Promise<Response> {
     <p style="color:#888;font-size:12px;margin-top:16px">관리자 페이지 &gt; 납품 신청에서도 확인할 수 있습니다.</p>
   `
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: 'KOINONIA ROASTERS <onboarding@resend.dev>',
-      to: [NOTIFY_TO],
-      subject: `[코이노니아] 새 원두 납품 신청 — ${body.name}`,
-      html,
-    }),
-  })
+  try {
+    const resendRes = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'KOINONIA ROASTERS <onboarding@resend.dev>',
+        to: [NOTIFY_TO],
+        subject: `[코이노니아] 새 원두 납품 신청 — ${body.name}`,
+        html,
+      }),
+    })
 
-  if (!res.ok) {
-    const detail = await res.text()
-    console.error('[notify-wholesale-request] Resend error:', detail)
-    return new Response(JSON.stringify({ error: 'Email send failed' }), { status: 502 })
+    if (!resendRes.ok) {
+      const detail = await resendRes.text()
+      console.error('[notify-wholesale-request] Resend error:', detail)
+      res.status(502).json({ error: 'Email send failed' })
+      return
+    }
+
+    res.status(200).json({ ok: true })
+  } catch (err) {
+    console.error('[notify-wholesale-request] failed:', err)
+    res.status(502).json({ error: 'Email send failed' })
   }
-
-  return new Response(JSON.stringify({ ok: true }), { status: 200 })
 }
