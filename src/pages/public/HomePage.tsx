@@ -263,20 +263,6 @@ export default function HomePage() {
         </div>
       )}
 
-      {isVisible('sensoryMap') && (
-        <div className="mt-6 flex flex-col gap-2 border-t border-navy/10 pt-5 text-[11px] sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2">
-          <p className="text-navy/50">
-            <span className="font-bold text-navy">CHARACTER</span> · 커피의 전체적인 인상
-          </p>
-          <p className="text-navy/50">
-            <span className="font-bold text-navy">FLAVOR</span> · 구체적인 향미
-          </p>
-          <p className="text-navy/50">
-            <span className="font-bold text-navy">SENSORY</span> · 산미·단맛·바디 시각화
-          </p>
-        </div>
-      )}
-
       <Link to="/coffee-chart" className="mt-6 inline-block text-[12px] font-semibold text-navy/60 hover:text-navy">
         전체 원두 차트 보기 →
       </Link>
