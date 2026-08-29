@@ -52,7 +52,7 @@ export default function BrewGuideDetailPage() {
         {guide.tips && (
           <section className="mt-8 border-t border-navy/15 pt-6">
             <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">이렇게 추출해보세요</p>
-            <p className="mt-1 text-[13px] leading-relaxed text-navy/70">{guide.tips}</p>
+            <p className="mt-1 whitespace-pre-line text-[13px] leading-relaxed text-navy/70">{guide.tips}</p>
           </section>
         )}
 

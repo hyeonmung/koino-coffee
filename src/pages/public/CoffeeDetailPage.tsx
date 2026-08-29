@@ -166,7 +166,7 @@ export default function CoffeeDetailPage() {
       </div>
       <FlavorNotes notes={coffee.notes} className="mt-3 block text-[15px] font-medium text-navy/80" />
       {coffee.characterReason && (
-        <p className="mt-3 max-w-[640px] text-[13px] leading-relaxed text-navy/55">{coffee.characterReason}</p>
+        <p className="mt-3 max-w-[640px] whitespace-pre-line text-[13px] leading-relaxed text-navy/55">{coffee.characterReason}</p>
       )}
 
       <div className="mt-6 flex flex-wrap gap-2">
@@ -237,7 +237,7 @@ export default function CoffeeDetailPage() {
       {(coffee.processDescription || processFields.length > 0) && (
         <div className={originFields.length > 0 ? 'mt-10' : ''}>
           <h2 className="text-[18px] font-bold text-navy">가공 방식</h2>
-          {coffee.processDescription && <p className="mt-2 text-[13px] leading-relaxed text-navy/65">{coffee.processDescription}</p>}
+          {coffee.processDescription && <p className="mt-2 whitespace-pre-line text-[13px] leading-relaxed text-navy/65">{coffee.processDescription}</p>}
           {processFields.length > 0 && (
             <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
               {processFields.map((f) => (
@@ -294,13 +294,13 @@ export default function CoffeeDetailPage() {
       {coffee.roasterComment && (
         <div>
           <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">로스터의 생각 · ROASTER&apos;S COMMENT</p>
-          <p className="mt-2 text-[14px] leading-relaxed text-navy/75">&ldquo;{coffee.roasterComment}&rdquo;</p>
+          <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">&ldquo;{coffee.roasterComment}&rdquo;</p>
         </div>
       )}
       {coffee.baristaComment && (
         <div>
           <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">바리스타의 생각 · BARISTA&apos;S COMMENT</p>
-          <p className="mt-2 text-[14px] leading-relaxed text-navy/75">&ldquo;{coffee.baristaComment}&rdquo;</p>
+          <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">&ldquo;{coffee.baristaComment}&rdquo;</p>
         </div>
       )}
     </div>
@@ -367,7 +367,7 @@ export default function CoffeeDetailPage() {
     <>
       {coffee.recommendedFor && (
         <p className="text-[13px] leading-relaxed text-navy/70">
-          <span className="font-semibold text-navy">추천 대상</span> — {coffee.recommendedFor}
+          <span className="font-semibold text-navy">추천 대상</span> — <span className="whitespace-pre-line">{coffee.recommendedFor}</span>
         </p>
       )}
       {similar.length > 0 && (

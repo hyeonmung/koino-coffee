@@ -53,7 +53,7 @@ export default function CharacterDetailPage() {
         <span className="inline-block border border-navy bg-navy px-4 py-2 text-[16px] font-bold tracking-[0.2em] text-warm-white">
           {character.label}
         </span>
-        <p className="mt-4 max-w-[560px] text-[16px] leading-relaxed text-navy/70">{character.heroCopy}</p>
+        <p className="mt-4 max-w-[560px] whitespace-pre-line text-[16px] leading-relaxed text-navy/70">{character.heroCopy}</p>
         <p className="mt-2 whitespace-pre-line text-[12px] font-semibold tracking-[0.1em] text-navy/45">{character.flavors}</p>
 
         {tendency && (

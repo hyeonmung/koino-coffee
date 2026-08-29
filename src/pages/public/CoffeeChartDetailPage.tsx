@@ -158,7 +158,7 @@ export default function CoffeeChartDetailPage() {
                   <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">
                     로스터의 생각 · ROASTER&apos;S COMMENT
                   </p>
-                  <p className="mt-1 text-[13px] leading-relaxed text-navy/75">“{coffee.roasterComment}”</p>
+                  <p className="mt-1 whitespace-pre-line text-[13px] leading-relaxed text-navy/75">“{coffee.roasterComment}”</p>
                 </div>
               )}
               {coffee.baristaComment && (
@@ -166,7 +166,7 @@ export default function CoffeeChartDetailPage() {
                   <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/40">
                     바리스타의 생각 · BARISTA&apos;S COMMENT
                   </p>
-                  <p className="mt-1 text-[13px] leading-relaxed text-navy/75">“{coffee.baristaComment}”</p>
+                  <p className="mt-1 whitespace-pre-line text-[13px] leading-relaxed text-navy/75">“{coffee.baristaComment}”</p>
                 </div>
               )}
             </div>
