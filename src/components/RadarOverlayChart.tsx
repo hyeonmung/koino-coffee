@@ -72,8 +72,10 @@ export default function RadarOverlayChart({ series, size = 320 }: RadarOverlayCh
   }
 
   return (
-    <div className="mx-auto p-3" style={{ width: size, height: size }}>
-      <Radar data={data} options={options} />
+    <div className="mx-auto p-3" style={{ maxWidth: size }}>
+      <div style={{ width: '100%', aspectRatio: '1 / 1' }}>
+        <Radar data={data} options={options} />
+      </div>
     </div>
   )
 }

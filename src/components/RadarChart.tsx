@@ -85,8 +85,8 @@ const RadarChart = forwardRef<HTMLDivElement, RadarChartProps>(
     }
 
     return (
-      <div ref={ref} className="mx-auto p-3">
-        <div style={{ width: size, height: size }}>
+      <div ref={ref} className="mx-auto p-3" style={{ maxWidth: size }}>
+        <div style={{ width: '100%', aspectRatio: '1 / 1' }}>
           <Radar data={data} options={options} />
         </div>
       </div>
