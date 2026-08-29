@@ -28,13 +28,12 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
     <form onSubmit={handleSubmit}>
       <input
         type="email"
-        autoFocus
         value={email}
         onChange={(e) => {
           setEmail(e.target.value)
           setError('')
         }}
-        className="w-full border border-navy/25 bg-white px-3 py-2.5 text-center text-[14px] text-navy outline-none focus:border-navy"
+        className="w-full border border-navy/25 bg-white px-3 py-2.5 text-center text-[16px] text-navy outline-none focus:border-navy"
         placeholder="이메일"
       />
       <input
@@ -44,7 +43,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
           setPassword(e.target.value)
           setError('')
         }}
-        className={`mt-2.5 w-full border bg-white px-3 py-2.5 text-center text-[15px] tracking-[0.15em] text-navy outline-none focus:border-navy ${
+        className={`mt-2.5 w-full border bg-white px-3 py-2.5 text-center text-[16px] tracking-[0.15em] text-navy outline-none focus:border-navy ${
           error ? 'border-red-400' : 'border-navy/25'
         }`}
         placeholder="비밀번호"
