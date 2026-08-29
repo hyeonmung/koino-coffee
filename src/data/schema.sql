@@ -5,12 +5,11 @@
 -- individual `create table if not exists` blocks, but DROP statements at the top are
 -- destructive — only meant for the first-time setup of an empty project.
 --
--- Auth model: there is no real staff login yet (the admin panel is a single shared
--- password checked client-side, see src/constants/auth.ts). RLS is enabled on every
--- table for good hygiene, but every policy is permissive ("using (true)") so the
--- anon key can read and write everything — the app's only real gate is the password
--- screen. Tightening this later means adding Supabase Auth for staff and switching
--- write policies to `auth.uid() is not null`.
+-- Auth model: staff sign in via Supabase Auth (email + password — see
+-- src/components/AdminGate.tsx). RLS is enabled on every table: anyone can read
+-- (the public site needs that), but insert/update/delete requires an authenticated
+-- session. See migrations/2026-08-29-admin-auth-and-cleanup.sql for the script that
+-- moved a project from the old fully-open "public_all" policy to this.
 
 create extension if not exists "pgcrypto";
 
@@ -221,10 +220,6 @@ create table if not exists site_settings (
   homepage_featured_coffee_ids text[] not null default '{}',
   homepage_story_ids text[] not null default '{}',
   home_section_visibility jsonb not null default '{}',
-  about_intro text not null default '',
-  about_sections jsonb not null default '[]', -- StorySection[]
-  business_intro text not null default '',
-  business_sections jsonb not null default '[]', -- BusinessSection[]
   updated_at timestamptz not null default now()
 );
 
@@ -345,7 +340,8 @@ create table if not exists inquiries (
 );
 
 -- ── Row Level Security ───────────────────────────────────────────────────────
--- Every table: RLS on, fully open policy. See note at top of file.
+-- Every table: public read (the site needs that), staff-only write. See note at
+-- top of file — this is the state after migrations/2026-08-29-admin-auth-and-cleanup.sql.
 do $$
 declare
   t text;
@@ -359,6 +355,12 @@ begin
   loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists "public_all" on %I', t);
-    execute format('create policy "public_all" on %I for all using (true) with check (true)', t);
+    execute format('drop policy if exists "public_read" on %I', t);
+    execute format('create policy "public_read" on %I for select using (true)', t);
+    execute format('drop policy if exists "staff_write" on %I', t);
+    execute format(
+      'create policy "staff_write" on %I for all using (auth.role() = ''authenticated'') with check (auth.role() = ''authenticated'')',
+      t
+    );
   end loop;
 end $$;

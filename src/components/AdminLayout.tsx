@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { supabase } from '../data/supabaseClient'
 
 const NAV_ITEMS = [
   { to: '/admin', label: '대시보드', end: true },
@@ -29,12 +30,21 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <p className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">KOINONIA — 관리자</p>
             </span>
           </Link>
-          <Link
-            to="/"
-            className="border border-navy/25 px-3.5 py-2 text-[12px] font-semibold tracking-wide text-navy/70 hover:border-navy hover:text-navy"
-          >
-            사이트 보기
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="border border-navy/25 px-3.5 py-2 text-[12px] font-semibold tracking-wide text-navy/70 hover:border-navy hover:text-navy"
+            >
+              사이트 보기
+            </Link>
+            <button
+              type="button"
+              onClick={() => supabase.auth.signOut()}
+              className="border border-navy/25 px-3.5 py-2 text-[12px] font-semibold tracking-wide text-navy/70 hover:border-navy hover:text-navy"
+            >
+              로그아웃
+            </button>
+          </div>
         </div>
         <nav className="mx-auto flex max-w-[1240px] flex-wrap gap-1 px-6 pb-3">
           {NAV_ITEMS.map((item) => (
