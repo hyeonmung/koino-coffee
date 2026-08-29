@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import BusinessInquiryForm from '../../components/BusinessInquiryForm'
 import KOIStarField from '../../components/decorative/KOIStarField'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -73,6 +74,17 @@ export default function BusinessPage() {
             ))}
           </div>
         )}
+
+        <section id="inquiry" className="mt-16 border-t border-navy/15 pt-10">
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">INQUIRY</p>
+          <h2 className="mt-1 text-[22px] font-bold text-navy">납품 · 교육 문의하기</h2>
+          <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">
+            원두 납품, 카페 컨설팅, 바리스타 교육 등 궁금하신 점을 남겨주시면 순차적으로 답변드리겠습니다.
+          </p>
+          <div className="mt-6">
+            <BusinessInquiryForm />
+          </div>
+        </section>
       </main>
 
       <PublicFooter />

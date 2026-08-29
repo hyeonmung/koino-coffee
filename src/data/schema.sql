@@ -340,8 +340,11 @@ create table if not exists inquiries (
 );
 
 -- ── Row Level Security ───────────────────────────────────────────────────────
--- Every table: public read (the site needs that), staff-only write. See note at
--- top of file — this is the state after migrations/2026-08-29-admin-auth-and-cleanup.sql.
+-- Every content table: public read (the site needs that), staff-only write. inquiries is
+-- the one exception — it holds submitters' contact info, so it's staff-read-only, with a
+-- separate public-insert policy instead (the public business-inquiry form on /business
+-- needs to write without a staff session; see src/components/BusinessInquiryForm.tsx and
+-- migrations/2026-08-29-admin-auth-and-cleanup.sql for how this evolved).
 do $$
 declare
   t text;
@@ -356,7 +359,9 @@ begin
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists "public_all" on %I', t);
     execute format('drop policy if exists "public_read" on %I', t);
-    execute format('create policy "public_read" on %I for select using (true)', t);
+    if t <> 'inquiries' then
+      execute format('create policy "public_read" on %I for select using (true)', t);
+    end if;
     execute format('drop policy if exists "staff_write" on %I', t);
     execute format(
       'create policy "staff_write" on %I for all using (auth.role() = ''authenticated'') with check (auth.role() = ''authenticated'')',
@@ -364,3 +369,6 @@ begin
     );
   end loop;
 end $$;
+
+drop policy if exists "public_insert_inquiry" on inquiries;
+create policy "public_insert_inquiry" on inquiries for insert with check (true);
