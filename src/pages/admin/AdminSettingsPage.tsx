@@ -26,7 +26,7 @@ export default function AdminSettingsPage() {
     <AdminLayout>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">SITE SETTINGS</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">SITE SETTINGS</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">사이트 설정</h1>
         </div>
         <div className="flex items-center gap-2">

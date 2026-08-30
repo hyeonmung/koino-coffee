@@ -22,7 +22,7 @@ function AppRoot() {
   if (failed) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-warm-white px-6 text-center">
-        <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOINONIA</p>
+        <p className="text-[10px] font-semibold tracking-[0.3em] text-accent font-kicker">KOINONIA</p>
         <h1 className="mt-3 text-[20px] font-bold text-navy">사이트를 불러오지 못했습니다.</h1>
         <p className="mt-2 max-w-[360px] text-[13px] text-navy/55">
           잠시 후 새로고침해주세요. 문제가 계속되면 인터넷 연결을 확인해주세요.

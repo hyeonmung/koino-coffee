@@ -21,7 +21,7 @@ export default function AdminBrewGuidesPage() {
     <AdminLayout>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BREW GUIDE</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BREW GUIDE</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">브루 가이드 관리</h1>
         </div>
         <div className="flex gap-2">

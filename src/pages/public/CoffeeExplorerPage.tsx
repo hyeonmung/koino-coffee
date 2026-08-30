@@ -173,7 +173,7 @@ export default function CoffeeExplorerPage() {
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1240px] px-6 py-10">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COFFEE LIBRARY</p>
+            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COFFEE LIBRARY</p>
             <h1 className="mt-1 text-[28px] font-bold text-navy">원두</h1>
           </div>
           {isOwner && (

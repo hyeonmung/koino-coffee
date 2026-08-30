@@ -48,7 +48,7 @@ export default function AdminDictionaryPage() {
     <AdminLayout>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DICTIONARY</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">DICTIONARY</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">커피 사전 관리</h1>
         </div>
         <button

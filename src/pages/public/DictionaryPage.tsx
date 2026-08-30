@@ -80,7 +80,7 @@ export default function DictionaryPage() {
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[860px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DICTIONARY</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">DICTIONARY</p>
         <h1 className="mt-1 text-[28px] font-bold text-navy">커피 사전</h1>
 
         <input

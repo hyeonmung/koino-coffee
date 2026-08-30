@@ -32,7 +32,7 @@ export default function AboutPage() {
           {!heroImage && <KOIStarField />}
           {heroImage && <div className={`absolute inset-0 ${OVERLAY_CLASS[hero.overlay]}`} />}
           <div className={`relative mx-auto flex w-full max-w-[1240px] flex-col px-0 ${TEXT_POSITION_CLASS[heroTextPosition]}`}>
-            <p className="text-[10px] font-semibold tracking-[0.3em] text-accent">KOINONIA</p>
+            <p className="text-[10px] font-semibold tracking-[0.3em] text-accent font-kicker">KOINONIA</p>
             <h1 className="mt-2 whitespace-pre-line text-[32px] font-bold text-warm-white sm:text-[40px]">{hero.title}</h1>
             {hero.subtitle && <p className="mx-0 mt-3 max-w-[520px] whitespace-pre-line text-[14px] leading-relaxed text-warm-white/75">{hero.subtitle}</p>}
           </div>

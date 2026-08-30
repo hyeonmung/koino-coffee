@@ -28,7 +28,7 @@ export default function StoryDetailPage() {
       )}
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[720px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{STORY_CATEGORY_LABEL[story.category]}</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">{STORY_CATEGORY_LABEL[story.category]}</p>
         <h1 className="mt-1 text-[28px] font-bold leading-tight whitespace-pre-line text-navy">{story.title}</h1>
         <p className="mt-2 text-[11px] text-navy/40">{new Date(story.publishedDate).toLocaleDateString('ko-KR')}</p>
 

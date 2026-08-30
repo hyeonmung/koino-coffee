@@ -63,11 +63,11 @@ export default function PublicFooter() {
             </p>
           </div>
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">바로가기</p>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70 font-kicker">바로가기</p>
             <div className="mt-2 flex flex-col gap-1.5">{quickLinks}</div>
           </div>
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70">문의처</p>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-accent/70 font-kicker">문의처</p>
             <div className="mt-2 flex flex-col gap-1.5 text-[12px] text-warm-white/65">{contactInfo}</div>
           </div>
         </div>

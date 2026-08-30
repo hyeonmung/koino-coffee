@@ -22,7 +22,7 @@ export default function AdminWholesaleRequestsPage() {
 
   return (
     <AdminLayout>
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">WHOLESALE ORDERS</p>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">WHOLESALE ORDERS</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">원두 납품 신청</h1>
       <p className="mt-1 text-[12px] text-navy/50">납품·교육 &gt; 원두 납품 게시물의 공개 신청 폼으로 접수된 내역입니다.</p>
 

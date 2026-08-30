@@ -128,7 +128,7 @@ export default function AdminColumnSchedulerPage() {
     return (
       <AdminLayout>
         <div className="max-w-[520px] border border-navy/15 bg-white px-6 py-14 text-center">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">완료</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">완료</p>
           <p className="mt-2 text-[16px] font-semibold text-navy">칼럼 {done}건이 예약되었습니다.</p>
           <p className="mt-1 text-[12px] text-navy/55">각 예약 시각이 지나면 자동으로 공개됩니다.</p>
           <button

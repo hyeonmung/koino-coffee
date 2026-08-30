@@ -88,20 +88,20 @@ export default function DictionaryDetailPage() {
         {entry.termKo && <p className="text-[15px] text-navy/50">{entry.termKo}</p>}
 
         <section className="mt-8 border-t border-navy/10 pt-6">
-          <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent">쉽게 말하면</h2>
+          <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent font-kicker">쉽게 말하면</h2>
           <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">{entry.short}</p>
         </section>
 
         {entry.easy && (
           <section className="mt-6">
-            <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent">이런 느낌입니다</h2>
+            <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent font-kicker">이런 느낌입니다</h2>
             <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">{entry.easy}</p>
           </section>
         )}
 
         {entry.example && (
           <section className="mt-6">
-            <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent">예를 들면</h2>
+            <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent font-kicker">예를 들면</h2>
             <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">{entry.example}</p>
           </section>
         )}

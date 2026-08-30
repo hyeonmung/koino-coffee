@@ -340,7 +340,7 @@ export default function AdminSpotlightEditorPage() {
                 </div>
                 {/* 텍스트 영역 — 사진과 분리된 별도 패널 */}
                 <div className="border-t border-warm-white/10 bg-navy p-4 text-warm-white">
-                  <p className="text-[9px] font-semibold tracking-[0.25em] text-accent">{preview.label}</p>
+                  <p className="text-[9px] font-semibold tracking-[0.25em] text-accent font-kicker">{preview.label}</p>
                   <p className="mt-1 font-serif text-[16px] font-bold leading-snug">{preview.title}</p>
                   {preview.description && <p className="mt-1 text-[10px] text-warm-white/70">{preview.description}</p>}
                   <p className="mt-2 text-[10px] font-semibold text-warm-white/70">{preview.ctaText} →</p>

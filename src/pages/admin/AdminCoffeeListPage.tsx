@@ -78,7 +78,7 @@ export default function AdminCoffeeListPage() {
     <AdminLayout>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COFFEE MANAGEMENT</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COFFEE MANAGEMENT</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">원두 관리</h1>
         </div>
         <Link

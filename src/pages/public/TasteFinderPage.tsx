@@ -52,7 +52,7 @@ export default function TasteFinderPage() {
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[640px] px-6 py-14">
         {!showResults ? (
           <>
-            <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">FIND YOUR COFFEE</p>
+            <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">FIND YOUR COFFEE</p>
             <h1 className="mt-1 text-center text-[26px] font-bold text-navy">좋아하는 맛에서 시작해보세요.</h1>
             <p className="mt-6 text-center text-[11px] font-semibold text-navy/40">
               {step + 1} / {TOTAL_STEPS} · {TOPIC_LABEL[current.topic]}
@@ -93,7 +93,7 @@ export default function TasteFinderPage() {
           </>
         ) : (
           <>
-            <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent">YOUR COFFEE</p>
+            <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">YOUR COFFEE</p>
             <h1 className="mt-1 text-center text-[26px] font-bold text-navy">추천 커피</h1>
             <p className="mx-auto mt-2 max-w-[420px] text-center text-[11px] text-navy/45">
               Match %는 과학적 정확도가 아니라 KOINO 프로파일을 기준으로 계산한 취향 유사도입니다.
@@ -108,7 +108,7 @@ export default function TasteFinderPage() {
                 {results.map((match, i) => (
                   <div key={match.coffee.id} className="border border-navy/15 bg-white p-5">
                     <div className="flex items-center justify-between">
-                      <p className="text-[11px] font-semibold tracking-[0.15em] text-accent">
+                      <p className="text-[11px] font-semibold tracking-[0.15em] text-accent font-kicker">
                         {i === 0 ? '1위 추천' : `${i + 1}위`}
                       </p>
                       <p className="text-[20px] font-bold text-navy">{match.score}%</p>

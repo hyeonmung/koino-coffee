@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <Link to="/admin" className="flex items-center gap-2">
             <img src="/brand/koi-logo.png" alt="" className="h-11 w-11 shrink-0" />
             <span>
-              <p className="text-[10px] font-semibold tracking-[0.35em] text-accent">코이노니아</p>
+              <p className="text-[10px] font-semibold tracking-[0.35em] text-accent font-kicker">코이노니아 로스터스</p>
               <p className="mt-0.5 block font-serif text-[18px] font-bold tracking-tight text-navy">KOINONIA — 관리자</p>
             </span>
           </Link>

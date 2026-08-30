@@ -18,7 +18,7 @@ export default function AdminDashboardPage() {
 
   return (
     <AdminLayout>
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">DASHBOARD</p>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">DASHBOARD</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">운영 현황</h1>
 
       <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">

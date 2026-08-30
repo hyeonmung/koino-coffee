@@ -72,7 +72,7 @@ export default function AdminBrewCategoriesPage() {
       <Link to="/admin/brew-guides" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
         ← 브루 가이드 목록
       </Link>
-      <p className="mt-2 text-[10px] font-semibold tracking-[0.25em] text-accent">BREW CATEGORY</p>
+      <p className="mt-2 text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BREW CATEGORY</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">브루 가이드 카테고리 관리</h1>
       <p className="mt-2 max-w-[560px] text-[12px] text-navy/50">
         핸드드립·에스프레소 같은 전문 카테고리입니다. V60·Espresso 같은 장비(Equipment)와는 별도로 관리되며, 브루

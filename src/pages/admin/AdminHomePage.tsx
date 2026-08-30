@@ -48,7 +48,7 @@ export default function AdminHomePage() {
     <AdminLayout>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">HOME</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">HOME</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">홈 관리</h1>
         </div>
         <div className="flex items-center gap-2">

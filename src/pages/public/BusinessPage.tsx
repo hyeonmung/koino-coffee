@@ -21,7 +21,7 @@ export default function BusinessPage() {
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BUSINESS</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BUSINESS</p>
         <h1 className="mt-1 text-[28px] font-bold text-navy">납품 · 교육</h1>
         <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">코이노니아의 원두 납품과 교육 소식을 안내합니다.</p>
 
@@ -76,7 +76,7 @@ export default function BusinessPage() {
         )}
 
         <section id="inquiry" className="mt-16 border-t border-navy/15 pt-10">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">INQUIRY</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">INQUIRY</p>
           <h2 className="mt-1 text-[22px] font-bold text-navy">납품 · 교육 문의하기</h2>
           <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">
             원두 납품, 카페 컨설팅, 바리스타 교육 등 궁금하신 점을 남겨주시면 순차적으로 답변드리겠습니다.

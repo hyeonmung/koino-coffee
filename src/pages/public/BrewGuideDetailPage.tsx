@@ -22,7 +22,7 @@ export default function BrewGuideDetailPage() {
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[720px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{guide.equipment}</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">{guide.equipment}</p>
         <h1 className="mt-1 text-[28px] font-bold whitespace-pre-line text-navy">{guide.title}</h1>
 
         <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">

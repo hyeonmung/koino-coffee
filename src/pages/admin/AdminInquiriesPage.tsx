@@ -22,7 +22,7 @@ export default function AdminInquiriesPage() {
 
   return (
     <AdminLayout>
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">INQUIRIES</p>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">INQUIRIES</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">문의 관리</h1>
 
       <div className="mt-6 space-y-3">

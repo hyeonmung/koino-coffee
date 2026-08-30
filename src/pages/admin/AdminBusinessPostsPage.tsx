@@ -25,7 +25,7 @@ export default function AdminBusinessPostsPage() {
     <AdminLayout>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BUSINESS</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BUSINESS</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">납품 · 교육 게시물 관리</h1>
           <p className="mt-2 max-w-[560px] text-[12px] text-navy/50">
             "원두 납품 문의" 게시물은 항상 목록 최상단에 고정되며 삭제할 수 없습니다 — 내용은 자유롭게 수정하세요.

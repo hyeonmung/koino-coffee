@@ -194,7 +194,7 @@ export default function AdminFlavorsPage() {
 
   return (
     <AdminLayout>
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">FLAVOR LIBRARY</p>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">FLAVOR LIBRARY</p>
       <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">향미 관리</h1>
       <p className="mt-2 text-[12px] text-navy/50">
         여기서 추가한 향미는 원두 등록 화면의 Flavor Notes 입력 시 자동완성으로 제안되고, 각 향미마다 지정한 색상이 사이트

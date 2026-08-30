@@ -355,7 +355,7 @@ export default function CoffeeDetailPage() {
 
   const storyContent = linkedStory && (
     <>
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORY</p>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">STORY</p>
       <Link to={`/stories/${linkedStory.slug}`} className="mt-2 block border border-navy/15 p-5 hover:border-navy">
         <p className="text-[16px] font-bold text-navy">{linkedStory.title}</p>
         <p className="mt-1 text-[12px] text-navy/55">{linkedStory.excerpt}</p>
@@ -385,7 +385,7 @@ export default function CoffeeDetailPage() {
 
   const qrContent = (
     <div className="text-center">
-      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">SCAN & SHARE</p>
+      <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">SCAN & SHARE</p>
       <div className="mt-4 flex justify-center">
         <QRCodeBlock url={shareUrl} filenameBase={slugBase} />
       </div>
@@ -439,7 +439,7 @@ export default function CoffeeDetailPage() {
           ) : (
             mobileTabs.length > 0 && (
               <div className="mt-10 border-t border-navy/15 pt-6">
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-accent">
+                <p className="text-[10px] font-semibold tracking-[0.2em] text-accent font-kicker">
                   {mobileCurrentPage} / {mobileTotalPages} · {activeMobileTab?.label}
                 </p>
                 <div className="mt-4">{activeMobileTab?.content}</div>

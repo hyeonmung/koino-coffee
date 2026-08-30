@@ -29,7 +29,7 @@ export default function BusinessPostDetailPage() {
       )}
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[720px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">{BUSINESS_POST_CATEGORY_LABEL[post.category]}</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">{BUSINESS_POST_CATEGORY_LABEL[post.category]}</p>
         <h1 className="mt-1 text-[28px] font-bold leading-tight whitespace-pre-line text-navy">{post.title}</h1>
         <p className="mt-2 text-[11px] text-navy/40">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
 
@@ -56,7 +56,7 @@ export default function BusinessPostDetailPage() {
 
         {post.category === 'WHOLESALE' && (
           <section className="mt-10 border-t border-navy/15 pt-8">
-            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">ORDER</p>
+            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">ORDER</p>
             <h2 className="mt-1 text-[20px] font-bold text-navy">원두 납품 신청</h2>
             <p className="mt-2 text-[12px] text-navy/55">아래 정보를 남겨주시면 확인 후 순차적으로 안내드리겠습니다.</p>
             <div className="mt-5">

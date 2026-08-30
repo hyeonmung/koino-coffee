@@ -66,7 +66,7 @@ export default function QuickAddColumnForm({ onClose, onCreated }: { onClose: ()
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">QUICK WRITE</p>
+            <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">QUICK WRITE</p>
             <h2 className="mt-1 text-[18px] font-bold text-navy">새 칼럼 작성</h2>
           </div>
           <button type="button" onClick={onClose} className="text-[20px] text-navy/40 hover:text-navy" aria-label="닫기">

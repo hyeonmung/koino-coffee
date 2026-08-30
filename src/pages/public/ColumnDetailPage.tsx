@@ -33,7 +33,7 @@ export default function ColumnDetailPage() {
       )}
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[720px] px-6 py-10">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">COLUMN</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COLUMN</p>
         <h1 className="mt-1 text-[28px] font-bold leading-tight whitespace-pre-line text-navy">{column.title}</h1>
         <p className="mt-2 text-[11px] text-navy/40">{formatScheduledAt(column.scheduledAt)}</p>
 
@@ -42,7 +42,7 @@ export default function ColumnDetailPage() {
         </div>
 
         <div className="mt-8 border-l-[3px] border-accent bg-white px-5 py-5">
-          <p className="text-[10px] font-semibold tracking-[0.2em] text-accent">코이노니아의 시각</p>
+          <p className="text-[10px] font-semibold tracking-[0.2em] text-accent font-kicker">코이노니아 로스터스의 시각</p>
           <div className="mt-2">
             <StoryBody body={column.perspective} />
           </div>

@@ -80,7 +80,7 @@ export default function AdminBusinessPostEditorPage() {
         ← 납품 · 교육 목록
       </Link>
       <h1 className="mt-1 flex items-center gap-2 font-serif text-[22px] font-bold text-navy">
-        {draft.isSystemPinned && <span className="text-[11px] font-bold tracking-wide text-accent">PIN</span>}
+        {draft.isSystemPinned && <span className="text-[11px] font-bold tracking-wide text-accent font-kicker">PIN</span>}
         {isNew ? '새 게시물' : draft.title}
       </h1>
       {draft.isSystemPinned && (

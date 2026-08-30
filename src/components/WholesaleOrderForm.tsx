@@ -69,7 +69,7 @@ export default function WholesaleOrderForm() {
   if (done) {
     return (
       <div className="border border-navy/15 bg-white px-6 py-16 text-center">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">신청 접수 완료</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">신청 접수 완료</p>
         <p className="mt-2 text-[15px] font-semibold text-navy">원두 납품 신청이 정상적으로 접수되었습니다.</p>
         <p className="mt-1 text-[12px] text-navy/55">확인 후 남겨주신 연락처로 순차적으로 안내드리겠습니다.</p>
         <button

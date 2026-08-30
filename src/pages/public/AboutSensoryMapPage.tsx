@@ -12,7 +12,7 @@ export default function AboutSensoryMapPage() {
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[860px] px-6 py-10">
-        <p className="text-[11px] font-semibold tracking-[0.25em] text-accent">HOW TO READ</p>
+        <p className="text-[11px] font-semibold tracking-[0.25em] text-accent font-kicker">HOW TO READ</p>
         <h1 className="mt-2 text-[28px] font-bold leading-tight text-navy">KOINO SENSORY MAP 읽는 법</h1>
         <p className="mt-3 max-w-[560px] text-[13px] leading-relaxed text-navy/60">
           코이노니아는 원두마다 CUP CHARACTER와 6가지 관능(Sensory) 점수를 매겨 육각형 레이더 차트로

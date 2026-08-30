@@ -23,7 +23,7 @@ export default function BrewGuideIndexPage() {
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 pb-20 pt-10 sm:pb-32 lg:pb-52">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">BREW GUIDE</p>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BREW GUIDE</p>
         <h1 className="mt-1 text-[28px] font-bold text-navy">집에서 더 맛있게</h1>
         <p className="mt-2 max-w-[560px] text-[13px] text-navy/55">
           추출 방식과 장비, 물과 분쇄, 레시피 설계부터 트러블슈팅까지 — 코이노니아의 추출 노트입니다.

@@ -68,7 +68,7 @@ export default function AdminSpotlightPage() {
     <AdminLayout>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">SPOTLIGHT</p>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">SPOTLIGHT</p>
           <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">메인 스포트라이트</h1>
           <p className="mt-1 text-[12px] text-navy/50">
             홈 화면 Hero 오른쪽에 순환 노출되는 콘텐츠입니다. 공개 상태인 슬라이드가 없으면 자동으로
