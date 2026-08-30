@@ -22,6 +22,7 @@ drop table if exists site_settings cascade;
 drop table if exists business_posts cascade;
 drop table if exists coffees cascade;
 drop table if exists stories cascade;
+drop table if exists columns cascade;
 drop table if exists brew_guides cascade;
 drop table if exists brew_categories cascade;
 drop table if exists flavor_descriptors cascade;
@@ -101,6 +102,31 @@ create table if not exists stories (
   tags text[] not null default '{}',
   cover_image text,
   published_date date not null default current_date,
+  seo_title text,
+  seo_description text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- ── Columns ("칼럼") ─────────────────────────────────────────────────────────
+-- Distinct from Stories: structured opinion-piece fields, and `scheduled_at` gates public
+-- visibility (see the "public_read" policy below) — no cron job involved. The client always
+-- fetches fresh from Supabase on page load, so a scheduled column simply becomes visible to
+-- the next visitor once now() >= scheduled_at.
+create table if not exists columns (
+  id text primary key default gen_random_uuid()::text,
+  slug text not null unique,
+  publish_status text not null default 'published' check (publish_status in ('draft', 'published', 'archived')),
+  title text not null,
+  excerpt text not null default '',
+  trend_summary text not null,
+  perspective text not null,
+  store_note text,
+  closing text,
+  sources text,
+  cover_image text,
+  tags text[] not null default '{}',
+  scheduled_at timestamptz not null,
   seo_title text,
   seo_description text,
   created_at timestamptz not null default now(),
@@ -361,12 +387,12 @@ create table if not exists wholesale_requests (
 do $$
 declare
   t text;
-  no_public_read text[] := array['inquiries', 'wholesale_requests'];
+  no_public_read text[] := array['inquiries', 'wholesale_requests', 'columns'];
 begin
   for t in
     select unnest(array[
       'characters', 'flavor_families', 'flavor_descriptors', 'brew_categories', 'brew_guides',
-      'stories', 'coffees', 'business_posts', 'site_settings', 'about_blocks',
+      'stories', 'columns', 'coffees', 'business_posts', 'site_settings', 'about_blocks',
       'about_page_settings', 'spotlight_slides', 'dictionary_terms', 'inquiries', 'wholesale_requests'
     ])
   loop
@@ -392,3 +418,8 @@ create policy "public_insert_wholesale" on wholesale_requests for insert with ch
 
 drop policy if exists "public_insert_inquiry" on inquiries;
 create policy "public_insert_inquiry" on inquiries for insert with check (true);
+
+-- columns: time-gated read instead of the generic "public_read" — a scheduled column must
+-- not be readable by the anon key before its scheduled_at, even via a raw network request.
+drop policy if exists "public_read" on columns;
+create policy "public_read" on columns for select using (publish_status = 'published' and scheduled_at <= now());

@@ -19,8 +19,8 @@ export default function AdminStoriesPage() {
     <AdminLayout>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">NEWS & STORIES</p>
-          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">뉴스&이야기 관리</h1>
+          <p className="text-[10px] font-semibold tracking-[0.25em] text-accent">STORIES</p>
+          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">이야기 관리</h1>
         </div>
         <Link to="/admin/stories/new" className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light">
           + 새 스토리

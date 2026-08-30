@@ -180,6 +180,33 @@ export interface Story {
   updatedAt: string
 }
 
+/**
+ * A "칼럼" post — distinct from Story ("이야기"): structured opinion-piece fields instead of
+ * one free-text body, and `scheduledAt` gates public visibility (see columnRepository's
+ * getPublishedColumns — no cron involved, visibility is computed at read time against the
+ * live clock, since the app always fetches fresh from Supabase on page load).
+ */
+export interface Column {
+  id: string
+  slug: string
+  publishStatus: PublishStatus
+  title: string
+  excerpt: string
+  trendSummary: string
+  perspective: string
+  storeNote?: string
+  closing?: string
+  sources?: string
+  coverImage?: string
+  tags: string[]
+  /** ISO datetime (UTC). A column only appears publicly once now() >= scheduledAt. */
+  scheduledAt: string
+  seoTitle?: string
+  seoDescription?: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type BusinessPostCategory = 'WHOLESALE' | 'EDUCATION' | 'CLASS' | 'NOTICE' | 'PARTNERSHIP'
 
 export interface BusinessLink {

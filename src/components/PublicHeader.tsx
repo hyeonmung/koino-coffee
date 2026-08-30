@@ -13,7 +13,8 @@ const NAV_LINKS = [
   { to: '/discover', label: '취향 찾기' },
   { to: '/brew-guide', label: '브루 가이드' },
   { to: '/dictionary', label: '커피 사전' },
-  { to: '/stories', label: '뉴스&이야기' },
+  { to: '/column', label: '칼럼' },
+  { to: '/stories', label: '이야기' },
   { to: '/business', label: '납품 · 교육' },
 ]
 

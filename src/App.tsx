@@ -24,6 +24,9 @@ const AdminInquiriesPage = lazy(() => import('./pages/admin/AdminInquiriesPage')
 const AdminSettingsPage = lazy(() => import('./pages/admin/AdminSettingsPage'))
 const AdminSpotlightEditorPage = lazy(() => import('./pages/admin/AdminSpotlightEditorPage'))
 const AdminSpotlightPage = lazy(() => import('./pages/admin/AdminSpotlightPage'))
+const AdminColumnsPage = lazy(() => import('./pages/admin/AdminColumnsPage'))
+const AdminColumnEditorPage = lazy(() => import('./pages/admin/AdminColumnEditorPage'))
+const AdminColumnSchedulerPage = lazy(() => import('./pages/admin/AdminColumnSchedulerPage'))
 const AdminStoriesPage = lazy(() => import('./pages/admin/AdminStoriesPage'))
 const AdminStoryEditorPage = lazy(() => import('./pages/admin/AdminStoryEditorPage'))
 const AdminWholesaleRequestsPage = lazy(() => import('./pages/admin/AdminWholesaleRequestsPage'))
@@ -44,6 +47,8 @@ const DictionaryDetailPage = lazy(() => import('./pages/public/DictionaryDetailP
 const DictionaryPage = lazy(() => import('./pages/public/DictionaryPage'))
 const HomePage = lazy(() => import('./pages/public/HomePage'))
 const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage'))
+const ColumnIndexPage = lazy(() => import('./pages/public/ColumnIndexPage'))
+const ColumnDetailPage = lazy(() => import('./pages/public/ColumnDetailPage'))
 const StoriesIndexPage = lazy(() => import('./pages/public/StoriesIndexPage'))
 const StoryDetailPage = lazy(() => import('./pages/public/StoryDetailPage'))
 const TasteFinderPage = lazy(() => import('./pages/public/TasteFinderPage'))
@@ -73,6 +78,8 @@ export default function App() {
           <Route path="/dictionary/:slug" element={<DictionaryDetailPage />} />
           <Route path="/brew-guide" element={<BrewGuideIndexPage />} />
           <Route path="/brew-guide/:slug" element={<BrewGuideDetailPage />} />
+          <Route path="/column" element={<ColumnIndexPage />} />
+          <Route path="/column/:slug" element={<ColumnDetailPage />} />
           <Route path="/stories" element={<StoriesIndexPage />} />
           <Route path="/stories/:slug" element={<StoryDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -205,6 +212,38 @@ export default function App() {
             element={
               <AdminGate>
                 <AdminBrewGuideEditorPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/columns"
+            element={
+              <AdminGate>
+                <AdminColumnsPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/columns/schedule"
+            element={
+              <AdminGate>
+                <AdminColumnSchedulerPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/columns/new"
+            element={
+              <AdminGate>
+                <AdminColumnEditorPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/columns/:id"
+            element={
+              <AdminGate>
+                <AdminColumnEditorPage />
               </AdminGate>
             }
           />
