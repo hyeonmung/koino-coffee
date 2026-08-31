@@ -438,9 +438,9 @@ export default function HomePage() {
             {/* SCREEN 2 — Current Coffees + Cup Character */}
             {(showCoffees || showCharacter) && (
               <section className="border-b border-navy/15">
-                {coffeesContent && <div className="mx-auto max-w-[1240px] px-6 py-12">{coffeesContent}</div>}
+                {coffeesContent && <div className="mx-auto max-w-[1240px] px-6 pt-12 pb-4">{coffeesContent}</div>}
                 {characterContent && (
-                  <div className="mx-auto max-w-[1240px] px-6 py-10">{characterContent}</div>
+                  <div className="mx-auto max-w-[1240px] px-6 pt-0 pb-10">{characterContent}</div>
                 )}
               </section>
             )}
