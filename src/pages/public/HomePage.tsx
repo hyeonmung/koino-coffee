@@ -130,10 +130,10 @@ export default function HomePage() {
   // renders clean — no text overlaid on top of it, which would double up with its own headline.
   // Caption/CTA sits beside it instead.
   const columnBanner = latestColumn && (
-    <section className="border-b border-navy/15 bg-navy">
+    <section className="border-b border-navy/15 bg-warm-white">
       <Link
         to={`/column/${latestColumn.slug}`}
-        className="group mx-auto flex max-w-[1240px] flex-col items-center gap-6 px-6 py-8 lg:flex-row lg:gap-10 lg:py-10"
+        className="group mx-auto flex max-w-[1240px] flex-col items-center gap-6 bg-navy px-6 py-8 lg:flex-row lg:gap-10 lg:py-10 lg:my-8"
       >
         <div className="w-full overflow-hidden lg:w-[42%]">
           {latestColumn.coverImage ? (
@@ -378,7 +378,7 @@ export default function HomePage() {
   const storiesContent = showStories && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="text-[18px] font-bold text-navy">코이노니아 이야기</h2>
+        <h2 className="text-[18px] font-bold text-navy">코이노니아 로스터스 이야기</h2>
         <Link to="/stories" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
           전체 보기 →
         </Link>

@@ -72,13 +72,13 @@ export default function PublicHeader() {
           <img src="/brand/koinonia-wordmark.png" alt="KOINONIA Roasters" className="h-14 w-auto shrink-0" />
         </Link>
 
-        <nav className="hidden items-center gap-9 xl:flex">
+        <nav className="hidden items-center gap-5 2xl:gap-7 xl:flex">
           {NAV_LINKS.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `relative whitespace-nowrap text-[17px] font-semibold leading-none tracking-tight transition-colors after:absolute after:-bottom-[10px] after:left-0 after:h-[2px] after:bg-accent after:transition-all ${
+                `relative whitespace-nowrap text-[15px] font-semibold leading-none tracking-tight transition-colors after:absolute after:-bottom-[10px] after:left-0 after:h-[2px] after:bg-accent after:transition-all 2xl:text-[17px] ${
                   isActive ? 'text-navy after:w-full' : 'text-navy/70 after:w-0 hover:text-navy hover:after:w-full'
                 }`
               }
@@ -103,7 +103,7 @@ export default function PublicHeader() {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && submitSearch()}
               placeholder="원두, 산지, 향미 검색"
-              className="w-40 bg-transparent text-[13px] text-navy outline-none placeholder:text-navy/35 lg:w-56"
+              className="w-32 bg-transparent text-[13px] text-navy outline-none placeholder:text-navy/35 2xl:w-56"
             />
           </div>
 
