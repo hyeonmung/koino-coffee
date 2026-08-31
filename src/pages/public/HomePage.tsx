@@ -440,9 +440,7 @@ export default function HomePage() {
               <section className="border-b border-navy/15">
                 {coffeesContent && <div className="mx-auto max-w-[1240px] px-6 py-12">{coffeesContent}</div>}
                 {characterContent && (
-                  <div className={`mx-auto max-w-[1240px] px-6 py-10 ${showCoffees ? 'border-t border-navy/10' : ''}`}>
-                    {characterContent}
-                  </div>
+                  <div className="mx-auto max-w-[1240px] px-6 py-10">{characterContent}</div>
                 )}
               </section>
             )}
