@@ -18,6 +18,7 @@ import { STORY_CATEGORY_LABEL } from '../../constants/storyCategories'
 import { getPublishedBrewGuides } from '../../data/repositories/brewGuideRepository'
 import { getAllCoffees, getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getAllDictionaryTerms } from '../../data/repositories/dictionaryRepository'
+import { getPublishedColumns } from '../../data/repositories/columnRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
 import { getPublishedSpotlightSlides } from '../../data/repositories/spotlightRepository'
@@ -118,6 +119,48 @@ export default function HomePage() {
   const showTasteFinder = isVisible('tasteFinder')
   const showBrew = isVisible('brewGuide') && brewGuides.length > 0
   const showStories = isVisible('stories') && stories.length > 0
+
+  // Auto-updating "오늘의 더코이맥 칼럼" banner — always the most recently published Column
+  // (getPublishedColumns is sorted newest-first and already filters to ones whose scheduled
+  // time has passed), so it advances on its own as each day's column goes live. No admin
+  // curation needed, unlike the KOI SPOTLIGHT carousel above.
+  const latestColumn = getPublishedColumns()[0]
+
+  // The cover image is itself a fully designed KOI MAG card (logo + headline baked in), so it
+  // renders clean — no text overlaid on top of it, which would double up with its own headline.
+  // Caption/CTA sits beside it instead.
+  const columnBanner = latestColumn && (
+    <section className="border-b border-navy/15 bg-navy">
+      <Link
+        to={`/column/${latestColumn.slug}`}
+        className="group mx-auto flex max-w-[1240px] flex-col items-center gap-6 px-6 py-8 lg:flex-row lg:gap-10 lg:py-10"
+      >
+        <div className="w-full overflow-hidden lg:w-[42%]">
+          {latestColumn.coverImage ? (
+            <img
+              src={latestColumn.coverImage}
+              alt={latestColumn.title}
+              className="aspect-coffee-card w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+          ) : (
+            <div className="koi-night-sky relative aspect-coffee-card w-full overflow-hidden">
+              <KOIStarField />
+            </div>
+          )}
+        </div>
+        <div className="w-full lg:flex-1">
+          <p className="text-[10px] font-semibold tracking-[0.3em] text-accent font-kicker">오늘의 더코이맥 칼럼</p>
+          <p className="mt-2 max-w-[560px] whitespace-pre-line text-[20px] font-bold leading-snug text-warm-white lg:text-[24px]">
+            {latestColumn.title}
+          </p>
+          {latestColumn.excerpt && (
+            <p className="mt-3 max-w-[560px] text-[13px] leading-relaxed text-warm-white/60">{latestColumn.excerpt}</p>
+          )}
+          <p className="mt-4 text-[12px] font-semibold text-accent group-hover:text-warm-white">칼럼 읽기 →</p>
+        </div>
+      </Link>
+    </section>
+  )
 
   // ——— Hero: always shown in full, on every breakpoint (not part of the mobile tabs below). ———
   const heroSection = (
@@ -335,7 +378,7 @@ export default function HomePage() {
   const storiesContent = showStories && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="text-[18px] font-bold text-navy">코이노니아 칼럼</h2>
+        <h2 className="text-[18px] font-bold text-navy">코이노니아 이야기</h2>
         <Link to="/stories" className="text-[11px] font-semibold text-navy/50 hover:text-navy">
           전체 보기 →
         </Link>
@@ -388,6 +431,7 @@ export default function HomePage() {
 
       <main className="w-full min-w-0 lg:flex-1">
         {heroSection}
+        {columnBanner}
 
         {isDesktop ? (
           <>

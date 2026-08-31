@@ -19,14 +19,14 @@ export default function ColumnIndexPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-warm-white">
-      <SEO title="칼럼" description="원두 트렌드와 업계 소식에 코이노니아의 시각을 더한 칼럼." />
+      <SEO title="더코이맥 칼럼" description="원두 트렌드와 업계 소식에 코이노니아의 시각을 더한 더코이맥 칼럼." />
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COLUMN</p>
-            <h1 className="mt-1 text-[28px] font-bold text-navy">칼럼</h1>
+            <h1 className="mt-1 text-[28px] font-bold text-navy">더코이맥 칼럼</h1>
           </div>
           {isOwner && (
             <button
@@ -52,7 +52,7 @@ export default function ColumnIndexPage() {
 
         {columns.length === 0 ? (
           <p className="mt-10 border border-navy/15 bg-white px-6 py-16 text-center text-[13px] text-navy/45">
-            아직 등록된 칼럼이 없습니다.
+            아직 등록된 더코이맥 칼럼이 없습니다.
           </p>
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
