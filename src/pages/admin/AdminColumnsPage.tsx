@@ -7,7 +7,7 @@ import { formatScheduledAt, isPublished } from '../../utils/scheduledTime'
 
 function statusBadge(column: Column) {
   if (column.publishStatus !== 'published') return { label: '비공개', cls: 'text-navy/40' }
-  if (isPublished(column.scheduledAt)) return { label: '게시됨', cls: 'text-green-700' }
+  if (isPublished(column.scheduledAt)) return { label: `게시됨 · ${formatScheduledAt(column.scheduledAt)}`, cls: 'text-green-700' }
   return { label: `예약됨 · ${formatScheduledAt(column.scheduledAt)}`, cls: 'font-semibold text-accent' }
 }
 
