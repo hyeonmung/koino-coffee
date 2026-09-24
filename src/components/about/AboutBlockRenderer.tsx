@@ -110,7 +110,7 @@ export default function AboutBlockRenderer({ block, isMobile: isMobileOverride }
           <Link
             to={block.ctaUrl}
             className={`mt-6 inline-block border px-6 py-3 text-[12px] font-semibold tracking-[0.1em] ${
-              isNight ? 'border-warm-white/40 hover:border-warm-white' : 'border-navy bg-navy text-warm-white hover:bg-navy-light'
+              isNight ? 'border-warm-white/40 hover:border-warm-white' : 'border-line bg-navy text-warm-white hover:bg-navy-light'
             }`}
           >
             {block.ctaLabel}

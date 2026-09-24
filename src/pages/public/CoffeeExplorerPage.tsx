@@ -8,6 +8,7 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import QuickAddCoffeeForm from '../../components/QuickAddCoffeeForm'
 import SEO from '../../components/SEO'
+import { CHARACTER_INFO } from '../../constants/characters'
 import { OWNER_EMAIL } from '../../constants/owner'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getFlavorDescriptors, getFlavorFamilies } from '../../data/repositories/flavorRepository'
@@ -38,6 +39,8 @@ const ROAST_LABEL_KO: Record<string, string> = {
 const AVAILABILITY_OPTIONS: { value: Availability; label: string }[] = [
   { value: 'available', label: 'Available' },
   { value: 'limited', label: 'Limited' },
+  { value: 'sold_out', label: '품절' },
+  { value: 'restocking', label: '재입고 예정' },
   { value: 'archive', label: '지난 커피' },
 ]
 
@@ -73,6 +76,7 @@ export default function CoffeeExplorerPage() {
   const [openFilter, setOpenFilter] = useState<FilterKey | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [page, setPage] = useState(1)
+  const [sortBy, setSortBy] = useState<'default' | 'favorites' | 'priceAsc' | 'latest'>('default')
 
   const countries = useMemo(
     () => Array.from(new Set(allCoffees.map((c) => c.country).filter(Boolean))).sort(),
@@ -108,7 +112,15 @@ export default function CoffeeExplorerPage() {
       }
       return true
     })
-    .sort((a, b) => (a.coffeeNumber ?? Infinity) - (b.coffeeNumber ?? Infinity))
+    .sort((a, b) =>
+      sortBy === 'favorites'
+        ? (b.favoriteCount ?? 0) - (a.favoriteCount ?? 0)
+        : sortBy === 'priceAsc'
+          ? (a.price ?? Infinity) - (b.price ?? Infinity)
+          : sortBy === 'latest'
+            ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            : (a.coffeeNumber ?? Infinity) - (b.coffeeNumber ?? Infinity),
+    )
 
   const resetFilters = () => {
     setCharacter('ALL')
@@ -132,7 +144,8 @@ export default function CoffeeExplorerPage() {
     character !== 'ALL' || country !== 'ALL' || process !== 'ALL' || roastType !== 'ALL' || flavorFamily !== 'ALL' || availability !== 'ALL'
 
   const activeChips: { key: FilterKey; group: string; label: string; clear: () => void }[] = []
-  if (character !== 'ALL') activeChips.push({ key: 'character', group: '캐릭터', label: character, clear: () => setCharacter('ALL') })
+  if (character !== 'ALL')
+    activeChips.push({ key: 'character', group: '캐릭터', label: CHARACTER_INFO[character].label, clear: () => setCharacter('ALL') })
   if (country !== 'ALL') activeChips.push({ key: 'country', group: '산지', label: country, clear: () => setCountry('ALL') })
   if (process !== 'ALL')
     activeChips.push({
@@ -166,7 +179,7 @@ export default function CoffeeExplorerPage() {
   const toggle = (key: FilterKey) => setOpenFilter((prev) => (prev === key ? null : key))
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title="원두" description="산지, 향미, 프로세스로 코이노니아 원두를 탐색하세요." />
       <PublicHeader />
 
@@ -174,13 +187,13 @@ export default function CoffeeExplorerPage() {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COFFEE LIBRARY</p>
-            <h1 className="mt-1 text-[28px] font-bold text-navy">원두</h1>
+            <h1 className="mt-1 text-[28px] font-bold text-ink">원두</h1>
           </div>
           {isOwner && (
             <button
               type="button"
               onClick={() => setQuickAddOpen(true)}
-              className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+              className="border border-line bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
             >
               + 원두 추가
             </button>
@@ -201,17 +214,17 @@ export default function CoffeeExplorerPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="원두, 산지, 플레이버를 검색하세요"
-          className="mt-6 w-full border border-navy/25 bg-white px-4 py-3 text-[13px] text-navy outline-none placeholder:text-navy/35 focus:border-navy"
+          className="mt-6 w-full border border-line/25 bg-surface px-4 py-3 text-[13px] text-ink outline-none placeholder:text-ink/35 focus:border-line"
         />
 
         {/* Desktop — Editorial Filter Bar */}
-        <div className="relative mt-6 hidden border-b border-navy/15 lg:block">
+        <div className="relative mt-6 hidden border-b border-line/15 lg:block">
           <div className="flex items-center gap-7">
             <button
               type="button"
               onClick={resetFilters}
               className={`border-b-2 pb-3 text-[13px] font-semibold tracking-wide transition-colors ${
-                !hasActiveFilter ? 'border-navy text-navy' : 'border-transparent text-navy/50 hover:text-navy'
+                !hasActiveFilter ? 'border-line text-ink' : 'border-transparent text-ink/50 hover:text-ink'
               }`}
             >
               전체
@@ -221,7 +234,7 @@ export default function CoffeeExplorerPage() {
               open={openFilter === 'character'}
               onToggle={() => toggle('character')}
               active={character !== 'ALL'}
-              options={CUP_CHARACTERS.map((k) => ({ value: k, label: k }))}
+              options={CUP_CHARACTERS.map((k) => ({ value: k, label: CHARACTER_INFO[k].label }))}
               value={character}
               onChange={(v) => {
                 setCharacter(v)
@@ -299,7 +312,7 @@ export default function CoffeeExplorerPage() {
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="flex items-center gap-2 border border-navy/25 px-4 py-2.5 text-[12px] font-semibold text-navy"
+            className="flex items-center gap-2 border border-line/25 px-4 py-2.5 text-[12px] font-semibold text-ink"
           >
             필터 {hasActiveFilter && <span className="text-accent">· {activeChips.length}</span>}
           </button>
@@ -313,26 +326,38 @@ export default function CoffeeExplorerPage() {
                 key={chip.key}
                 type="button"
                 onClick={chip.clear}
-                className="border border-navy/25 px-2.5 py-1 text-[11px] text-navy/70 hover:border-navy hover:text-navy"
+                className="border border-line/25 px-2.5 py-1 text-[11px] text-ink/70 hover:border-line hover:text-ink"
               >
-                <span className="text-navy/40">{chip.group}</span> {chip.label} <span className="ml-0.5">×</span>
+                <span className="text-ink/40">{chip.group}</span> {chip.label} <span className="ml-0.5">×</span>
               </button>
             ))}
-            <button type="button" onClick={resetFilters} className="text-[11px] font-semibold text-navy/45 hover:text-navy">
+            <button type="button" onClick={resetFilters} className="text-[11px] font-semibold text-ink/45 hover:text-ink">
               필터 초기화
             </button>
           </div>
         )}
 
         <div className="mt-8">
-          <p className="mb-4 text-[12px] text-navy/45">{filtered.length}종의 원두</p>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-[12px] text-ink/45">{filtered.length}종의 원두</p>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'default' | 'favorites' | 'priceAsc' | 'latest')}
+              className="border border-line/25 bg-surface px-2.5 py-1.5 text-[12px] text-ink outline-none"
+            >
+              <option value="default">기본 순서</option>
+              <option value="favorites">찜 많은 순</option>
+              <option value="priceAsc">가격 낮은 순</option>
+              <option value="latest">최신 등록 순</option>
+            </select>
+          </div>
           {filtered.length === 0 ? (
-            <div className="border border-navy/15 bg-white px-6 py-16 text-center">
-              <p className="text-[13px] text-navy/50">조건에 맞는 원두가 없습니다.</p>
+            <div className="border border-line/15 bg-surface px-6 py-16 text-center">
+              <p className="text-[13px] text-ink/50">조건에 맞는 원두가 없습니다.</p>
               <button
                 type="button"
                 onClick={resetFilters}
-                className="mt-4 border border-navy px-4 py-2 text-[12px] font-semibold text-navy hover:bg-navy hover:text-warm-white"
+                className="mt-4 border border-line px-4 py-2 text-[12px] font-semibold text-ink hover:bg-navy hover:text-warm-white"
               >
                 필터 초기화
               </button>
@@ -357,17 +382,17 @@ export default function CoffeeExplorerPage() {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-navy/40" onClick={() => setMobileOpen(false)} />
-          <div className="absolute inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto bg-warm-white p-6">
+          <div className="absolute inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto bg-canvas p-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-[18px] font-bold text-navy">필터</h2>
-              <button type="button" onClick={() => setMobileOpen(false)} className="text-[13px] text-navy/50" aria-label="필터 닫기">
+              <h2 className="text-[18px] font-bold text-ink">필터</h2>
+              <button type="button" onClick={() => setMobileOpen(false)} className="text-[13px] text-ink/50" aria-label="필터 닫기">
                 ✕
               </button>
             </div>
 
             <div className="mt-5 space-y-6">
               <MobileFilterGroup label="캐릭터">
-                <FilterPills value={character} onChange={setCharacter} options={CUP_CHARACTERS.map((k) => ({ value: k, label: k }))} />
+                <FilterPills value={character} onChange={setCharacter} options={CUP_CHARACTERS.map((k) => ({ value: k, label: CHARACTER_INFO[k].label }))} />
               </MobileFilterGroup>
               <MobileFilterGroup label="산지">
                 <FilterPills value={country} onChange={setCountry} options={countries.map((c) => ({ value: c, label: c }))} />
@@ -400,14 +425,14 @@ export default function CoffeeExplorerPage() {
               </MobileFilterGroup>
             </div>
 
-            <div className="mt-6 flex gap-2 border-t border-navy/10 pt-5">
-              <button type="button" onClick={resetFilters} className="flex-1 border border-navy/25 py-2.5 text-[12px] font-semibold text-navy/60">
+            <div className="mt-6 flex gap-2 border-t border-line/10 pt-5">
+              <button type="button" onClick={resetFilters} className="flex-1 border border-line/25 py-2.5 text-[12px] font-semibold text-ink/60">
                 필터 초기화
               </button>
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="flex-1 border border-navy bg-navy py-2.5 text-[12px] font-semibold text-warm-white"
+                className="flex-1 border border-line bg-navy py-2.5 text-[12px] font-semibold text-warm-white"
               >
                 {filtered.length}종의 원두 보기
               </button>
@@ -442,22 +467,22 @@ function FilterDropdown<T extends string>({
         type="button"
         onClick={onToggle}
         className={`border-b-2 pb-3 text-[13px] font-semibold tracking-wide transition-colors ${
-          open || active ? 'border-navy text-navy' : 'border-transparent text-navy/50 hover:text-navy'
+          open || active ? 'border-line text-ink' : 'border-transparent text-ink/50 hover:text-ink'
         }`}
       >
         {label}
       </button>
       {open && (
-        <div className="absolute left-0 top-full z-20 mt-2 min-w-[200px] border border-navy/15 bg-white py-2 shadow-sm">
+        <div className="absolute left-0 top-full z-20 mt-2 min-w-[200px] border border-line/15 bg-surface py-2 shadow-sm">
           {options.length === 0 ? (
-            <p className="px-3 py-2 text-[12px] text-navy/35">해당 항목 없음</p>
+            <p className="px-3 py-2 text-[12px] text-ink/35">해당 항목 없음</p>
           ) : (
             <>
               <button
                 type="button"
                 onClick={() => onChange('ALL')}
                 className={`block w-full px-3 py-1.5 text-left text-[12px] ${
-                  value === 'ALL' ? 'font-semibold text-navy' : 'text-navy/55 hover:text-navy'
+                  value === 'ALL' ? 'font-semibold text-ink' : 'text-ink/55 hover:text-ink'
                 }`}
               >
                 전체
@@ -468,7 +493,7 @@ function FilterDropdown<T extends string>({
                   type="button"
                   onClick={() => onChange(opt.value)}
                   className={`block w-full px-3 py-1.5 text-left text-[12px] ${
-                    value === opt.value ? 'font-semibold text-navy' : 'text-navy/55 hover:text-navy'
+                    value === opt.value ? 'font-semibold text-ink' : 'text-ink/55 hover:text-ink'
                   }`}
                 >
                   {opt.label}
@@ -485,7 +510,7 @@ function FilterDropdown<T extends string>({
 function MobileFilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="mb-2 text-[10px] font-semibold tracking-[0.15em] text-navy/40">{label}</p>
+      <p className="mb-2 text-[10px] font-semibold tracking-[0.15em] text-ink/40">{label}</p>
       {children}
     </div>
   )
@@ -501,7 +526,7 @@ function FilterPills<T extends string>({
   options: { value: T; label: string }[]
 }) {
   if (options.length === 0) {
-    return <p className="text-[11px] text-navy/35">해당 항목 없음</p>
+    return <p className="text-[11px] text-ink/35">해당 항목 없음</p>
   }
   return (
     <div className="flex flex-wrap gap-1.5">
@@ -509,7 +534,7 @@ function FilterPills<T extends string>({
         type="button"
         onClick={() => onChange('ALL')}
         className={`border px-2.5 py-1.5 text-[11px] font-semibold tracking-wide ${
-          value === 'ALL' ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/55'
+          value === 'ALL' ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/55'
         }`}
       >
         전체
@@ -520,7 +545,7 @@ function FilterPills<T extends string>({
           type="button"
           onClick={() => onChange(opt.value)}
           className={`border px-2.5 py-1.5 text-[11px] font-semibold tracking-wide ${
-            value === opt.value ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/55'
+            value === opt.value ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/55'
           }`}
         >
           {opt.label}

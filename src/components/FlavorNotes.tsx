@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { getFlavorColor } from '../data/flavorMatch'
 import { getFlavorDescriptors } from '../data/repositories/flavorRepository'
+import { useTheme } from '../hooks/useTheme'
 
 interface FlavorNotesProps {
   notes: string[]
@@ -24,10 +25,15 @@ const NBSP = ' '
  */
 export default function FlavorNotes({ notes, limit, leading = false, className = '', onDark = false }: FlavorNotesProps) {
   const descriptors = useMemo(() => getFlavorDescriptors(), [])
+  const { resolved } = useTheme()
   const shown = limit ? notes.slice(0, limit) : notes
   if (shown.length === 0) return null
 
-  const separatorClass = onDark ? 'text-warm-white/35' : 'text-navy/30'
+  const separatorClass = onDark ? 'text-warm-white/35' : 'text-ink/30'
+  // Flavor Descriptor colors are tuned for a light canvas — in site dark mode (and only then;
+  // `onDark` panels already use their own dark-tuned color) a brown/muted note reads as
+  // invisible on the dark canvas, so it gets its own small white pill instead of recoloring it.
+  const needsPill = resolved === 'dark' && !onDark
 
   return (
     <span className={className}>
@@ -38,7 +44,12 @@ export default function FlavorNotes({ notes, limit, leading = false, className =
         return (
           <span key={`${note}-${i}`}>
             {showSeparator && <span className={separatorClass}>{separator}</span>}
-            <span style={{ color: onDark ? color.onDark : color.onLight }}>{note}</span>
+            <span
+              style={{ color: onDark ? color.onDark : color.onLight }}
+              className={needsPill ? 'rounded-[3px] bg-white px-1 py-px' : ''}
+            >
+              {note}
+            </span>
           </span>
         )
       })}

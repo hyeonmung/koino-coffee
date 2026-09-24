@@ -1,5 +1,6 @@
-import { CHARACTER_STYLE } from '../constants/characterStyle'
+import { getCharacterStyle } from '../constants/characterStyle'
 import { SENSORY_FIELDS } from '../constants/sensory'
+import { useTheme } from '../hooks/useTheme'
 import type { CupCharacter, SensoryProfile } from '../types'
 import { pointsToPath, radarPoint } from '../utils/radarGeometry'
 
@@ -11,7 +12,6 @@ interface MiniSensoryRadarProps {
   className?: string
 }
 
-const NAVY = '#14213d'
 const MAX = 5
 
 // Mini Radar space is tight, so long labels ("플레이버", "접근성") are abbreviated here only.
@@ -30,7 +30,8 @@ const MINI_LABEL: Record<string, string> = {
  * point geometry with the full Chart.js Radar via utils/radarGeometry so both always agree.
  */
 export default function MiniSensoryRadar({ sensory, character, size = 104, showLabels = true, className = '' }: MiniSensoryRadarProps) {
-  const { accent, accentSoft } = CHARACTER_STYLE[character]
+  const { resolved } = useTheme()
+  const { accent, accentSoft } = getCharacterStyle(character, resolved === 'dark')
   const cx = size / 2
   const cy = size / 2
   const radius = size / 2 - (showLabels ? size * 0.16 : size * 0.06)
@@ -44,10 +45,10 @@ export default function MiniSensoryRadar({ sensory, character, size = 104, showL
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={srText} className={className}>
       {gridRings.map((ring, i) => (
-        <polygon key={i} points={ring} fill="none" stroke={NAVY} strokeOpacity={0.12} strokeWidth={1} />
+        <polygon key={i} points={ring} fill="none" stroke="var(--color-line)" strokeOpacity={0.12} strokeWidth={1} />
       ))}
       {axisEnds.map((p, i) => (
-        <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke={NAVY} strokeOpacity={0.14} strokeWidth={1} />
+        <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="var(--color-line)" strokeOpacity={0.14} strokeWidth={1} />
       ))}
       <polygon
         points={pointsToPath(dataPoints)}
@@ -68,7 +69,7 @@ export default function MiniSensoryRadar({ sensory, character, size = 104, showL
               x={p.x}
               y={p.y}
               fontSize={size * 0.075}
-              fill={NAVY}
+              fill="var(--color-ink)"
               fillOpacity={0.5}
               textAnchor="middle"
               dominantBaseline="middle"

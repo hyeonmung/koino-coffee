@@ -26,14 +26,14 @@ export default function AdminBusinessPostsPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BUSINESS</p>
-          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">납품 · 교육 게시물 관리</h1>
-          <p className="mt-2 max-w-[560px] text-[12px] text-navy/50">
+          <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">납품 · 교육 게시물 관리</h1>
+          <p className="mt-2 max-w-[560px] text-[12px] text-ink/50">
             "원두 납품 문의" 게시물은 항상 목록 최상단에 고정되며 삭제할 수 없습니다 — 내용은 자유롭게 수정하세요.
           </p>
         </div>
         <Link
           to="/admin/business/new"
-          className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
         >
           + 새 게시물
         </Link>
@@ -45,25 +45,25 @@ export default function AdminBusinessPostsPage() {
 
       <div className="mt-6 space-y-2">
         {posts.map((post) => (
-          <div key={post.id} className="flex items-center justify-between border border-navy/15 bg-white px-4 py-3">
+          <div key={post.id} className="flex items-center justify-between border border-line/15 bg-surface px-4 py-3">
             <div>
-              <p className="flex items-center gap-1.5 text-[13px] font-semibold text-navy">
+              <p className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
                 {post.isSystemPinned && <span className="text-[10px] font-bold text-accent">PIN</span>}
                 {post.title}
               </p>
-              <p className="text-[11px] text-navy/45">
+              <p className="text-[11px] text-ink/45">
                 {BUSINESS_POST_CATEGORY_LABEL[post.category]} · {post.publishStatus === 'published' ? '공개' : '비공개'}
               </p>
             </div>
             <div className="flex gap-1.5">
               <Link
                 to={`/admin/business/${post.id}`}
-                className="border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-navy hover:text-navy"
+                className="border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-line hover:text-ink"
               >
                 수정
               </Link>
               {post.isSystemPinned ? (
-                <span className="border border-navy/10 px-2.5 py-1.5 text-[11px] text-navy/25">삭제 불가</span>
+                <span className="border border-line/10 px-2.5 py-1.5 text-[11px] text-ink/25">삭제 불가</span>
               ) : confirmingId === post.id ? (
                 <button
                   type="button"
@@ -76,7 +76,7 @@ export default function AdminBusinessPostsPage() {
                 <button
                   type="button"
                   onClick={() => setConfirmingId(post.id)}
-                  className="border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-red-400 hover:text-red-500"
+                  className="border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-red-400 hover:text-red-500"
                 >
                   삭제
                 </button>
@@ -85,7 +85,7 @@ export default function AdminBusinessPostsPage() {
           </div>
         ))}
         {posts.length === 0 && (
-          <p className="border border-navy/15 bg-white px-4 py-10 text-center text-[13px] text-navy/40">등록된 게시물이 없습니다.</p>
+          <p className="border border-line/15 bg-surface px-4 py-10 text-center text-[13px] text-ink/40">등록된 게시물이 없습니다.</p>
         )}
       </div>
     </AdminLayout>

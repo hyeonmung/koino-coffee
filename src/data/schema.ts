@@ -2,7 +2,7 @@ import type { CoffeeProfile, CupCharacter } from '../types'
 import type { ImageFocalPoint } from '../constants/media'
 
 export type PublishStatus = 'draft' | 'published' | 'archived'
-export type Availability = 'available' | 'limited' | 'archive'
+export type Availability = 'available' | 'limited' | 'archive' | 'sold_out' | 'restocking'
 export type RoastType = 'Filter' | 'Espresso' | 'Omni'
 
 /**
@@ -75,6 +75,22 @@ export interface Coffee extends CoffeeProfile {
   seoDescription?: string
 
   profileVersion: number
+  favoriteCount?: number
+
+  /** Package size shown next to the price, e.g. 200 → "200g". */
+  weightGrams?: number
+  /** Regular price (KRW). Shown with a strikethrough when salePrice is set and lower. */
+  price?: number
+  /** Discounted price (KRW). Only takes effect when lower than price. */
+  salePrice?: number
+
+  /** "제조일" — the date this batch was roasted. */
+  roastDate?: string
+  /** "소비기한" — mainly for powder/drip-bag formats. */
+  bestBeforeDate?: string
+  isDecaf?: boolean
+  /** Marketing tags, e.g. ["BEST", "Roaster's Pick", "공식몰 단독"]. */
+  badges?: string[]
 }
 
 export type CoffeeDraft = Omit<Coffee, 'id' | 'createdAt' | 'updatedAt'>
@@ -238,6 +254,7 @@ export interface Story {
   seoDescription?: string
   createdAt: string
   updatedAt: string
+  views?: number
 }
 
 /**
@@ -265,6 +282,9 @@ export interface Column {
   seoDescription?: string
   createdAt: string
   updatedAt: string
+  views?: number
+  /** How many accounts have "좋아요"'d this column — see column_likes / toggle_column_like. */
+  likeCount?: number
 }
 
 export type BusinessPostCategory = 'WHOLESALE' | 'EDUCATION' | 'CLASS' | 'NOTICE' | 'PARTNERSHIP'
@@ -300,12 +320,9 @@ export interface BusinessPost {
 
 export type HomeSectionKey =
   | 'featuredCoffee'
-  | 'tasteFinder'
   | 'cupCharacter'
   | 'sensoryMap'
-  | 'coffeeChart'
   | 'brewGuide'
-  | 'stories'
   | 'about'
   | 'business'
 

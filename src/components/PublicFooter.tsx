@@ -10,12 +10,6 @@ export default function PublicFooter() {
       <Link to="/coffees" className="text-[12px] text-warm-white/65 hover:text-warm-white">
         전체 원두 보기
       </Link>
-      <Link to="/coffee-chart" className="text-[12px] text-warm-white/65 hover:text-warm-white">
-        원두 차트
-      </Link>
-      <Link to="/discover" className="text-[12px] text-warm-white/65 hover:text-warm-white">
-        취향에 맞는 커피 찾기
-      </Link>
       <Link to="/compare" className="text-[12px] text-warm-white/65 hover:text-warm-white">
         원두 비교하기
       </Link>
@@ -79,9 +73,14 @@ export default function PublicFooter() {
               <p className="whitespace-pre-line text-warm-white/25">{settings.businessRegistrationInfo}</p>
             )}
           </div>
-          <Link to="/admin" className="hover:text-warm-white/60">
-            관리자
-          </Link>
+          <div className="flex gap-4">
+            <Link to="/privacy" className="hover:text-warm-white/60">
+              개인정보처리방침
+            </Link>
+            <Link to="/admin" className="hover:text-warm-white/60">
+              관리자
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

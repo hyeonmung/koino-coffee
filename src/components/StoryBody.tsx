@@ -15,13 +15,13 @@ export default function StoryBody({ body }: StoryBodyProps) {
       {blocks.map((block, i) => {
         if (block.startsWith('## ')) {
           return (
-            <h2 key={i} className="text-[18px] font-bold text-navy" dangerouslySetInnerHTML={{ __html: renderRichText(block.slice(3)) }} />
+            <h2 key={i} className="text-[18px] font-bold text-ink" dangerouslySetInnerHTML={{ __html: renderRichText(block.slice(3)) }} />
           )
         }
         return (
           <p
             key={i}
-            className="text-[14px] leading-relaxed text-navy/75"
+            className="text-[14px] leading-relaxed text-ink/75"
             dangerouslySetInnerHTML={{ __html: renderRichText(block) }}
           />
         )

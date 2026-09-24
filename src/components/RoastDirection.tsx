@@ -25,13 +25,13 @@ export default function RoastDirection({ roastLevel }: RoastDirectionProps) {
 
   return (
     <div>
-      <div className="flex items-center justify-between text-[9px] font-semibold tracking-[0.15em] text-navy/40">
+      <div className="flex items-center justify-between text-[9px] font-semibold tracking-[0.15em] text-ink/40">
         <span>LIGHT</span>
         <span>DEVELOPED</span>
       </div>
-      <div className="relative mt-1.5 h-[2px] bg-navy/15">
+      <div className="relative mt-1.5 h-[2px] bg-line/15">
         <span
-          className="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-navy bg-accent"
+          className="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-line bg-accent"
           style={{ left: `${position}%` }}
         />
       </div>

@@ -33,13 +33,13 @@ export default function Pagination({ page, totalPages, onChange, scrollToTop = t
         onClick={() => go(page - 1)}
         disabled={page === 1}
         aria-label="이전 페이지"
-        className="flex h-8 w-8 items-center justify-center border border-navy/20 text-[12px] text-navy/60 hover:border-navy hover:text-navy disabled:opacity-30 disabled:hover:border-navy/20 disabled:hover:text-navy/60"
+        className="flex h-8 w-8 items-center justify-center border border-line/20 text-[12px] text-ink/60 hover:border-line hover:text-ink disabled:opacity-30 disabled:hover:border-line/20 disabled:hover:text-ink/60"
       >
         ←
       </button>
       {getPageNumbers(page, totalPages).map((p, i) =>
         p === 'ellipsis' ? (
-          <span key={`e${i}`} className="px-1 text-[12px] text-navy/30">
+          <span key={`e${i}`} className="px-1 text-[12px] text-ink/30">
             …
           </span>
         ) : (
@@ -49,7 +49,7 @@ export default function Pagination({ page, totalPages, onChange, scrollToTop = t
             onClick={() => go(p)}
             aria-current={p === page ? 'page' : undefined}
             className={`flex h-8 min-w-8 items-center justify-center border px-1.5 text-[12px] font-semibold ${
-              p === page ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/60 hover:border-navy hover:text-navy'
+              p === page ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/60 hover:border-line hover:text-ink'
             }`}
           >
             {p}
@@ -61,7 +61,7 @@ export default function Pagination({ page, totalPages, onChange, scrollToTop = t
         onClick={() => go(page + 1)}
         disabled={page === totalPages}
         aria-label="다음 페이지"
-        className="flex h-8 w-8 items-center justify-center border border-navy/20 text-[12px] text-navy/60 hover:border-navy hover:text-navy disabled:opacity-30 disabled:hover:border-navy/20 disabled:hover:text-navy/60"
+        className="flex h-8 w-8 items-center justify-center border border-line/20 text-[12px] text-ink/60 hover:border-line hover:text-ink disabled:opacity-30 disabled:hover:border-line/20 disabled:hover:text-ink/60"
       >
         →
       </button>

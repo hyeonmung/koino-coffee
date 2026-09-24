@@ -16,7 +16,7 @@ export default function InfoTooltip({ title, criteria }: InfoTooltipProps) {
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
-        className="flex h-4 w-4 items-center justify-center rounded-full border border-navy/40 text-[10px] leading-none text-navy/70 hover:border-navy hover:text-navy"
+        className="flex h-4 w-4 items-center justify-center rounded-full border border-line/40 text-[10px] leading-none text-ink/70 hover:border-line hover:text-ink"
       >
         i
       </button>
@@ -24,13 +24,13 @@ export default function InfoTooltip({ title, criteria }: InfoTooltipProps) {
         <div
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
-          className="absolute left-1/2 top-6 z-30 w-64 -translate-x-1/2 rounded-sm border border-navy/15 bg-white p-3 text-left shadow-lg"
+          className="absolute left-1/2 top-6 z-30 w-64 -translate-x-1/2 rounded-sm border border-line/15 bg-surface p-3 text-left shadow-lg"
         >
-          <p className="mb-2 text-[11px] font-semibold tracking-wide text-navy">{title} 평가 기준</p>
+          <p className="mb-2 text-[11px] font-semibold tracking-wide text-ink">{title} 평가 기준</p>
           <ol className="space-y-1">
             {criteria.map((text, i) => (
-              <li key={i} className="text-[11px] leading-snug text-navy/80">
-                <span className="font-semibold text-navy">{i + 1}</span> — {text}
+              <li key={i} className="text-[11px] leading-snug text-ink/80">
+                <span className="font-semibold text-ink">{i + 1}</span> — {text}
               </li>
             ))}
           </ol>

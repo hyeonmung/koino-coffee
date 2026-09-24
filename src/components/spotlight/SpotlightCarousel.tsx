@@ -119,6 +119,11 @@ export default function SpotlightCarousel({ slides }: SpotlightCarouselProps) {
                 <KOIStarField />
               </div>
             )}
+            {c.isNewCoffee && (
+              <span className="absolute right-4 top-4 z-10 -rotate-6 rounded-sm bg-[#e51c1c] px-3.5 py-1.5 text-[15px] font-extrabold tracking-wide text-white shadow-lg sm:right-6 sm:top-5 sm:text-[18px]">
+                NEW!!
+              </span>
+            )}
           </div>
         ))}
 

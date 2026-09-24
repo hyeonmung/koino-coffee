@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import ColumnLikeButton from '../../components/ColumnLikeButton'
 import KOIStarField from '../../components/decorative/KOIStarField'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
@@ -18,7 +19,7 @@ export default function ColumnIndexPage() {
   const [quickAddOpen, setQuickAddOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title="더코이맥 칼럼" description="원두 트렌드와 업계 소식에 코이노니아의 시각을 더한 더코이맥 칼럼." />
       <PublicHeader />
 
@@ -26,19 +27,19 @@ export default function ColumnIndexPage() {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COLUMN</p>
-            <h1 className="mt-1 text-[28px] font-bold text-navy">더코이맥 칼럼</h1>
+            <h1 className="mt-1 text-[28px] font-bold text-ink">더코이맥 칼럼</h1>
           </div>
           {isOwner && (
             <button
               type="button"
               onClick={() => setQuickAddOpen(true)}
-              className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+              className="border border-line bg-navy px-4 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
             >
               + 글쓰기
             </button>
           )}
         </div>
-        <p className="mt-2 text-[13px] text-navy/55">커피 업계 소식과 트렌드에 코이노니아의 생각을 더해 씁니다.</p>
+        <p className="mt-2 text-[13px] text-ink/55">커피 업계 소식과 트렌드에 코이노니아의 생각을 더해 씁니다.</p>
 
         {quickAddOpen && (
           <QuickAddColumnForm
@@ -51,13 +52,13 @@ export default function ColumnIndexPage() {
         )}
 
         {columns.length === 0 ? (
-          <p className="mt-10 border border-navy/15 bg-white px-6 py-16 text-center text-[13px] text-navy/45">
+          <p className="mt-10 border border-line/15 bg-surface px-6 py-16 text-center text-[13px] text-ink/45">
             아직 등록된 더코이맥 칼럼이 없습니다.
           </p>
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
             {columns.map((column) => (
-              <Link key={column.id} to={`/column/${column.slug}`} className="group block">
+              <Link key={column.id} to={`/thekoimag/${column.slug}`} className="group block">
                 {column.coverImage ? (
                   <div className="aspect-[3/2] w-full overflow-hidden">
                     <div
@@ -73,10 +74,15 @@ export default function ColumnIndexPage() {
                     <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
                   </div>
                 )}
-                <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-navy/45">COLUMN</p>
-                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-navy">{column.title}</p>
-                <p className="mt-2 whitespace-pre-line text-[12px] text-navy/55">{column.excerpt}</p>
-                <p className="mt-3 text-[10px] text-navy/35">{formatScheduledAt(column.scheduledAt)}</p>
+                <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-ink/45">COLUMN</p>
+                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-ink">{column.title}</p>
+                <p className="mt-2 whitespace-pre-line text-[12px] text-ink/55">{column.excerpt}</p>
+                <div className="mt-3 flex items-center gap-3">
+                  <p className="text-[10px] text-ink/35">
+                    {formatScheduledAt(column.scheduledAt)} · 조회 {(column.views ?? 0).toLocaleString()}
+                  </p>
+                  <ColumnLikeButton slug={column.slug} count={column.likeCount} size={14} className="text-ink/35" />
+                </div>
               </Link>
             ))}
           </div>

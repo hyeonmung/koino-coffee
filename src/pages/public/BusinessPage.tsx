@@ -16,14 +16,14 @@ export default function BusinessPage() {
   const filtered = posts.filter((p) => category === 'ALL' || p.category === category)
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title="납품 · 교육" description="코이노니아의 원두 납품과 교육 소식을 안내합니다." />
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BUSINESS</p>
-        <h1 className="mt-1 text-[28px] font-bold text-navy">납품 · 교육</h1>
-        <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">코이노니아의 원두 납품과 교육 소식을 안내합니다.</p>
+        <h1 className="mt-1 text-[28px] font-bold text-ink">납품 · 교육</h1>
+        <p className="mt-2 max-w-[560px] text-[13px] text-ink/60">코이노니아의 원두 납품과 교육 소식을 안내합니다.</p>
 
         <div className="mt-6 flex flex-wrap gap-1.5">
           {(['ALL', ...BUSINESS_POST_CATEGORIES] as const).map((c) => (
@@ -32,7 +32,7 @@ export default function BusinessPage() {
               type="button"
               onClick={() => setCategory(c)}
               className={`border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${
-                category === c ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/55 hover:border-navy/50'
+                category === c ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/55 hover:border-line/50'
               }`}
             >
               {c === 'ALL' ? '전체' : BUSINESS_POST_CATEGORY_LABEL[c]}
@@ -41,7 +41,7 @@ export default function BusinessPage() {
         </div>
 
         {filtered.length === 0 ? (
-          <p className="mt-10 border border-navy/15 bg-white px-6 py-16 text-center text-[13px] text-navy/45">
+          <p className="mt-10 border border-line/15 bg-surface px-6 py-16 text-center text-[13px] text-ink/45">
             해당 카테고리의 게시물이 없습니다.
           </p>
         ) : (
@@ -63,22 +63,22 @@ export default function BusinessPage() {
                     <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
                   </div>
                 )}
-                <p className="mt-3 flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.15em] text-navy/45">
+                <p className="mt-3 flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.15em] text-ink/45">
                   {post.isSystemPinned && <span className="text-accent">PIN ·</span>}
                   {BUSINESS_POST_CATEGORY_LABEL[post.category]}
                 </p>
-                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-navy">{post.title}</p>
-                <p className="mt-2 whitespace-pre-line text-[12px] text-navy/55">{post.excerpt}</p>
-                <p className="mt-3 text-[10px] text-navy/35">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
+                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-ink">{post.title}</p>
+                <p className="mt-2 whitespace-pre-line text-[12px] text-ink/55">{post.excerpt}</p>
+                <p className="mt-3 text-[10px] text-ink/35">{new Date(post.publishedDate).toLocaleDateString('ko-KR')}</p>
               </Link>
             ))}
           </div>
         )}
 
-        <section id="inquiry" className="mt-16 border-t border-navy/15 pt-10">
+        <section id="inquiry" className="mt-16 border-t border-line/15 pt-10">
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">INQUIRY</p>
-          <h2 className="mt-1 text-[22px] font-bold text-navy">납품 · 교육 문의하기</h2>
-          <p className="mt-2 max-w-[560px] text-[13px] text-navy/60">
+          <h2 className="mt-1 text-[22px] font-bold text-ink">납품 · 교육 문의하기</h2>
+          <p className="mt-2 max-w-[560px] text-[13px] text-ink/60">
             원두 납품, 카페 컨설팅, 바리스타 교육 등 궁금하신 점을 남겨주시면 순차적으로 답변드리겠습니다.
           </p>
           <div className="mt-6">

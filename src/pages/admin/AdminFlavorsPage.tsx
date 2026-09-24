@@ -9,13 +9,13 @@ import {
 } from '../../data/repositories/flavorRepository'
 import type { FlavorColor, FlavorDescriptor } from '../../data/schema'
 
-const inputClass = 'border border-navy/25 bg-white px-2 py-1.5 text-[12px] text-navy outline-none focus:border-navy'
-const labelClass = 'mb-1 block text-[10px] font-semibold text-navy/60'
+const inputClass = 'border border-line/25 bg-surface px-2 py-1.5 text-[12px] text-ink outline-none focus:border-line'
+const labelClass = 'mb-1 block text-[10px] font-semibold text-ink/60'
 
 function ColorSwatch({ color, size = 16 }: { color: FlavorColor; size?: number }) {
   return (
     <span
-      className="inline-block shrink-0 rounded-full border border-navy/15"
+      className="inline-block shrink-0 rounded-full border border-line/15"
       style={{ width: size, height: size, backgroundColor: color.onLight }}
     />
   )
@@ -27,7 +27,7 @@ function ColorPicker({ value, onChange }: { value?: FlavorColor; onChange: (c: F
   const current = value ?? FLAVOR_NEUTRAL_COLOR
 
   return (
-    <div className="border border-navy/15 bg-warm-white/60 p-3">
+    <div className="border border-line/15 bg-canvas/60 p-3">
       <div className="flex flex-wrap gap-1.5">
         {FLAVOR_COLOR_PRESETS.map((preset) => {
           const active = value?.onLight === preset.color.onLight && value?.onDark === preset.color.onDark
@@ -37,13 +37,13 @@ function ColorPicker({ value, onChange }: { value?: FlavorColor; onChange: (c: F
               type="button"
               title={preset.label}
               onClick={() => onChange(preset.color)}
-              className={`h-6 w-6 rounded-full border-2 ${active ? 'border-navy' : 'border-transparent'}`}
+              className={`h-6 w-6 rounded-full border-2 ${active ? 'border-line' : 'border-transparent'}`}
               style={{ backgroundColor: preset.color.onLight }}
             />
           )
         })}
       </div>
-      <button type="button" onClick={() => setAdvanced((v) => !v)} className="mt-2 text-[10px] font-semibold text-navy/45 underline">
+      <button type="button" onClick={() => setAdvanced((v) => !v)} className="mt-2 text-[10px] font-semibold text-ink/45 underline">
         {advanced ? '고급 설정 닫기' : '고급 설정 — 직접 Hex 입력'}
       </button>
       {advanced && (
@@ -85,7 +85,7 @@ function DescriptorEditor({
   const [draft, setDraft] = useState<FlavorDescriptor>(descriptor)
 
   return (
-    <div className="mt-2 w-full border border-navy/20 bg-white p-4">
+    <div className="mt-2 w-full border border-line/20 bg-surface p-4">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block">
           <span className={labelClass}>영문명</span>
@@ -143,11 +143,11 @@ function DescriptorEditor({
         <button
           type="button"
           onClick={() => onSave(draft)}
-          className="border border-navy bg-navy px-4 py-1.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-4 py-1.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
         >
           저장
         </button>
-        <button type="button" onClick={onClose} className="border border-navy/25 px-4 py-1.5 text-[12px] font-semibold text-navy/60">
+        <button type="button" onClick={onClose} className="border border-line/25 px-4 py-1.5 text-[12px] font-semibold text-ink/60">
           닫기
         </button>
       </div>
@@ -195,14 +195,14 @@ export default function AdminFlavorsPage() {
   return (
     <AdminLayout>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">FLAVOR LIBRARY</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">향미 관리</h1>
-      <p className="mt-2 text-[12px] text-navy/50">
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">향미 관리</h1>
+      <p className="mt-2 text-[12px] text-ink/50">
         여기서 추가한 향미는 원두 등록 화면의 Flavor Notes 입력 시 자동완성으로 제안되고, 각 향미마다 지정한 색상이 사이트
         전체(카드·상세·차트·취향찾기 등)에 일관되게 적용됩니다. 색상은 원두의 컵 캐릭터와 무관합니다 — Mango는 어떤
         캐릭터의 원두에서도 항상 같은 색입니다.
       </p>
 
-      <div className="mt-6 flex flex-wrap items-end gap-2 border border-navy/15 bg-white p-4">
+      <div className="mt-6 flex flex-wrap items-end gap-2 border border-line/15 bg-surface p-4">
         <label className="block">
           <span className={labelClass}>영문명</span>
           <textarea rows={1} value={newName} onChange={(e) => setNewName(e.target.value)} className={inputClass} placeholder="Blackberry" />
@@ -224,12 +224,12 @@ export default function AdminFlavorsPage() {
         <button
           type="button"
           onClick={handleAdd}
-          className="border border-navy bg-navy px-4 py-1.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-4 py-1.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
         >
           추가
         </button>
       </div>
-      <p className="mt-2 text-[11px] text-navy/40">
+      <p className="mt-2 text-[11px] text-ink/40">
         새로 추가한 향미는 색상이 지정되기 전까지 뉴트럴 색상으로 표시됩니다. 추가 후 목록에서 클릭하면 색상을 지정할 수
         있습니다.
       </p>
@@ -240,21 +240,21 @@ export default function AdminFlavorsPage() {
           if (items.length === 0) return null
           return (
             <div key={family.id}>
-              <p className="text-[11px] font-semibold tracking-[0.15em] text-navy/45">
+              <p className="text-[11px] font-semibold tracking-[0.15em] text-ink/45">
                 {family.name.toUpperCase()} {family.nameKo && `· ${family.nameKo}`}
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {items.map((d) => (
                   <div key={d.id} className={editingId === d.id ? 'w-full' : ''}>
                     <span
-                      className={`flex cursor-pointer items-center gap-1.5 border px-2.5 py-1.5 text-[12px] text-navy hover:border-navy ${
-                        editingId === d.id ? 'border-navy bg-navy/5' : 'border-navy/20 bg-white'
+                      className={`flex cursor-pointer items-center gap-1.5 border px-2.5 py-1.5 text-[12px] text-ink hover:border-line ${
+                        editingId === d.id ? 'border-line bg-line/5' : 'border-line/20 bg-surface'
                       }`}
                     >
                       <button type="button" onClick={() => setEditingId(editingId === d.id ? null : d.id)} className="flex items-center gap-1.5">
                         <ColorSwatch color={d.color ?? FLAVOR_NEUTRAL_COLOR} />
                         {d.name}
-                        {d.nameKo && <span className="text-navy/40">({d.nameKo})</span>}
+                        {d.nameKo && <span className="text-ink/40">({d.nameKo})</span>}
                         {!d.color && <span className="text-accent/80">·미지정</span>}
                       </button>
                       {confirmingId === d.id ? (
@@ -262,7 +262,7 @@ export default function AdminFlavorsPage() {
                           확인?
                         </button>
                       ) : (
-                        <button type="button" onClick={() => setConfirmingId(d.id)} className="text-navy/35 hover:text-red-500">
+                        <button type="button" onClick={() => setConfirmingId(d.id)} className="text-ink/35 hover:text-red-500">
                           ×
                         </button>
                       )}

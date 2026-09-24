@@ -72,43 +72,43 @@ export default function DictionaryDetailPage() {
   )
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title={`${entry.term} — 커피 사전`} description={entry.short} />
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[640px] px-6 py-10">
-        <Link to="/dictionary" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
+        <Link to="/dictionary" className="text-[11px] font-semibold text-ink/45 hover:text-ink">
           ← 커피 사전
         </Link>
 
-        <p className="mt-4 text-[9px] font-semibold tracking-[0.15em] text-navy/40">
+        <p className="mt-4 text-[9px] font-semibold tracking-[0.15em] text-ink/40">
           분류 · {CATEGORY_LABEL[entry.category]}
         </p>
-        <h1 className="mt-1 text-[30px] font-bold uppercase text-navy">{entry.term}</h1>
-        {entry.termKo && <p className="text-[15px] text-navy/50">{entry.termKo}</p>}
+        <h1 className="mt-1 text-[30px] font-bold uppercase text-ink">{entry.term}</h1>
+        {entry.termKo && <p className="text-[15px] text-ink/50">{entry.termKo}</p>}
 
-        <section className="mt-8 border-t border-navy/10 pt-6">
+        <section className="mt-8 border-t border-line/10 pt-6">
           <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent font-kicker">쉽게 말하면</h2>
-          <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">{entry.short}</p>
+          <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-ink/75">{entry.short}</p>
         </section>
 
         {entry.easy && (
           <section className="mt-6">
             <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent font-kicker">이런 느낌입니다</h2>
-            <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">{entry.easy}</p>
+            <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-ink/75">{entry.easy}</p>
           </section>
         )}
 
         {entry.example && (
           <section className="mt-6">
             <h2 className="text-[11px] font-semibold tracking-[0.1em] text-accent font-kicker">예를 들면</h2>
-            <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-navy/75">{entry.example}</p>
+            <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-ink/75">{entry.example}</p>
           </section>
         )}
 
         {relatedCoffees.length > 0 && (
-          <section className="mt-10 border-t border-navy/10 pt-8">
-            <h2 className="text-[11px] font-semibold tracking-[0.1em] text-navy/40">이런 커피에서 찾을 수 있습니다</h2>
+          <section className="mt-10 border-t border-line/10 pt-8">
+            <h2 className="text-[11px] font-semibold tracking-[0.1em] text-ink/40">이런 커피에서 찾을 수 있습니다</h2>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {relatedCoffees.slice(0, 4).map((c) => (
                 <CoffeeCard key={c.id} coffee={c} />

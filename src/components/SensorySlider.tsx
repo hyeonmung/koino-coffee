@@ -15,11 +15,11 @@ export default function SensorySlider({ field, value, onChange }: SensorySliderP
     <div className="py-2">
       <div className="mb-1.5 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <span className="text-[11px] font-semibold tracking-wide text-navy">{field.labelKo}</span>
-          <span className="text-[10px] text-navy/45">{field.label}</span>
+          <span className="text-[11px] font-semibold tracking-wide text-ink">{field.labelKo}</span>
+          <span className="text-[10px] text-ink/45">{field.label}</span>
           <InfoTooltip title={field.labelKo} criteria={field.criteria} />
         </div>
-        <span className="min-w-[1.5rem] text-right text-[15px] font-semibold text-navy">
+        <span className="min-w-[1.5rem] text-right text-[15px] font-semibold text-ink">
           {value}
         </span>
       </div>
@@ -33,8 +33,8 @@ export default function SensorySlider({ field, value, onChange }: SensorySliderP
             aria-pressed={value === score}
             className={`h-6 flex-1 border text-[10px] transition-colors ${
               score <= value
-                ? 'border-navy bg-navy text-warm-white'
-                : 'border-navy/20 bg-transparent text-navy/30 hover:border-navy/50'
+                ? 'border-line bg-navy text-warm-white'
+                : 'border-line/20 bg-transparent text-ink/30 hover:border-line/50'
             }`}
           >
             {score}

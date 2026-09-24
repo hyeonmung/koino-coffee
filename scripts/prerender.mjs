@@ -87,13 +87,11 @@ function renderPage(routePath, { title, description, image }) {
 
 const STATIC_PAGES = [
   ['/coffees', { title: '원두', description: '산지, 향미, 프로세스로 코이노니아 원두를 탐색하세요.' }],
-  ['/coffee-chart', { title: '원두 차트', description: '코이노니아 원두의 핵심 정보를 한눈에 비교해보세요.' }],
   ['/characters', { title: 'KOINO CUP CHARACTER', description: '코이노니아의 5가지 CUP CHARACTER를 소개합니다.' }],
-  ['/discover', { title: '취향 찾기', description: '몇 가지 질문으로 나에게 맞는 커피를 찾아보세요.' }],
   ['/compare', { title: '원두 비교', description: '최대 3개의 원두를 나란히 비교해보세요.' }],
   ['/dictionary', { title: '커피 사전', description: '향미, 센서리, 가공, 품종 등 궁금한 커피 단어를 검색해보세요.' }],
   ['/brew-guide', { title: '브루 가이드', description: '장비별 KOINO 원두 추출 레시피.' }],
-  ['/stories', { title: '뉴스&이야기', description: '공지, 소식, 산지, 원두, 커피 교육에 관한 코이노니아의 뉴스와 이야기.' }],
+  ['/thekoimag', { title: '더코이맥 칼럼', description: '코이노니아 로스터스가 전하는 커피 트렌드와 우리의 시각, THE KOI MAG.' }],
   ['/business', { title: '납품 · 교육', description: '코이노니아의 원두 납품과 교육 소식을 안내합니다.' }],
   ['/about-sensory-map', { title: 'KOINO SENSORY MAP 알아보기', description: 'KOINO SENSORY MAP이 원두를 설명하는 방식을 소개합니다.' }],
 ]
@@ -106,33 +104,33 @@ async function run() {
 
   const [
     { data: coffees, error: coffeesErr },
-    { data: stories, error: storiesErr },
     { data: guides, error: guidesErr },
     { data: posts, error: postsErr },
     { data: characters, error: charsErr },
     { data: dictionaryTerms, error: dictErr },
     { data: flavorDescriptors, error: flavorErr },
     { data: flavorFamilies, error: familiesErr },
+    { data: columns, error: columnsErr },
   ] = await Promise.all([
     supabase.from('coffees').select('slug, coffee_name, country, notes, character, hero_image, seo_title, seo_description, publish_status'),
-    supabase.from('stories').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
     supabase.from('brew_guides').select('slug, title, equipment, coffee_dose, ratio, publish_status'),
     supabase.from('business_posts').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
     supabase.from('characters').select('key, label, description'),
     supabase.from('dictionary_terms').select('id, term, short_definition'),
     supabase.from('flavor_descriptors').select('id, name, description, family_id'),
     supabase.from('flavor_families').select('id, name'),
+    supabase.from('columns').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status, scheduled_at'),
   ])
 
   for (const [name, err] of [
     ['coffees', coffeesErr],
-    ['stories', storiesErr],
     ['brew_guides', guidesErr],
     ['business_posts', postsErr],
     ['characters', charsErr],
     ['dictionary_terms', dictErr],
     ['flavor_descriptors', flavorErr],
     ['flavor_families', familiesErr],
+    ['columns', columnsErr],
   ]) {
     if (err) console.warn(`[prerender] failed to fetch ${name}:`, err.message)
   }
@@ -150,16 +148,6 @@ async function run() {
       description: c.seo_description || `${c.country} · ${charLabelOf(c.character)} · ${(c.notes ?? []).join(', ')}`,
       image: c.hero_image,
     })
-    renderPage(`/coffee-chart/${slug}`, {
-      title: `${c.coffee_name} 원두 차트`,
-      description: `${c.country} · ${charLabelOf(c.character)} · ${(c.notes ?? []).join(', ')}`,
-      image: c.hero_image,
-    })
-  }
-
-  for (const s of stories ?? []) {
-    if (s.publish_status !== 'published') continue
-    renderPage(`/stories/${encodeURIComponent(s.slug)}`, { title: s.seo_title || s.title, description: s.seo_description || s.excerpt, image: s.cover_image })
   }
 
   for (const g of guides ?? []) {
@@ -186,6 +174,18 @@ async function run() {
     renderPage(`/dictionary/${encodeURIComponent(d.id)}`, {
       title: `${d.name} — 커피 사전`,
       description: d.description || `${family?.name ?? 'Flavor'} 계열의 향미입니다.`,
+    })
+  }
+
+  // Same visibility rule as getPublishedColumns() client-side: published AND the scheduled
+  // time has actually passed (see src/data/repositories/columnRepository.ts).
+  for (const c of columns ?? []) {
+    if (c.publish_status !== 'published') continue
+    if (new Date(c.scheduled_at).getTime() > Date.now()) continue
+    renderPage(`/thekoimag/${encodeURIComponent(c.slug)}`, {
+      title: c.seo_title || c.title,
+      description: c.seo_description || c.excerpt,
+      image: c.cover_image,
     })
   }
 

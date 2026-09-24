@@ -10,7 +10,7 @@ import {
 import type { BrewCategory } from '../../data/schema'
 import { slugifyFilename } from '../../utils/download'
 
-const inputClass = 'border border-navy/25 bg-white px-2 py-1.5 text-[12px] text-navy outline-none focus:border-navy'
+const inputClass = 'border border-line/25 bg-surface px-2 py-1.5 text-[12px] text-ink outline-none focus:border-line'
 
 export default function AdminBrewCategoriesPage() {
   const [categories, setCategories] = useState<BrewCategory[]>(() => getAllBrewCategories())
@@ -69,37 +69,37 @@ export default function AdminBrewCategoriesPage() {
 
   return (
     <AdminLayout>
-      <Link to="/admin/brew-guides" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
-        ← 브루 가이드 목록
+      <Link to="/admin/brew-guides" className="text-[11px] font-semibold text-ink/45 hover:text-ink">
+        ← 브루잉 레시피 목록
       </Link>
       <p className="mt-2 text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">BREW CATEGORY</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">브루 가이드 카테고리 관리</h1>
-      <p className="mt-2 max-w-[560px] text-[12px] text-navy/50">
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">브루잉 레시피 카테고리 관리</h1>
+      <p className="mt-2 max-w-[560px] text-[12px] text-ink/50">
         핸드드립·에스프레소 같은 전문 카테고리입니다. V60·Espresso 같은 장비(Equipment)와는 별도로 관리되며, 브루
         가이드 작성 화면에서 카테고리를 선택합니다.
       </p>
 
       {error && <p className="mt-3 border border-red-300 bg-red-50 px-3 py-2 text-[12px] text-red-600">{error}</p>}
 
-      <div className="mt-6 flex flex-wrap items-end gap-2 border border-navy/15 bg-white p-4">
+      <div className="mt-6 flex flex-wrap items-end gap-2 border border-line/15 bg-surface p-4">
         <label className="block">
-          <span className="mb-1 block text-[10px] font-semibold text-navy/60">카테고리명 (한글)</span>
+          <span className="mb-1 block text-[10px] font-semibold text-ink/60">카테고리명 (한글)</span>
           <input value={label} onChange={(e) => setLabel(e.target.value)} className={inputClass} placeholder="예: 레시피 설계" />
         </label>
         <label className="block">
-          <span className="mb-1 block text-[10px] font-semibold text-navy/60">영문 표기 (선택)</span>
+          <span className="mb-1 block text-[10px] font-semibold text-ink/60">영문 표기 (선택)</span>
           <input value={labelEn} onChange={(e) => setLabelEn(e.target.value)} className={inputClass} placeholder="예: RECIPE DESIGN" />
         </label>
         <button
           type="button"
           onClick={handleAdd}
-          className="border border-navy bg-navy px-4 py-1.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-4 py-1.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light"
         >
           + 카테고리 추가
         </button>
       </div>
 
-      <div className="mt-6 divide-y divide-navy/10 border border-navy/15 bg-white">
+      <div className="mt-6 divide-y divide-line/10 border border-line/15 bg-surface">
         {categories.map((category, idx) => (
           <div key={category.id} className="flex items-center gap-3 px-4 py-3">
             <div className="flex shrink-0 flex-col gap-0.5">
@@ -107,7 +107,7 @@ export default function AdminBrewCategoriesPage() {
                 type="button"
                 onClick={() => move(category, -1)}
                 disabled={idx === 0}
-                className="text-[10px] text-navy/40 hover:text-navy disabled:opacity-20"
+                className="text-[10px] text-ink/40 hover:text-ink disabled:opacity-20"
               >
                 ▲
               </button>
@@ -115,7 +115,7 @@ export default function AdminBrewCategoriesPage() {
                 type="button"
                 onClick={() => move(category, 1)}
                 disabled={idx === categories.length - 1}
-                className="text-[10px] text-navy/40 hover:text-navy disabled:opacity-20"
+                className="text-[10px] text-ink/40 hover:text-ink disabled:opacity-20"
               >
                 ▼
               </button>
@@ -131,14 +131,14 @@ export default function AdminBrewCategoriesPage() {
               onChange={(e) => rename(category, { labelEn: e.target.value })}
               className={`${inputClass} w-40`}
             />
-            <span className="text-[10px] text-navy/30">/{category.slug}</span>
+            <span className="text-[10px] text-ink/30">/{category.slug}</span>
 
             <div className="ml-auto flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => toggleVisible(category)}
                 className={`border px-2.5 py-1 text-[10px] font-semibold ${
-                  category.visible ? 'border-navy/20 text-navy/60' : 'border-navy/20 bg-navy/5 text-navy/35'
+                  category.visible ? 'border-line/20 text-ink/60' : 'border-line/20 bg-line/5 text-ink/35'
                 }`}
               >
                 {category.visible ? '공개' : '숨김'}
@@ -155,7 +155,7 @@ export default function AdminBrewCategoriesPage() {
                   <button
                     type="button"
                     onClick={() => setConfirmingId(null)}
-                    className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60"
+                    className="border border-line/20 px-2 py-1 text-[10px] text-ink/60"
                   >
                     취소
                   </button>
@@ -164,7 +164,7 @@ export default function AdminBrewCategoriesPage() {
                 <button
                   type="button"
                   onClick={() => setConfirmingId(category.id)}
-                  className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60 hover:border-red-400 hover:text-red-500"
+                  className="border border-line/20 px-2 py-1 text-[10px] text-ink/60 hover:border-red-400 hover:text-red-500"
                 >
                   삭제
                 </button>

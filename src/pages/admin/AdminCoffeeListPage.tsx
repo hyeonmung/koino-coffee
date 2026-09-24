@@ -79,11 +79,11 @@ export default function AdminCoffeeListPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COFFEE MANAGEMENT</p>
-          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">원두 관리</h1>
+          <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">원두 관리</h1>
         </div>
         <Link
           to="/admin/coffees/new"
-          className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-4 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
         >
           + 새 원두 등록
         </Link>
@@ -94,24 +94,24 @@ export default function AdminCoffeeListPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="원두 이름 검색"
-          className="min-w-[200px] flex-1 border border-navy/25 bg-white px-3 py-2 text-[12px] text-navy outline-none placeholder:text-navy/35 focus:border-navy"
+          className="min-w-[200px] flex-1 border border-line/25 bg-surface px-3 py-2 text-[12px] text-ink outline-none placeholder:text-ink/35 focus:border-line"
         />
         <select
           value={character}
           onChange={(e) => setCharacter(e.target.value as 'ALL' | CupCharacter)}
-          className="border border-navy/25 bg-white px-2 py-2 text-[12px] text-navy outline-none"
+          className="border border-line/25 bg-surface px-2 py-2 text-[12px] text-ink outline-none"
         >
           <option value="ALL">전체 Character</option>
           {CUP_CHARACTERS.map((k) => (
             <option key={k} value={k}>
-              {k}
+              {CHARACTER_INFO[k].label}
             </option>
           ))}
         </select>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as 'ALL' | PublishStatus)}
-          className="border border-navy/25 bg-white px-2 py-2 text-[12px] text-navy outline-none"
+          className="border border-line/25 bg-surface px-2 py-2 text-[12px] text-ink outline-none"
         >
           <option value="ALL">전체 상태</option>
           <option value="published">공개</option>
@@ -119,10 +119,10 @@ export default function AdminCoffeeListPage() {
         </select>
       </div>
 
-      <div className="mt-6 overflow-x-auto border border-navy/15 bg-white">
+      <div className="mt-6 overflow-x-auto border border-line/15 bg-surface">
         <table className="w-full min-w-[880px] border-collapse text-[12px]">
           <thead>
-            <tr className="border-b border-navy/15 bg-warm-white text-left text-[10px] font-semibold tracking-wide text-navy/45">
+            <tr className="border-b border-line/15 bg-canvas text-left text-[10px] font-semibold tracking-wide text-ink/45">
               <th className="px-3 py-2">번호</th>
               <th className="px-3 py-2">이름</th>
               <th className="px-3 py-2">컵 캐릭터</th>
@@ -136,28 +136,28 @@ export default function AdminCoffeeListPage() {
             {filtered.map((coffee, idx) => {
               const suggestion = recommendCharacter(coffee.notes, coffee.sensory)
               return (
-              <tr key={coffee.id} className="border-b border-navy/10">
-                <td className="px-3 py-2.5 text-navy/60">
-                  {formatCoffeeNumber(coffee.coffeeNumber) ?? <span className="text-navy/30">번호 미지정</span>}
+              <tr key={coffee.id} className="border-b border-line/10">
+                <td className="px-3 py-2.5 text-ink/60">
+                  {formatCoffeeNumber(coffee.coffeeNumber) ?? <span className="text-ink/30">번호 미지정</span>}
                 </td>
                 <td className="px-3 py-2.5">
-                  <p className="font-semibold text-navy">{coffee.coffeeName}</p>
+                  <p className="font-semibold text-ink">{coffee.coffeeName}</p>
                   {coffee.isSample && <span className="text-[10px] text-accent">SAMPLE</span>}
                 </td>
-                <td className="px-3 py-2.5 text-navy/70">
+                <td className="px-3 py-2.5 text-ink/70">
                   {CHARACTER_INFO[coffee.character].label}
                   {suggestion && suggestion.character !== coffee.character && (
-                    <p className="mt-0.5 text-[10px] text-navy/35" title="Flavor Notes 기반 시스템 제안 — 참고용입니다.">
+                    <p className="mt-0.5 text-[10px] text-ink/35" title="Flavor Notes 기반 시스템 제안 — 참고용입니다.">
                       제안: {suggestion.character}
                     </p>
                   )}
                 </td>
-                <td className="px-3 py-2.5 text-navy/70">{coffee.country}</td>
+                <td className="px-3 py-2.5 text-ink/70">{coffee.country}</td>
                 <td className="px-3 py-2.5">
                   <select
                     value={coffee.publishStatus}
                     onChange={(e) => setPublishStatus(coffee, e.target.value as PublishStatus)}
-                    className="border border-navy/20 bg-white px-1.5 py-1 text-[11px] text-navy outline-none"
+                    className="border border-line/20 bg-surface px-1.5 py-1 text-[11px] text-ink outline-none"
                   >
                     {STATUS_OPTIONS.map((s) => (
                       <option key={s} value={s}>
@@ -172,7 +172,7 @@ export default function AdminCoffeeListPage() {
                       type="button"
                       onClick={() => toggleFeatured(coffee)}
                       className={`border px-2 py-1 text-[10px] font-semibold ${
-                        coffee.featured ? 'border-accent bg-accent/20 text-navy' : 'border-navy/20 text-navy/40'
+                        coffee.featured ? 'border-accent bg-accent/20 text-ink' : 'border-line/20 text-ink/40'
                       }`}
                     >
                       {coffee.featured ? '★ Featured' : '☆'}
@@ -182,7 +182,7 @@ export default function AdminCoffeeListPage() {
                       onClick={() => move(coffee, -1)}
                       disabled={idx === 0}
                       title="위로 (홈 노출 순서)"
-                      className="border border-navy/20 px-1.5 py-1 text-[10px] text-navy/40 hover:border-navy hover:text-navy disabled:opacity-25"
+                      className="border border-line/20 px-1.5 py-1 text-[10px] text-ink/40 hover:border-line hover:text-ink disabled:opacity-25"
                     >
                       ▲
                     </button>
@@ -191,7 +191,7 @@ export default function AdminCoffeeListPage() {
                       onClick={() => move(coffee, 1)}
                       disabled={idx === filtered.length - 1}
                       title="아래로 (홈 노출 순서)"
-                      className="border border-navy/20 px-1.5 py-1 text-[10px] text-navy/40 hover:border-navy hover:text-navy disabled:opacity-25"
+                      className="border border-line/20 px-1.5 py-1 text-[10px] text-ink/40 hover:border-line hover:text-ink disabled:opacity-25"
                     >
                       ▼
                     </button>
@@ -204,21 +204,21 @@ export default function AdminCoffeeListPage() {
                         href={`/coffees/${coffee.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60 hover:border-navy hover:text-navy"
+                        className="border border-line/20 px-2 py-1 text-[10px] text-ink/60 hover:border-line hover:text-ink"
                       >
                         보기
                       </a>
                     )}
                     <Link
                       to={`/admin/coffees/${coffee.id}`}
-                      className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60 hover:border-navy hover:text-navy"
+                      className="border border-line/20 px-2 py-1 text-[10px] text-ink/60 hover:border-line hover:text-ink"
                     >
                       수정
                     </Link>
                     <button
                       type="button"
                       onClick={() => duplicate(coffee)}
-                      className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60 hover:border-navy hover:text-navy"
+                      className="border border-line/20 px-2 py-1 text-[10px] text-ink/60 hover:border-line hover:text-ink"
                     >
                       복제
                     </button>
@@ -234,7 +234,7 @@ export default function AdminCoffeeListPage() {
                         <button
                           type="button"
                           onClick={() => setConfirmingId(null)}
-                          className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60"
+                          className="border border-line/20 px-2 py-1 text-[10px] text-ink/60"
                         >
                           취소
                         </button>
@@ -243,7 +243,7 @@ export default function AdminCoffeeListPage() {
                       <button
                         type="button"
                         onClick={() => setConfirmingId(coffee.id)}
-                        className="border border-navy/20 px-2 py-1 text-[10px] text-navy/60 hover:border-red-400 hover:text-red-500"
+                        className="border border-line/20 px-2 py-1 text-[10px] text-ink/60 hover:border-red-400 hover:text-red-500"
                       >
                         삭제
                       </button>
@@ -255,7 +255,7 @@ export default function AdminCoffeeListPage() {
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-3 py-10 text-center text-navy/40">
+                <td colSpan={8} className="px-3 py-10 text-center text-ink/40">
                   조건에 맞는 원두가 없습니다.
                 </td>
               </tr>

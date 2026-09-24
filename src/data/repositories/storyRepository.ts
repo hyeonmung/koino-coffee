@@ -21,6 +21,13 @@ export function getStoryById(id: string): Story | undefined {
   return getAllStories().find((s) => s.id === id)
 }
 
+/** Bumps the view counter server-side (RPC, safe for anonymous visitors) and patches the local store to match. */
+export async function incrementStoryViews(id: string): Promise<void> {
+  const { data, error } = await supabase.rpc('increment_story_views', { p_id: id })
+  if (error) throw error
+  store.stories = store.stories.map((s) => (s.id === id ? { ...s, views: data as number } : s))
+}
+
 export async function upsertStory(story: Story): Promise<Story[]> {
   const { error } = await supabase.from('stories').upsert(toRow(story))
   if (error) throw error

@@ -8,7 +8,7 @@ import type { BusinessLink, BusinessPost, BusinessPostCategory, PublishStatus } 
 import { slugifyFilename } from '../../utils/download'
 
 const inputClass =
-  'w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy'
+  'w-full border border-line/25 bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line'
 
 function emptyPost(): BusinessPost {
   const now = new Date().toISOString()
@@ -76,15 +76,15 @@ export default function AdminBusinessPostEditorPage() {
 
   return (
     <AdminLayout>
-      <Link to="/admin/business" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
+      <Link to="/admin/business" className="text-[11px] font-semibold text-ink/45 hover:text-ink">
         ← 납품 · 교육 목록
       </Link>
-      <h1 className="mt-1 flex items-center gap-2 font-serif text-[22px] font-bold text-navy">
+      <h1 className="mt-1 flex items-center gap-2 font-serif text-[22px] font-bold text-ink">
         {draft.isSystemPinned && <span className="text-[11px] font-bold tracking-wide text-accent font-kicker">PIN</span>}
         {isNew ? '새 게시물' : draft.title}
       </h1>
       {draft.isSystemPinned && (
-        <p className="mt-1 text-[11px] text-navy/45">
+        <p className="mt-1 text-[11px] text-ink/45">
           항상 목록 최상단에 고정되는 시스템 게시물입니다. 삭제할 수 없지만 내용은 자유롭게 수정할 수 있습니다.
         </p>
       )}
@@ -132,8 +132,8 @@ export default function AdminBusinessPostEditorPage() {
         </Field>
 
         <div>
-          <span className="mb-2 block text-[10px] font-semibold text-navy/60">관련 링크 (전화, 이메일, 카카오/네이버 등)</span>
-          <p className="mb-2 text-[11px] text-navy/40">
+          <span className="mb-2 block text-[10px] font-semibold text-ink/60">관련 링크 (전화, 이메일, 카카오/네이버 등)</span>
+          <p className="mb-2 text-[11px] text-ink/40">
             전화는 tel:010-0000-0000, 이메일은 mailto:hello@koinocoffee.com 형식으로 입력하면 클릭 시 바로 연결됩니다.
           </p>
           <div className="space-y-2">
@@ -152,13 +152,13 @@ export default function AdminBusinessPostEditorPage() {
                   className={inputClass}
                   placeholder="tel:010-0000-0000"
                 />
-                <button type="button" onClick={() => removeLink(i)} className="shrink-0 text-navy/40 hover:text-red-500">
+                <button type="button" onClick={() => removeLink(i)} className="shrink-0 text-ink/40 hover:text-red-500">
                   ×
                 </button>
               </div>
             ))}
           </div>
-          <button type="button" onClick={addLink} className="mt-2 text-[11px] font-semibold text-navy/50 hover:text-navy">
+          <button type="button" onClick={addLink} className="mt-2 text-[11px] font-semibold text-ink/50 hover:text-ink">
             + 링크 추가
           </button>
         </div>
@@ -182,7 +182,7 @@ export default function AdminBusinessPostEditorPage() {
         <button
           type="button"
           onClick={handleSave}
-          className="border border-navy bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
         >
           글쓰기
         </button>
@@ -194,7 +194,7 @@ export default function AdminBusinessPostEditorPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">{label}</span>
+      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-ink/60">{label}</span>
       {children}
     </label>
   )

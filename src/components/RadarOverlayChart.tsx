@@ -10,11 +10,10 @@ import {
 } from 'chart.js'
 import { Radar } from 'react-chartjs-2'
 import { SENSORY_FIELDS } from '../constants/sensory'
+import { useTheme } from '../hooks/useTheme'
 import type { SensoryProfile } from '../types'
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip)
-
-const NAVY = '#14213d'
 
 export const COMPARE_COLORS = ['#14213d', '#f2c94c', '#7c8ba1']
 
@@ -30,6 +29,10 @@ interface RadarOverlayChartProps {
 }
 
 export default function RadarOverlayChart({ series, size = 320 }: RadarOverlayChartProps) {
+  const { resolved } = useTheme()
+  const inkRgb = resolved === 'dark' ? '245, 242, 234' : '20, 33, 61'
+  const ink = `rgb(${inkRgb})`
+
   const data: ChartData<'radar'> = {
     labels: SENSORY_FIELDS.map((f) => f.labelKo),
     datasets: series.map((s) => ({
@@ -60,13 +63,13 @@ export default function RadarOverlayChart({ series, size = 320 }: RadarOverlayCh
         ticks: {
           stepSize: 1,
           showLabelBackdrop: false,
-          color: 'rgba(20, 33, 61, 0.4)',
+          color: `rgba(${inkRgb}, 0.4)`,
           font: { size: 9 },
           backdropColor: 'transparent',
         },
-        grid: { color: 'rgba(20, 33, 61, 0.16)' },
-        angleLines: { color: 'rgba(20, 33, 61, 0.22)' },
-        pointLabels: { color: NAVY, font: { size: 10, weight: 'bold' }, padding: 6 },
+        grid: { color: `rgba(${inkRgb}, 0.16)` },
+        angleLines: { color: `rgba(${inkRgb}, 0.22)` },
+        pointLabels: { color: ink, font: { size: 10, weight: 'bold' }, padding: 6 },
       },
     },
   }

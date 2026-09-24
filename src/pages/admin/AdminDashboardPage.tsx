@@ -19,7 +19,7 @@ export default function AdminDashboardPage() {
   return (
     <AdminLayout>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">DASHBOARD</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">운영 현황</h1>
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">운영 현황</h1>
 
       <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard label="전체 원두" value={coffees.length} to="/admin/coffees" />
@@ -31,29 +31,28 @@ export default function AdminDashboardPage() {
 
       {recentlyEdited.length > 0 && (
         <div className="mt-8">
-          <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">최근 수정</p>
-          <div className="mt-2 divide-y divide-navy/10 border border-navy/15 bg-white">
+          <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">최근 수정</p>
+          <div className="mt-2 divide-y divide-line/10 border border-line/15 bg-surface">
             {recentlyEdited.map((c) => (
               <Link
                 key={c.id}
                 to={`/admin/coffees/${c.id}`}
-                className="flex items-center justify-between px-4 py-2.5 text-[12px] hover:bg-warm-white"
+                className="flex items-center justify-between px-4 py-2.5 text-[12px] hover:bg-canvas"
               >
-                <span className="font-semibold text-navy">{c.coffeeName}</span>
-                <span className="text-navy/40">{new Date(c.updatedAt).toLocaleDateString('ko-KR')}</span>
+                <span className="font-semibold text-ink">{c.coffeeName}</span>
+                <span className="text-ink/40">{new Date(c.updatedAt).toLocaleDateString('ko-KR')}</span>
               </Link>
             ))}
           </div>
         </div>
       )}
 
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <QuickLink to="/admin/coffees/new" label="+ 새 원두 등록" />
-        <QuickLink to="/admin/stories/new" label="+ 새 스토리 작성" />
-        <QuickLink to="/admin/brew-guides/new" label="+ 새 브루 가이드" />
+        <QuickLink to="/admin/brew-guides/new" label="+ 새 브루잉 레시피" />
       </div>
 
-      <p className="mt-8 text-[11px] text-navy/40">
+      <p className="mt-8 text-[11px] text-ink/40">
         Stories {stories.length}건 · Brew Guide {brewGuides.length}건
       </p>
     </AdminLayout>
@@ -64,17 +63,17 @@ function StatCard({ label, value, to, highlight }: { label: string; value: numbe
   return (
     <Link
       to={to}
-      className={`border p-4 hover:border-navy ${highlight ? 'border-accent bg-accent/10' : 'border-navy/15 bg-white'}`}
+      className={`border p-4 hover:border-line ${highlight ? 'border-accent bg-accent/10' : 'border-line/15 bg-surface'}`}
     >
-      <p className="text-[10px] font-semibold tracking-wide text-navy/45">{label}</p>
-      <p className="mt-1 font-serif text-[26px] font-bold text-navy">{value}</p>
+      <p className="text-[10px] font-semibold tracking-wide text-ink/45">{label}</p>
+      <p className="mt-1 font-serif text-[26px] font-bold text-ink">{value}</p>
     </Link>
   )
 }
 
 function QuickLink({ to, label }: { to: string; label: string }) {
   return (
-    <Link to={to} className="border border-navy/15 bg-white p-4 text-center text-[12px] font-semibold text-navy hover:border-navy">
+    <Link to={to} className="border border-line/15 bg-surface p-4 text-center text-[12px] font-semibold text-ink hover:border-line">
       {label}
     </Link>
   )

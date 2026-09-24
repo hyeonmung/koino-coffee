@@ -1,7 +1,8 @@
 import { forwardRef, type Ref } from 'react'
 import { CHARACTER_INFO } from '../constants/characters'
-import { CHARACTER_STYLE } from '../constants/characterStyle'
+import { getCharacterStyle } from '../constants/characterStyle'
 import { SENSORY_FIELDS } from '../constants/sensory'
+import { useTheme } from '../hooks/useTheme'
 import type { CoffeeDraft } from '../types'
 import InfoTooltip from './InfoTooltip'
 import RadarChart from './RadarChart'
@@ -15,41 +16,42 @@ const MetaItem = ({ label, value }: { label: string; value: string }) => {
   if (!value) return null
   return (
     <div>
-      <p className="text-[9px] font-semibold tracking-[0.15em] text-navy/45">{label}</p>
-      <p className="whitespace-pre-line text-[12px] text-navy">{value}</p>
+      <p className="text-[9px] font-semibold tracking-[0.15em] text-ink/45">{label}</p>
+      <p className="whitespace-pre-line text-[12px] text-ink">{value}</p>
     </div>
   )
 }
 
 const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, chartRef }, ref) => {
   const character = CHARACTER_INFO[coffee.character]
-  const { accent, accentSoft } = CHARACTER_STYLE[coffee.character]
+  const { resolved } = useTheme()
+  const { accent, accentSoft } = getCharacterStyle(coffee.character, resolved === 'dark')
 
   return (
     <div
       ref={ref}
-      className="mx-auto w-full max-w-[440px] border border-navy/15 bg-white px-7 py-9"
+      className="mx-auto w-full max-w-[440px] border border-line/15 bg-surface px-7 py-9"
       style={{ fontFamily: 'var(--font-sans)' }}
     >
-      <div className="flex items-center justify-between border-b border-navy/15 pb-4">
-        <p className="text-[12px] font-bold tracking-[0.3em] text-navy">KOINONIA</p>
+      <div className="flex items-center justify-between border-b border-line/15 pb-4">
+        <p className="text-[12px] font-bold tracking-[0.3em] text-ink">KOINONIA</p>
         <span className="h-1.5 w-1.5 rounded-full bg-accent" />
       </div>
 
       <div className="mt-5">
-        <p className="text-[11px] font-semibold tracking-[0.2em] text-navy/50">
+        <p className="text-[11px] font-semibold tracking-[0.2em] text-ink/50">
           {coffee.country || 'ORIGIN'}
         </p>
-        <h2 className="mt-1 font-serif text-[22px] font-bold leading-tight whitespace-pre-line text-navy">
+        <h2 className="mt-1 font-serif text-[22px] font-bold leading-tight whitespace-pre-line text-ink">
           {coffee.coffeeName || 'COFFEE NAME'}
         </h2>
       </div>
 
       <div className="mt-5 flex items-center gap-2">
-        <span className="border border-navy bg-navy px-2.5 py-1 text-[10px] font-bold tracking-[0.15em] text-warm-white">
+        <span className="border border-line bg-navy px-2.5 py-1 text-[10px] font-bold tracking-[0.15em] text-warm-white">
           {character.label}
         </span>
-        <span className="text-[10px] text-navy/50">{character.description}</span>
+        <span className="text-[10px] text-ink/50">{character.description}</span>
       </div>
 
       {coffee.notes.length > 0 && (
@@ -62,19 +64,19 @@ const CoffeePreview = forwardRef<HTMLDivElement, CoffeePreviewProps>(({ coffee, 
         <RadarChart ref={chartRef} sensory={coffee.sensory} size={300} accentColor={accent} accentSoft={accentSoft} />
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-navy/15 pt-4">
+      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-line/15 pt-4">
         {SENSORY_FIELDS.map((field) => (
           <div key={field.key} className="flex items-center justify-between">
-            <span className="flex items-center gap-1 text-[10px] font-semibold tracking-wide text-navy/60">
+            <span className="flex items-center gap-1 text-[10px] font-semibold tracking-wide text-ink/60">
               {field.labelKo}
               <InfoTooltip title={field.labelKo} criteria={field.criteria} />
             </span>
-            <span className="text-[13px] font-semibold text-navy">{coffee.sensory[field.key]}</span>
+            <span className="text-[13px] font-semibold text-ink">{coffee.sensory[field.key]}</span>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-navy/15 pt-4">
+      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line/15 pt-4">
         <MetaItem label="지역 · REGION" value={coffee.region} />
         <MetaItem label="품종 · VARIETY" value={coffee.variety} />
         <MetaItem label="가공 방식 · PROCESS" value={coffee.process} />

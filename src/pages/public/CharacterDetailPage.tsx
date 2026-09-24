@@ -4,9 +4,10 @@ import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import RadarChart from '../../components/RadarChart'
 import SEO from '../../components/SEO'
-import { CHARACTER_STYLE } from '../../constants/characterStyle'
+import { getCharacterStyle } from '../../constants/characterStyle'
 import { getCharacter } from '../../data/repositories/characterRepository'
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
+import { useTheme } from '../../hooks/useTheme'
 import type { SensoryKey, SensoryProfile } from '../../types'
 import { CUP_CHARACTERS, SENSORY_KEYS, type CupCharacter } from '../../types'
 
@@ -24,6 +25,7 @@ function averageSensory(coffees: { sensory: SensoryProfile }[]): SensoryProfile 
 
 export default function CharacterDetailPage() {
   const { key = '' } = useParams()
+  const { resolved } = useTheme()
   const upperKey = key.toUpperCase()
   const isValid = CUP_CHARACTERS.includes(upperKey as CupCharacter)
 
@@ -36,7 +38,7 @@ export default function CharacterDetailPage() {
   if (!character) return <Navigate to="/characters" replace />
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title={character.label} description={character.description} />
       <PublicHeader />
 
@@ -50,31 +52,31 @@ export default function CharacterDetailPage() {
       )}
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
-        <span className="inline-block border border-navy bg-navy px-4 py-2 text-[16px] font-bold tracking-[0.2em] text-warm-white">
+        <span className="inline-block border border-line bg-navy px-4 py-2 text-[16px] font-bold tracking-[0.2em] text-warm-white">
           {character.label}
         </span>
-        <p className="mt-4 max-w-[560px] whitespace-pre-line text-[16px] leading-relaxed text-navy/70">{character.heroCopy}</p>
-        <p className="mt-2 whitespace-pre-line text-[12px] font-semibold tracking-[0.1em] text-navy/45">{character.flavors}</p>
+        <p className="mt-4 max-w-[560px] whitespace-pre-line text-[16px] leading-relaxed text-ink/70">{character.heroCopy}</p>
+        <p className="mt-2 whitespace-pre-line text-[12px] font-semibold tracking-[0.1em] text-ink/45">{character.flavors}</p>
 
         {tendency && (
-          <div className="mt-10 flex flex-col items-center border-t border-navy/15 pt-8 sm:flex-row sm:gap-10">
+          <div className="mt-10 flex flex-col items-center border-t border-line/15 pt-8 sm:flex-row sm:gap-10">
             <RadarChart
               sensory={tendency}
               size={220}
-              accentColor={CHARACTER_STYLE[upperKey as CupCharacter].accent}
-              accentSoft={CHARACTER_STYLE[upperKey as CupCharacter].accentSoft}
+              accentColor={getCharacterStyle(upperKey as CupCharacter, resolved === 'dark').accent}
+              accentSoft={getCharacterStyle(upperKey as CupCharacter, resolved === 'dark').accentSoft}
             />
-            <p className="mt-4 max-w-[320px] text-center text-[11px] text-navy/45 sm:mt-0 sm:text-left">
+            <p className="mt-4 max-w-[320px] text-center text-[11px] text-ink/45 sm:mt-0 sm:text-left">
               {character.label} 원두 {coffees.length}종의 평균 Sensory Profile입니다. 실제 원두마다 세부 수치는
               다를 수 있습니다.
             </p>
           </div>
         )}
 
-        <section className="mt-14 border-t border-navy/15 pt-10">
-          <h2 className="text-[20px] font-bold text-navy">{character.label} 원두</h2>
+        <section className="mt-14 border-t border-line/15 pt-10">
+          <h2 className="text-[20px] font-bold text-ink">{character.label} 원두</h2>
           {coffees.length === 0 ? (
-            <p className="mt-4 border border-navy/15 bg-white px-6 py-10 text-center text-[13px] text-navy/45">
+            <p className="mt-4 border border-line/15 bg-surface px-6 py-10 text-center text-[13px] text-ink/45">
               현재 소개 중인 {character.label} 커피가 없습니다.
             </p>
           ) : (

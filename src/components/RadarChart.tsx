@@ -11,11 +11,11 @@ import {
 import { forwardRef } from 'react'
 import { Radar } from 'react-chartjs-2'
 import { SENSORY_FIELDS } from '../constants/sensory'
+import { useTheme } from '../hooks/useTheme'
 import type { SensoryProfile } from '../types'
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip)
 
-const NAVY = '#14213d'
 const ACCENT = '#f2c94c'
 
 interface RadarChartProps {
@@ -29,16 +29,22 @@ interface RadarChartProps {
 
 const RadarChart = forwardRef<HTMLDivElement, RadarChartProps>(
   ({ sensory, size = 320, showLabels = true, accentColor, accentSoft }, ref) => {
+    const { resolved } = useTheme()
+    // Chart.js draws to <canvas>, which can't resolve CSS custom properties itself — the
+    // theme's ink color has to be read out and passed in as a literal RGB string per render.
+    const inkRgb = resolved === 'dark' ? '245, 242, 234' : '20, 33, 61'
+    const ink = `rgb(${inkRgb})`
+
     const data: ChartData<'radar'> = {
       labels: SENSORY_FIELDS.map((f) => f.labelKo),
       datasets: [
         {
           data: SENSORY_FIELDS.map((f) => sensory[f.key]),
-          backgroundColor: accentSoft ?? 'rgba(20, 33, 61, 0.14)',
-          borderColor: accentColor ?? NAVY,
+          backgroundColor: accentSoft ?? `rgba(${inkRgb}, 0.14)`,
+          borderColor: accentColor ?? ink,
           borderWidth: 2,
           pointBackgroundColor: accentColor ?? ACCENT,
-          pointBorderColor: NAVY,
+          pointBorderColor: ink,
           pointBorderWidth: showLabels ? 1.5 : 1,
           pointRadius: showLabels ? 3.5 : 2.5,
           pointHoverRadius: showLabels ? 3.5 : 2.5,
@@ -64,19 +70,19 @@ const RadarChart = forwardRef<HTMLDivElement, RadarChartProps>(
             stepSize: 1,
             display: showLabels,
             showLabelBackdrop: false,
-            color: 'rgba(20, 33, 61, 0.4)',
+            color: `rgba(${inkRgb}, 0.4)`,
             font: { size: 9 },
             backdropColor: 'transparent',
           },
           grid: {
-            color: 'rgba(20, 33, 61, 0.16)',
+            color: `rgba(${inkRgb}, 0.16)`,
           },
           angleLines: {
-            color: 'rgba(20, 33, 61, 0.22)',
+            color: `rgba(${inkRgb}, 0.22)`,
           },
           pointLabels: {
             display: showLabels,
-            color: NAVY,
+            color: ink,
             font: { size: 10, weight: 'bold' },
             padding: 6,
           },

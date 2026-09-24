@@ -20,7 +20,7 @@ const CONTENT_TYPES: { value: SpotlightContentType; label: string; hint: string 
   { value: 'EVENT', label: '이벤트', hint: '기간이 있는 프로모션이나 행사.' },
   { value: 'STORY', label: '콘텐츠', hint: '기존에 작성한 이야기를 골라 자동으로 불러옵니다.' },
   { value: 'VIDEO', label: '영상', hint: 'YouTube 등 외부 영상 링크. 자동재생·소리 없이 썸네일만 노출됩니다.' },
-  { value: 'BREW', label: '브루 가이드', hint: '기존 브루 가이드를 골라 자동으로 불러옵니다.' },
+  { value: 'BREW', label: '브루잉 레시피', hint: '기존 브루잉 레시피를 골라 자동으로 불러옵니다.' },
   { value: 'EDUCATION', label: '교육', hint: '커피 클래스, 교육 프로그램 모집 안내.' },
   { value: 'BUSINESS', label: '납품', hint: '납품·컨설팅 등 B2B 안내.' },
   { value: 'CUSTOM', label: '자유 배너', hint: '위 항목에 해당하지 않는 자유 문구 배너.' },
@@ -29,7 +29,7 @@ const CONTENT_TYPES: { value: SpotlightContentType; label: string; hint: string 
 const LINKED_TYPES: SpotlightContentType[] = ['FEATURED_COFFEE', 'STORY', 'BREW']
 
 const inputClass =
-  'w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy'
+  'w-full border border-line/25 bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line'
 
 function emptySlide(order: number): SpotlightSlide {
   const now = new Date().toISOString()
@@ -110,20 +110,20 @@ export default function AdminSpotlightEditorPage() {
 
   return (
     <AdminLayout>
-      <Link to="/admin/spotlight" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
+      <Link to="/admin/spotlight" className="text-[11px] font-semibold text-ink/45 hover:text-ink">
         ← 메인 스포트라이트 목록
       </Link>
       <div className="mt-1 flex items-center justify-between">
-        <h1 className="font-serif text-[22px] font-bold text-navy">{isNew ? '새 스포트라이트' : draft.title || '스포트라이트 편집'}</h1>
+        <h1 className="font-serif text-[22px] font-bold text-ink">{isNew ? '새 스포트라이트' : draft.title || '스포트라이트 편집'}</h1>
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-1.5 text-[12px] font-semibold text-navy/60">
+          <label className="flex items-center gap-1.5 text-[12px] font-semibold text-ink/60">
             <input type="checkbox" checked={draft.published} onChange={(e) => patch({ published: e.target.checked })} />
             공개
           </label>
           <button
             type="button"
             onClick={handleSave}
-            className="border border-navy bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
+            className="border border-line bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
           >
             저장
           </button>
@@ -135,8 +135,8 @@ export default function AdminSpotlightEditorPage() {
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
         <div className="space-y-6">
           {/* STEP 1 */}
-          <section className="border border-navy/15 bg-white p-5">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 1 · 콘텐츠 종류</p>
+          <section className="border border-line/15 bg-surface p-5">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">STEP 1 · 콘텐츠 종류</p>
             <div className="mt-3 grid grid-cols-3 gap-2">
               {CONTENT_TYPES.map((t) => (
                 <button
@@ -144,19 +144,19 @@ export default function AdminSpotlightEditorPage() {
                   type="button"
                   onClick={() => patch({ contentType: t.value, linkedId: undefined })}
                   className={`border px-2 py-2.5 text-[12px] font-semibold ${
-                    draft.contentType === t.value ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/60 hover:border-navy/50'
+                    draft.contentType === t.value ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/60 hover:border-line/50'
                   }`}
                 >
                   {t.label}
                 </button>
               ))}
             </div>
-            <p className="mt-2 text-[11px] text-navy/45">{CONTENT_TYPES.find((t) => t.value === draft.contentType)?.hint}</p>
+            <p className="mt-2 text-[11px] text-ink/45">{CONTENT_TYPES.find((t) => t.value === draft.contentType)?.hint}</p>
           </section>
 
           {isLinked && (
-            <section className="border border-navy/15 bg-white p-5">
-              <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">연결할 항목</p>
+            <section className="border border-line/15 bg-surface p-5">
+              <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">연결할 항목</p>
               <div className="mt-2 flex gap-2">
                 <select
                   value={draft.linkedId ?? ''}
@@ -174,25 +174,25 @@ export default function AdminSpotlightEditorPage() {
                   type="button"
                   onClick={loadFromLinked}
                   disabled={!draft.linkedId}
-                  className="shrink-0 border border-navy px-4 py-2 text-[12px] font-semibold text-navy hover:bg-navy hover:text-warm-white disabled:opacity-30"
+                  className="shrink-0 border border-line px-4 py-2 text-[12px] font-semibold text-ink hover:bg-navy hover:text-warm-white disabled:opacity-30"
                 >
                   불러오기
                 </button>
               </div>
-              <p className="mt-2 text-[11px] text-navy/45">
+              <p className="mt-2 text-[11px] text-ink/45">
                 "불러오기"를 누르면 제목·사진을 자동으로 채웁니다. 이후 아래에서 자유롭게 수정할 수 있습니다.
               </p>
             </section>
           )}
 
           {/* STEP 2 */}
-          <section className="border border-navy/15 bg-white p-5">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 2 · 제목 / 설명</p>
+          <section className="border border-line/15 bg-surface p-5">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">STEP 2 · 제목 / 설명</p>
             <div className="mt-3 space-y-3">
               <label className="block">
-                <span className="mb-1 flex items-center justify-between text-[10px] font-semibold text-navy/60">
+                <span className="mb-1 flex items-center justify-between text-[10px] font-semibold text-ink/60">
                   <span>제목 (Category Label)</span>
-                  <span className="text-navy/30">한글 약 20~28자 권장</span>
+                  <span className="text-ink/30">한글 약 20~28자 권장</span>
                 </span>
                 <textarea
                   rows={1}
@@ -203,13 +203,13 @@ export default function AdminSpotlightEditorPage() {
                 />
               </label>
               <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">제목</span>
+                <span className="mb-1 block text-[10px] font-semibold text-ink/60">제목</span>
                 <textarea rows={1} value={draft.title} onChange={(e) => patch({ title: e.target.value })} className={inputClass} />
               </label>
               <label className="block">
-                <span className="mb-1 flex items-center justify-between text-[10px] font-semibold text-navy/60">
+                <span className="mb-1 flex items-center justify-between text-[10px] font-semibold text-ink/60">
                   <span>짧은 설명 (선택)</span>
-                  <span className="text-navy/30">약 40~70자 권장</span>
+                  <span className="text-ink/30">약 40~70자 권장</span>
                 </span>
                 <textarea
                   value={draft.description ?? ''}
@@ -221,8 +221,8 @@ export default function AdminSpotlightEditorPage() {
           </section>
 
           {/* STEP 3 */}
-          <section className="border border-navy/15 bg-white p-5">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 3 · 사진 {draft.contentType === 'VIDEO' && '/ 영상'}</p>
+          <section className="border border-line/15 bg-surface p-5">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">STEP 3 · 사진 {draft.contentType === 'VIDEO' && '/ 영상'}</p>
             <div className="mt-3 grid grid-cols-2 gap-3">
               <ImageUploadField label="Desktop 사진" value={draft.desktopImage ?? ''} onChange={(url) => patch({ desktopImage: url })} />
               <ImageUploadField
@@ -235,14 +235,14 @@ export default function AdminSpotlightEditorPage() {
             {draft.contentType === 'VIDEO' && (
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <label className="block">
-                  <span className="mb-1 block text-[10px] font-semibold text-navy/60">영상 URL (YouTube 등)</span>
+                  <span className="mb-1 block text-[10px] font-semibold text-ink/60">영상 URL (YouTube 등)</span>
                   <input value={draft.videoUrl ?? ''} onChange={(e) => patch({ videoUrl: e.target.value })} className={inputClass} />
                 </label>
                 <ImageUploadField label="영상 썸네일 (Poster)" value={draft.videoPoster ?? ''} onChange={(url) => patch({ videoPoster: url })} />
               </div>
             )}
             <label className="mt-3 block">
-              <span className="mb-1 block text-[10px] font-semibold text-navy/60">대체 텍스트 (Alt Text, 선택)</span>
+              <span className="mb-1 block text-[10px] font-semibold text-ink/60">대체 텍스트 (Alt Text, 선택)</span>
               <textarea
                 rows={1}
                 value={draft.altText ?? ''}
@@ -251,17 +251,17 @@ export default function AdminSpotlightEditorPage() {
                 className={inputClass}
               />
             </label>
-            <p className="mt-3 text-[11px] text-navy/45">
+            <p className="mt-3 text-[11px] text-ink/45">
               사진 URL이 비어 있으면 KOINO 브랜드 플레이스홀더(남색 배경 + 별)가 자동으로 표시됩니다.
             </p>
           </section>
 
           {/* STEP 4 */}
-          <section className="border border-navy/15 bg-white p-5">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 4 · 링크 / 표시 방식</p>
+          <section className="border border-line/15 bg-surface p-5">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">STEP 4 · 링크 / 표시 방식</p>
             <div className="mt-3 grid grid-cols-2 gap-3">
               <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">버튼 문구</span>
+                <span className="mb-1 block text-[10px] font-semibold text-ink/60">버튼 문구</span>
                 <textarea
                   rows={1}
                   value={draft.ctaText ?? ''}
@@ -271,7 +271,7 @@ export default function AdminSpotlightEditorPage() {
                 />
               </label>
               <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">이동 링크</span>
+                <span className="mb-1 block text-[10px] font-semibold text-ink/60">이동 링크</span>
                 <input
                   value={draft.ctaUrl ?? ''}
                   onChange={(e) => patch({ ctaUrl: e.target.value })}
@@ -283,46 +283,46 @@ export default function AdminSpotlightEditorPage() {
           </section>
 
           {/* STEP 5 */}
-          <section className="border border-navy/15 bg-white p-5">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 5 · 공개 기간 (선택)</p>
+          <section className="border border-line/15 bg-surface p-5">
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">STEP 5 · 공개 기간 (선택)</p>
             <div className="mt-3 grid grid-cols-2 gap-3">
               <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">시작일</span>
+                <span className="mb-1 block text-[10px] font-semibold text-ink/60">시작일</span>
                 <input type="date" value={draft.startDate ?? ''} onChange={(e) => patch({ startDate: e.target.value || undefined })} className={inputClass} />
               </label>
               <label className="block">
-                <span className="mb-1 block text-[10px] font-semibold text-navy/60">종료일</span>
+                <span className="mb-1 block text-[10px] font-semibold text-ink/60">종료일</span>
                 <input type="date" value={draft.endDate ?? ''} onChange={(e) => patch({ endDate: e.target.value || undefined })} className={inputClass} />
               </label>
             </div>
-            <p className="mt-2 text-[11px] text-navy/45">비워두면 기간 제한 없이 상시 노출됩니다.</p>
+            <p className="mt-2 text-[11px] text-ink/45">비워두면 기간 제한 없이 상시 노출됩니다.</p>
           </section>
         </div>
 
         {/* STEP 6 — Live Preview */}
         <div className="lg:sticky lg:top-6 lg:self-start">
           <div className="flex items-center justify-between">
-            <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">STEP 6 · 미리보기</p>
+            <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">STEP 6 · 미리보기</p>
             <div className="flex gap-1">
               <button
                 type="button"
                 onClick={() => setPreviewMode('desktop')}
-                className={`px-2 py-1 text-[10px] font-semibold ${previewMode === 'desktop' ? 'border border-navy text-navy' : 'text-navy/40'}`}
+                className={`px-2 py-1 text-[10px] font-semibold ${previewMode === 'desktop' ? 'border border-line text-ink' : 'text-ink/40'}`}
               >
                 Desktop
               </button>
               <button
                 type="button"
                 onClick={() => setPreviewMode('mobile')}
-                className={`px-2 py-1 text-[10px] font-semibold ${previewMode === 'mobile' ? 'border border-navy text-navy' : 'text-navy/40'}`}
+                className={`px-2 py-1 text-[10px] font-semibold ${previewMode === 'mobile' ? 'border border-line text-ink' : 'text-ink/40'}`}
               >
                 Mobile
               </button>
             </div>
           </div>
-          <p className="mt-1 text-[10px] text-navy/40">위쪽 사진 영역(850×550)과 아래쪽 텍스트 영역은 서로 분리되어 있습니다.</p>
+          <p className="mt-1 text-[10px] text-ink/40">위쪽 사진 영역(850×550)과 아래쪽 텍스트 영역은 서로 분리되어 있습니다.</p>
 
-          <div className={`mt-2 overflow-hidden border border-navy/15 ${previewMode === 'mobile' ? 'mx-auto w-[220px]' : 'w-full'}`}>
+          <div className={`mt-2 overflow-hidden border border-line/15 ${previewMode === 'mobile' ? 'mx-auto w-[220px]' : 'w-full'}`}>
             {preview ? (
               <>
                 {/* 사진 영역 — 실제 사이트와 동일하게 850×550(17:11) 고정 */}
@@ -347,7 +347,7 @@ export default function AdminSpotlightEditorPage() {
                 </div>
               </>
             ) : (
-              <div className="flex aspect-coffee-card w-full items-center justify-center bg-navy/5 px-4 text-center text-[12px] text-navy/40">
+              <div className="flex aspect-coffee-card w-full items-center justify-center bg-line/5 px-4 text-center text-[12px] text-ink/40">
                 {isLinked ? '연결할 항목을 선택하면 미리보기가 표시됩니다.' : '제목을 입력하면 미리보기가 표시됩니다.'}
               </div>
             )}

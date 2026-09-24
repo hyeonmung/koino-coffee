@@ -60,17 +60,17 @@ export const ABOUT_BACKGROUND_LABEL: Record<AboutBackgroundTheme, string> = {
 }
 
 export const ABOUT_BACKGROUND_CLASS: Record<AboutBackgroundTheme, string> = {
-  PAPER: 'bg-warm-white',
-  WHITE: 'bg-white',
+  PAPER: 'bg-canvas',
+  WHITE: 'bg-surface',
   NIGHT: 'koi-night-sky',
-  SOFT: 'bg-[#f5f1e8]',
+  SOFT: 'bg-ivory',
 }
 
 export const ABOUT_BACKGROUND_TEXT_CLASS: Record<AboutBackgroundTheme, string> = {
-  PAPER: 'text-navy',
-  WHITE: 'text-navy',
+  PAPER: 'text-ink',
+  WHITE: 'text-ink',
   NIGHT: 'text-warm-white',
-  SOFT: 'text-navy',
+  SOFT: 'text-ink',
 }
 
 export const ABOUT_SPACING_CLASS: Record<AboutSpacing, string> = {

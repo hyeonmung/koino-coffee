@@ -6,7 +6,20 @@
     <link rel="apple-touch-icon" href="/brand/koi-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KOINONIA ROASTERS 공식사이트</title>
+
+    <script>
+      // Applies the saved theme before first paint so there's no light->dark flash.
+      // Kept in sync at runtime by src/hooks/useTheme.tsx.
+      ;(function () {
+        try {
+          var pref = localStorage.getItem('koi-theme')
+          var dark = pref === 'dark' || (pref !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          if (dark) document.documentElement.setAttribute('data-theme', 'dark')
+        } catch (e) {}
+      })()
+    </script>
     <meta name="description" content="좋은 원두를 정직하게, 그 맛을 쉽게. 코이노니아 로스터스의 원두, 브루 가이드, 커피 이야기를 만나보세요." />
+    <meta name="naver-site-verification" content="8cb08f2342cd08671d3ce6c4c398a87da14e0b1f" />
 
     <!-- Static Open Graph / Twitter Card tags — this is a client-rendered SPA, so link-preview
          crawlers (KakaoTalk, Facebook, etc.) that don't execute JavaScript only ever see these
@@ -24,6 +37,20 @@
     <meta name="twitter:title" content="KOINONIA ROASTERS 공식사이트" />
     <meta name="twitter:description" content="좋은 원두를 정직하게, 그 맛을 쉽게. 코이노니아 로스터스의 원두, 브루 가이드, 커피 이야기를 만나보세요." />
     <meta name="twitter:image" content="https://koinoniaroasters.co.kr/og-image.png" />
+
+    <!-- Organization structured data — lets Naver/Google associate the brand name
+         "코이노니아 로스터스" with this domain instead of just crawling page text. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "코이노니아 로스터스",
+        "alternateName": "KOINONIA ROASTERS",
+        "url": "https://koinoniaroasters.co.kr",
+        "logo": "https://koinoniaroasters.co.kr/brand/koi-logo.png",
+        "description": "좋은 원두를 정직하게, 그 맛을 쉽게. 코이노니아 로스터스의 원두, 브루 가이드, 커피 이야기를 만나보세요."
+      }
+    </script>
 
     <link rel="preload" href="/fonts/SUIT-Variable.woff2" as="font" type="font/woff2" crossorigin />
 

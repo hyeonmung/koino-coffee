@@ -38,7 +38,7 @@ export default function CoffeeForm({ coffee, onChange, nameError }: CoffeeFormPr
     <div className="grid grid-cols-2 gap-x-3 gap-y-3">
       {FIELDS.map((field) => (
         <div key={field.key} className={field.span === 2 ? 'col-span-2' : ''}>
-          <label className="mb-1 flex items-center gap-1 text-[10px] font-semibold tracking-[0.1em] text-navy/60">
+          <label className="mb-1 flex items-center gap-1 text-[10px] font-semibold tracking-[0.1em] text-ink/60">
             {field.label}
             {field.required && <span className="text-accent">*</span>}
           </label>
@@ -46,8 +46,8 @@ export default function CoffeeForm({ coffee, onChange, nameError }: CoffeeFormPr
             value={coffee[field.key]}
             onChange={handleChange(field.key)}
             placeholder={field.placeholder}
-            className={`w-full border bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy ${
-              field.key === 'coffeeName' && nameError ? 'border-red-400' : 'border-navy/25'
+            className={`w-full border bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line ${
+              field.key === 'coffeeName' && nameError ? 'border-red-400' : 'border-line/25'
             }`}
           />
           {field.key === 'coffeeName' && nameError && (

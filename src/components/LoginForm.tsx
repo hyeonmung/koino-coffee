@@ -33,7 +33,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
           setEmail(e.target.value)
           setError('')
         }}
-        className="w-full border border-navy/25 bg-white px-3 py-2.5 text-center text-[16px] text-navy outline-none focus:border-navy"
+        className="w-full border border-line/25 bg-surface px-3 py-2.5 text-center text-[16px] text-ink outline-none focus:border-line"
         placeholder="이메일"
       />
       <input
@@ -43,8 +43,8 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
           setPassword(e.target.value)
           setError('')
         }}
-        className={`mt-2.5 w-full border bg-white px-3 py-2.5 text-center text-[16px] tracking-[0.15em] text-navy outline-none focus:border-navy ${
-          error ? 'border-red-400' : 'border-navy/25'
+        className={`mt-2.5 w-full border bg-surface px-3 py-2.5 text-center text-[16px] tracking-[0.15em] text-ink outline-none focus:border-line ${
+          error ? 'border-red-400' : 'border-line/25'
         }`}
         placeholder="비밀번호"
       />
@@ -53,7 +53,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-4 w-full border border-navy bg-navy py-2.5 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light disabled:opacity-50"
+        className="mt-4 w-full border border-line bg-navy py-2.5 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light disabled:opacity-50"
       >
         {submitting ? '확인 중…' : '로그인'}
       </button>

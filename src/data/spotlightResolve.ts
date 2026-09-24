@@ -1,6 +1,6 @@
 import { CHARACTER_INFO } from '../constants/characters'
 import { getBrewGuideById } from './repositories/brewGuideRepository'
-import { getCoffeeById } from './repositories/coffeeRepository'
+import { getCoffeeById, getPublishedCoffees } from './repositories/coffeeRepository'
 import { getStoryById } from './repositories/storyRepository'
 import type { SpotlightContentType, SpotlightSlide } from './schema'
 
@@ -10,7 +10,7 @@ export const SPOTLIGHT_TYPE_LABEL: Record<SpotlightContentType, string> = {
   EVENT: 'EVENT',
   STORY: 'KOINO STORY',
   VIDEO: '영상',
-  BREW: '브루 가이드',
+  BREW: '브루잉 레시피',
   EDUCATION: '교육',
   BUSINESS: '납품 · 교육',
   CUSTOM: 'KOINONIA',
@@ -28,6 +28,8 @@ export interface ResolvedSpotlight {
   videoUrl?: string
   videoPoster?: string
   altText: string
+  /** True only for the FEATURED_COFFEE slide linked to the highest coffeeNumber currently published — i.e. the coffee that was most recently added, never one that was just edited. */
+  isNewCoffee?: boolean
 }
 
 /**
@@ -45,6 +47,7 @@ export function resolveSpotlightSlide(slide: SpotlightSlide): ResolvedSpotlight 
     const coffee = slide.linkedId ? getCoffeeById(slide.linkedId) : undefined
     if (!coffee) return null
     const character = CHARACTER_INFO[coffee.character]
+    const maxCoffeeNumber = Math.max(0, ...getPublishedCoffees().map((c) => c.coffeeNumber ?? 0))
     return {
       label,
       title: slide.title || coffee.coffeeName,
@@ -56,6 +59,7 @@ export function resolveSpotlightSlide(slide: SpotlightSlide): ResolvedSpotlight 
       mobileImage: slide.mobileImage || slide.desktopImage || coffee.heroImage,
       isVideo: false,
       altText,
+      isNewCoffee: coffee.coffeeNumber !== undefined && coffee.coffeeNumber === maxCoffeeNumber,
     }
   }
 

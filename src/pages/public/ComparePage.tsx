@@ -32,25 +32,25 @@ export default function ComparePage() {
   const removeCoffee = (id: string) => setSelectedIds((prev) => prev.filter((x) => x !== id))
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title="원두 비교" description="최대 3개의 원두를 나란히 비교해보세요." />
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[1000px] px-6 py-10">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">COMPARE</p>
-        <h1 className="mt-1 text-[28px] font-bold text-navy">원두 비교하기</h1>
-        <p className="mt-2 text-[13px] text-navy/55">최대 {MAX_COMPARE}개의 원두를 선택해 비교할 수 있습니다.</p>
+        <h1 className="mt-1 text-[28px] font-bold text-ink">원두 비교하기</h1>
+        <p className="mt-2 text-[13px] text-ink/55">최대 {MAX_COMPARE}개의 원두를 선택해 비교할 수 있습니다.</p>
 
         <div className="mt-6 flex flex-wrap gap-2">
           {selected.map((coffee, i) => (
             <span
               key={coffee.id}
-              className="flex items-center gap-2 border px-3 py-1.5 text-[12px] font-semibold text-navy"
+              className="flex items-center gap-2 border px-3 py-1.5 text-[12px] font-semibold text-ink"
               style={{ borderColor: COMPARE_COLORS[i] }}
             >
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COMPARE_COLORS[i] }} />
               {coffee.coffeeName}
-              <button type="button" onClick={() => removeCoffee(coffee.id)} className="text-navy/40 hover:text-navy">
+              <button type="button" onClick={() => removeCoffee(coffee.id)} className="text-ink/40 hover:text-ink">
                 ×
               </button>
             </span>
@@ -63,18 +63,18 @@ export default function ComparePage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="비교할 원두 검색 후 선택"
-              className="w-full border border-navy/25 bg-white px-3 py-2 text-[12px] text-navy outline-none placeholder:text-navy/35 focus:border-navy"
+              className="w-full border border-line/25 bg-surface px-3 py-2 text-[12px] text-ink outline-none placeholder:text-ink/35 focus:border-line"
             />
             {query && candidates.length > 0 && (
-              <div className="absolute z-10 mt-1 w-full border border-navy/15 bg-white shadow-md">
+              <div className="absolute z-10 mt-1 w-full border border-line/15 bg-surface shadow-md">
                 {candidates.map((c) => (
                   <button
                     key={c.id}
                     type="button"
                     onClick={() => addCoffee(c.id)}
-                    className="block w-full px-3 py-2 text-left text-[12px] text-navy hover:bg-warm-white"
+                    className="block w-full px-3 py-2 text-left text-[12px] text-ink hover:bg-canvas"
                   >
-                    {c.coffeeName} <span className="text-navy/40">· {c.country}</span>
+                    {c.coffeeName} <span className="text-ink/40">· {c.country}</span>
                   </button>
                 ))}
               </div>
@@ -83,7 +83,7 @@ export default function ComparePage() {
         )}
 
         {selected.length === 0 ? (
-          <p className="mt-10 border border-navy/15 bg-white px-6 py-16 text-center text-[13px] text-navy/45">
+          <p className="mt-10 border border-line/15 bg-surface px-6 py-16 text-center text-[13px] text-ink/45">
             비교할 원두를 검색해서 추가해보세요.
           </p>
         ) : (
@@ -123,7 +123,7 @@ export default function ComparePage() {
                 <Link
                   key={c.id}
                   to={`/coffees/${c.slug}`}
-                  className="border border-navy/25 px-3 py-1.5 text-[11px] font-semibold text-navy/60 hover:border-navy hover:text-navy"
+                  className="border border-line/25 px-3 py-1.5 text-[11px] font-semibold text-ink/60 hover:border-line hover:text-ink"
                 >
                   {c.coffeeName} 상세보기 →
                 </Link>
@@ -140,10 +140,10 @@ export default function ComparePage() {
 
 function CompareRow({ label, cells }: { label: string; cells: React.ReactNode[] }) {
   return (
-    <tr className="border-b border-navy/10">
-      <th className="w-[120px] py-2 pr-3 text-left text-[10px] font-semibold tracking-wide text-navy/45">{label}</th>
+    <tr className="border-b border-line/10">
+      <th className="w-[120px] py-2 pr-3 text-left text-[10px] font-semibold tracking-wide text-ink/45">{label}</th>
       {cells.map((cell, i) => (
-        <td key={i} className="py-2 pr-4 text-navy">
+        <td key={i} className="py-2 pr-4 text-ink">
           {cell}
         </td>
       ))}

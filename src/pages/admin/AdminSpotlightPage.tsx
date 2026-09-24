@@ -16,7 +16,7 @@ const CONTENT_TYPE_KOREAN: Record<SpotlightSlide['contentType'], string> = {
   EVENT: '이벤트',
   STORY: '콘텐츠',
   VIDEO: '영상',
-  BREW: '브루 가이드',
+  BREW: '브루잉 레시피',
   EDUCATION: '교육',
   BUSINESS: '납품',
   CUSTOM: '자유 배너',
@@ -69,22 +69,22 @@ export default function AdminSpotlightPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">SPOTLIGHT</p>
-          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">메인 스포트라이트</h1>
-          <p className="mt-1 text-[12px] text-navy/50">
+          <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">메인 스포트라이트</h1>
+          <p className="mt-1 text-[12px] text-ink/50">
             홈 화면 Hero 오른쪽에 순환 노출되는 콘텐츠입니다. 공개 상태인 슬라이드가 없으면 자동으로
             Featured 원두 1개가 대신 표시됩니다.
           </p>
         </div>
         <Link
           to="/admin/spotlight/new"
-          className="border border-navy bg-navy px-4 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-4 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
         >
           + 새 스포트라이트
         </Link>
       </div>
 
       {slides.length >= 8 && (
-        <p className="mt-4 border border-accent/50 bg-accent/10 px-4 py-2.5 text-[12px] text-navy/70">
+        <p className="mt-4 border border-accent/50 bg-accent/10 px-4 py-2.5 text-[12px] text-ink/70">
           메인 스포트라이트는 3~6개 사용을 권장합니다. 너무 많으면 손님이 원하는 정보를 보기 전에
           지나칠 수 있습니다.
         </p>
@@ -92,13 +92,13 @@ export default function AdminSpotlightPage() {
 
       <div className="mt-6 space-y-2">
         {slides.map((slide, i) => (
-          <div key={slide.id} className="flex items-center gap-3 border border-navy/15 bg-white px-4 py-3">
+          <div key={slide.id} className="flex items-center gap-3 border border-line/15 bg-surface px-4 py-3">
             <div className="flex flex-col">
               <button
                 type="button"
                 onClick={() => move(slide.id, 'up')}
                 disabled={i === 0}
-                className="text-navy/40 hover:text-navy disabled:opacity-20"
+                className="text-ink/40 hover:text-ink disabled:opacity-20"
                 aria-label="위로 이동"
               >
                 ▲
@@ -107,7 +107,7 @@ export default function AdminSpotlightPage() {
                 type="button"
                 onClick={() => move(slide.id, 'down')}
                 disabled={i === slides.length - 1}
-                className="text-navy/40 hover:text-navy disabled:opacity-20"
+                className="text-ink/40 hover:text-ink disabled:opacity-20"
                 aria-label="아래로 이동"
               >
                 ▼
@@ -116,14 +116,14 @@ export default function AdminSpotlightPage() {
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="border border-navy/20 px-1.5 py-0.5 text-[10px] font-semibold text-navy/60">
+                <span className="border border-line/20 px-1.5 py-0.5 text-[10px] font-semibold text-ink/60">
                   {CONTENT_TYPE_KOREAN[slide.contentType]}
                 </span>
-                <p className="truncate text-[13px] font-semibold text-navy">
+                <p className="truncate text-[13px] font-semibold text-ink">
                   {slide.title || SPOTLIGHT_TYPE_LABEL[slide.contentType]}
                 </p>
               </div>
-              <p className="mt-0.5 text-[11px] text-navy/45">
+              <p className="mt-0.5 text-[11px] text-ink/45">
                 {slide.startDate || slide.endDate
                   ? `${slide.startDate ?? '제한 없음'} ~ ${slide.endDate ?? '제한 없음'}`
                   : '상시 노출'}
@@ -135,7 +135,7 @@ export default function AdminSpotlightPage() {
               type="button"
               onClick={() => togglePublished(slide)}
               className={`border px-2.5 py-1.5 text-[11px] font-semibold ${
-                slide.published ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/50'
+                slide.published ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/50'
               }`}
             >
               {slide.published ? '공개 중' : '비공개'}
@@ -143,14 +143,14 @@ export default function AdminSpotlightPage() {
 
             <Link
               to={`/admin/spotlight/${slide.id}`}
-              className="border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-navy hover:text-navy"
+              className="border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-line hover:text-ink"
             >
               수정
             </Link>
             <button
               type="button"
               onClick={() => duplicate(slide)}
-              className="border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-navy hover:text-navy"
+              className="border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-line hover:text-ink"
             >
               복제
             </button>
@@ -166,7 +166,7 @@ export default function AdminSpotlightPage() {
               <button
                 type="button"
                 onClick={() => setConfirmingId(slide.id)}
-                className="border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-red-400 hover:text-red-500"
+                className="border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-red-400 hover:text-red-500"
               >
                 삭제
               </button>
@@ -174,7 +174,7 @@ export default function AdminSpotlightPage() {
           </div>
         ))}
         {slides.length === 0 && (
-          <p className="border border-navy/15 bg-white px-4 py-10 text-center text-[13px] text-navy/40">
+          <p className="border border-line/15 bg-surface px-4 py-10 text-center text-[13px] text-ink/40">
             등록된 스포트라이트가 없습니다. 지금은 Featured 원두가 자동으로 대신 노출됩니다.
           </p>
         )}

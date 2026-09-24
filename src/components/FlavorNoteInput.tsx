@@ -59,7 +59,7 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
 
   return (
     <div className="relative">
-      <div className="flex flex-wrap items-center gap-1.5 border border-navy/25 bg-white p-2">
+      <div className="flex flex-wrap items-center gap-1.5 border border-line/25 bg-surface p-2">
         {notes.map((note, i) => (
           <span
             key={`${note}-${i}`}
@@ -73,17 +73,17 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
             }}
             onDragEnd={() => setDragIndex(null)}
             title="드래그하여 순서 변경 — 첫 번째 순서가 대표 향미 노트이자 향미 스펙트럼 맨 위 색이 됩니다"
-            className={`flex cursor-grab items-center gap-1 border border-navy/20 bg-warm-white px-2 py-1 text-[11px] text-navy transition-opacity active:cursor-grabbing ${
+            className={`flex cursor-grab items-center gap-1 border border-line/20 bg-canvas px-2 py-1 text-[11px] text-ink transition-opacity active:cursor-grabbing ${
               dragIndex === i ? 'opacity-30' : ''
             }`}
           >
-            <span className="text-navy/25">⠿</span>
+            <span className="text-ink/25">⠿</span>
             {note}
             <button
               type="button"
               onClick={() => removeNote(i)}
               aria-label={`${note} 삭제`}
-              className="text-navy/50 hover:text-navy"
+              className="text-ink/50 hover:text-ink"
             >
               ×
             </button>
@@ -100,22 +100,22 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
           }}
           placeholder={atLimit ? '최대 6개까지 입력 가능' : '향미 입력 후 Enter'}
           disabled={atLimit}
-          className="min-w-[100px] flex-1 bg-transparent px-1 py-1 text-[13px] text-navy outline-none placeholder:text-navy/35 disabled:cursor-not-allowed"
+          className="min-w-[100px] flex-1 bg-transparent px-1 py-1 text-[13px] text-ink outline-none placeholder:text-ink/35 disabled:cursor-not-allowed"
         />
       </div>
-      <p className="mt-1 text-right text-[10px] text-navy/45">
+      <p className="mt-1 text-right text-[10px] text-ink/45">
         {notes.length} / {MAX_FLAVOR_NOTES} · 칩을 드래그하면 순서를 바꿀 수 있습니다
       </p>
 
       {notes.length > 0 && (
-        <div className="mt-3 flex h-10 items-stretch gap-3 border-t border-navy/10 pt-3">
-          <span className="self-center text-[10px] font-semibold tracking-[0.1em] text-navy/40">향미 스펙트럼 미리보기</span>
+        <div className="mt-3 flex h-10 items-stretch gap-3 border-t border-line/10 pt-3">
+          <span className="self-center text-[10px] font-semibold tracking-[0.1em] text-ink/40">향미 스펙트럼 미리보기</span>
           <FlavorSpectrumSpine notes={notes} size="md" />
         </div>
       )}
 
       {showSuggestions && matchingSuggestions.length > 0 && (
-        <div className="absolute z-10 mt-1 w-full border border-navy/15 bg-white shadow-md">
+        <div className="absolute z-10 mt-1 w-full border border-line/15 bg-surface shadow-md">
           {matchingSuggestions.map((s) => (
             <button
               key={s}
@@ -124,7 +124,7 @@ export default function FlavorNoteInput({ notes, onChange, suggestions = [] }: F
                 e.preventDefault()
                 addNote(s)
               }}
-              className="block w-full px-3 py-1.5 text-left text-[12px] text-navy hover:bg-warm-white"
+              className="block w-full px-3 py-1.5 text-left text-[12px] text-ink hover:bg-canvas"
             >
               {s}
             </button>

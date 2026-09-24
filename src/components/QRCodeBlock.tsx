@@ -34,14 +34,14 @@ export default function QRCodeBlock({ url, filenameBase, size = 140 }: QRCodeBlo
       {pngDataUrl ? (
         <img src={pngDataUrl} alt="QR code" width={size} height={size} />
       ) : (
-        <div style={{ width: size, height: size }} className="bg-navy/10" />
+        <div style={{ width: size, height: size }} className="bg-line/10" />
       )}
       <div className="flex gap-1.5">
         <button
           type="button"
           disabled={!pngDataUrl}
           onClick={() => pngDataUrl && downloadDataUrl(`${filenameBase}-qr.png`, pngDataUrl)}
-          className="border border-navy/25 px-2 py-1 text-[10px] font-semibold text-navy/60 hover:border-navy hover:text-navy disabled:opacity-40"
+          className="border border-line/25 px-2 py-1 text-[10px] font-semibold text-ink/60 hover:border-line hover:text-ink disabled:opacity-40"
         >
           PNG
         </button>
@@ -49,7 +49,7 @@ export default function QRCodeBlock({ url, filenameBase, size = 140 }: QRCodeBlo
           type="button"
           disabled={!svgMarkup}
           onClick={() => svgMarkup && downloadTextFile(`${filenameBase}-qr.svg`, svgMarkup, 'image/svg+xml')}
-          className="border border-navy/25 px-2 py-1 text-[10px] font-semibold text-navy/60 hover:border-navy hover:text-navy disabled:opacity-40"
+          className="border border-line/25 px-2 py-1 text-[10px] font-semibold text-ink/60 hover:border-line hover:text-ink disabled:opacity-40"
         >
           SVG
         </button>

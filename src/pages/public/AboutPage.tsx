@@ -17,7 +17,7 @@ export default function AboutPage() {
   const heroTextPosition = isMobile ? hero.textPositionMobile : hero.textPositionDesktop
 
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title={seoTitle || '코이노니아'} description={seoDescription || hero.subtitle} />
       <PublicHeader />
 

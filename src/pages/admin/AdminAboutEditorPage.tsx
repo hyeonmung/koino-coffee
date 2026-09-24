@@ -37,7 +37,7 @@ import type {
 } from '../../data/schema'
 
 const inputClass =
-  'w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy'
+  'w-full border border-line/25 bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line'
 const textareaClass = `${inputClass} min-h-[90px]`
 
 const BLOCK_TYPES: AboutBlockType[] = [
@@ -156,20 +156,20 @@ export default function AdminAboutEditorPage() {
   return (
     <AdminLayout>
       <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">ABOUT</p>
-      <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">코이노니아 소개 페이지 편집</h1>
-      <p className="mt-2 max-w-[640px] text-[12px] text-navy/50">
+      <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">코이노니아 소개 페이지 편집</h1>
+      <p className="mt-2 max-w-[640px] text-[12px] text-ink/50">
         블록을 추가·삭제·순서 변경하며 자유롭게 페이지를 구성하세요. 왼쪽의 ⠿ 손잡이를 드래그해 순서를 바로 바꿀 수
         있고, 사진, 텍스트, 비율, 배경은 실시간 미리보기를 보면서 직접 조정할 수 있습니다. 단 폰트·자유 색상·절대
         위치 지정은 KOI 디자인 시스템 보호를 위해 제공하지 않습니다.
       </p>
 
       {/* HERO */}
-      <div className="mt-8 border border-navy/15 bg-white p-5">
+      <div className="mt-8 border border-line/15 bg-surface p-5">
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-semibold tracking-[0.15em] text-navy/40">브랜드 HERO</p>
+          <p className="text-[10px] font-semibold tracking-[0.15em] text-ink/40">브랜드 HERO</p>
           <div className="flex items-center gap-2">
-            {heroSaved && <span className="text-[11px] text-navy/50">저장됨</span>}
-            <button type="button" onClick={saveHero} className="border border-navy bg-navy px-3 py-1.5 text-[11px] font-semibold text-warm-white hover:bg-navy-light">
+            {heroSaved && <span className="text-[11px] text-ink/50">저장됨</span>}
+            <button type="button" onClick={saveHero} className="border border-line bg-navy px-3 py-1.5 text-[11px] font-semibold text-warm-white hover:bg-navy-light">
               저장
             </button>
           </div>
@@ -239,39 +239,39 @@ export default function AdminAboutEditorPage() {
               if (dragId) reorderTo(dragId, idx)
               setDragId(null)
             }}
-            className={`border border-navy/15 bg-white transition-opacity ${dragId === block.id ? 'opacity-30' : ''}`}
+            className={`border border-line/15 bg-surface transition-opacity ${dragId === block.id ? 'opacity-30' : ''}`}
           >
             <div className="flex items-center gap-3 px-4 py-3">
               <span
                 draggable
                 onDragStart={() => setDragId(block.id)}
                 onDragEnd={() => setDragId(null)}
-                className="shrink-0 cursor-grab select-none text-[15px] leading-none text-navy/30 hover:text-navy/60 active:cursor-grabbing"
+                className="shrink-0 cursor-grab select-none text-[15px] leading-none text-ink/30 hover:text-ink/60 active:cursor-grabbing"
                 title="드래그하여 순서 변경"
               >
                 ⠿
               </span>
               <div className="flex shrink-0 flex-col gap-0.5">
-                <button type="button" onClick={() => move(block, -1)} disabled={idx === 0} className="text-[10px] text-navy/40 hover:text-navy disabled:opacity-20">▲</button>
-                <button type="button" onClick={() => move(block, 1)} disabled={idx === blocks.length - 1} className="text-[10px] text-navy/40 hover:text-navy disabled:opacity-20">▼</button>
+                <button type="button" onClick={() => move(block, -1)} disabled={idx === 0} className="text-[10px] text-ink/40 hover:text-ink disabled:opacity-20">▲</button>
+                <button type="button" onClick={() => move(block, 1)} disabled={idx === blocks.length - 1} className="text-[10px] text-ink/40 hover:text-ink disabled:opacity-20">▼</button>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-semibold tracking-wide text-navy/40">{ABOUT_BLOCK_TYPE_LABEL[block.type]}</p>
-                <p className="truncate text-[13px] font-semibold text-navy">
+                <p className="text-[10px] font-semibold tracking-wide text-ink/40">{ABOUT_BLOCK_TYPE_LABEL[block.type]}</p>
+                <p className="truncate text-[13px] font-semibold text-ink">
                   {block.title || block.personName || block.quote?.slice(0, 30) || '(제목 없음)'}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => toggleVisible(block)}
-                className={`shrink-0 border px-2.5 py-1 text-[10px] font-semibold ${block.visible ? 'border-accent/60 bg-accent/15 text-navy' : 'border-navy/20 text-navy/35'}`}
+                className={`shrink-0 border px-2.5 py-1 text-[10px] font-semibold ${block.visible ? 'border-accent/60 bg-accent/15 text-ink' : 'border-line/20 text-ink/35'}`}
               >
                 {block.visible ? '공개' : '숨김'}
               </button>
-              <button type="button" onClick={() => setExpandedId(expandedId === block.id ? null : block.id)} className="shrink-0 border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-navy hover:text-navy">
+              <button type="button" onClick={() => setExpandedId(expandedId === block.id ? null : block.id)} className="shrink-0 border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-line hover:text-ink">
                 {expandedId === block.id ? '닫기' : '편집'}
               </button>
-              <button type="button" onClick={() => duplicate(block)} className="shrink-0 border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-navy hover:text-navy">
+              <button type="button" onClick={() => duplicate(block)} className="shrink-0 border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-line hover:text-ink">
                 복제
               </button>
               {confirmingId === block.id ? (
@@ -279,7 +279,7 @@ export default function AdminAboutEditorPage() {
                   정말 삭제
                 </button>
               ) : (
-                <button type="button" onClick={() => setConfirmingId(block.id)} className="shrink-0 border border-navy/20 px-2.5 py-1.5 text-[11px] text-navy/60 hover:border-red-400 hover:text-red-500">
+                <button type="button" onClick={() => setConfirmingId(block.id)} className="shrink-0 border border-line/20 px-2.5 py-1.5 text-[11px] text-ink/60 hover:border-red-400 hover:text-red-500">
                   삭제
                 </button>
               )}
@@ -295,25 +295,25 @@ export default function AdminAboutEditorPage() {
             )}
           </div>
         ))}
-        {blocks.length === 0 && <p className="border border-navy/15 bg-white px-4 py-10 text-center text-[13px] text-navy/40">등록된 블록이 없습니다.</p>}
+        {blocks.length === 0 && <p className="border border-line/15 bg-surface px-4 py-10 text-center text-[13px] text-ink/40">등록된 블록이 없습니다.</p>}
       </div>
 
       {/* ADD BLOCK */}
       <div className="mt-6">
         {addingType === null ? (
-          <button type="button" onClick={() => setAddingType('BRAND')} className="border border-navy/25 px-4 py-2.5 text-[12px] font-semibold text-navy hover:border-navy">
+          <button type="button" onClick={() => setAddingType('BRAND')} className="border border-line/25 px-4 py-2.5 text-[12px] font-semibold text-ink hover:border-line">
             + 섹션 추가
           </button>
         ) : (
-          <div className="border border-navy/15 bg-white p-4">
-            <p className="mb-2 text-[10px] font-semibold text-navy/40">추가할 블록 종류</p>
+          <div className="border border-line/15 bg-surface p-4">
+            <p className="mb-2 text-[10px] font-semibold text-ink/40">추가할 블록 종류</p>
             <div className="flex flex-wrap gap-1.5">
               {BLOCK_TYPES.map((t) => (
-                <button key={t} type="button" onClick={() => addBlock(t)} className="border border-navy/20 px-3 py-1.5 text-[11px] font-semibold text-navy/70 hover:border-navy hover:text-navy">
+                <button key={t} type="button" onClick={() => addBlock(t)} className="border border-line/20 px-3 py-1.5 text-[11px] font-semibold text-ink/70 hover:border-line hover:text-ink">
                   {ABOUT_BLOCK_TYPE_LABEL[t]}
                 </button>
               ))}
-              <button type="button" onClick={() => setAddingType(null)} className="px-3 py-1.5 text-[11px] text-navy/40 hover:text-navy">
+              <button type="button" onClick={() => setAddingType(null)} className="px-3 py-1.5 text-[11px] text-ink/40 hover:text-ink">
                 취소
               </button>
             </div>
@@ -327,7 +327,7 @@ export default function AdminAboutEditorPage() {
 function LabeledField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">{label}</span>
+      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-ink/60">{label}</span>
       {children}
     </label>
   )
@@ -341,7 +341,7 @@ function PillGroup<T extends string>({ options, value, onChange }: { options: { 
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={`border px-2.5 py-1.5 text-[11px] font-semibold ${value === opt.value ? 'border-navy bg-navy text-warm-white' : 'border-navy/20 text-navy/60 hover:border-navy/50'}`}
+          className={`border px-2.5 py-1.5 text-[11px] font-semibold ${value === opt.value ? 'border-line bg-navy text-warm-white' : 'border-line/20 text-ink/60 hover:border-line/50'}`}
         >
           {opt.label}
         </button>
@@ -359,10 +359,10 @@ function BackgroundSwatchGroup({ value, onChange }: { value: AboutBackgroundThem
           key={b}
           type="button"
           onClick={() => onChange(b)}
-          className={`flex flex-col items-center gap-1 border p-1.5 ${value === b ? 'border-navy' : 'border-transparent hover:border-navy/20'}`}
+          className={`flex flex-col items-center gap-1 border p-1.5 ${value === b ? 'border-line' : 'border-transparent hover:border-line/20'}`}
         >
-          <span className={`block h-9 w-14 border border-navy/10 ${ABOUT_BACKGROUND_CLASS[b]}`} />
-          <span className="text-[9px] font-semibold text-navy/60">{ABOUT_BACKGROUND_LABEL[b]}</span>
+          <span className={`block h-9 w-14 border border-line/10 ${ABOUT_BACKGROUND_CLASS[b]}`} />
+          <span className="text-[9px] font-semibold text-ink/60">{ABOUT_BACKGROUND_LABEL[b]}</span>
         </button>
       ))}
     </div>
@@ -412,7 +412,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
   const removeGalleryImage = (i: number) => patch({ galleryImages: (draft.galleryImages ?? []).filter((_, idx) => idx !== i) })
 
   return (
-    <div className="grid grid-cols-1 gap-6 border-t border-navy/10 p-5 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 border-t border-line/10 p-5 lg:grid-cols-2">
       {/* FIELDS */}
       <div className="space-y-4">
         {draft.type === 'PERSON' ? (
@@ -477,7 +477,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           </LabeledField>
         ) : draft.type === 'GALLERY' ? (
           <div>
-            <span className="mb-2 block text-[10px] font-semibold text-navy/60">사진 목록</span>
+            <span className="mb-2 block text-[10px] font-semibold text-ink/60">사진 목록</span>
             <PillGroup
               options={[
                 { value: '2', label: '2단' },
@@ -488,7 +488,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
             />
             <div className="mt-3 space-y-4">
               {(draft.galleryImages ?? []).map((img, i) => (
-                <div key={i} className="border border-navy/10 p-3">
+                <div key={i} className="border border-line/10 p-3">
                   <ImageUploadField label={`사진 ${i + 1}`} value={img.url} onChange={(url) => updateGalleryImage(i, url, img.caption ?? '')} />
                   <div className="mt-2 flex gap-2">
                     <textarea
@@ -498,14 +498,14 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                       className={inputClass}
                       placeholder="캡션 (선택)"
                     />
-                    <button type="button" onClick={() => removeGalleryImage(i)} className="shrink-0 text-navy/40 hover:text-red-500">
+                    <button type="button" onClick={() => removeGalleryImage(i)} className="shrink-0 text-ink/40 hover:text-red-500">
                       ×
                     </button>
                   </div>
                 </div>
               ))}
             </div>
-            <button type="button" onClick={addGalleryImage} className="mt-2 text-[11px] font-semibold text-navy/50 hover:text-navy">+ 사진 추가</button>
+            <button type="button" onClick={addGalleryImage} className="mt-2 text-[11px] font-semibold text-ink/50 hover:text-ink">+ 사진 추가</button>
           </div>
         ) : (
           <>
@@ -534,14 +534,14 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
 
         {draft.type === 'PERSON' || draft.type === 'CAREER_LIST' ? (
           <div>
-            <span className="mb-2 block text-[10px] font-semibold text-navy/60">경력</span>
+            <span className="mb-2 block text-[10px] font-semibold text-ink/60">경력</span>
             <div className="space-y-2">
               {(draft.careers ?? []).map((c) => (
-                <div key={c.id} className="border border-navy/10 p-2.5">
+                <div key={c.id} className="border border-line/10 p-2.5">
                   <div className="flex gap-2">
                     <input value={c.year} onChange={(e) => updateCareer(c.id, { year: e.target.value })} className={`${inputClass} w-20`} placeholder="2024" />
                     <textarea rows={1} value={c.organization} onChange={(e) => updateCareer(c.id, { organization: e.target.value })} className={inputClass} placeholder="기관 · 대회 · 활동" />
-                    <button type="button" onClick={() => removeCareer(c.id)} className="shrink-0 text-navy/40 hover:text-red-500">×</button>
+                    <button type="button" onClick={() => removeCareer(c.id)} className="shrink-0 text-ink/40 hover:text-red-500">×</button>
                   </div>
                   <div className="mt-1.5 flex gap-2">
                     <textarea rows={1} value={c.detail} onChange={(e) => updateCareer(c.id, { detail: e.target.value })} className={inputClass} placeholder="내용 (예: 1위, Judge)" />
@@ -550,7 +550,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                         <option key={cat} value={cat}>{cat}</option>
                       ))}
                     </select>
-                    <label className="flex shrink-0 items-center gap-1 text-[11px] text-navy/60">
+                    <label className="flex shrink-0 items-center gap-1 text-[11px] text-ink/60">
                       <input type="checkbox" checked={c.featured} onChange={(e) => updateCareer(c.id, { featured: e.target.checked })} />
                       주요 경력
                     </label>
@@ -558,12 +558,12 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
                 </div>
               ))}
             </div>
-            <button type="button" onClick={addCareer} className="mt-2 text-[11px] font-semibold text-navy/50 hover:text-navy">+ 경력 추가</button>
+            <button type="button" onClick={addCareer} className="mt-2 text-[11px] font-semibold text-ink/50 hover:text-ink">+ 경력 추가</button>
           </div>
         ) : null}
 
         {hasImage && (
-          <div className="border-t border-navy/10 pt-4">
+          <div className="border-t border-line/10 pt-4">
             <ImageUploadField
               label="사진"
               value={draft.image ?? ''}
@@ -589,8 +589,8 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           </div>
         )}
 
-        <div className="border-t border-navy/10 pt-4">
-          <span className="mb-2 block text-[10px] font-semibold text-navy/60">레이아웃</span>
+        <div className="border-t border-line/10 pt-4">
+          <span className="mb-2 block text-[10px] font-semibold text-ink/60">레이아웃</span>
           <PillGroup options={LAYOUTS.map((l) => ({ value: l, label: ABOUT_LAYOUT_LABEL[l] }))} value={draft.layout} onChange={(v) => patch({ layout: v })} />
 
           {draft.layout === 'CUSTOM' && (
@@ -618,7 +618,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
 
           {isSplitLayout && (
             <div className="mt-3">
-              <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">세로 정렬</span>
+              <span className="mb-1.5 block text-[10px] font-semibold text-ink/60">세로 정렬</span>
               <PillGroup
                 options={[{ value: 'TOP', label: '상단' }, { value: 'CENTER', label: '중앙' }, { value: 'BOTTOM', label: '하단' }]}
                 value={draft.verticalAlign}
@@ -628,7 +628,7 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           )}
 
           <div className="mt-3">
-            <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">텍스트 정렬</span>
+            <span className="mb-1.5 block text-[10px] font-semibold text-ink/60">텍스트 정렬</span>
             <PillGroup
               options={[{ value: 'LEFT', label: '왼쪽' }, { value: 'CENTER', label: '가운데' }, { value: 'RIGHT', label: '오른쪽' }]}
               value={draft.textAlign}
@@ -637,23 +637,23 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           </div>
 
           <div className="mt-3">
-            <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">텍스트 폭</span>
+            <span className="mb-1.5 block text-[10px] font-semibold text-ink/60">텍스트 폭</span>
             <PillGroup options={TEXT_WIDTHS.map((w) => ({ value: w, label: ABOUT_TEXT_WIDTH_LABEL[w] }))} value={draft.textWidth} onChange={(v) => patch({ textWidth: v })} />
           </div>
 
           <div className="mt-3">
-            <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">배경</span>
+            <span className="mb-1.5 block text-[10px] font-semibold text-ink/60">배경</span>
             <BackgroundSwatchGroup value={draft.background} onChange={(v) => patch({ background: v })} />
           </div>
 
           <div className="mt-3">
-            <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">간격</span>
+            <span className="mb-1.5 block text-[10px] font-semibold text-ink/60">간격</span>
             <PillGroup options={SPACINGS.map((s) => ({ value: s, label: ABOUT_SPACING_LABEL[s] }))} value={draft.spacing} onChange={(v) => patch({ spacing: v })} />
           </div>
 
           {hasImage && isSplitLayout && (
             <div className="mt-3">
-              <span className="mb-1.5 block text-[10px] font-semibold text-navy/60">모바일 순서</span>
+              <span className="mb-1.5 block text-[10px] font-semibold text-ink/60">모바일 순서</span>
               <PillGroup
                 options={[{ value: 'IMAGE_FIRST', label: '이미지 먼저' }, { value: 'TEXT_FIRST', label: '텍스트 먼저' }]}
                 value={draft.mobileOrder}
@@ -663,9 +663,9 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
           )}
         </div>
 
-        <div className="flex items-center gap-2 border-t border-navy/10 pt-4">
-          {saved && <span className="text-[11px] text-navy/50">저장됨</span>}
-          <button type="button" onClick={save} className="border border-navy bg-navy px-4 py-2 text-[12px] font-semibold text-warm-white hover:bg-navy-light">
+        <div className="flex items-center gap-2 border-t border-line/10 pt-4">
+          {saved && <span className="text-[11px] text-ink/50">저장됨</span>}
+          <button type="button" onClick={save} className="border border-line bg-navy px-4 py-2 text-[12px] font-semibold text-warm-white hover:bg-navy-light">
             블록 저장
           </button>
         </div>
@@ -674,14 +674,14 @@ function BlockEditor({ block, onSaved }: { block: AboutBlock; onSaved: () => voi
       {/* LIVE PREVIEW */}
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-[10px] font-semibold text-navy/40">LIVE PREVIEW</span>
+          <span className="text-[10px] font-semibold text-ink/40">LIVE PREVIEW</span>
           <PillGroup
             options={[{ value: 'desktop', label: 'Desktop' }, { value: 'mobile', label: 'Mobile' }]}
             value={preview}
             onChange={setPreview}
           />
         </div>
-        <div className={`overflow-hidden border border-navy/15 ${preview === 'mobile' ? 'mx-auto max-w-[390px]' : ''}`}>
+        <div className={`overflow-hidden border border-line/15 ${preview === 'mobile' ? 'mx-auto max-w-[390px]' : ''}`}>
           <AboutBlockRenderer block={draft} isMobile={preview === 'mobile'} />
         </div>
       </div>

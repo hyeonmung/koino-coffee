@@ -21,17 +21,17 @@ export default function CharacterSelector({ value, onChange }: CharacterSelector
               onClick={() => onChange(key)}
               className={`border px-2 py-2.5 text-[11px] font-semibold tracking-wide transition-colors ${
                 active
-                  ? 'border-navy bg-navy text-warm-white'
-                  : 'border-navy/25 bg-transparent text-navy/70 hover:border-navy/60 hover:text-navy'
+                  ? 'border-line bg-navy text-warm-white'
+                  : 'border-line/25 bg-transparent text-ink/70 hover:border-line/60 hover:text-ink'
               }`}
             >
-              {key}
+              {CHARACTER_INFO[key].label}
             </button>
           )
         })}
       </div>
-      <p className="mt-2 text-[11px] leading-relaxed text-navy/60">
-        <span className="font-semibold text-navy/80">{info.flavors}</span>
+      <p className="mt-2 text-[11px] leading-relaxed text-ink/60">
+        <span className="font-semibold text-ink/80">{info.flavors}</span>
         <br />
         {info.description}
       </p>

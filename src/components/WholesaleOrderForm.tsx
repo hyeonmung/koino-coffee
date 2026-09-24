@@ -68,14 +68,14 @@ export default function WholesaleOrderForm() {
 
   if (done) {
     return (
-      <div className="border border-navy/15 bg-white px-6 py-16 text-center">
+      <div className="border border-line/15 bg-surface px-6 py-16 text-center">
         <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">신청 접수 완료</p>
-        <p className="mt-2 text-[15px] font-semibold text-navy">원두 납품 신청이 정상적으로 접수되었습니다.</p>
-        <p className="mt-1 text-[12px] text-navy/55">확인 후 남겨주신 연락처로 순차적으로 안내드리겠습니다.</p>
+        <p className="mt-2 text-[15px] font-semibold text-ink">원두 납품 신청이 정상적으로 접수되었습니다.</p>
+        <p className="mt-1 text-[12px] text-ink/55">확인 후 남겨주신 연락처로 순차적으로 안내드리겠습니다.</p>
         <button
           type="button"
           onClick={() => setDone(false)}
-          className="mt-5 border border-navy/25 px-4 py-2 text-[11px] font-semibold text-navy/70 hover:border-navy hover:text-navy"
+          className="mt-5 border border-line/25 px-4 py-2 text-[11px] font-semibold text-ink/70 hover:border-line hover:text-ink"
         >
           새로 신청하기
         </button>
@@ -84,13 +84,13 @@ export default function WholesaleOrderForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-navy/15 bg-white p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="border border-line/15 bg-surface p-6 sm:p-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="성함 *">
           <input
             value={form.name}
             onChange={(e) => set('name', e.target.value)}
-            className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
+            className="w-full border border-line/25 bg-surface px-3 py-2.5 text-[13px] text-ink outline-none focus:border-line"
           />
         </Field>
         <Field label="연락 가능한 번호 *">
@@ -98,7 +98,7 @@ export default function WholesaleOrderForm() {
             value={form.phone}
             onChange={(e) => set('phone', e.target.value)}
             placeholder="010-0000-0000"
-            className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
+            className="w-full border border-line/25 bg-surface px-3 py-2.5 text-[13px] text-ink outline-none focus:border-line"
           />
         </Field>
       </div>
@@ -108,7 +108,7 @@ export default function WholesaleOrderForm() {
           <input
             value={form.address}
             onChange={(e) => set('address', e.target.value)}
-            className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
+            className="w-full border border-line/25 bg-surface px-3 py-2.5 text-[13px] text-ink outline-none focus:border-line"
           />
         </Field>
       </div>
@@ -118,7 +118,7 @@ export default function WholesaleOrderForm() {
           <select
             value={form.coffeeType}
             onChange={(e) => set('coffeeType', e.target.value)}
-            className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
+            className="w-full border border-line/25 bg-surface px-3 py-2.5 text-[13px] text-ink outline-none focus:border-line"
           >
             {COFFEE_TYPE_OPTIONS.map((name) => (
               <option key={name} value={name}>
@@ -132,7 +132,7 @@ export default function WholesaleOrderForm() {
             value={form.expectedKg}
             onChange={(e) => set('expectedKg', e.target.value)}
             placeholder="예: 월 5kg"
-            className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
+            className="w-full border border-line/25 bg-surface px-3 py-2.5 text-[13px] text-ink outline-none focus:border-line"
           />
         </Field>
         <Field label="주문 예상 주기 (선택)">
@@ -140,7 +140,7 @@ export default function WholesaleOrderForm() {
             value={form.orderFrequency}
             onChange={(e) => set('orderFrequency', e.target.value)}
             placeholder="예: 2주에 한 번"
-            className="w-full border border-navy/25 bg-white px-3 py-2.5 text-[13px] text-navy outline-none focus:border-navy"
+            className="w-full border border-line/25 bg-surface px-3 py-2.5 text-[13px] text-ink outline-none focus:border-line"
           />
         </Field>
       </div>
@@ -150,7 +150,7 @@ export default function WholesaleOrderForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-5 w-full border border-navy bg-navy py-3 text-[13px] font-semibold tracking-[0.1em] text-warm-white hover:bg-navy-light disabled:opacity-50 sm:w-auto sm:px-8"
+        className="mt-5 w-full border border-line bg-navy py-3 text-[13px] font-semibold tracking-[0.1em] text-warm-white hover:bg-navy-light disabled:opacity-50 sm:w-auto sm:px-8"
       >
         {submitting ? '전송 중…' : '납품 신청하기'}
       </button>
@@ -161,7 +161,7 @@ export default function WholesaleOrderForm() {
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/50">{label}</span>
+      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-ink/50">{label}</span>
       {children}
     </div>
   )

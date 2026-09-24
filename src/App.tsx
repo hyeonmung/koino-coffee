@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
 import AdminGate from './components/AdminGate'
 import Analytics from './components/Analytics'
 import ScrollToTop from './components/ScrollToTop'
@@ -28,8 +28,6 @@ const AdminSpotlightPage = lazy(() => import('./pages/admin/AdminSpotlightPage')
 const AdminColumnsPage = lazy(() => import('./pages/admin/AdminColumnsPage'))
 const AdminColumnEditorPage = lazy(() => import('./pages/admin/AdminColumnEditorPage'))
 const AdminColumnSchedulerPage = lazy(() => import('./pages/admin/AdminColumnSchedulerPage'))
-const AdminStoriesPage = lazy(() => import('./pages/admin/AdminStoriesPage'))
-const AdminStoryEditorPage = lazy(() => import('./pages/admin/AdminStoryEditorPage'))
 const AdminWholesaleRequestsPage = lazy(() => import('./pages/admin/AdminWholesaleRequestsPage'))
 const AboutPage = lazy(() => import('./pages/public/AboutPage'))
 const AboutSensoryMapPage = lazy(() => import('./pages/public/AboutSensoryMapPage'))
@@ -40,8 +38,6 @@ const BusinessPage = lazy(() => import('./pages/public/BusinessPage'))
 const BusinessPostDetailPage = lazy(() => import('./pages/public/BusinessPostDetailPage'))
 const CharacterDetailPage = lazy(() => import('./pages/public/CharacterDetailPage'))
 const CharactersIndexPage = lazy(() => import('./pages/public/CharactersIndexPage'))
-const CoffeeChartDetailPage = lazy(() => import('./pages/public/CoffeeChartDetailPage'))
-const CoffeeChartIndexPage = lazy(() => import('./pages/public/CoffeeChartIndexPage'))
 const CoffeeDetailPage = lazy(() => import('./pages/public/CoffeeDetailPage'))
 const CoffeeExplorerPage = lazy(() => import('./pages/public/CoffeeExplorerPage'))
 const ComparePage = lazy(() => import('./pages/public/ComparePage'))
@@ -49,14 +45,18 @@ const DictionaryDetailPage = lazy(() => import('./pages/public/DictionaryDetailP
 const DictionaryPage = lazy(() => import('./pages/public/DictionaryPage'))
 const HomePage = lazy(() => import('./pages/public/HomePage'))
 const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage'))
+const PrivacyPolicyPage = lazy(() => import('./pages/public/PrivacyPolicyPage'))
 const ColumnIndexPage = lazy(() => import('./pages/public/ColumnIndexPage'))
 const ColumnDetailPage = lazy(() => import('./pages/public/ColumnDetailPage'))
-const StoriesIndexPage = lazy(() => import('./pages/public/StoriesIndexPage'))
-const StoryDetailPage = lazy(() => import('./pages/public/StoryDetailPage'))
-const TasteFinderPage = lazy(() => import('./pages/public/TasteFinderPage'))
+const AuthCallbackPage = lazy(() => import('./pages/public/AuthCallbackPage'))
 
 function GalleryRedirect() {
   return <Navigate to="/coffees" replace />
+}
+
+function ColumnSlugRedirect() {
+  const { slug } = useParams()
+  return <Navigate to={`/thekoimag/${slug}`} replace />
 }
 
 export default function App() {
@@ -68,27 +68,26 @@ export default function App() {
         <Routes>
           {/* Public */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route path="/coffees" element={<CoffeeExplorerPage />} />
           <Route path="/coffees/:slug" element={<CoffeeDetailPage />} />
-          <Route path="/coffee-chart" element={<CoffeeChartIndexPage />} />
-          <Route path="/coffee-chart/:slug" element={<CoffeeChartDetailPage />} />
           <Route path="/characters" element={<CharactersIndexPage />} />
           <Route path="/characters/:key" element={<CharacterDetailPage />} />
-          <Route path="/discover" element={<TasteFinderPage />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/dictionary" element={<DictionaryPage />} />
           <Route path="/dictionary/:slug" element={<DictionaryDetailPage />} />
           <Route path="/brew-guide" element={<BrewGuideIndexPage />} />
           <Route path="/brew-guide/knowledge" element={<BrewingKnowledgePage />} />
           <Route path="/brew-guide/:slug" element={<BrewGuideDetailPage />} />
-          <Route path="/column" element={<ColumnIndexPage />} />
-          <Route path="/column/:slug" element={<ColumnDetailPage />} />
-          <Route path="/stories" element={<StoriesIndexPage />} />
-          <Route path="/stories/:slug" element={<StoryDetailPage />} />
+          <Route path="/thekoimag" element={<ColumnIndexPage />} />
+          <Route path="/thekoimag/:slug" element={<ColumnDetailPage />} />
+          <Route path="/column" element={<Navigate to="/thekoimag" replace />} />
+          <Route path="/column/:slug" element={<ColumnSlugRedirect />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/business" element={<BusinessPage />} />
           <Route path="/business/:slug" element={<BusinessPostDetailPage />} />
           <Route path="/about-sensory-map" element={<AboutSensoryMapPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
 
           {/* Legacy redirects */}
           <Route path="/wholesale" element={<Navigate to="/business" replace />} />
@@ -255,30 +254,6 @@ export default function App() {
             element={
               <AdminGate>
                 <AdminColumnEditorPage />
-              </AdminGate>
-            }
-          />
-          <Route
-            path="/admin/stories"
-            element={
-              <AdminGate>
-                <AdminStoriesPage />
-              </AdminGate>
-            }
-          />
-          <Route
-            path="/admin/stories/new"
-            element={
-              <AdminGate>
-                <AdminStoryEditorPage />
-              </AdminGate>
-            }
-          />
-          <Route
-            path="/admin/stories/:id"
-            element={
-              <AdminGate>
-                <AdminStoryEditorPage />
               </AdminGate>
             }
           />

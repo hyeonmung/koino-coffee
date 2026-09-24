@@ -5,7 +5,7 @@ import { getSiteSettings, updateSiteSettings } from '../../data/repositories/sit
 import type { SiteSettings } from '../../data/schema'
 
 const inputClass =
-  'w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy'
+  'w-full border border-line/25 bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line'
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings>(() => getSiteSettings())
@@ -27,11 +27,11 @@ export default function AdminSettingsPage() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.25em] text-accent font-kicker">SITE SETTINGS</p>
-          <h1 className="mt-1 font-serif text-[24px] font-bold text-navy">사이트 설정</h1>
+          <h1 className="mt-1 font-serif text-[24px] font-bold text-ink">사이트 설정</h1>
         </div>
         <div className="flex items-center gap-2">
-          {saved && <span className="text-[11px] text-navy/50">저장됨</span>}
-          <button type="button" onClick={handleSave} className="border border-navy bg-navy px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light">
+          {saved && <span className="text-[11px] text-ink/50">저장됨</span>}
+          <button type="button" onClick={handleSave} className="border border-line bg-navy px-5 py-2.5 text-[12px] font-semibold text-warm-white hover:bg-navy-light">
             저장
           </button>
         </div>
@@ -39,9 +39,9 @@ export default function AdminSettingsPage() {
 
       <div className="mt-8 max-w-[680px] space-y-8">
         <SettingsSection title="브랜드">
-          <div className="flex items-center gap-3 border border-navy/15 bg-white p-3">
+          <div className="flex items-center gap-3 border border-line/15 bg-surface p-3">
             <img src="/brand/koi-logo.png" alt="KOI COFFEE 공식 로고" className="h-12 w-12" />
-            <p className="text-[11px] leading-relaxed text-navy/50">
+            <p className="text-[11px] leading-relaxed text-ink/50">
               현재 적용된 공식 로고입니다. Header · Footer · Favicon에 자동으로 사용됩니다.
               <br />
               로고 이미지 자체는 코드 수정이 필요합니다 — 개발자에게 새 파일을 전달해주세요.
@@ -112,7 +112,7 @@ export default function AdminSettingsPage() {
           <ImageUploadField label="OG 이미지" value={settings.ogImage ?? ''} onChange={(url) => patch({ ogImage: url })} />
         </SettingsSection>
 
-        <p className="text-[11px] text-navy/40">
+        <p className="text-[11px] text-ink/40">
           홈페이지 Hero 문구는{' '}
           <a href="/admin/home" className="underline">
             홈 관리
@@ -134,8 +134,8 @@ export default function AdminSettingsPage() {
 
 function SettingsSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="border border-navy/15 bg-white p-6">
-      <h2 className="mb-4 font-serif text-[15px] font-bold text-navy">{title}</h2>
+    <section className="border border-line/15 bg-surface p-6">
+      <h2 className="mb-4 font-serif text-[15px] font-bold text-ink">{title}</h2>
       <div className="space-y-3">{children}</div>
     </section>
   )
@@ -144,7 +144,7 @@ function SettingsSection({ title, children }: { title: string; children: React.R
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">{label}</span>
+      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-ink/60">{label}</span>
       {children}
     </label>
   )

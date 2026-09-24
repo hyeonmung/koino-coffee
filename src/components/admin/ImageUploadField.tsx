@@ -88,7 +88,7 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
 
   return (
     <div>
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">{label}</span>
+      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-ink/60">{label}</span>
 
       <div
         onDragOver={(e) => {
@@ -102,7 +102,7 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
           void process(e.dataTransfer.files?.[0])
         }}
         className={`relative flex min-h-[120px] flex-col items-center justify-center gap-2 border border-dashed px-4 py-6 text-center transition-colors ${
-          dragging ? 'border-navy bg-navy/5' : 'border-navy/25 bg-white'
+          dragging ? 'border-line bg-line/5' : 'border-line/25 bg-surface'
         }`}
       >
         {value ? (
@@ -112,14 +112,14 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                className="border border-navy/25 px-2.5 py-1 text-[10px] font-semibold text-navy/70 hover:border-navy/50"
+                className="border border-line/25 px-2.5 py-1 text-[10px] font-semibold text-ink/70 hover:border-line/50"
               >
                 이미지 변경
               </button>
               <button
                 type="button"
                 onClick={() => onChange('')}
-                className="border border-navy/25 px-2.5 py-1 text-[10px] font-semibold text-navy/50 hover:border-red-400 hover:text-red-500"
+                className="border border-line/25 px-2.5 py-1 text-[10px] font-semibold text-ink/50 hover:border-red-400 hover:text-red-500"
               >
                 제거
               </button>
@@ -127,11 +127,11 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
           </>
         ) : (
           <>
-            <p className="text-[12px] text-navy/50">{busy ? '업로드 중...' : '이미지를 여기로 드래그하세요'}</p>
+            <p className="text-[12px] text-ink/50">{busy ? '업로드 중...' : '이미지를 여기로 드래그하세요'}</p>
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="border border-navy px-3 py-1.5 text-[11px] font-semibold text-navy hover:bg-navy hover:text-warm-white"
+              className="border border-line px-3 py-1.5 text-[11px] font-semibold text-ink hover:bg-navy hover:text-warm-white"
             >
               파일 넣기
             </button>
@@ -152,12 +152,12 @@ export default function ImageUploadField({ label, value, onChange, placeholder, 
       {error && <p className="mt-1 text-[11px] text-red-500">{error}</p>}
 
       <details className="mt-2" open={Boolean(value) && !isDataUrl}>
-        <summary className="cursor-pointer text-[10px] text-navy/40 hover:text-navy/60">또는 이미지 URL 직접 입력</summary>
+        <summary className="cursor-pointer text-[10px] text-ink/40 hover:text-ink/60">또는 이미지 URL 직접 입력</summary>
         <input
           value={isDataUrl ? '' : value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={isDataUrl ? '(업로드된 이미지 사용 중 — 입력하면 대체됩니다)' : (placeholder ?? 'https://...')}
-          className="mt-1.5 w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy"
+          className="mt-1.5 w-full border border-line/25 bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line"
         />
       </details>
 

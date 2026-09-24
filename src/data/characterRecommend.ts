@@ -105,17 +105,21 @@ export function scoreCharactersByFlavor(notes: string[]): { scores: Record<CupCh
   const scores = emptyScores()
   const matched: MatchedNote[] = []
 
-  for (const note of notes) {
+  notes.forEach((note, index) => {
     const q = note.trim().toLowerCase()
-    if (!q) continue
+    if (!q) return
     const keyword = KEYWORDS_BY_LENGTH.find((k) => new RegExp(`\\b${escapeRegExp(k)}\\b`, 'i').test(q))
-    if (!keyword) continue
+    if (!keyword) return
     const weights = CHARACTER_FLAVOR_WEIGHTS[keyword]
+    // Cup notes are entered strongest-flavor-first (admin convention), so an earlier note
+    // should sway the recommendation more than a later one instead of every note counting
+    // equally — otherwise 3 minor fruit notes could outvote one dominant chocolate note.
+    const positionWeight = Math.max(0.25, 1 - index * 0.2)
     for (const character of CUP_CHARACTERS) {
-      scores[character] += weights[character] ?? 0
+      scores[character] += (weights[character] ?? 0) * positionWeight
     }
     matched.push({ note, keyword, weights })
-  }
+  })
 
   return { scores, matched }
 }

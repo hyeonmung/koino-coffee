@@ -9,7 +9,7 @@ interface SensoryProfileInputProps {
 
 export default function SensoryProfileInput({ sensory, onChange }: SensoryProfileInputProps) {
   return (
-    <div className="divide-y divide-navy/10">
+    <div className="divide-y divide-line/10">
       {SENSORY_FIELDS.map((field) => (
         <SensorySlider
           key={field.key}

@@ -4,10 +4,10 @@ import AdminLayout from '../../components/AdminLayout'
 import ImageUploadField from '../../components/admin/ImageUploadField'
 import { columnSlugExists, getColumnById, upsertColumn } from '../../data/repositories/columnRepository'
 import type { Column, PublishStatus } from '../../data/schema'
-import { slugifyFilename } from '../../utils/download'
+import { shortColumnSlug } from '../../utils/columnSlug'
 
 const inputClass =
-  'w-full border border-navy/25 bg-white px-2.5 py-2 text-[13px] text-navy outline-none placeholder:text-navy/30 focus:border-navy'
+  'w-full border border-line/25 bg-surface px-2.5 py-2 text-[13px] text-ink outline-none placeholder:text-ink/30 focus:border-line'
 
 function toLocalInputValue(iso: string): string {
   const d = new Date(iso)
@@ -56,7 +56,7 @@ export default function AdminColumnEditorPage() {
   const patch = (p: Partial<Column>) => {
     setDraft((prev) => {
       const next = { ...prev, ...p }
-      if (!slugTouched && p.title !== undefined) next.slug = slugifyFilename(p.title)
+      if (!slugTouched && (p.title !== undefined || p.scheduledAt !== undefined)) next.slug = shortColumnSlug(next.scheduledAt)
       return next
     })
   }
@@ -83,10 +83,10 @@ export default function AdminColumnEditorPage() {
 
   return (
     <AdminLayout>
-      <Link to="/admin/columns" className="text-[11px] font-semibold text-navy/45 hover:text-navy">
+      <Link to="/admin/columns" className="text-[11px] font-semibold text-ink/45 hover:text-ink">
         ← 칼럼 목록
       </Link>
-      <h1 className="mt-1 font-serif text-[22px] font-bold text-navy">{isNew ? '새 칼럼' : draft.title}</h1>
+      <h1 className="mt-1 font-serif text-[22px] font-bold text-ink">{isNew ? '새 칼럼' : draft.title}</h1>
 
       {error && <p className="mt-3 border border-red-300 bg-red-50 px-3 py-2 text-[12px] text-red-600">{error}</p>}
 
@@ -149,7 +149,7 @@ export default function AdminColumnEditorPage() {
         <button
           type="button"
           onClick={handleSave}
-          className="border border-navy bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
+          className="border border-line bg-navy px-5 py-2.5 text-[12px] font-semibold tracking-wide text-warm-white hover:bg-navy-light"
         >
           저장
         </button>
@@ -161,7 +161,7 @@ export default function AdminColumnEditorPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-navy/60">{label}</span>
+      <span className="mb-1 block text-[10px] font-semibold tracking-[0.1em] text-ink/60">{label}</span>
       {children}
     </label>
   )

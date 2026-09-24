@@ -15,7 +15,7 @@ const TOOLS: { label: string; title: string; before: string; after: string; butt
 ]
 
 const toolButtonClass =
-  'flex h-7 w-7 shrink-0 items-center justify-center border border-navy/20 text-[12px] text-navy/70 hover:border-navy hover:text-navy'
+  'flex h-7 w-7 shrink-0 items-center justify-center border border-line/20 text-[12px] text-ink/70 hover:border-line hover:text-ink'
 
 /** A plain textarea with a small formatting toolbar above it. Selected text gets wrapped in the
  * matching inline tag (<strong>/<em>/<u>/<s>/<span style="color:...">) right in the stored plain
@@ -62,7 +62,7 @@ export default function RichTextArea({ value, onChange, className, placeholder }
         </label>
       </div>
       <textarea ref={ref} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={className} />
-      <p className="mt-1 text-[10px] text-navy/35">서식을 적용할 부분을 드래그해서 선택한 뒤 버튼을 누르세요.</p>
+      <p className="mt-1 text-[10px] text-ink/35">서식을 적용할 부분을 드래그해서 선택한 뒤 버튼을 누르세요.</p>
     </div>
   )
 }

@@ -5,24 +5,24 @@ import SEO from '../../components/SEO'
 
 export default function NotFoundPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-warm-white">
+    <div className="flex min-h-screen flex-col bg-canvas">
       <SEO title="페이지를 찾을 수 없습니다" noIndex />
       <PublicHeader />
 
       <main className="w-full min-w-0 lg:flex-1 mx-auto max-w-[560px] px-6 py-24 text-center">
-        <p className="text-[64px] font-bold text-navy/15">404</p>
-        <h1 className="mt-2 text-[22px] font-bold text-navy">페이지를 찾을 수 없습니다</h1>
-        <p className="mt-2 text-[13px] text-navy/55">주소가 잘못되었거나 삭제된 페이지일 수 있습니다.</p>
+        <p className="text-[64px] font-bold text-ink/15">404</p>
+        <h1 className="mt-2 text-[22px] font-bold text-ink">페이지를 찾을 수 없습니다</h1>
+        <p className="mt-2 text-[13px] text-ink/55">주소가 잘못되었거나 삭제된 페이지일 수 있습니다.</p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/"
-            className="border border-navy bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
+            className="border border-line bg-navy px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-warm-white hover:bg-navy-light"
           >
             홈으로 이동
           </Link>
           <Link
             to="/coffees"
-            className="border border-navy/25 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-navy hover:border-navy"
+            className="border border-line/25 px-6 py-3 text-[12px] font-semibold tracking-[0.15em] text-ink hover:border-line"
           >
             원두 둘러보기
           </Link>

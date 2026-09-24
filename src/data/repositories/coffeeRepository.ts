@@ -21,6 +21,22 @@ export function getCoffeeById(id: string): Coffee | undefined {
   return getAllCoffees().find((c) => c.id === id)
 }
 
+/** Slugs the given (logged-in) user has favorited, for seeding the "찜" star state on load. */
+export async function getFavoritedSlugs(userId: string): Promise<string[]> {
+  const { data, error } = await supabase.from('coffee_favorites').select('coffee_slug').eq('user_id', userId)
+  if (error) return []
+  return (data ?? []).map((row) => row.coffee_slug as string)
+}
+
+/** Toggles the current logged-in user's "찜" for a coffee (one vote per account, enforced server-side) and patches the local store's tally. */
+export async function toggleCoffeeFavorite(slug: string): Promise<{ favorited: boolean; favoriteCount: number } | undefined> {
+  const { data, error } = await supabase.rpc('toggle_coffee_favorite', { p_slug: slug })
+  if (error || !data?.[0]) return undefined
+  const result = data[0] as { favorited: boolean; favorite_count: number }
+  store.coffees = store.coffees.map((c) => (c.slug === slug ? { ...c, favoriteCount: result.favorite_count } : c))
+  return { favorited: result.favorited, favoriteCount: result.favorite_count }
+}
+
 export async function upsertCoffee(coffee: Coffee): Promise<Coffee[]> {
   const { error } = await supabase.from('coffees').upsert(toRow(coffeeToRow(coffee)))
   if (error) throw error
