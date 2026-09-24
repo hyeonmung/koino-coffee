@@ -140,6 +140,46 @@ export interface BrewCategory {
   visible: boolean
 }
 
+/** "코이의 브루잉 도구" — an admin-curated gallery of gear (image + name) shown on the brew-guide
+ * index page. Purely editorial, not linked to any specific recipe. */
+export interface BrewTool {
+  id: string
+  name: string
+  imageUrl?: string
+  sortOrder: number
+  visible: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+/** "코이 레시피" (직접 작성) or "오픈 레시피" (본인이 공개적으로 밝힌 레시피를 출처와 함께 옮겨온 것). */
+export type BrewGuideSource = 'KOI' | 'OPEN'
+
+/** Where an OPEN recipe's attribution was confirmed — ranked roughly by trust (see admin editor). */
+export type RecipeSourceType =
+  | 'official_website'
+  | 'official_youtube'
+  | 'official_instagram'
+  | 'official_competition'
+  | 'official_interview'
+  | 'other'
+
+/** OPEN only: who this recipe belongs to and exactly where it was confirmed — never cup-timer.com
+ * or any other compiled third-party recipe site (those are lookup hints only, never a citable
+ * source). One recipe, one verified attribution. */
+export interface RecipeSourceAttribution {
+  creator: string
+  title: string
+  url: string
+  type: RecipeSourceType
+  verified: boolean
+  verifiedAt?: string
+  /** Video timestamp where the exact numbers are stated, e.g. "05:12". */
+  sourceTimestamp?: string
+}
+
+export type RecipeVerificationStatus = 'VERIFIED' | 'SOURCE_NOT_VERIFIED' | 'CONFLICTING_SOURCE' | 'NEEDS_MANUAL_REVIEW'
+
 export interface BrewGuide {
   id: string
   slug: string
@@ -157,6 +197,26 @@ export interface BrewGuide {
   tips?: string
   commonProblems?: string
   heroImage?: string
+  source: BrewGuideSource
+  /** OPEN only: e.g. "대회 우승 레시피", "로스터리 공식", "제작사 공식", "바리스타 공개 레시피", "커뮤니티". */
+  competitionType?: string
+  /** OPEN only: verified attribution — creator, exact source, and how it was confirmed. */
+  attribution?: RecipeSourceAttribution
+  /** OPEN only. SOURCE_NOT_VERIFIED recipes stay unpublished until a 1st/2nd-tier source is found. */
+  verificationStatus?: RecipeVerificationStatus
+  /** Explains any field left NOT_SPECIFIED because the official source doesn't state it — never
+   * filled in from a secondary source. e.g. "공식 출처에 총 추출시간 명시 없음". */
+  verificationNote?: string
+  /** 따뜻하게 내리는 레시피인지 아이스인지 — 미지정이면 필터에 노출하지 않음. */
+  servingStyle?: 'HOT' | 'ICED'
+  /** Admin-entered rating (0–10, half-point steps), e.g. 8.5 — never computed or inferred. */
+  rating?: number
+  /** Server-side tally of how many accounts have favorited this recipe. */
+  favoriteCount?: number
+  /** "코이의 피드백" — which coffee the roaster actually used when testing this recipe. */
+  koiFeedbackCoffee?: string
+  /** "코이의 피드백" — the roaster's own hands-on notes after brewing it. Free text, admin-only. */
+  koiFeedbackNote?: string
   createdAt: string
   updatedAt: string
 }

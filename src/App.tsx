@@ -11,6 +11,7 @@ const AdminAboutEditorPage = lazy(() => import('./pages/admin/AdminAboutEditorPa
 const AdminBrewCategoriesPage = lazy(() => import('./pages/admin/AdminBrewCategoriesPage'))
 const AdminBrewGuideEditorPage = lazy(() => import('./pages/admin/AdminBrewGuideEditorPage'))
 const AdminBrewGuidesPage = lazy(() => import('./pages/admin/AdminBrewGuidesPage'))
+const AdminBrewToolsPage = lazy(() => import('./pages/admin/AdminBrewToolsPage'))
 const AdminBusinessPostEditorPage = lazy(() => import('./pages/admin/AdminBusinessPostEditorPage'))
 const AdminBusinessPostsPage = lazy(() => import('./pages/admin/AdminBusinessPostsPage'))
 const AdminCharactersPage = lazy(() => import('./pages/admin/AdminCharactersPage'))
@@ -34,6 +35,7 @@ const AboutPage = lazy(() => import('./pages/public/AboutPage'))
 const AboutSensoryMapPage = lazy(() => import('./pages/public/AboutSensoryMapPage'))
 const BrewGuideDetailPage = lazy(() => import('./pages/public/BrewGuideDetailPage'))
 const BrewGuideIndexPage = lazy(() => import('./pages/public/BrewGuideIndexPage'))
+const BrewingKnowledgePage = lazy(() => import('./pages/public/BrewingKnowledgePage'))
 const BusinessPage = lazy(() => import('./pages/public/BusinessPage'))
 const BusinessPostDetailPage = lazy(() => import('./pages/public/BusinessPostDetailPage'))
 const CharacterDetailPage = lazy(() => import('./pages/public/CharacterDetailPage'))
@@ -77,6 +79,7 @@ export default function App() {
           <Route path="/dictionary" element={<DictionaryPage />} />
           <Route path="/dictionary/:slug" element={<DictionaryDetailPage />} />
           <Route path="/brew-guide" element={<BrewGuideIndexPage />} />
+          <Route path="/brew-guide/knowledge" element={<BrewingKnowledgePage />} />
           <Route path="/brew-guide/:slug" element={<BrewGuideDetailPage />} />
           <Route path="/column" element={<ColumnIndexPage />} />
           <Route path="/column/:slug" element={<ColumnDetailPage />} />
@@ -196,6 +199,14 @@ export default function App() {
             element={
               <AdminGate>
                 <AdminBrewCategoriesPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/brew-tools"
+            element={
+              <AdminGate>
+                <AdminBrewToolsPage />
               </AdminGate>
             }
           />

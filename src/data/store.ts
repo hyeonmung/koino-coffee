@@ -5,6 +5,7 @@ import type {
   AboutPageSettings,
   BrewCategory,
   BrewGuide,
+  BrewTool,
   BusinessPost,
   Character,
   Coffee,
@@ -36,6 +37,7 @@ export const store = {
   flavorDescriptors: [] as FlavorDescriptor[],
   brewCategories: [] as BrewCategory[],
   brewGuides: [] as BrewGuide[],
+  brewTools: [] as BrewTool[],
   stories: [] as Story[],
   columns: [] as Column[],
   coffees: [] as Coffee[],
@@ -76,6 +78,7 @@ export function initStore(): Promise<void> {
       flavorDescriptors,
       brewCategories,
       brewGuides,
+      brewTools,
       stories,
       columns,
       coffees,
@@ -93,6 +96,7 @@ export function initStore(): Promise<void> {
       supabase.from('flavor_descriptors').select('*'),
       supabase.from('brew_categories').select('*'),
       supabase.from('brew_guides').select('*'),
+      supabase.from('brew_tools').select('*'),
       supabase.from('stories').select('*'),
       supabase.from('columns').select('*'),
       supabase.from('coffees').select('*'),
@@ -113,6 +117,7 @@ export function initStore(): Promise<void> {
     store.flavorDescriptors = (flavorDescriptors.data ?? []).map((r) => rowToCamel<FlavorDescriptor>(r))
     store.brewCategories = (brewCategories.data ?? []).map((r) => rowToCamel<BrewCategory>(r))
     store.brewGuides = (brewGuides.data ?? []).map((r) => rowToCamel<BrewGuide>(r))
+    store.brewTools = (brewTools.data ?? []).map((r) => rowToCamel<BrewTool>(r))
     store.stories = (stories.data ?? []).map((r) => rowToCamel<Story>(r))
     store.columns = (columns.data ?? []).map((r) => rowToCamel<Column>(r))
     store.coffees = (coffees.data ?? []).map(coffeeRowToCoffee)

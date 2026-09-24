@@ -14,6 +14,19 @@
   --color-navy-light: #2a3a5c;
   --color-accent: #f2c94c;
   --color-warm-white: #faf8f4;
+
+  /* Theme-aware semantic tokens: light-mode values below match the historical
+     navy/warm-white/white palette exactly (zero visual change in light mode),
+     and flip under `:root[data-theme='dark']` further down this file. Fixed-dark
+     decorative surfaces (footer, mobile nav, buttons — anything paired with
+     text-warm-white/bg-navy) intentionally keep using --color-navy/--color-warm-white
+     directly and are NOT part of this token set, since they're meant to stay dark
+     in both themes. */
+  --color-ink: #14213d;
+  --color-canvas: #faf8f4;
+  --color-surface: #ffffff;
+  --color-line: #14213d;
+  --color-ivory: #f5f1e8;
   --font-sans:
     'SUIT Variable', 'SUIT', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   /* Instrument Serif has no Hangul glyphs, so Korean text inside a font-serif element falls
@@ -28,6 +41,16 @@
   --aspect-coffee-card: 17 / 11;
 }
 
+/* Dark mode: overrides the semantic tokens only — --color-navy/--color-warm-white stay
+   fixed so buttons, the footer, and the mobile nav overlay keep their existing dark look. */
+:root[data-theme='dark'] {
+  --color-ink: #f5f2ea;
+  --color-canvas: #0e1119;
+  --color-surface: #171b26;
+  --color-line: #f5f2ea;
+  --color-ivory: #1c1a16;
+}
+
 html,
 body,
 #root {
@@ -36,8 +59,11 @@ body,
 
 body {
   margin: 0;
-  background-color: var(--color-warm-white);
-  color: var(--color-navy);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   /* Korean text wraps at word/phrase boundaries, never mid-syllable-block; overflow-wrap is the
