@@ -42,7 +42,9 @@ export default function FeaturedBrewGuide({ guide, flavorNotes, coffeeIdentity }
                 {params.map((p) => (
                   <div key={p.label}>
                     <p className={`text-[9px] font-medium tracking-[0.1em] ${archive.textMuted}`}>{p.label}</p>
-                    <p className={`mt-1 text-[15px] font-semibold tabular-nums ${archive.textPrimary}`}>{p.value}</p>
+                    <p title={p.value} className={`mt-1 line-clamp-2 text-[15px] font-semibold tabular-nums ${archive.textPrimary}`}>
+                      {p.value}
+                    </p>
                   </div>
                 ))}
               </div>

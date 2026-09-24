@@ -66,7 +66,11 @@ export default function BrewGuideCard({ guide, categoryLabel, flavorNotes, coffe
             {params.map((p) => (
               <div key={p.label}>
                 <span className={`text-[9px] font-medium tracking-[0.1em] ${archive.textMuted}`}>{p.label} </span>
-                <span className={`text-[12px] font-medium tabular-nums ${archive.textPrimary}`}>{p.value}</span>
+                {/* Verified-data caveats can make a value unusually long — truncate so one param can't
+                    push this card taller than its grid siblings. */}
+                <span title={p.value} className={`inline-block max-w-[200px] truncate align-bottom text-[12px] font-medium tabular-nums ${archive.textPrimary}`}>
+                  {p.value}
+                </span>
               </div>
             ))}
           </div>

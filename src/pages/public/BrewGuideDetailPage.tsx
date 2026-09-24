@@ -102,7 +102,11 @@ export default function BrewGuideDetailPage() {
             {params.map((p) => (
               <div key={p.label} className="text-center">
                 <p className={`text-[9px] font-medium tracking-[0.1em] ${archive.textMuted}`}>{p.label}</p>
-                <p className={`mt-1.5 text-[16px] font-semibold tabular-nums ${archive.textPrimary}`}>{p.value}</p>
+                {/* Verified-data caveats (e.g. "정확한 대응 관계는 원문 인코딩 문제로 확인 안됨") can make a
+                    single value very long — clamp it so one long cell can't blow out the whole grid row. */}
+                <p title={p.value} className={`mt-1.5 line-clamp-2 text-[16px] font-semibold tabular-nums ${archive.textPrimary}`}>
+                  {p.value}
+                </p>
               </div>
             ))}
           </div>
