@@ -44,7 +44,7 @@ export default function BrewGuideDetailPage() {
       <SEO title={guide.title} description={`${guide.equipment} 추출 레시피 — ${guide.coffeeDose}, ${guide.ratio}`} />
       <PublicHeader />
 
-      <main className="mx-auto w-full min-w-0 max-w-[760px] flex-1 px-6 py-14">
+      <main className="mx-auto w-full min-w-0 max-w-[760px] flex-1 px-6 pt-14 pb-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className={`text-[10px] font-semibold tracking-[0.25em] ${archive.accentText}`}>
