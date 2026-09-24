@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import AdvancedFilterDrawer, { type OpenFilterValues, type TimeRange } from '../../components/brewGuide/AdvancedFilterDrawer'
+import ArchivePagination from '../../components/brewGuide/ArchivePagination'
 import BrewGuideCard from '../../components/brewGuide/BrewGuideCard'
 import FeaturedBrewGuide from '../../components/brewGuide/FeaturedBrewGuide'
 import FilterSidebar from '../../components/brewGuide/FilterSidebar'
@@ -17,6 +18,8 @@ import { archive } from './brewGuide/tokens'
 import { bucketInt, equipmentLabel, inferServingStyle, parseGrams, parseRatioDenominator, parseSeconds } from './brewGuide/parse'
 
 type SortMode = 'recommended' | 'latest' | 'brewTime'
+
+const PAGE_SIZE = 12
 
 export default function BrewGuideIndexPage() {
   const koiGuides = useMemo(() => getKoiBrewGuides(), [])
@@ -61,12 +64,17 @@ export default function BrewGuideIndexPage() {
       if (value === 'ALL' || value === 'recommended') next.delete(key)
       else next.set(key, value)
     }
+    // Any change other than paging itself invalidates the current page — start back at page 1
+    // rather than leaving the reader stranded past the end of a now-shorter result set.
+    if (!('page' in patch)) next.delete('page')
     setSearchParams(next, { replace: true })
   }
 
   const setSource = (value: BrewGuideSource) => updateParams({ source: value === 'KOI' ? 'ALL' : value })
   const setCategoryId = (value: string) => updateParams({ category: value })
   const setSort = (value: SortMode) => updateParams({ sort: value })
+  const page = Math.max(1, Number(searchParams.get('page')) || 1)
+  const setPage = (p: number) => updateParams({ page: p > 1 ? String(p) : 'ALL' })
   const applyOpenFilterPatch = (patch: Partial<OpenFilterValues>) =>
     updateParams({
       ...(patch.dripper !== undefined && { dripper: patch.dripper }),
@@ -81,7 +89,16 @@ export default function BrewGuideIndexPage() {
   const availableCategories = categories.filter((c) => usedCategoryIds.has(c.id))
   const categoryLabel = (id?: string) => categories.find((c) => c.id === id)?.label
 
-  const drippers = Array.from(new Set(openGuides.map((g) => g.equipment))).sort()
+  // Korean-labeled generic categories first (가나다순), then untranslated brand/product names (A–Z) —
+  // keeps the two languages from interleaving into a visually noisy mixed order.
+  const drippers = Array.from(new Set(openGuides.map((g) => g.equipment))).sort((a, b) => {
+    const labelA = equipmentLabel(a)
+    const labelB = equipmentLabel(b)
+    const isKoreanA = /[가-힣]/.test(labelA)
+    const isKoreanB = /[가-힣]/.test(labelB)
+    if (isKoreanA !== isKoreanB) return isKoreanA ? -1 : 1
+    return labelA.localeCompare(labelB, isKoreanA ? 'ko' : 'en')
+  })
   const competitionTypes = Array.from(new Set(openGuides.map((g) => g.competitionType).filter(Boolean))) as string[]
 
   const doseOptions = Array.from(
@@ -333,11 +350,14 @@ export default function BrewGuideIndexPage() {
                       }
                     />
                   ) : (
-                    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                      {sorted.map((guide) => (
-                        <BrewGuideCard key={guide.id} guide={guide} categoryLabel={categoryLabel} {...cardMeta(guide)} />
-                      ))}
-                    </div>
+                    <>
+                      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                        {sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((guide) => (
+                          <BrewGuideCard key={guide.id} guide={guide} categoryLabel={categoryLabel} {...cardMeta(guide)} />
+                        ))}
+                      </div>
+                      <ArchivePagination page={page} totalPages={Math.ceil(sorted.length / PAGE_SIZE)} onChange={setPage} />
+                    </>
                   )}
                 </div>
               </div>
