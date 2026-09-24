@@ -209,14 +209,14 @@ export default function PublicHeader() {
                       </div>
                     ) : (
                       <>
-                        <p className="break-words text-[13px] font-semibold text-ink">이번 목적지는 어디인가요? {resolvedNickname} 님?</p>
+                        <p className="break-words text-[13px] font-semibold text-ink">{resolvedNickname} 님, 안녕하세요</p>
                         {emailToShow && <p className="mt-1 truncate text-[11px] text-ink/45">{emailToShow}</p>}
                         <button
                           type="button"
                           onClick={startEditNickname}
                           className="mt-3 w-full border border-line/25 py-2 text-[11px] font-semibold text-ink/70 hover:border-line hover:text-ink"
                         >
-                          개인정보
+                          닉네임 변경
                         </button>
                         <button
                           type="button"
@@ -298,7 +298,7 @@ export default function PublicHeader() {
             <div className="mt-6 border-t border-warm-white/10 pt-6">
               {session ? (
                 <div>
-                  <p className="text-[14px] font-semibold text-warm-white/85">이번 목적지는 어디인가요? {resolvedNickname} 님?</p>
+                  <p className="text-[14px] font-semibold text-warm-white/85">{resolvedNickname} 님, 안녕하세요</p>
                   {emailToShow && <p className="mt-0.5 truncate text-[11px] text-warm-white/45">{emailToShow}</p>}
                   {editingNickname ? (
                     <div className="mt-3">
@@ -334,7 +334,7 @@ export default function PublicHeader() {
                         onClick={startEditNickname}
                         className="flex-1 border border-warm-white/25 px-3 py-1.5 text-[11px] font-semibold text-warm-white/85"
                       >
-                        개인정보
+                        닉네임 변경
                       </button>
                       <button
                         type="button"

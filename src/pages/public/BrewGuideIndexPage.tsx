@@ -19,7 +19,7 @@ import { bucketInt, equipmentLabel, inferServingStyle, parseGrams, parseRatioDen
 
 type SortMode = 'recommended' | 'latest' | 'brewTime'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 9
 
 export default function BrewGuideIndexPage() {
   const koiGuides = useMemo(() => getKoiBrewGuides(), [])

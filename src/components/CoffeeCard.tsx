@@ -48,7 +48,9 @@ export default function CoffeeCard({ coffee, showRadar = false, narrowMobileGrid
 
       <div className="mt-3 flex items-center justify-between">
         {formatCoffeeNumber(coffee.coffeeNumber) && (
-          <p className="text-[10px] font-semibold tracking-[0.2em] text-ink/40">{formatCoffeeNumber(coffee.coffeeNumber)}</p>
+          <p className="text-[16px] font-bold text-ink/50" style={{ fontFamily: 'var(--font-gungseo)' }}>
+            {formatCoffeeNumber(coffee.coffeeNumber)}
+          </p>
         )}
         <div className="flex items-center gap-2">
           {coffee.availability !== 'available' && (

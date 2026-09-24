@@ -26,7 +26,6 @@ export default function ArchivePagination({ page, totalPages, onChange }: Archiv
 
   const go = (p: number) => {
     onChange(p)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (

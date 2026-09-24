@@ -168,23 +168,28 @@ export default function AdminCoffeeEditorPage() {
     }
     setErrors([])
     const next: Coffee = { ...draft, slug: draft.slug.trim(), updatedAt: now() }
-    await upsertCoffee(next)
-    // New coffee → auto-front the KOI SPOTLIGHT carousel with it (never on an edit of an
-    // existing coffee, which only ever reaches this branch once, right after creation).
-    if (isNew) {
-      const slides = getAllSpotlightSlides()
-      const minOrder = slides.length > 0 ? Math.min(...slides.map((s) => s.order)) : 0
-      await upsertSpotlightSlide({
-        id: crypto.randomUUID(),
-        contentType: 'FEATURED_COFFEE',
-        order: minOrder - 1,
-        published: true,
-        linkedId: next.id,
-        title: '',
-        overlayStrength: 'medium',
-        createdAt: now(),
-        updatedAt: now(),
-      })
+    try {
+      await upsertCoffee(next)
+      // New coffee → auto-front the KOI SPOTLIGHT carousel with it (never on an edit of an
+      // existing coffee, which only ever reaches this branch once, right after creation).
+      if (isNew) {
+        const slides = getAllSpotlightSlides()
+        const minOrder = slides.length > 0 ? Math.min(...slides.map((s) => s.order)) : 0
+        await upsertSpotlightSlide({
+          id: crypto.randomUUID(),
+          contentType: 'FEATURED_COFFEE',
+          order: minOrder - 1,
+          published: true,
+          linkedId: next.id,
+          title: '',
+          overlayStrength: 'medium',
+          createdAt: now(),
+          updatedAt: now(),
+        })
+      }
+    } catch (err) {
+      setErrors([`저장 실패: ${err instanceof Error ? err.message : String(err)}`])
+      return
     }
     setDraft(next)
     setSaved(true)

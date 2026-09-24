@@ -25,7 +25,7 @@ export default function AdminGate({ children }: { children: ReactNode }) {
         </div>
 
         <Link to="/" className="mt-4 block text-[11px] text-ink/45 hover:text-ink">
-          ← 갤러리로 돌아가기
+          ← 홈으로 돌아가기
         </Link>
       </div>
     </div>

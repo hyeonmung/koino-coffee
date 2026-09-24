@@ -35,6 +35,10 @@
   /* Small-caps gold "kicker" labels (COLUMN, SPOTLIGHT, 코이노니아 로스터스, ...) get an upscale
      serif treatment in both scripts: Instrument Serif for Latin, Noto Serif KR for Hangul. */
   --font-kicker: 'Instrument Serif', 'Noto Serif KR', serif;
+  /* Gungsuh (궁서체) has no reliable free webfont equivalent — this relies on the OS-bundled
+     Gungsuh/Batang family (present on Windows, and via Apple's Korean font pack on macOS),
+     falling back to the site's serif stack where neither is installed. */
+  --font-gungseo: 'Gungsuh', 'GungsuhChe', 'Batang', 'Noto Serif KR', serif;
 
   /* Single source of truth for the Coffee Card image ratio (850×550 / 17:11).
      Generates the `aspect-coffee-card` utility — see src/constants/media.ts. */

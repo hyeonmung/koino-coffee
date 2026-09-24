@@ -135,7 +135,14 @@ export default function CoffeeDetailPage() {
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-baseline gap-2 text-[11px] font-semibold tracking-[0.25em] text-ink/45">
-          {number && <span className="text-accent">{number}</span>}
+          {number && (
+            <span
+              className="text-[56px] font-bold italic tracking-tight text-accent"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              {number}
+            </span>
+          )}
           <span>{coffee.country}</span>
         </div>
         <FavoriteStar slug={coffee.slug} count={coffee.favoriteCount} size={22} className="text-ink/30" />
@@ -171,7 +178,7 @@ export default function CoffeeDetailPage() {
         <p className="mt-3 max-w-[640px] whitespace-pre-line text-[13px] leading-relaxed text-ink/55">{coffee.characterReason}</p>
       )}
 
-      <CoffeePrice coffee={coffee} className="mt-4" />
+      <CoffeePrice coffee={coffee} className="mt-4" size="lg" />
       {coffee.bestBeforeDate && <p className="mt-1 text-[10px] text-ink/35">소비기한 {coffee.bestBeforeDate}</p>}
 
       <div className="mt-6 flex flex-wrap gap-2">

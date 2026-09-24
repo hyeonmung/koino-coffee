@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-/** Resets scroll to the top on every route change — HashRouter doesn't do this on its own. */
+/** Resets scroll to the top on every route change — React Router doesn't do this on its own. */
 export default function ScrollToTop() {
   const { pathname } = useLocation()
 
