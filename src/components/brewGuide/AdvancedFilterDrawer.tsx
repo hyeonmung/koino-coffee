@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { archive } from '../../pages/public/brewGuide/tokens'
+import { equipmentLabel } from '../../pages/public/brewGuide/parse'
 
 export type TimeRange = 'ALL' | 'UNDER3' | 'MID' | 'OVER4'
 
@@ -71,7 +72,7 @@ export default function AdvancedFilterDrawer({
         <FilterGroup label="BREW METHOD">
           <OptionRow active={draft.dripper === 'ALL'} onClick={() => setDraft({ ...draft, dripper: 'ALL' })} label="전체" />
           {drippers.map((d) => (
-            <OptionRow key={d} active={draft.dripper === d} onClick={() => setDraft({ ...draft, dripper: d })} label={d} />
+            <OptionRow key={d} active={draft.dripper === d} onClick={() => setDraft({ ...draft, dripper: d })} label={equipmentLabel(d)} />
           ))}
         </FilterGroup>
 

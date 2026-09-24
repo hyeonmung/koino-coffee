@@ -14,7 +14,7 @@ import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import type { BrewGuide, BrewGuideSource } from '../../data/schema'
 import { getRecentlyViewedBrewGuides } from '../../utils/recentlyViewedBrewGuides'
 import { archive } from './brewGuide/tokens'
-import { bucketInt, inferServingStyle, parseGrams, parseRatioDenominator, parseSeconds } from './brewGuide/parse'
+import { bucketInt, equipmentLabel, inferServingStyle, parseGrams, parseRatioDenominator, parseSeconds } from './brewGuide/parse'
 
 type SortMode = 'recommended' | 'latest' | 'brewTime'
 
@@ -126,7 +126,7 @@ export default function BrewGuideIndexPage() {
   })
 
   const activeFilterChips = [
-    dripper !== 'ALL' && { key: 'dripper', label: dripper, clear: () => updateParams({ dripper: 'ALL' }) },
+    dripper !== 'ALL' && { key: 'dripper', label: equipmentLabel(dripper), clear: () => updateParams({ dripper: 'ALL' }) },
     competitionType !== 'ALL' && { key: 'competition', label: competitionType, clear: () => updateParams({ competition: 'ALL' }) },
     servingStyle !== 'ALL' && {
       key: 'serving',

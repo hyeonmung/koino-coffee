@@ -1,5 +1,6 @@
 import type { OpenFilterValues } from './AdvancedFilterDrawer'
 import { archive } from '../../pages/public/brewGuide/tokens'
+import { equipmentLabel } from '../../pages/public/brewGuide/parse'
 
 interface FilterSidebarProps {
   drippers: string[]
@@ -43,7 +44,7 @@ export default function FilterSidebar({ drippers, competitionTypes, doseOptions,
 
       <FilterGroup
         label="드리퍼"
-        options={drippers.map((d) => ({ value: d, label: d }))}
+        options={drippers.map((d) => ({ value: d, label: equipmentLabel(d) }))}
         selected={value.dripper}
         onSelect={(v) => onChange({ dripper: v })}
       />

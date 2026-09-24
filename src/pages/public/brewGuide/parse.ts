@@ -40,3 +40,21 @@ export function inferServingStyle(guide: { title: string; equipment: string }): 
   if (guide.equipment === 'Cold Brew') return 'ICED'
   return ICE_PATTERN.test(guide.title) ? 'ICED' : 'HOT'
 }
+
+/** Only generic equipment *categories* get a Korean label — specific product/brand names
+ * (V60, Chemex, Kalita Wave, Orea, Origami, Aeropress, Hario Switch, Fellow Aiden, April Brewer)
+ * stay in their original form, same as how they're referred to in Korean specialty coffee shops. */
+const EQUIPMENT_LABEL_KO: Record<string, string> = {
+  'Auto Drip': '오토드립',
+  'Cold Brew': '콜드브루',
+  'Cone Dripper': '콘 드리퍼',
+  Espresso: '에스프레소',
+  'French Press': '프렌치프레스',
+  'Pour Over Dripper': '푸어오버 드리퍼',
+  'Moka Pot': '모카포트',
+  Phin: '핀',
+}
+
+export function equipmentLabel(equipment: string): string {
+  return EQUIPMENT_LABEL_KO[equipment] ?? equipment
+}
