@@ -151,7 +151,15 @@ export default function CoffeeDetailPage() {
         <FlavorSpectrumSpine notes={coffee.notes} size="lg" />
         <div className="min-w-0">
           <h1 className="font-serif text-[32px] font-bold leading-tight whitespace-pre-line text-ink sm:text-[42px]">{coffee.coffeeName}</h1>
-          {coffee.koreanName && <p className="mt-0.5 whitespace-pre-line text-[15px] text-ink/45">{coffee.koreanName}</p>}
+          {coffee.koreanName && (
+            <p
+              className={`mt-0.5 whitespace-pre-line ${
+                resolved === 'dark' ? 'text-[30px] font-semibold text-accent' : 'text-[15px] text-ink/45'
+              }`}
+            >
+              {coffee.koreanName}
+            </p>
+          )}
         </div>
       </div>
 

@@ -90,7 +90,15 @@ export default function CoffeeCard({ coffee, showRadar = false, narrowMobileGrid
           >
             {coffee.coffeeName}
           </h3>
-          {coffee.koreanName && <p className="whitespace-pre-line text-[11px] text-ink/40">{coffee.koreanName}</p>}
+          {coffee.koreanName && (
+            <p
+              className={`whitespace-pre-line ${
+                resolved === 'dark' ? 'text-[22px] font-semibold text-accent' : 'text-[11px] text-ink/40'
+              }`}
+            >
+              {coffee.koreanName}
+            </p>
+          )}
 
           <div className="mt-2 min-w-0">
             <span className="text-[13px] font-bold tracking-[0.1em]" style={{ color: accent }}>
