@@ -119,8 +119,12 @@ export default function CoffeeCard({ coffee, showRadar = false, narrowMobileGrid
       )}
 
       <div className="mt-2 flex items-center justify-between border-t border-line/10 pt-2">
-        <p className="text-[10px] font-semibold tracking-[0.1em] text-ink/0 transition-colors group-hover:text-ink/45">VIEW COFFEE →</p>
-        <CoffeePrice coffee={coffee} />
+        {/* Hover-only desktop affordance — hidden on mobile (no hover state there) so it stops
+            reserving row width and squeezing the price into overflow. */}
+        <p className="hidden text-[10px] font-semibold tracking-[0.1em] text-ink/0 transition-colors group-hover:text-ink/45 sm:block">
+          VIEW COFFEE →
+        </p>
+        <CoffeePrice coffee={coffee} className="ml-auto" />
       </div>
     </Link>
   )

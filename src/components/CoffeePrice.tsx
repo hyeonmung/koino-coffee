@@ -26,7 +26,7 @@ export default function CoffeePrice({ coffee, className = '', size = 'sm' }: Cof
 
   return (
     <div className={className}>
-      <div className="flex items-baseline gap-2">
+      <div className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-0.5">
         {weightGrams && <span className={`${meta} text-ink/45`}>{weightGrams}g</span>}
         {onSale && <span className={`${meta} text-ink/35 line-through`}>{won(price)}</span>}
         <span className={`${priceClass} font-bold text-ink`}>{won(onSale ? (salePrice as number) : price)}</span>
