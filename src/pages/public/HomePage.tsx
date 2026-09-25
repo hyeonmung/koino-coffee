@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useIsDesktop from '../../hooks/useIsDesktop'
 import CoffeeCard from '../../components/CoffeeCard'
@@ -42,7 +42,16 @@ export default function HomePage() {
     (coffeeCurrentPage - 1) * COFFEES_PAGE_SIZE,
     coffeeCurrentPage * COFFEES_PAGE_SIZE,
   )
-  const brewGuides = getPublishedBrewGuides().slice(0, 2)
+  // Random 2 each visit (not the same "top 2" every time) — reshuffled once per mount, not on
+  // every re-render, so it stays stable while the user is browsing this page.
+  const brewGuides = useMemo(() => {
+    const shuffled = [...getPublishedBrewGuides()]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled.slice(0, 2)
+  }, [])
 
   // Real, already-authored dictionary copy — never invented for this preview block.
   const dictionaryTerm =
@@ -253,7 +262,7 @@ export default function HomePage() {
   const brewContent = showBrew && (
     <>
       <div className="flex items-end justify-between">
-        <h2 className="text-[18px] font-bold text-ink">코이노니아 로스터스 끄적끄적</h2>
+        <h2 className="text-[18px] font-bold text-ink">Try Brewing</h2>
         <Link to="/brew-guide" className="text-[11px] font-semibold text-ink/50 hover:text-ink">
           전체 보기 →
         </Link>
