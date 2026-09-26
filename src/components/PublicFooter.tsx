@@ -41,7 +41,13 @@ export default function PublicFooter() {
 
   return (
     <footer className="koi-night-sky overflow-hidden">
-      <KOIStarField />
+      {/* Second, nested clip boundary around the animated star field — on iOS Safari, a single
+          overflow-hidden ancestor can let an animated/opacity-transitioning child paint a sliver
+          past its edge at a corner (a known WebKit compositing-layer rounding bug). Double-clipping
+          it in its own overflow-hidden box keeps that sliver from ever reaching the page. */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <KOIStarField />
+      </div>
       <div className="relative mx-auto max-w-[1240px] px-5 py-6 sm:px-6 sm:py-12">
         {/* Mobile: logo + tagline inline, nav groups stacked tightly right below. Desktop (sm:) switches to the 3-column layout. */}
         <div className="flex items-center gap-3 sm:hidden">
