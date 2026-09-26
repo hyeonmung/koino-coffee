@@ -40,7 +40,7 @@ export default function PublicFooter() {
   )
 
   return (
-    <footer className="koi-night-sky overflow-hidden">
+    <footer className="koi-night-sky overflow-hidden rounded-none border border-warm-white/10">
       {/* Second, nested clip boundary around the animated star field — on iOS Safari, a single
           overflow-hidden ancestor can let an animated/opacity-transitioning child paint a sliver
           past its edge at a corner (a known WebKit compositing-layer rounding bug). Double-clipping
