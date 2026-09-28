@@ -41,10 +41,14 @@ function StarShape({ star }: { star: StarSpec }) {
     const s = star.size
     // Compact 4-point sparkle glyph — never a filled star icon.
     const d = `M0,${-s * 3} L${s * 0.55},${-s * 0.55} L${s * 3},0 L${s * 0.55},${s * 0.55} L0,${s * 3} L${-s * 0.55},${s * 0.55} L${-s * 3},0 L${-s * 0.55},${-s * 0.55} Z`
+    // A plain SVG `transform` attribute doesn't understand "%" units (unlike `cx`/`cy` on
+    // <circle>, or `x`/`y` here) — using it silently collapsed every sparkle to (0,0), stacking
+    // three semi-transparent gold glyphs right on top of each other in the top-left corner of
+    // every koi-night-sky section. A nested <svg> positioned with percentage x/y avoids that.
     return (
-      <g transform={`translate(${star.x}%, ${star.y}%)`} className="koi-star" style={style}>
+      <svg x={`${star.x}%`} y={`${star.y}%`} width="1" height="1" overflow="visible" className="koi-star" style={style}>
         <path d={d} fill="#f2c94c" />
-      </g>
+      </svg>
     )
   }
 
