@@ -28,6 +28,8 @@ const AdminSpotlightPage = lazy(() => import('./pages/admin/AdminSpotlightPage')
 const AdminColumnsPage = lazy(() => import('./pages/admin/AdminColumnsPage'))
 const AdminColumnEditorPage = lazy(() => import('./pages/admin/AdminColumnEditorPage'))
 const AdminColumnSchedulerPage = lazy(() => import('./pages/admin/AdminColumnSchedulerPage'))
+const AdminPlaylistsPage = lazy(() => import('./pages/admin/AdminPlaylistsPage'))
+const AdminPlaylistEditorPage = lazy(() => import('./pages/admin/AdminPlaylistEditorPage'))
 const AdminWholesaleRequestsPage = lazy(() => import('./pages/admin/AdminWholesaleRequestsPage'))
 const AboutPage = lazy(() => import('./pages/public/AboutPage'))
 const AboutSensoryMapPage = lazy(() => import('./pages/public/AboutSensoryMapPage'))
@@ -48,6 +50,8 @@ const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage'))
 const PrivacyPolicyPage = lazy(() => import('./pages/public/PrivacyPolicyPage'))
 const ColumnIndexPage = lazy(() => import('./pages/public/ColumnIndexPage'))
 const ColumnDetailPage = lazy(() => import('./pages/public/ColumnDetailPage'))
+const JBIndexPage = lazy(() => import('./pages/public/JBIndexPage'))
+const JBDetailPage = lazy(() => import('./pages/public/JBDetailPage'))
 const AuthCallbackPage = lazy(() => import('./pages/public/AuthCallbackPage'))
 
 function GalleryRedirect() {
@@ -83,6 +87,8 @@ export default function App() {
           <Route path="/thekoimag/:slug" element={<ColumnDetailPage />} />
           <Route path="/column" element={<Navigate to="/thekoimag" replace />} />
           <Route path="/column/:slug" element={<ColumnSlugRedirect />} />
+          <Route path="/jb" element={<JBIndexPage />} />
+          <Route path="/jb/:slug" element={<JBDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/business" element={<BusinessPage />} />
           <Route path="/business/:slug" element={<BusinessPostDetailPage />} />
@@ -254,6 +260,30 @@ export default function App() {
             element={
               <AdminGate>
                 <AdminColumnEditorPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/playlists"
+            element={
+              <AdminGate>
+                <AdminPlaylistsPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/playlists/new"
+            element={
+              <AdminGate>
+                <AdminPlaylistEditorPage />
+              </AdminGate>
+            }
+          />
+          <Route
+            path="/admin/playlists/:id"
+            element={
+              <AdminGate>
+                <AdminPlaylistEditorPage />
               </AdminGate>
             }
           />

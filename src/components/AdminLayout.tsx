@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { to: '/admin/dictionary', label: '커피 사전' },
   { to: '/admin/brew-guides', label: '브루잉 레시피' },
   { to: '/admin/columns', label: '칼럼 관리' },
+  { to: '/admin/playlists', label: 'J&B 플레이리스트' },
   { to: '/admin/business', label: '납품 · 교육' },
   { to: '/admin/inquiries', label: '문의 관리' },
   { to: '/admin/wholesale-requests', label: '납품 신청' },

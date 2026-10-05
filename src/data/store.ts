@@ -14,6 +14,7 @@ import type {
   FlavorDescriptor,
   FlavorFamily,
   Inquiry,
+  Playlist,
   SiteSettings,
   SpotlightSlide,
   Story,
@@ -40,6 +41,7 @@ export const store = {
   brewTools: [] as BrewTool[],
   stories: [] as Story[],
   columns: [] as Column[],
+  playlists: [] as Playlist[],
   coffees: [] as Coffee[],
   businessPosts: [] as BusinessPost[],
   aboutBlocks: [] as AboutBlock[],
@@ -81,6 +83,7 @@ export function initStore(): Promise<void> {
       brewTools,
       stories,
       columns,
+      playlists,
       coffees,
       businessPosts,
       aboutBlocks,
@@ -99,6 +102,7 @@ export function initStore(): Promise<void> {
       supabase.from('brew_tools').select('*'),
       supabase.from('stories').select('*'),
       supabase.from('columns').select('*'),
+      supabase.from('playlists').select('*'),
       supabase.from('coffees').select('*'),
       supabase.from('business_posts').select('*'),
       supabase.from('about_blocks').select('*'),
@@ -120,6 +124,7 @@ export function initStore(): Promise<void> {
     store.brewTools = (brewTools.data ?? []).map((r) => rowToCamel<BrewTool>(r))
     store.stories = (stories.data ?? []).map((r) => rowToCamel<Story>(r))
     store.columns = (columns.data ?? []).map((r) => rowToCamel<Column>(r))
+    store.playlists = (playlists.data ?? []).map((r) => rowToCamel<Playlist>(r))
     store.coffees = (coffees.data ?? []).map(coffeeRowToCoffee)
     store.businessPosts = (businessPosts.data ?? []).map((r) => rowToCamel<BusinessPost>(r))
     store.aboutBlocks = (aboutBlocks.data ?? []).map((r) => rowToCamel<AboutBlock>(r))

@@ -287,6 +287,27 @@ export interface Column {
   likeCount?: number
 }
 
+/**
+ * "J&B" (Jazzy & Bluesy) — the monthly in-store playlist post. One row per month; `scheduledAt`
+ * gates public visibility the same way it does for `Column`.
+ */
+export interface Playlist {
+  id: string
+  slug: string
+  publishStatus: PublishStatus
+  /** Full display title, e.g. "2026.10 첫 잔의 온기와 Kind of Blue, 가을이 창가에 천천히 내려앉는 시간." */
+  title: string
+  coverImage?: string
+  /** Instagram feed caption (prose + hashtags) — the 20-track list is a separate field, not repeated here. */
+  caption: string
+  /** Exactly 20 "Title - Artist" strings, in playlist order (no numbering — the UI numbers them). */
+  tracks: string[]
+  /** ISO datetime (UTC). A playlist only appears publicly once now() >= scheduledAt. */
+  scheduledAt: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type BusinessPostCategory = 'WHOLESALE' | 'EDUCATION' | 'CLASS' | 'NOTICE' | 'PARTNERSHIP'
 
 export interface BusinessLink {

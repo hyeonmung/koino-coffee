@@ -29,6 +29,7 @@ const NAV_LINKS = [
   { to: '/brew-guide', label: '브루잉 레시피' },
   { to: '/dictionary', label: '커피 사전' },
   { to: '/thekoimag', label: '더코이맥 칼럼' },
+  { to: '/jb', label: 'J&B' },
   { to: '/business', label: '납품 · 교육' },
 ]
 
