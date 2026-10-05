@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ColumnLikeButton from '../../components/ColumnLikeButton'
 import KOIStarField from '../../components/decorative/KOIStarField'
+import Pagination from '../../components/Pagination'
 import PublicFooter from '../../components/PublicFooter'
 import PublicHeader from '../../components/PublicHeader'
 import QuickAddColumnForm from '../../components/QuickAddColumnForm'
@@ -11,12 +12,19 @@ import { getPublishedColumns } from '../../data/repositories/columnRepository'
 import { useSupabaseSession } from '../../hooks/useSupabaseSession'
 import { formatScheduledAt } from '../../utils/scheduledTime'
 
+// 2 columns x 5 rows per page — was an unpaginated single-column scroll on mobile.
+const PAGE_SIZE = 10
+
 export default function ColumnIndexPage() {
   const [refreshKey, setRefreshKey] = useState(0)
   const columns = useMemo(() => getPublishedColumns(), [refreshKey])
   const session = useSupabaseSession()
   const isOwner = session?.user.email === OWNER_EMAIL
   const [quickAddOpen, setQuickAddOpen] = useState(false)
+  const [page, setPage] = useState(1)
+  const totalPages = Math.max(1, Math.ceil(columns.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const pageItems = columns.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
@@ -56,36 +64,39 @@ export default function ColumnIndexPage() {
             아직 등록된 더코이맥 칼럼이 없습니다.
           </p>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
-            {columns.map((column) => (
-              <Link key={column.id} to={`/thekoimag/${column.slug}`} className="group block">
-                {column.coverImage ? (
-                  <div className="aspect-[3/2] w-full overflow-hidden">
-                    <div
-                      className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
-                      style={{ backgroundImage: `url(${column.coverImage})` }}
-                      role="img"
-                      aria-label={column.title}
-                    />
+          <>
+            <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-6 sm:gap-y-10">
+              {pageItems.map((column) => (
+                <Link key={column.id} to={`/thekoimag/${column.slug}`} className="group block">
+                  {column.coverImage ? (
+                    <div className="aspect-[3/2] w-full overflow-hidden">
+                      <div
+                        className="h-full w-full bg-navy/5 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
+                        style={{ backgroundImage: `url(${column.coverImage})` }}
+                        role="img"
+                        aria-label={column.title}
+                      />
+                    </div>
+                  ) : (
+                    <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
+                      <KOIStarField />
+                      <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
+                    </div>
+                  )}
+                  <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-ink/45">COLUMN</p>
+                  <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-ink">{column.title}</p>
+                  <p className="mt-2 whitespace-pre-line text-[12px] text-ink/55">{column.excerpt}</p>
+                  <div className="mt-3 flex items-center gap-3">
+                    <p className="text-[10px] text-ink/35">
+                      {formatScheduledAt(column.scheduledAt)} · 조회 {(column.views ?? 0).toLocaleString()}
+                    </p>
+                    <ColumnLikeButton slug={column.slug} count={column.likeCount} size={14} className="text-ink/35" />
                   </div>
-                ) : (
-                  <div className="koi-night-sky relative flex aspect-[3/2] w-full items-end overflow-hidden p-4">
-                    <KOIStarField />
-                    <p className="relative text-[9px] font-semibold tracking-[0.3em] text-warm-white/30">KOINONIA</p>
-                  </div>
-                )}
-                <p className="mt-3 text-[10px] font-semibold tracking-[0.15em] text-ink/45">COLUMN</p>
-                <p className="mt-1 whitespace-pre-line text-[18px] font-bold text-ink">{column.title}</p>
-                <p className="mt-2 whitespace-pre-line text-[12px] text-ink/55">{column.excerpt}</p>
-                <div className="mt-3 flex items-center gap-3">
-                  <p className="text-[10px] text-ink/35">
-                    {formatScheduledAt(column.scheduledAt)} · 조회 {(column.views ?? 0).toLocaleString()}
-                  </p>
-                  <ColumnLikeButton slug={column.slug} count={column.likeCount} size={14} className="text-ink/35" />
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+            <Pagination page={currentPage} totalPages={totalPages} onChange={setPage} />
+          </>
         )}
       </main>
 
