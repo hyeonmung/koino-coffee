@@ -128,7 +128,7 @@ export default function HomePage() {
       <Link
         to={`/jb/${latestPlaylist.slug}`}
         aria-label={`오늘의 J&B: ${jbTrackTitle ?? ''}`}
-        className="koi-night-sky relative isolate mx-auto flex aspect-[51/11] w-full max-w-[1240px] items-center overflow-hidden px-4 sm:px-8 lg:px-12"
+        className="koi-night-sky relative isolate mx-auto flex aspect-[153/22] w-full max-w-[1240px] items-center overflow-hidden px-4 sm:px-8 lg:px-12"
       >
         <KOIStarField />
         <div className="relative grid w-full grid-cols-2 items-center gap-3 sm:gap-6">
