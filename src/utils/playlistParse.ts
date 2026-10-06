@@ -53,5 +53,5 @@ export function playlistSlug(year: number, month: number): string {
 }
 
 export function playlistTitle(year: number, month: number, moodQuote: string): string {
-  return `${year}.${String(month).padStart(2, '0')} ${moodQuote}`
+  return `${year}.${String(month).padStart(2, '0')}\n${moodQuote}`
 }
