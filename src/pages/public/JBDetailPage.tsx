@@ -51,15 +51,19 @@ export default function JBDetailPage() {
 
         <div className="mt-10 border-t border-line/10 pt-6">
           <p className="text-[10px] font-semibold tracking-[0.2em] text-accent font-kicker">TRACKLIST</p>
-          <ol className="mt-3 space-y-2">
+          <ol className="mt-4 divide-y divide-line/10">
             {playlist.tracks.map((track, i) => {
               const [titlePart, artistPart] = track.split(/\s-\s(.+)/)
               return (
-                <li key={i} className="flex gap-3 text-[13px] leading-snug">
-                  <span className="w-5 shrink-0 text-right font-semibold tabular-nums text-ink/35">{i + 1}</span>
-                  <span className="text-ink/80">
-                    {titlePart}
-                    {artistPart && <span className="text-ink/45"> — {artistPart}</span>}
+                <li key={i} className="flex items-baseline gap-4 py-3.5">
+                  <span className="w-7 shrink-0 text-right font-serif text-[16px] italic text-accent">{i + 1}</span>
+                  <span className="min-w-0">
+                    <span className="font-serif text-[18px] italic leading-snug text-ink">{titlePart}</span>
+                    {artistPart && (
+                      <span className="ml-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
+                        {artistPart}
+                      </span>
+                    )}
                   </span>
                 </li>
               )
