@@ -143,7 +143,7 @@ export default function HomePage() {
               {jbTrackTitle}
             </p>
             {jbTrackArtist && (
-              <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.1em] text-warm-white/55 sm:text-[13px] lg:text-[15px]">
+              <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.1em] text-accent sm:text-[13px] lg:text-[15px]">
                 {jbTrackArtist}
               </p>
             )}
