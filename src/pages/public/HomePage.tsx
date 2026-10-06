@@ -13,6 +13,7 @@ import { getPublishedBrewGuides } from '../../data/repositories/brewGuideReposit
 import { getPublishedCoffees } from '../../data/repositories/coffeeRepository'
 import { getAllDictionaryTerms } from '../../data/repositories/dictionaryRepository'
 import { getPublishedColumns } from '../../data/repositories/columnRepository'
+import { getPublishedPlaylists } from '../../data/repositories/playlistRepository'
 import { getFlavorDescriptors } from '../../data/repositories/flavorRepository'
 import { getSiteSettings } from '../../data/repositories/siteSettingsRepository'
 import { getPublishedSpotlightSlides } from '../../data/repositories/spotlightRepository'
@@ -111,6 +112,44 @@ export default function HomePage() {
   // time has passed), so it advances on its own as each day's column goes live. No admin
   // curation needed, unlike the KOI SPOTLIGHT carousel above.
   const latestColumn = getPublishedColumns()[0]
+
+  // "오늘의 J&B" band between the header and the hero banner — always this month's playlist
+  // (getPublishedPlaylists is sorted newest-first and already filters to ones whose scheduled
+  // time has passed). The featured track rotates once a day (KST calendar day → index into that
+  // month's 20 tracks), not on every page load, so every visitor sees the same pick that day.
+  const latestPlaylist = getPublishedPlaylists()[0]
+  const [jbMonthLabel, jbMoodQuote] = (latestPlaylist?.title ?? '').split('\n')
+  const jbDayOfMonth = Number(new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }).split('-')[2])
+  const jbTrackRaw = latestPlaylist ? latestPlaylist.tracks[(jbDayOfMonth - 1) % latestPlaylist.tracks.length] : undefined
+  const [jbTrackTitle, jbTrackArtist] = jbTrackRaw?.split(/\s-\s(.+)/) ?? []
+
+  const jbBanner = latestPlaylist && (
+    <section className="bg-canvas">
+      <Link
+        to={`/jb/${latestPlaylist.slug}`}
+        aria-label={`오늘의 J&B: ${jbTrackTitle ?? ''}`}
+        className="koi-night-sky relative isolate mx-auto flex aspect-[51/11] w-full max-w-[1240px] items-center overflow-hidden px-6 lg:px-10"
+      >
+        <KOIStarField />
+        <div className="relative grid w-full grid-cols-2 items-center gap-4">
+          <div className="min-w-0">
+            <p className="text-[9px] font-semibold tracking-[0.25em] text-accent font-kicker lg:text-[10px]">오늘의 J&B</p>
+            <p className="mt-1 truncate text-[11px] text-warm-white/65 lg:text-[14px]">
+              {jbMonthLabel} {jbMoodQuote}
+            </p>
+          </div>
+          <div className="min-w-0 text-right">
+            <p className="truncate font-serif text-[14px] italic leading-snug text-warm-white lg:text-[19px]">{jbTrackTitle}</p>
+            {jbTrackArtist && (
+              <p className="mt-0.5 truncate text-[9px] font-semibold uppercase tracking-[0.08em] text-warm-white/45 lg:text-[10px]">
+                {jbTrackArtist}
+              </p>
+            )}
+          </div>
+        </div>
+      </Link>
+    </section>
+  )
 
   // The cover image is itself a fully designed KOI MAG card (logo + headline baked in), so it
   // renders clean — no text overlaid on top of it, which would double up with its own headline.
@@ -301,6 +340,7 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col bg-canvas">
       <SEO />
       <PublicHeader />
+      {jbBanner}
 
       <main className="w-full min-w-0 lg:flex-1">
         {heroSection}
