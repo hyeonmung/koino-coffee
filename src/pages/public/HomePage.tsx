@@ -128,20 +128,22 @@ export default function HomePage() {
       <Link
         to={`/jb/${latestPlaylist.slug}`}
         aria-label={`오늘의 J&B: ${jbTrackTitle ?? ''}`}
-        className="koi-night-sky relative isolate mx-auto flex aspect-[51/11] w-full max-w-[1240px] items-center overflow-hidden px-6 lg:px-10"
+        className="koi-night-sky relative isolate mx-auto flex aspect-[51/11] w-full max-w-[1240px] items-center overflow-hidden px-4 sm:px-8 lg:px-12"
       >
         <KOIStarField />
-        <div className="relative grid w-full grid-cols-2 items-center gap-4">
+        <div className="relative grid w-full grid-cols-2 items-center gap-3 sm:gap-6">
           <div className="min-w-0">
-            <p className="text-[9px] font-semibold tracking-[0.25em] text-accent font-kicker lg:text-[10px]">오늘의 J&B</p>
-            <p className="mt-1 truncate text-[11px] text-warm-white/65 lg:text-[14px]">
+            <p className="text-[11px] font-bold tracking-[0.2em] text-accent font-kicker sm:text-[13px] lg:text-[15px]">오늘의 J&B</p>
+            <p className="mt-1 line-clamp-2 text-[13px] font-semibold leading-tight text-warm-white sm:text-[17px] lg:text-[22px]">
               {jbMonthLabel} {jbMoodQuote}
             </p>
           </div>
           <div className="min-w-0 text-right">
-            <p className="truncate font-serif text-[14px] italic leading-snug text-warm-white lg:text-[19px]">{jbTrackTitle}</p>
+            <p className="truncate font-serif text-[20px] italic leading-tight text-warm-white sm:text-[28px] lg:text-[38px]">
+              {jbTrackTitle}
+            </p>
             {jbTrackArtist && (
-              <p className="mt-0.5 truncate text-[9px] font-semibold uppercase tracking-[0.08em] text-warm-white/45 lg:text-[10px]">
+              <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.1em] text-warm-white/55 sm:text-[13px] lg:text-[15px]">
                 {jbTrackArtist}
               </p>
             )}
