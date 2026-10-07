@@ -57,7 +57,10 @@ function renderPage(routePath, { title, description, image }) {
   const fullTitle = title ? `${title} — ${BRAND}` : `${BRAND} 공식사이트`
   const desc = description || DEFAULT_DESCRIPTION
   const img = resolveImage(image)
-  const url = `${SITE_URL}${routePath}`
+  // encodeURI, not routePath raw: canonical/og:url must be a fully-escaped URL per spec, even
+  // though the on-disk directory for this page is named with the raw (unencoded) slug — see
+  // the sitemap note below for why those two need to differ.
+  const url = `${SITE_URL}${encodeURI(routePath)}`
 
   let html = template
   html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(fullTitle)}</title>`)
@@ -111,6 +114,7 @@ async function run() {
     { data: flavorDescriptors, error: flavorErr },
     { data: flavorFamilies, error: familiesErr },
     { data: columns, error: columnsErr },
+    { data: playlists, error: playlistsErr },
   ] = await Promise.all([
     supabase.from('coffees').select('slug, coffee_name, country, notes, character, hero_image, seo_title, seo_description, publish_status'),
     supabase.from('brew_guides').select('slug, title, equipment, coffee_dose, ratio, publish_status'),
@@ -120,6 +124,7 @@ async function run() {
     supabase.from('flavor_descriptors').select('id, name, description, family_id'),
     supabase.from('flavor_families').select('id, name'),
     supabase.from('columns').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status, scheduled_at'),
+    supabase.from('playlists').select('slug, title, cover_image, caption, publish_status, scheduled_at'),
   ])
 
   for (const [name, err] of [
@@ -131,6 +136,7 @@ async function run() {
     ['flavor_descriptors', flavorErr],
     ['flavor_families', familiesErr],
     ['columns', columnsErr],
+    ['playlists', playlistsErr],
   ]) {
     if (err) console.warn(`[prerender] failed to fetch ${name}:`, err.message)
   }
@@ -142,8 +148,7 @@ async function run() {
   // actually requests over HTTP (browsers percent-encode non-ASCII URL segments).
   for (const c of coffees ?? []) {
     if (c.publish_status !== 'published') continue
-    const slug = encodeURIComponent(c.slug)
-    renderPage(`/coffees/${slug}`, {
+    renderPage(`/coffees/${c.slug}`, {
       title: c.seo_title || c.coffee_name,
       description: c.seo_description || `${c.country} · ${charLabelOf(c.character)} · ${(c.notes ?? []).join(', ')}`,
       image: c.hero_image,
@@ -152,12 +157,12 @@ async function run() {
 
   for (const g of guides ?? []) {
     if (g.publish_status !== 'published') continue
-    renderPage(`/brew-guide/${encodeURIComponent(g.slug)}`, { title: g.title, description: `${g.equipment} 추출 레시피 — ${g.coffee_dose}, ${g.ratio}` })
+    renderPage(`/brew-guide/${g.slug}`, { title: g.title, description: `${g.equipment} 추출 레시피 — ${g.coffee_dose}, ${g.ratio}` })
   }
 
   for (const p of posts ?? []) {
     if (p.publish_status !== 'published') continue
-    renderPage(`/business/${encodeURIComponent(p.slug)}`, { title: p.seo_title || p.title, description: p.seo_description || p.excerpt, image: p.cover_image })
+    renderPage(`/business/${p.slug}`, { title: p.seo_title || p.title, description: p.seo_description || p.excerpt, image: p.cover_image })
   }
 
   for (const c of characters ?? []) {
@@ -167,11 +172,11 @@ async function run() {
   // /dictionary/:slug is dual-purpose (see DictionaryDetailPage.tsx) — the slug is either a
   // dictionary_terms.id or a flavor_descriptors.id, both rendered by the same route.
   for (const t of dictionaryTerms ?? []) {
-    renderPage(`/dictionary/${encodeURIComponent(t.id)}`, { title: `${t.term} — 커피 사전`, description: t.short_definition })
+    renderPage(`/dictionary/${t.id}`, { title: `${t.term} — 커피 사전`, description: t.short_definition })
   }
   for (const d of flavorDescriptors ?? []) {
     const family = flavorFamilies?.find((f) => f.id === d.family_id)
-    renderPage(`/dictionary/${encodeURIComponent(d.id)}`, {
+    renderPage(`/dictionary/${d.id}`, {
       title: `${d.name} — 커피 사전`,
       description: d.description || `${family?.name ?? 'Flavor'} 계열의 향미입니다.`,
     })
@@ -182,16 +187,33 @@ async function run() {
   for (const c of columns ?? []) {
     if (c.publish_status !== 'published') continue
     if (new Date(c.scheduled_at).getTime() > Date.now()) continue
-    renderPage(`/thekoimag/${encodeURIComponent(c.slug)}`, {
+    renderPage(`/thekoimag/${c.slug}`, {
       title: c.seo_title || c.title,
       description: c.seo_description || c.excerpt,
       image: c.cover_image,
     })
   }
 
+  // Same visibility rule as getPublishedPlaylists() client-side.
+  for (const p of playlists ?? []) {
+    if (p.publish_status !== 'published') continue
+    if (new Date(p.scheduled_at).getTime() > Date.now()) continue
+    const [, moodQuote] = (p.title ?? '').split('\n')
+    renderPage(`/jb/${p.slug}`, {
+      title: p.title?.replace('\n', ' '),
+      description: moodQuote || p.caption?.slice(0, 120),
+      image: p.cover_image,
+    })
+  }
+
+  // encodeURI (not encodeURIComponent) here: it leaves "/" alone and only percent-encodes
+  // the non-ASCII characters — sitemap <loc> values must be fully-escaped URLs per spec,
+  // but the on-disk directories above are named with the raw slug (see renderPage calls),
+  // since Vercel's static file matching decodes the incoming request path to compare against
+  // real filenames, not percent-encoded ones.
   const sitemap =
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    pages.map((p) => `  <url><loc>${SITE_URL}${p}</loc></url>`).join('\n') +
+    pages.map((p) => `  <url><loc>${SITE_URL}${encodeURI(p)}</loc></url>`).join('\n') +
     '\n</urlset>\n'
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap)
 
