@@ -139,11 +139,14 @@ export default function HomePage() {
             </p>
           </div>
           <div className="min-w-0 text-right">
-            <p className="truncate font-serif text-[20px] italic leading-tight text-warm-white sm:text-[28px] lg:text-[38px]">
+            {/* text-overflow:ellipsis has no defined behavior with text-align:right — Chrome/Safari
+                just hard-clip the glyph with no "…" shown. dir="rtl" makes the browser truncate from
+                the (visual) left instead, where this right-aligned text actually overflows. */}
+            <p dir="rtl" className="truncate pr-1 font-serif text-[20px] italic leading-tight text-warm-white sm:text-[28px] lg:text-[38px]">
               {jbTrackTitle}
             </p>
             {jbTrackArtist && (
-              <p className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.1em] text-accent sm:text-[13px] lg:text-[15px]">
+              <p dir="rtl" className="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.1em] text-accent sm:text-[13px] lg:text-[15px]">
                 {jbTrackArtist}
               </p>
             )}
