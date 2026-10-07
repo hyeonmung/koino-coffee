@@ -7,17 +7,21 @@ import PublicHeader from '../../components/PublicHeader'
 import SEO from '../../components/SEO'
 import ShareButton from '../../components/ShareButton'
 import StoryBody from '../../components/StoryBody'
-import { getColumnBySlug, incrementColumnViews } from '../../data/repositories/columnRepository'
+import { getColumnByLegacySlug, getColumnBySlug, incrementColumnViews } from '../../data/repositories/columnRepository'
 import useIncrementViewOnce from '../../hooks/useIncrementViewOnce'
 import { formatScheduledAt } from '../../utils/scheduledTime'
 
 export default function ColumnDetailPage() {
   const { slug = '' } = useParams()
   const column = useMemo(() => getColumnBySlug(slug), [slug])
+  const legacyMatch = useMemo(() => (column ? undefined : getColumnByLegacySlug(slug)), [slug, column])
 
   const displayViews = useIncrementViewOnce(column?.id, column?.views ?? 0, incrementColumnViews)
 
-  if (!column) return <Navigate to="/thekoimag" replace />
+  if (!column) {
+    if (legacyMatch) return <Navigate to={`/thekoimag/${legacyMatch.slug}`} replace />
+    return <Navigate to="/thekoimag" replace />
+  }
 
   const sourceLines = (column.sources ?? '')
     .split('\n')

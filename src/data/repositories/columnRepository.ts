@@ -20,6 +20,18 @@ export function getColumnBySlug(slug: string): Column | undefined {
   return undefined
 }
 
+/**
+ * Pre-migration column links used a bare MMDD slug (e.g. "0921"); slugs are now YYMMDD
+ * (e.g. "260921") to stay unique across years. Old bookmarks/shared links and anything
+ * Google indexed before the migration still hit the 4-digit form — resolve it to the
+ * matching published column (by its last 4 digits) so those links land on the actual
+ * article instead of bouncing to the index with no specific destination.
+ */
+export function getColumnByLegacySlug(legacySlug: string): Column | undefined {
+  if (!/^\d{4}$/.test(legacySlug)) return undefined
+  return getPublishedColumns().find((c) => c.slug.endsWith(legacySlug))
+}
+
 export function getColumnById(id: string): Column | undefined {
   return store.columns.find((c) => c.id === id)
 }
