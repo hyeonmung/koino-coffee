@@ -57,6 +57,24 @@ export default function BusinessInquiryForm() {
       await addInquiry(inquiry)
       setDone(true)
       setForm(EMPTY_FORM)
+
+      // Best-effort email notification — the DB row above is the real record, so a failure
+      // here (network hiccup, email service down) must never block the success screen.
+      fetch('/api/notify-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          companyName: inquiry.companyName,
+          contactName: inquiry.contactName,
+          phone: inquiry.phone,
+          email: inquiry.email,
+          businessType: inquiry.businessType,
+          region: inquiry.region,
+          interestArea: inquiry.interestArea,
+          expectedVolume: inquiry.expectedVolume,
+          message: inquiry.message,
+        }),
+      }).catch(() => {})
     } catch {
       setError('문의 접수 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.')
     } finally {
