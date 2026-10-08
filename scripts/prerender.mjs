@@ -51,9 +51,9 @@ function resolveImage(image) {
   return image && !image.startsWith('data:') ? image : `${SITE_URL}/og-image.png`
 }
 
-const pages = [] // { routePath } collected for the sitemap
+const pages = [] // { routePath, lastmod } collected for the sitemap
 
-function renderPage(routePath, { title, description, image }) {
+function renderPage(routePath, { title, description, image, lastmod }) {
   const fullTitle = title ? `${title} — ${BRAND}` : `${BRAND} 공식사이트`
   const desc = description || DEFAULT_DESCRIPTION
   const img = resolveImage(image)
@@ -85,7 +85,9 @@ function renderPage(routePath, { title, description, image }) {
   const outDir = path.join(distDir, routePath.replace(/^\//, ''))
   fs.mkdirSync(outDir, { recursive: true })
   fs.writeFileSync(path.join(outDir, 'index.html'), html)
-  pages.push(routePath)
+  // lastmod is a freshness signal Google still actually uses (unlike the ping endpoint,
+  // retired 2023) — fall back to the build date for pages with no real edit timestamp.
+  pages.push({ routePath, lastmod: (lastmod ? new Date(lastmod) : new Date()).toISOString().slice(0, 10) })
 }
 
 const STATIC_PAGES = [
@@ -116,15 +118,15 @@ async function run() {
     { data: columns, error: columnsErr },
     { data: playlists, error: playlistsErr },
   ] = await Promise.all([
-    supabase.from('coffees').select('slug, coffee_name, country, notes, character, hero_image, seo_title, seo_description, publish_status'),
-    supabase.from('brew_guides').select('slug, title, equipment, coffee_dose, ratio, publish_status'),
-    supabase.from('business_posts').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status'),
+    supabase.from('coffees').select('slug, coffee_name, country, notes, character, hero_image, seo_title, seo_description, publish_status, updated_at'),
+    supabase.from('brew_guides').select('slug, title, equipment, coffee_dose, ratio, publish_status, updated_at'),
+    supabase.from('business_posts').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status, updated_at'),
     supabase.from('characters').select('key, label, description'),
     supabase.from('dictionary_terms').select('id, term, short_definition'),
     supabase.from('flavor_descriptors').select('id, name, description, family_id'),
     supabase.from('flavor_families').select('id, name'),
-    supabase.from('columns').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status, scheduled_at'),
-    supabase.from('playlists').select('slug, title, cover_image, caption, publish_status, scheduled_at'),
+    supabase.from('columns').select('slug, title, excerpt, cover_image, seo_title, seo_description, publish_status, scheduled_at, updated_at'),
+    supabase.from('playlists').select('slug, title, cover_image, caption, publish_status, scheduled_at, updated_at'),
   ])
 
   for (const [name, err] of [
@@ -152,17 +154,27 @@ async function run() {
       title: c.seo_title || c.coffee_name,
       description: c.seo_description || `${c.country} · ${charLabelOf(c.character)} · ${(c.notes ?? []).join(', ')}`,
       image: c.hero_image,
+      lastmod: c.updated_at,
     })
   }
 
   for (const g of guides ?? []) {
     if (g.publish_status !== 'published') continue
-    renderPage(`/brew-guide/${g.slug}`, { title: g.title, description: `${g.equipment} 추출 레시피 — ${g.coffee_dose}, ${g.ratio}` })
+    renderPage(`/brew-guide/${g.slug}`, {
+      title: g.title,
+      description: `${g.equipment} 추출 레시피 — ${g.coffee_dose}, ${g.ratio}`,
+      lastmod: g.updated_at,
+    })
   }
 
   for (const p of posts ?? []) {
     if (p.publish_status !== 'published') continue
-    renderPage(`/business/${p.slug}`, { title: p.seo_title || p.title, description: p.seo_description || p.excerpt, image: p.cover_image })
+    renderPage(`/business/${p.slug}`, {
+      title: p.seo_title || p.title,
+      description: p.seo_description || p.excerpt,
+      image: p.cover_image,
+      lastmod: p.updated_at,
+    })
   }
 
   for (const c of characters ?? []) {
@@ -191,6 +203,7 @@ async function run() {
       title: c.seo_title || c.title,
       description: c.seo_description || c.excerpt,
       image: c.cover_image,
+      lastmod: c.updated_at,
     })
   }
 
@@ -203,6 +216,7 @@ async function run() {
       title: p.title?.replace('\n', ' '),
       description: moodQuote || p.caption?.slice(0, 120),
       image: p.cover_image,
+      lastmod: p.updated_at,
     })
   }
 
@@ -213,7 +227,7 @@ async function run() {
   // real filenames, not percent-encoded ones.
   const sitemap =
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    pages.map((p) => `  <url><loc>${SITE_URL}${encodeURI(p)}</loc></url>`).join('\n') +
+    pages.map((p) => `  <url><loc>${SITE_URL}${encodeURI(p.routePath)}</loc><lastmod>${p.lastmod}</lastmod></url>`).join('\n') +
     '\n</urlset>\n'
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap)
 
