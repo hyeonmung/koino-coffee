@@ -232,6 +232,82 @@ async function run() {
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap)
 
   console.log(`[prerender] wrote ${pages.length} static HTML snapshots + sitemap.xml`)
+
+  await requestIndexingForFreshPages(pages)
+}
+
+// Asks Google to (re)crawl pages that changed today, via the Indexing API — best-effort,
+// same spirit as the Resend email calls: missing config just skips quietly, and nothing
+// here can fail the build. Capped well under the default 200/day quota since this runs on
+// every deploy (manual pushes + the Supabase publish webhook + the daily catch-up cron).
+async function requestIndexingForFreshPages(pages) {
+  const keyJson = process.env.GOOGLE_INDEXING_CREDENTIALS
+  if (!keyJson) {
+    console.log('[prerender] GOOGLE_INDEXING_CREDENTIALS not set — skipping Google Indexing API requests.')
+    return
+  }
+
+  const today = new Date().toISOString().slice(0, 10)
+  const freshUrls = pages.filter((p) => p.lastmod === today).map((p) => `${SITE_URL}${p.routePath}`)
+  if (freshUrls.length === 0) return
+
+  const MAX_PER_BUILD = 50
+  const urls = freshUrls.slice(0, MAX_PER_BUILD)
+
+  let accessToken
+  try {
+    accessToken = await getGoogleAccessToken(JSON.parse(keyJson))
+  } catch (err) {
+    console.warn('[prerender] Google Indexing API auth failed:', err.message)
+    return
+  }
+
+  let ok = 0
+  for (const url of urls) {
+    try {
+      const res = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url, type: 'URL_UPDATED' }),
+      })
+      if (res.ok) ok++
+      else console.warn(`[prerender] indexing request failed for ${url}: ${res.status} ${await res.text()}`)
+    } catch (err) {
+      console.warn(`[prerender] indexing request errored for ${url}:`, err.message)
+    }
+  }
+  console.log(`[prerender] requested Google indexing for ${ok}/${urls.length} freshly-changed pages.`)
+}
+
+// Service-account OAuth2 JWT-bearer flow (https://developers.google.com/identity/protocols/oauth2/service-account),
+// hand-rolled with Node's built-in crypto so this script doesn't need a new dependency.
+async function getGoogleAccessToken(serviceAccount) {
+  const base64url = (buf) => buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+  const header = base64url(Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })))
+  const now = Math.floor(Date.now() / 1000)
+  const claims = base64url(
+    Buffer.from(
+      JSON.stringify({
+        iss: serviceAccount.client_email,
+        scope: 'https://www.googleapis.com/auth/indexing',
+        aud: 'https://oauth2.googleapis.com/token',
+        iat: now,
+        exp: now + 3600,
+      }),
+    ),
+  )
+  const { createSign } = await import('node:crypto')
+  const signature = base64url(createSign('RSA-SHA256').update(`${header}.${claims}`).sign(serviceAccount.private_key))
+  const jwt = `${header}.${claims}.${signature}`
+
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: jwt }),
+  })
+  if (!res.ok) throw new Error(`token exchange failed: ${res.status} ${await res.text()}`)
+  const data = await res.json()
+  return data.access_token
 }
 
 run().catch((err) => {
